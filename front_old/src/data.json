@@ -1,0 +1,23 @@
+[
+    {
+        "name": "Chenipan",
+        "id": 1,
+        "type": "grass",
+        "rarity": "common",
+        "quantity": 0
+    },
+    {
+        "name": "Chrysacier",
+        "id": 2,
+        "type": "grass",
+        "rarity": "uncommon",
+        "quantity": 0
+    },
+    {
+        "name": "Papilusion",
+        "id": 3,
+        "type": "grass",
+        "rarity": "rare",
+        "quantity": 0
+    }
+]

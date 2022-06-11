@@ -1,0 +1,19 @@
+{
+    "hostContainer": "postgres",
+    "host": "127.0.0.1",
+    "port": 5432,
+    "username": "root",
+    "password": "WWxX26SVWhr29",
+    "database": "pokecard",
+    "dialect": "postgres",
+    "options": {
+        "logging": false,
+        "logQueryParameters": true,
+        "pool": {
+            "max": 10,
+            "min": 0,
+            "idle": 10000,
+            "acquire": 30000
+        }
+    }
+}

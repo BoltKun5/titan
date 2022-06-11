@@ -1,0 +1,15 @@
+{
+  "javascript.validate.enable": true,
+  "editor.tabSize": 2,
+  "eslint.validate": ["javascript"],
+  "editor.formatOnSave": true,
+  "[javascript]": {
+    "editor.formatOnSave": false
+  },
+  "eslint.options": {
+    "experimentalDecorators": true
+  },
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": true
+  },
+}

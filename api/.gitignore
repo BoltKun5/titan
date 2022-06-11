@@ -1,0 +1,7 @@
+node_modules
+dist
+Stockage/storage/
+Stockage/media/
+Stockage/tmp/
+logs
+swagger.json
