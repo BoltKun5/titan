@@ -1,4 +1,4 @@
-import { CardAttackCost } from './CardAttackCost';
+import { CardAbilityTypeEnum } from './../../type/enums/card-ability-type.enum copy';
 import { CardEntity } from './CardEntity';
 import {
   DataType,
@@ -11,15 +11,14 @@ import {
   Default,
   ForeignKey,
   BelongsTo,
-  HasMany
 } from 'sequelize-typescript';
 import { v4 as uuidv4 } from 'uuid';
 import { CustomModel } from '../custom/CustomModel';
 
 @DefaultScope(() => ({}))
 @Scopes(() => ({}))
-@Table({ tableName: 'CardAttack', paranoid: false, timestamps: false })
-export class CardAttack extends CustomModel {
+@Table({ tableName: 'CardAbility', paranoid: false, timestamps: false })
+export class CardAbility extends CustomModel {
   @IsUUID(4)
   @PrimaryKey
   @Default(() => uuidv4())
@@ -36,10 +35,6 @@ export class CardAttack extends CustomModel {
   @BelongsTo(() => CardEntity)
   cardEntity: CardEntity
 
-  
-  @HasMany(() => CardAttackCost)
-  cost: CardAttackCost[];
-
 
   @Column({
     type: DataType.STRING,
@@ -54,7 +49,7 @@ export class CardAttack extends CustomModel {
 
 
   @Column({
-    type: DataType.STRING,
+    type: DataType.INTEGER,
   })
-  damage: string;
+  type: CardAbilityTypeEnum;
 }

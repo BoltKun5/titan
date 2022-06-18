@@ -1,3 +1,4 @@
+import { CardAbility } from './CardAbility';
 import { CardDexId } from './CardDexId';
 import { CardEnergyTypeEnum } from './../../type/enums/card-energy-type.enum';
 import { CardTrainerTypeEnum } from './../../type/enums/card-trainer-type.enum';
@@ -87,6 +88,10 @@ export class CardEntity extends CustomModel {
 
   @HasMany(() => CardAttack)
   attacks: CardAttack[];
+
+
+  @HasMany(() => CardAbility)
+  abilities: CardAbility[];
 
 
   @Column({
