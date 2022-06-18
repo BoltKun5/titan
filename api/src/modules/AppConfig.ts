@@ -4,19 +4,14 @@ import * as config from '../config/index';
 import { Sequelize } from 'sequelize-typescript';
 import chalk from 'chalk';
 import dayjs from 'dayjs';
-import appRoot from 'app-root-path';
-import path from 'path';
 
 export default class AppConfig {
   public static process = {
     start: new Date(),
     sequelizeReady: false,
-    env: process.env.NODE_ENV.toLowerCase(),
-    isDev: process.env.NODE_ENV.toLowerCase() === 'development' ? true : false,
+    env: process.env.NODE_ENV?.toLowerCase(),
+    isDev: process.env.NODE_ENV?.toLowerCase() === 'development' ? true : false,
   };
-
-  public static pathMain = `${appRoot}/storage`;
-  public static pathTmp = path.join(AppConfig.pathMain, 'tmp/');
 
   public static sequelize: Sequelize;
   public static config = config.default;

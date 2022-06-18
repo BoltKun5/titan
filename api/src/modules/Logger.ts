@@ -156,23 +156,6 @@ export default class Logger {
     exitOnError: false,
   });
 
-  public static async console(
-    level: LogLevel,
-    message: string,
-    type: LogType = LogType.OTHER,
-    options?: Options,
-  ): Promise<LogConsole> {
-    Logger.logConsole.log(LogLevel[level].toLocaleLowerCase(), message);
-
-    if (AppConfig.process.sequelizeReady)
-      return await LogConsoleService.create({
-        level: LogLevel.INFO,
-        message: message,
-        type,
-        taskId: options?.taskId,
-      });
-  }
-
   public static async error(
     error: Error,
     type: LogType = LogType.OTHER,

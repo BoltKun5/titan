@@ -1,0 +1,1 @@
+export enum CardTrainerTypeEnum { "Supporter" = 1, "Stadium", "Item" };

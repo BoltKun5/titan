@@ -15,11 +15,9 @@ module.exports = {
     // .js / .jsx uses babel-eslint
     parser: 'babel-eslint',
     parserOptions: {
-        ecmaVersion: 2020,
+        project: 'tsconfig.json',
+        tsconfigRootDir: __dirname,
         sourceType: 'module',
-        ecmaFeatures: {
-            jsx: true,
-        },
     },
 
     settings: {

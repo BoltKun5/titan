@@ -1,7 +1,6 @@
 import multer from 'multer';
 import { Request, Response } from 'express';
 import { v4 as uuidv4 } from 'uuid';
-import { pathToTmp } from '../../utils/path.utils';
 
 export default class UploadMiddleware {
   public static readonly diskLoader = async (
@@ -13,7 +12,6 @@ export default class UploadMiddleware {
       const x = multer({
         storage: multer.diskStorage({
           destination: (_req, _file, cb) => {
-            cb(null, pathToTmp(''));
           },
           filename: function (req, file, cb) {
             cb(null, uuidv4());

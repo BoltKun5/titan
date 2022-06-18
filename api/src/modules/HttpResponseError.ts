@@ -43,9 +43,7 @@ export class HttpResponseError {
       });
     }
 
-    if (error instanceof Error) {
-      return HttpResponseError.createInternalServerError();
-    }
+    return HttpResponseError.createInternalServerError();
   }
 
   public static sendError(

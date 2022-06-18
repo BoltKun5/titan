@@ -13,7 +13,7 @@ import {
 } from 'sequelize-typescript';
 import AbyssCore from 'abyss_core';
 import { v4 as uuidv4 } from 'uuid';
-import { LogConsole } from '..';
+import { LogConsole } from './LogConsole';
 import { CustomModel } from '../custom/CustomModel';
 import { APIMethod, ILogEndpoint } from 'abyss_crypt_core';
 

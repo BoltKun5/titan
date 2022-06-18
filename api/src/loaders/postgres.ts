@@ -11,17 +11,16 @@ export default async (): Promise<Sequelize> => {
   return new Promise(async (resolve) => {
     const connection = new Sequelize(database.database, database.username, database.password, {
       ...database.options,
-      host: AppConfig.process.env === 'development' ? database.host : database.host,
+      host: database.host,
       port: database.port,
       dialect: 'postgres',
       models: requireModules(path.join(__dirname, '../database/models')),
     });
     await connection.authenticate();
 
-    // await connection.sync({ alter: true });
+    await connection.sync({ alter: true, logging: console.log });
 
     if (process.env.NEW_SETUP) {
-      console.log('ici');
       await connection.query('DROP SCHEMA IF EXISTS public CASCADE;');
       await connection.query('CREATE SCHEMA public;');
 

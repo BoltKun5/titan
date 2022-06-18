@@ -13,7 +13,6 @@ import swaggerUi from 'swagger-ui-express';
 import appRoot from 'app-root-path';
 import { IResponseLocals } from '../local_core';
 import { getDurationInMilliseconds } from 'abyss_core';
-import dayjs from 'dayjs';
 import { APIMethod, LogLevel } from 'abyss_crypt_core';
 
 export default ({ app }: { app: express.Application }): express.Application => {
@@ -55,7 +54,7 @@ export default ({ app }: { app: express.Application }): express.Application => {
     res.on('close', async () => {
       res.locals.timer.durationToClose = getDurationInMilliseconds(res.locals.timer.startTime);
 
-      const logConsole = await Logger.api(LogLevel.INFO, {
+      await Logger.api(LogLevel.INFO, {
         controller: res.locals.controller,
         method: APIMethod[req.method.toUpperCase()],
         endpoint: req.route?.path ?? req.path,
@@ -68,15 +67,7 @@ export default ({ app }: { app: express.Application }): express.Application => {
         responseBody: res.locals.responseBody,
       });
 
-      const cryption = res.locals.cryption;
-      if (!cryption) return;
 
-      cryption.set('endDate', new Date());
-      cryption.set('durationMs', dayjs(cryption.endDate).diff(cryption.startDate));
-      cryption.set('byteSize', res.locals.byteSize);
-      cryption.set('logEndpointId', logConsole.logEndpoint.id);
-
-      await cryption.save();
     });
 
     next();
@@ -118,7 +109,7 @@ export default ({ app }: { app: express.Application }): express.Application => {
       res: Response<any, IResponseLocals>,
       _next: NextFunction,
     ) => {
-      console.log(error);
+      Logger.error(error);
       HttpResponseError.sendError(error, req, res);
     },
   );

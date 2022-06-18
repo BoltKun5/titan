@@ -6,9 +6,6 @@
     "scripts": {
         "dev": "cross-env NODE_ENV=DEVELOPMENT ts-node-dev --respawn ./src/server.ts",
         "dev_setup": "cross-env NODE_ENV=DEVELOPMENT NEW_SETUP=enable ts-node-dev --respawn ./src/server.ts ",
-        "prod": "tsc && cross-env NODE_ENV=PRODUCTION node ./dist/server.js",
-        "stagging": "tsc && cross-env NODE_ENV=STAGGING node ./dist/server.js",
-        "stagging_setup": "tsc && cross-env NODE_ENV=STAGGING NEW_SETUP=enable node ./dist/server.js",
         "tsc": "tsc",
         "build": "webpack"
     },

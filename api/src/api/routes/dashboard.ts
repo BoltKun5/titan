@@ -7,7 +7,5 @@ const route = Router();
 export const DashboardRouter = (app: Router): Router => {
   app.use('/', route);
 
-  route.get('/dashboard/main', asyncHandler(DashboardController.main));
-
   return route;
 };

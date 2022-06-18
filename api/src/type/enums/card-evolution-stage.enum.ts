@@ -1,0 +1,1 @@
+export enum CardEvolutionStageEnum { "Basic" = 1, "Stage1", "Stage2", "VMAX" };

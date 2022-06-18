@@ -33,7 +33,7 @@ type ParamsPaginate = {
 export class LogConsoleService extends DefaultService {
   private static paginator = new Paginator(LogConsole);
 
-  public static async getOne(params: FindOptions<ILogConsole>): Promise<LogConsole> {
+  public static async getOne(params: FindOptions<ILogConsole>): Promise<LogConsole | null> {
     return LogConsole.findOne({ ...params });
   }
 
