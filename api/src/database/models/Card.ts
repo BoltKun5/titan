@@ -1,10 +1,10 @@
 import { CardAbility } from './CardAbility';
 import { CardDexId } from './CardDexId';
-import { CardEnergyTypeEnum } from './../../type/enums/card-energy-type.enum';
-import { CardTrainerTypeEnum } from './../../type/enums/card-trainer-type.enum';
-import { CardEvolutionStageEnum } from './../../type/enums/card-evolution-stage.enum';
-import { CardCategoryEnum } from './../../type/enums/card-category.enum';
-import { CardRarityEnum } from './../../type/enums/card-rarity.enum';
+import { CardEnergyTypeEnum } from '../../type/enums/card-energy-type.enum';
+import { CardTrainerTypeEnum } from '../../type/enums/card-trainer-type.enum';
+import { CardEvolutionStageEnum } from '../../type/enums/card-evolution-stage.enum';
+import { CardCategoryEnum } from '../../type/enums/card-category.enum';
+import { CardRarityEnum } from '../../type/enums/card-rarity.enum';
 import { CardDamageModification } from './CardDamageModification';
 import { CardAttack } from './CardAttack';
 import {
@@ -29,8 +29,8 @@ import { HeldItemType } from '../../type/types';
 
 @DefaultScope(() => ({}))
 @Scopes(() => ({}))
-@Table({ tableName: 'CardEntity', paranoid: false, timestamps: false })
-export class CardEntity extends CustomModel {
+@Table({ tableName: 'Card', paranoid: false, timestamps: false })
+export class Card extends CustomModel {
   @IsUUID(4)
   @PrimaryKey
   @Default(() => uuidv4())
@@ -95,13 +95,13 @@ export class CardEntity extends CustomModel {
 
 
   @Column({
-    type: DataType.STRING,
+    type: DataType.STRING(1047),
   })
   effect: string;
 
 
   @HasMany(() => CardDamageModification)
-  damageModification: CardDamageModification[]
+  damageModifications: CardDamageModification[]
 
   @Column({
     type: DataType.INTEGER,
@@ -149,13 +149,13 @@ export class CardEntity extends CustomModel {
   attributes: CardAttribute[];
 
   @Column({
-    type: DataType.INTEGER,
+    type: DataType.STRING,
   })
-  localId: number;
+  localId: string;
 
 
   @HasMany(() => CardDexId)
-  dexId: CardDexId[];
+  dexIds: CardDexId[];
 
 
   @Column({

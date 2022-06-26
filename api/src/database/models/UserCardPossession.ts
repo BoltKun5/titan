@@ -1,4 +1,3 @@
-import { CardAbilityTypeEnum } from './../../type/enums/card-ability-type.enum copy';
 import { Card } from './Card';
 import {
   DataType,
@@ -14,11 +13,12 @@ import {
 } from 'sequelize-typescript';
 import { v4 as uuidv4 } from 'uuid';
 import { CustomModel } from '../custom/CustomModel';
+import { User } from './User';
 
 @DefaultScope(() => ({}))
 @Scopes(() => ({}))
-@Table({ tableName: 'CardAbility', paranoid: false, timestamps: false })
-export class CardAbility extends CustomModel {
+@Table({ tableName: 'UserCardPossession', paranoid: false, timestamps: true })
+export class UserCardPossession extends CustomModel {
   @IsUUID(4)
   @PrimaryKey
   @Default(() => uuidv4())
@@ -26,30 +26,34 @@ export class CardAbility extends CustomModel {
   id: string;
 
 
-  @ForeignKey(() => Card)
+  @ForeignKey(() => User)
   @Column({
     type: DataType.STRING,
   })
-  cardEntityId: string;
+  userId: string;
 
-  @BelongsTo(() => Card)
-  cardEntity: Card
-
-
-  @Column({
-    type: DataType.STRING,
-  })
-  name: string;
+  @BelongsTo(() => User)
+  user: User
 
 
-  @Column({
-    type: DataType.STRING(1047),
-  })
-  effect: string;
+  // @ForeignKey(() => Card)
+  // @Column({
+  //   type: DataType.STRING,
+  // })
+  // cardId: Card;
+
+  // @BelongsTo(() => Card)
+  // card: Card
 
 
   @Column({
     type: DataType.INTEGER,
   })
-  type: CardAbilityTypeEnum;
+  classicQuantity: number;
+
+
+  @Column({
+    type: DataType.INTEGER,
+  })
+  reverseQuantity: number;
 }

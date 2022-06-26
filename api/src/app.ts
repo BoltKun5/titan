@@ -9,7 +9,7 @@ export async function startServer(): Promise<void> {
   // eslint-disable-next-line @typescript-eslint/no-var-requires
   AppConfig.sequelize = await require('./loaders').default(app);
 
-  app
+  const server = app
     .listen(AppConfig.config.app.port, () => {
       Logger.info(
         `
@@ -25,5 +25,5 @@ export async function startServer(): Promise<void> {
       Logger.error(err, LogType.SYSTEM_STARTUP);
       process.exit(1);
     });
-
+  server.timeout = 1000000;
 }

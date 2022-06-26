@@ -1,5 +1,5 @@
 import { CardAttributeEnum } from './../../type/enums/card-attributes.enum';
-import { CardEntity } from './CardEntity';
+import { Card } from './Card';
 import {
   DataType,
   Column,
@@ -26,18 +26,18 @@ export class CardAttribute extends CustomModel {
   id: string;
 
 
-  @ForeignKey(() => CardEntity)
+  @ForeignKey(() => Card)
   @Column({
     type: DataType.STRING,
   })
   cardEntityId: string;
-  @BelongsTo(() => CardEntity)
-  cardEntity: CardEntity
+  @BelongsTo(() => Card)
+  cardEntity: Card
 
 
   @Column({
-    type: DataType.INTEGER,
+    type: DataType.STRING,
   })
-  attribute: CardAttributeEnum;
+  attribute: string;
 
 }

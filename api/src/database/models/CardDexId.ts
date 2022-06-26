@@ -1,4 +1,4 @@
-import { CardEntity } from './CardEntity';
+import { Card } from './Card';
 import {
   DataType,
   Column,
@@ -25,14 +25,14 @@ export class CardDexId extends CustomModel {
   id: string;
 
 
-  @ForeignKey(() => CardEntity)
+  @ForeignKey(() => Card)
   @Column({
     type: DataType.STRING,
   })
   cardAttackId: string;
 
-  @BelongsTo(() => CardEntity)
-  cardEntity: CardEntity
+  @BelongsTo(() => Card)
+  cardEntity: Card
 
 
   @Column({

@@ -1,8 +1,9 @@
 import { IResponse } from 'abyss_crypt_core';
+import { User } from '../../../database';
 
 export interface IResponseLocals {
+  currentUser: User,
   responseBody?: IResponse<any>;
-  byteSize: number;
   controller: string;
   timer: {
     start: Date;

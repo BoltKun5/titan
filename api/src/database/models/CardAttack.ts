@@ -1,5 +1,5 @@
 import { CardAttackCost } from './CardAttackCost';
-import { CardEntity } from './CardEntity';
+import { Card } from './Card';
 import {
   DataType,
   Column,
@@ -27,18 +27,18 @@ export class CardAttack extends CustomModel {
   id: string;
 
 
-  @ForeignKey(() => CardEntity)
+  @ForeignKey(() => Card)
   @Column({
     type: DataType.STRING,
   })
   cardEntityId: string;
 
-  @BelongsTo(() => CardEntity)
-  cardEntity: CardEntity
+  @BelongsTo(() => Card)
+  cardEntity: Card
 
-  
+
   @HasMany(() => CardAttackCost)
-  cost: CardAttackCost[];
+  costs: CardAttackCost[];
 
 
   @Column({
@@ -48,7 +48,7 @@ export class CardAttack extends CustomModel {
 
 
   @Column({
-    type: DataType.STRING,
+    type: DataType.STRING(1047),
   })
   effect: string;
 

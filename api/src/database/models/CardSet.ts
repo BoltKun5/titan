@@ -1,5 +1,5 @@
 import { CardCountType } from './../../type/types/card-count.type';
-import { CardEntity } from './CardEntity';
+import { Card } from './Card';
 /* eslint-disable @typescript-eslint/indent */
 import {
   DataType,
@@ -34,11 +34,6 @@ export class CardSet extends CustomModel {
   name: string;
 
 
-  @Column({
-    type: DataType.STRING,
-  })
-  slug: string;
-
 
   @Column({
     type: DataType.JSON,
@@ -63,8 +58,8 @@ export class CardSet extends CustomModel {
   })
   isPlayableInExpanded: boolean;
 
-  @HasMany(() => CardEntity)
-  cards: CardEntity[]
+  @HasMany(() => Card)
+  cards: Card[]
 
 
   @Column({

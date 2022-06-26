@@ -7,7 +7,8 @@ import {
   DefaultScope,
   Scopes,
   Default,
-  HasMany
+  HasMany,
+  Unique
 } from 'sequelize-typescript';
 import { v4 as uuidv4 } from 'uuid';
 import { CustomModel } from '../custom/CustomModel';
@@ -23,18 +24,13 @@ export class CardSerie extends CustomModel {
   @Column
   id: string;
 
+  @Unique
   @Column({
     type: DataType.STRING,
   })
   name: string;
 
 
-  @Column({
-    type: DataType.STRING,
-  })
-  slug: string;
-
-
   @HasMany(() => CardSet)
-  sets: CardSet[]
+  cardSets: CardSet[]
 }

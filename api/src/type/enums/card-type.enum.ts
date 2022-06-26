@@ -1,1 +1,1 @@
-export enum CardTypeEnum { GRASS = 1, FIRE = 2, WATER = 3, ELECTRIC = 4, FIGHTING = 5, PSYCHIC = 6, COLORLESS = 7, DARK = 8, STEEL = 9, DRAGON = 10, FAIRY = 11 }
+export enum CardTypeEnum { GRASS = 1, FIRE = 2, WATER = 3, ELECTRIC = 4, FIGHTING = 5, PSYCHIC = 6, COLORLESS = 7, DARK = 8, DARKNESS = 8, STEEL = 9, METAL = 9, DRAGON = 10, FAIRY = 11 }

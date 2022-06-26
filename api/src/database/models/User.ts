@@ -7,9 +7,11 @@ import {
   DefaultScope,
   Scopes,
   Default,
+  HasMany,
 } from 'sequelize-typescript';
 import { v4 as uuidv4 } from 'uuid';
 import { CustomModel } from '../custom/CustomModel';
+import { UserCardPossession } from './UserCardPossession';
 
 @DefaultScope(() => ({}))
 @Scopes(() => ({}))
@@ -40,4 +42,8 @@ export class User extends CustomModel {
     type: DataType.STRING,
   })
   password: string;
+
+
+  @HasMany(() => UserCardPossession)
+  cards: UserCardPossession[]
 }
