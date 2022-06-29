@@ -1,4 +1,4 @@
-import { CardAbilityTypeEnum } from './../../type/enums/card-ability-type.enum copy';
+import { CardAbilityTypeEnum } from '../../local_core/types/enums/card-ability-type.enum copy';
 import { Card } from './Card';
 import {
   DataType,

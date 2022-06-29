@@ -1,4 +1,4 @@
-import { CardTypeEnum } from './../../type/enums/card-type.enum';
+import { CardTypeEnum } from '../../local_core/types/enums/card-type.enum';
 import { Card } from './Card';
 import {
   DataType,

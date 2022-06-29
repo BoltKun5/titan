@@ -1,29 +1,20 @@
-import { CardAttackCost } from './database/models/CardAttackCost';
-import { CardAttack } from './database/models/CardAttack';
-import { CardType } from './database/models/CardType';
-import { CardSet } from './database/models/CardSet';
-import { CardAttributeEnum } from './type/enums/card-attributes.enum';
-import { CardDamageModificationType } from './type/enums/card-damage-modification-type.enum';
-import { CardAbilityTypeEnum } from './type/enums/card-ability-type.enum copy';
-import { CardTypeEnum } from './type/enums/card-type.enum';
-import { CardEnergyTypeEnum } from './type/enums/card-energy-type.enum';
-import { HeldItemType } from './type/types/card-item.type';
-import { CardTrainerTypeEnum } from './type/enums/card-trainer-type.enum';
-import { CardEvolutionStageEnum } from './type/enums/card-evolution-stage.enum';
-import { CardCategoryEnum } from './type/enums/card-category.enum';
-import { CardRarityEnum } from './type/enums/card-rarity.enum';
-import { CardCountType } from './type/types/card-count.type';
+import { CardAttributeEnum } from './local_core/types/enums/card-attributes.enum';
+import { CardDamageModificationType } from './local_core/types/enums/card-damage-modification-type.enum';
+import { CardAbilityTypeEnum } from './local_core/types/enums/card-ability-type.enum copy';
+import { CardTypeEnum } from './local_core/types/enums/card-type.enum';
+import { CardEnergyTypeEnum } from './local_core/types/enums/card-energy-type.enum';
+import { HeldItemType } from './local_core/types/types/card-item.type';
+import { CardTrainerTypeEnum } from './local_core/types/enums/card-trainer-type.enum';
+import { CardEvolutionStageEnum } from './local_core/types/enums/card-evolution-stage.enum';
+import { CardCategoryEnum } from './local_core/types/enums/card-category.enum';
+import { CardRarityEnum } from './local_core/types/enums/card-rarity.enum';
+import { CardCountType } from './local_core/types/types/card-count.type';
 import { existsSync, readdirSync, statSync } from 'fs-extra';
 import { LogType } from 'abyss_crypt_core';
 import { startServer } from './app';
 import AppConfig from './modules/AppConfig';
 import Logger from './modules/Logger';
 import path from 'path';
-import { Card, CardAttribute, CardSerie } from './database';
-import { CardAbility } from './database/models/CardAbility';
-import { CardDamageModification } from './database/models/CardDamageModification';
-import { CardDexId } from './database/models/CardDexId';
-import util from 'util';
 
 (async () => {
   try {

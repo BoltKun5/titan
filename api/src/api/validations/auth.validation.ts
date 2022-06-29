@@ -1,8 +1,6 @@
-import { ISigninAuthBody } from './../../type/types/interface/api/auth.interface';
-import Joi from 'joi';
+import {ISigninAuthBody, ISignupAuthBody} from '../../local_core/types/types/interface';
 import { HttpResponseError } from '../../modules/HttpResponseError';
-import { enumToStringValue } from 'abyss_core';
-import { IEncryptFileQuery, Algorithm, IDecryptFileQuery } from 'abyss_crypt_core';
+import Joi from 'joi';
 
 export default class AuthValidation {
   static signinBody(data: ISigninAuthBody): ISigninAuthBody {
@@ -17,10 +15,11 @@ export default class AuthValidation {
     return { ...result.value };
   }
 
-  static decryptQuery(data: IDecryptFileQuery): IDecryptFileQuery {
-    const querySchema = Joi.object<IDecryptFileQuery>({
-      algorithm: Joi.valid(...enumToStringValue(Algorithm)).optional(),
-      password: Joi.string().min(1),
+  static signupBody(data: ISignupAuthBody): ISignupAuthBody {
+    const querySchema = Joi.object<ISignupAuthBody>({
+      username: Joi.string().min(3).max(20),
+      password: Joi.string().min(5).max(30),
+      shownName: Joi.string().min(3).max(20)
     });
 
     const result = querySchema.validate(data);

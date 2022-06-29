@@ -1,9 +1,20 @@
 import { ErrorType } from "abyss_core";
-import { User } from "../../../../database"
+import { User } from "../../../../../database"
 
 export interface ISigninAuthBody {
   password: string,
   username: string
+}
+
+export interface ISignupAuthBody {
+  password: string,
+  username: string,
+  shownName: string,
+}
+
+export interface ISignupAuthResponse {
+  user: User,
+  token: string
 }
 
 export interface ISigninAuthResponse {

@@ -1,4 +1,4 @@
-import { CardCountType } from './../../type/types/card-count.type';
+import { CardCountType } from '../../local_core/types/types/card-count.type';
 import { Card } from './Card';
 /* eslint-disable @typescript-eslint/indent */
 import {
