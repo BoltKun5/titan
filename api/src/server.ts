@@ -1,20 +1,28 @@
-import { CardAttributeEnum } from './local_core/types/enums/card-attributes.enum';
-import { CardDamageModificationType } from './local_core/types/enums/card-damage-modification-type.enum';
-import { CardAbilityTypeEnum } from './local_core/types/enums/card-ability-type.enum copy';
-import { CardTypeEnum } from './local_core/types/enums/card-type.enum';
-import { CardEnergyTypeEnum } from './local_core/types/enums/card-energy-type.enum';
-import { HeldItemType } from './local_core/types/types/card-item.type';
-import { CardTrainerTypeEnum } from './local_core/types/enums/card-trainer-type.enum';
-import { CardEvolutionStageEnum } from './local_core/types/enums/card-evolution-stage.enum';
-import { CardCategoryEnum } from './local_core/types/enums/card-category.enum';
-import { CardRarityEnum } from './local_core/types/enums/card-rarity.enum';
-import { CardCountType } from './local_core/types/types/card-count.type';
-import { existsSync, readdirSync, statSync } from 'fs-extra';
-import { LogType } from 'abyss_crypt_core';
-import { startServer } from './app';
-import AppConfig from './modules/AppConfig';
-import Logger from './modules/Logger';
-import path from 'path';
+import {
+  CardAttributeEnum,
+  CardDamageModificationType,
+  CardTypeEnum,
+  CardEnergyTypeEnum,
+  HeldItemType,
+  CardTrainerTypeEnum,
+  CardEvolutionStageEnum,
+  CardCategoryEnum,
+  CardRarityEnum,
+  CardCountType,
+  CardAbilityTypeEnum
+} from "./local_core";
+import { existsSync, readdirSync, statSync } from "fs-extra";
+import { LogType } from "abyss_crypt_core";
+import { startServer } from "./app";
+import AppConfig from "./modules/AppConfig";
+import Logger from "./modules/Logger";
+import path from "path";
+import { CardDamageModification } from "./database/models/CardDamageModification";
+import { CardAbility } from "./database/models/CardAbility";
+import { CardAttackCost } from "./database/models/CardAttackCost";
+import { Card, CardAttack, CardAttribute, CardSerie, CardSet } from "./database";
+import { CardType } from "./database/models/CardType";
+import { CardDexId } from "./database/models/CardDexId";
 
 (async () => {
   try {
@@ -30,16 +38,18 @@ import path from 'path';
 function getTypeEnum(type) {
   if (type === "Lightning")
     return CardTypeEnum.ELECTRIC;
-  return CardTypeEnum[type.toUpperCase()] ?? null
+  return CardTypeEnum[type.toUpperCase()] ?? null;
 }
+
 let count = 0;
-process.on('unhandledRejection', (error) => {
+process.on("unhandledRejection", (error) => {
   // Will print "unhandledRejection err is not defined"
-  console.log('unhandledRejection', error);
+  console.log("unhandledRejection", error);
 });
+
 async function test() {
   try {
-    console.time('seed');
+    console.time("seed");
     const series: {
       name: string,
       cardSets: {
@@ -105,13 +115,10 @@ async function test() {
 
       // console.log(localPath, deep, index, serieIndex)
 
+      if (!existsSync("./src" + localPath))
+        return;
 
-
-      if (!existsSync('./src' + localPath))
-        return
-
-
-      const src = readdirSync('./src' + localPath);
+      const src = readdirSync("./src" + localPath);
 
       // await Promise.all(
 
@@ -119,24 +126,23 @@ async function test() {
         // console.log(fileName)
 
         const currentFilePath = path.join(localPath, fileName);
-        const stats = statSync('./src' + currentFilePath);
-        const nextFolderPath = localPath + '/' + fileName.split('.')[0];
+        const stats = statSync("./src" + currentFilePath);
+        const nextFolderPath = localPath + "/" + fileName.split(".")[0];
         let newIndex: number;
 
         if (stats.isFile()) {
-          if (deep === 1 && fileName !== "Sword & Shield.ts") {
-            continue
-          }
+          // if (deep === 1 && fileName !== "Sword & Shield.ts") {
+          //   continue;
+          // }
 
           // if (deep === 2 && fileName !== "Chilling Reign.ts") return
           // if (deep === 3 && fileName !== "9.ts") {
           //   return
           // }
           // if (deep === 3) console.log(`Start loading ${localPath}/${fileName.split('.')[0]}`)
-          const file = await import(`.${localPath}/${fileName.split('.')[0]}`);
+          const file = await import(`.${localPath}/${fileName.split(".")[0]}`);
           // if (deep === 3) console.log(`File loaded`)
           // console.log(file)
-
 
           if (deep !== 1 && index !== -1) {
 
@@ -149,7 +155,7 @@ async function test() {
                 isPlayableInStandard: false,
                 isPlayableInExpanded: false,
                 cards: []
-              })
+              });
 
             } else {
               const damageModifications = [];
@@ -158,15 +164,15 @@ async function test() {
                   modificationType: CardDamageModificationType.weakness,
                   type: getTypeEnum(el.type),
                   value: el.value
-                })
-              })
+                });
+              });
               file.default?.resistances?.forEach((el) => {
                 damageModifications.push({
                   modificationType: CardDamageModificationType.weakness,
                   type: getTypeEnum(el.type),
                   value: el.value
-                })
-              })
+                });
+              });
               newIndex = series[serieIndex - 1].cardSets[index - 1].cards.push({
                 name: file.default.name.fr ?? file.default.name.en,
                 rarity: CardRarityEnum[file.default?.rarity] ?? null,
@@ -174,29 +180,33 @@ async function test() {
                 hp: file.default?.hp ?? null,
                 evolveFrom: file.default?.evolveFrom?.fr ?? null,
                 stage: CardEvolutionStageEnum[file.default?.stage] ?? null,
-                types: file.default?.types?.map((el) => { return { type: getTypeEnum(el) } }) ?? [],
+                types: file.default?.types?.map((el) => {
+                  return { type: getTypeEnum(el) };
+                }) ?? [],
                 attacks: file.default?.attacks?.map((el) => {
                   const costs = [];
                   const calculatedCosts = [];
                   el?.cost?.forEach((costName) => {
-                    if (calculatedCosts.includes(costName)) return
+                    if (calculatedCosts.includes(costName)) return;
                     costs.push({
                       type: getTypeEnum(costName),
                       cost: el?.cost.filter(x => x === costName).length
                     });
                     calculatedCosts.push(costName);
-                  })
+                  });
                   return {
                     name: el?.name?.fr ?? el?.name?.en,
                     effect: el?.effect?.fr ?? null,
                     damage: el?.damage ?? null,
                     costs: costs
-                  }
+                  };
                 }) ?? [],
                 abilities: file.default?.abilities?.map((el) => {
                   return {
-                    name: el.name?.fr ?? el.name.en, effect: el.effect?.fr ?? el.effect.en, type: CardAbilityTypeEnum[el.type] ?? null
-                  }
+                    name: el.name?.fr ?? el.name.en,
+                    effect: el.effect?.fr ?? el.effect.en,
+                    type: CardAbilityTypeEnum[el.type] ?? null
+                  };
                 }) ?? [],
                 effect: file.default?.effect?.fr ?? null,
                 damageModifications: damageModifications ?? null,
@@ -208,7 +218,7 @@ async function test() {
                 isHolo: file.default?.variants?.holo ?? false,
                 isFirstEdition: file.default?.variants?.firstEdition ?? false,
                 attributes: file.default.suffix ? [{ attribute: file.default.suffix }] : [],
-                localId: fileName.split('.')[0],
+                localId: fileName.split(".")[0],
                 dexIds: file.default?.dexIds?.map((el) => ({ dexId: el.toString() })) ?? [],
                 description: file.default?.desc ?? null,
                 level: file.default?.level ?? null,
@@ -222,19 +232,18 @@ async function test() {
             }
           } else {
 
-            newIndex = series.push({ name: file.default.name.fr ?? file.default.name.en, cardSets: [] })
+            newIndex = series.push({ name: file.default.name.fr ?? file.default.name.en, cardSets: [] });
 
           }
 
-
           if (deep == 2)
-            await process(nextFolderPath, (deep + 1), newIndex, index)
+            await process(nextFolderPath, (deep + 1), newIndex, index);
           else if (deep !== 3)
-            await process(nextFolderPath, (deep + 1), newIndex)
+            await process(nextFolderPath, (deep + 1), newIndex);
         }
       }
       // )
-    }
+    };
 
     // await process('/data', 1);
 
@@ -247,22 +256,19 @@ async function test() {
     //   await CardSerie.findAll(),
     //   await CardSet.findAll(),
     //   await Card.findAll()])
-
-
+    //
     // const c1 = createdCardSeries.map(el => el.name);
     // const c2 = createdSets.map(el => el.name);
     // const c3 = createCards.map(el => el.cardSet.cardSerie.name + el.cardSet.name + el.localId)
-
+    //
     // await Promise.all(
-
     //   series.filter((el) => !c1.includes(el.name)).map(async (serie) => {
     //     const currentSerie = await CardSerie.create(serie);
-
-
+    //
     //     await Promise.all(serie.cardSets.filter(el => !c2.includes(el.name)).map(async (cardSet) => {
     //       const currentCardSet = await CardSet.create(cardSet);
-    //       await currentCardSet.$set('cardSerie', currentSerie);
-
+    //       await currentCardSet.$set("cardSerie", currentSerie);
+    //
     //       await Promise.all(cardSet.cards.filter(el => !c3.includes(serie.name + cardSet.name + el.localId)).map(async (card) => {
     //         const currentCard = await Card.create(card, {
     //           include: [
@@ -296,15 +302,15 @@ async function test() {
     //             }
     //           ]
     //         });
-    //         await currentCard.$set('cardSet', currentCardSet);
+    //         await currentCard.$set("cardSet", currentCardSet);
     //       }));
     //     }));
     //   })
-    // )
+    // );
 
-    console.timeEnd('seed');
+    console.timeEnd("seed");
   } catch (error) {
-    console.error(error)
+    console.error(error);
     Logger.error(error, LogType.SYSTEM_STARTUP);
   }
 }

@@ -1,5 +1,5 @@
 import { ErrorType } from "abyss_core";
-import { User } from "../../../../../database"
+import { User } from "../../../../../database";
 
 export interface ISigninAuthBody {
   password: string,
@@ -33,4 +33,15 @@ export interface IApiError {
   message: string;
   params?: string;
   field?: string;
+}
+
+export interface IUpdateUserCardsBody {
+  token: string,
+  cards: [
+    {
+      cardId: string,
+      classicQuantity: string,
+      reverseQuantity: string
+    }
+  ]
 }

@@ -36,14 +36,14 @@ export class UserCardPossession extends CustomModel {
   user: User
 
 
-  // @ForeignKey(() => Card)
-  // @Column({
-  //   type: DataType.STRING,
-  // })
-  // cardId: Card;
+  @ForeignKey(() => Card)
+  @Column({
+    type: DataType.STRING,
+  })
+  cardId: Card;
 
-  // @BelongsTo(() => Card)
-  // card: Card
+  @BelongsTo(() => Card)
+  card: Card
 
 
   @Column({

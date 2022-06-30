@@ -95,12 +95,12 @@ export default ({ app }: { app: express.Application }): express.Application => {
 
   app.use(AppConfig.config.api.prefix, routes());
 
-  app.use(
-    '/api-docs',
-    swaggerUi.serve,
-    // eslint-disable-next-line @typescript-eslint/no-var-requires
-    swaggerUi.setup(require(path.join(appRoot.toString(), './swagger.json'))),
-  );
+  // app.use(
+  //   '/api-docs',
+  //   swaggerUi.serve,
+  //   // eslint-disable-next-line @typescript-eslint/no-var-requires
+  //   swaggerUi.setup(require(path.join(appRoot.toString(), './swagger.json'))),
+  // );
 
   app.use(
     (

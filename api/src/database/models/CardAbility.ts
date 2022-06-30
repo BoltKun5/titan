@@ -1,5 +1,4 @@
-import { CardAbilityTypeEnum } from '../../local_core/types/enums/card-ability-type.enum copy';
-import { Card } from './Card';
+import { Card } from "./Card";
 import {
   DataType,
   Column,
@@ -10,14 +9,15 @@ import {
   Scopes,
   Default,
   ForeignKey,
-  BelongsTo,
-} from 'sequelize-typescript';
-import { v4 as uuidv4 } from 'uuid';
-import { CustomModel } from '../custom/CustomModel';
+  BelongsTo
+} from "sequelize-typescript";
+import { v4 as uuidv4 } from "uuid";
+import { CustomModel } from "../custom/CustomModel";
+import { CardAbilityTypeEnum } from "../../local_core";
 
 @DefaultScope(() => ({}))
 @Scopes(() => ({}))
-@Table({ tableName: 'CardAbility', paranoid: false, timestamps: false })
+@Table({ tableName: "CardAbility", paranoid: false, timestamps: false })
 export class CardAbility extends CustomModel {
   @IsUUID(4)
   @PrimaryKey
@@ -25,31 +25,27 @@ export class CardAbility extends CustomModel {
   @Column
   id: string;
 
-
   @ForeignKey(() => Card)
   @Column({
-    type: DataType.STRING,
+    type: DataType.STRING
   })
   cardEntityId: string;
 
   @BelongsTo(() => Card)
-  cardEntity: Card
-
+  cardEntity: Card;
 
   @Column({
-    type: DataType.STRING,
+    type: DataType.STRING
   })
   name: string;
 
-
   @Column({
-    type: DataType.STRING(1047),
+    type: DataType.STRING(1047)
   })
   effect: string;
 
-
   @Column({
-    type: DataType.INTEGER,
+    type: DataType.INTEGER
   })
   type: CardAbilityTypeEnum;
 }
