@@ -1,5 +1,8 @@
 import { ErrorType } from "abyss_core";
-import { User } from "../../../../../database";
+import { Card, User } from "../../../../../database";
+import { UserCardPossession } from "../../../../../database/models/UserCardPossession";
+
+// TODO: trier les interface en dossiers
 
 export interface ISigninAuthBody {
   password: string,
@@ -44,4 +47,29 @@ export interface IUpdateUserCardsBody {
       reverseQuantity: string
     }
   ]
+}
+
+export interface IUpdateUserCardsResponse {
+  code: string;
+}
+
+export interface IGetAllUserCardsBody {
+  pagination: IPagination;
+}
+
+export interface IGetUserCardsResponse {
+  totalCards: number,
+  paginationOptions: IPagination,
+  cardsList: [
+    card: {
+      UserCardPossession,
+      classicQuantity: string,
+      reverseQuantity: string
+    },
+  ]
+}
+
+export interface IPagination {
+  page: number,
+  itemPerPage: number
 }

@@ -34,7 +34,7 @@ export default async (
         type: ErrorType.authError,
       });
 
-    const token: string = req.headers.authorization.split(' ')[1];
+    const token: string = req.cookies.token;
     const decodedToken = <SessionToken>jwt.verify(token, AppConfig.config.app.auth.secretToken);
 
     const { UUID } = decodedToken;
