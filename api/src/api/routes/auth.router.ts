@@ -19,7 +19,7 @@ const route = Router();
 export const AuthRouter = (app: Router): Router => {
   app.use('/auth', route);
 
-  route.get(
+  route.post(
     '/signin',
     asyncHandler(async (req: Request<any, any, ISigninAuthBody>, res: Response<IResponse<ISigninAuthResponse>, IResponseLocals>) => {
       req.body = AuthValidation.signinBody(req.body);
@@ -30,7 +30,7 @@ export const AuthRouter = (app: Router): Router => {
         },
       });
       if (!user) {
-        throw HttpResponseError.createNotFound()
+        throw HttpResponseError.createUserNotFound()
       }
 
       res.json({

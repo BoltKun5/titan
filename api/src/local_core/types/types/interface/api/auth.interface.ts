@@ -60,13 +60,7 @@ export interface IGetAllUserCardsBody {
 export interface IGetUserCardsResponse {
   totalCards: number,
   paginationOptions: IPagination,
-  cardsList: [
-    card: {
-      UserCardPossession,
-      classicQuantity: string,
-      reverseQuantity: string
-    },
-  ]
+  cardsList: UserCardPossession[]
 }
 
 export interface IPagination {

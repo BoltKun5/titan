@@ -53,8 +53,13 @@ code {
     align-items: center;
     margin: auto;
     display: flex;
-    background-color: rgb(94, 94, 94);
+    flex-direction: column;
+    background-color: white;
     border-radius: 10px;
+
+    &>* {
+      margin: 10px !important;
+    }
   }
 }
 

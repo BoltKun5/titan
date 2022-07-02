@@ -1,13 +1,56 @@
-import { Button } from "@mui/material";
-import React, { ReactElement } from "react";
-import { Link } from "react-router-dom";
-
-
+import {Button, InputBase, TextField} from "@mui/material";
+import React, {ReactElement, useState} from "react";
+import {Link} from "react-router-dom";
+import axios from "axios";
+import {ISigninAuthBody, ISigninAuthResponse} from "../../../api/src/local_core/types/types/interface";
+import {HttpResponseError} from "../../../api/src/modules/HttpResponseError";
+import Joi from "joi";
+import {useNavigate} from "react-router-dom";
 
 export const Login: React.FC = () => {
-    return <div className="Login-Page">
-        <div className="Login-Form">
-            <Link to="prehome"><Button variant="contained">Connexion</Button></Link>
-        </div>
-    </div>
+  const [errorMessage, setErrorMessage] = useState("");
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+
+  const handleSubmit = async (event: React.SyntheticEvent) => {
+    event.preventDefault();
+
+    const querySchema = Joi.object<ISigninAuthBody>({
+      username: Joi.string().min(3).max(20).required(),
+      password: Joi.string().min(5).max(30).required(),
+    });
+
+    const result = querySchema.validate({username: username, password: password});
+
+    try {
+      const response: ISigninAuthResponse = await axios.post("http://localhost:10101/api/auth/signin", {
+        ...result.value,
+      });
+      localStorage.setItem('token', response.token);
+      let push = useNavigate();
+      push("prehome");
+
+    } catch (e) {
+      const errorCode = e.response.data.error.code;
+      switch (errorCode) {
+        case "USER_NOT_FOUND":
+          setErrorMessage("Mauvais identifiants");
+      }
+    }
+  };
+
+  return <div className="Login-Page">
+    <form onSubmit={handleSubmit} className="Login-Form">
+      <TextField
+        id="username"
+        value={username}
+        label="Nom de compte"
+        onChange={e =>
+          setUsername(e.target.value)
+        }/>
+      <TextField id="password" value={password} label="Mot de passe" onChange={e => setPassword(e.target.value)}/>
+      {(errorMessage !== "") && <div>{errorMessage}</div>}
+      <Button variant="outlined" type="submit">Se connecter</Button>
+    </form>
+  </div>
 };

@@ -26,6 +26,7 @@ import { CardSet } from './CardSet';
 import { CardType } from './CardType';
 import { CardAttribute } from './CardAttribute';
 import { HeldItemType } from '../../local_core/types/types';
+import {UserCardPossession} from "./UserCardPossession";
 
 @DefaultScope(() => ({}))
 @Scopes(() => ({}))
@@ -180,5 +181,8 @@ export class Card extends CustomModel {
     type: DataType.INTEGER,
   })
   energyType: CardEnergyTypeEnum;
+
+  @HasMany(() => UserCardPossession)
+  userCardPossessions: UserCardPossession[]
 
 }

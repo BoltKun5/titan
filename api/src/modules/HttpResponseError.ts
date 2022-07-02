@@ -32,6 +32,14 @@ export class HttpResponseError {
     });
   }
 
+  public static createUserNotFound(): createError.HttpError {
+    return createError(404, {
+      type: ErrorType.resourceError,
+      code: "USER_NOT_FOUND",
+      message: 'Resource not found',
+    });
+  }
+
   public static generateError(error: Error): createError.HttpError {
     if (error instanceof createError.HttpError) return error;
 
