@@ -37,7 +37,19 @@ code {
     width: 100%;
     height: 100vh;
   }
+
+  &-CardList {
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+  }
+
+  &-Card {
+    margin: 10px;
+  }
 }
+
+/* Page Login */
 
 .Login {
   &-Page {

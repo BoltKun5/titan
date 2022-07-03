@@ -9,8 +9,9 @@ import {useNavigate} from "react-router-dom";
 
 export const Login: React.FC = () => {
   const [errorMessage, setErrorMessage] = useState("");
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
+  const [username, setUsername] = useState("BoltKun");
+  const [password, setPassword] = useState("lolilo22912");
+  const navigate = useNavigate();
 
   const handleSubmit = async (event: React.SyntheticEvent) => {
     event.preventDefault();
@@ -23,15 +24,15 @@ export const Login: React.FC = () => {
     const result = querySchema.validate({username: username, password: password});
 
     try {
-      const response: ISigninAuthResponse = await axios.post("http://localhost:10101/api/auth/signin", {
+      const response: { data: { data: ISigninAuthResponse } } = await axios.post("http://localhost:10101/api/auth/signin", {
         ...result.value,
       });
-      localStorage.setItem('token', response.token);
-      let push = useNavigate();
-      push("prehome");
+      localStorage.setItem('token', response.data.data.token);
+      localStorage.setItem('user', JSON.stringify(response.data.data.user))
+      navigate("/prehome");
 
     } catch (e) {
-      const errorCode = e.response.data.error.code;
+      const errorCode = e.response?.data?.error?.code;
       switch (errorCode) {
         case "USER_NOT_FOUND":
           setErrorMessage("Mauvais identifiants");

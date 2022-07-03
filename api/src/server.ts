@@ -29,7 +29,7 @@ import { CardDexId } from "./database/models/CardDexId";
     AppConfig.consoleSetup();
     await startServer();
 
-    setTimeout(test, 1);
+    // setTimeout(test, 1);
   } catch (error) {
     Logger.error(error, LogType.SYSTEM_STARTUP);
   }

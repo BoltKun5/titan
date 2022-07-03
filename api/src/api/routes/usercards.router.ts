@@ -1,17 +1,11 @@
 import {IResponseLocals} from "../../local_core";
 import {
-  IGetAllUserCardsBody,
   IGetUserCardsResponse,
   IResponse,
   IUpdateUserCardsBody, IUpdateUserCardsResponse,
 } from "../../local_core/types/types/interface";
 import {Request, Response, Router} from "express";
 import asyncHandler from "express-async-handler";
-import AuthValidation from "../validations/auth.validation";
-import {token} from "../../utils/auth.utils";
-import {HttpResponseError} from "../../modules/HttpResponseError";
-import createError from "http-errors";
-import {Code, ErrorType} from "abyss_crypt_core";
 import Auth from "../middlewares/auth";
 import {UserCardPossession} from "../../database/models/UserCardPossession";
 import {Card, CardAttack, CardAttribute} from "../../database";
@@ -47,19 +41,19 @@ export const UserCardsRouter = (app: Router): Router => {
       res.json({data: {code: "CARDS_UPDATED"}});
     }),
   );
-
+  //TODO: Typer la query correctement
   route.get(
     "/:id/getAll",
     Auth,
-    asyncHandler(async (req: Request<any, any, IGetAllUserCardsBody>, res: Response<IResponse<IGetUserCardsResponse>, IResponseLocals>) => {
+    asyncHandler(async (req: Request<any, any, void, { page, itemPerPage }>, res: Response<IResponse<IGetUserCardsResponse>, IResponseLocals>) => {
       const cards = await UserCardPossession.findAll({
         where: {
           userId: res.locals.currentUser.id,
         },
         attributes: ["classicQuantity", "reverseQuantity"],
-        include: {
+        include: [{
           model: Card,
-          as: "cardId",
+          as: "card",
           include: [
             {
               model: CardType,
@@ -90,9 +84,9 @@ export const UserCardsRouter = (app: Router): Router => {
               as: "dexIds",
             },
           ],
-        },
-        limit: req.body.pagination.itemPerPage,
-        offset: req.body.pagination.page - 1,
+        }],
+        // limit: req.query?.itemPerPage ?? "25",
+        // offset: toNumber(req.query?.page) - 1 ?? 0,
       });
 
       res.json({
@@ -100,8 +94,8 @@ export const UserCardsRouter = (app: Router): Router => {
           totalCards: cards.length,
           cardsList: cards,
           paginationOptions: {
-            page: req.body.pagination.page,
-            itemPerPage: req.body.pagination.itemPerPage,
+            page: req.query.page,
+            itemPerPage: req.query.itemPerPage,
           },
         },
       });

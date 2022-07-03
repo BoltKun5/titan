@@ -8,5 +8,5 @@ type Props = {
 
 
 export const Card: React.FC<Props> = ({ name, image }) => {
-    return <div className="Collection-Card"><img src={image+"/low.webp"} /></div>
+    return <div className="Collection-Card"><img src={image} /></div>
 };

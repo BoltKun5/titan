@@ -1,13 +1,14 @@
-import React, { useCallback, useEffect, useState } from 'react';
-import { Card } from './Card';
+import React, {useCallback, useEffect, useState} from 'react';
+import {Card} from './Card';
 
 type Props = {
-    cards: any[]
+  cards: any[]
 }
 
 export const CardList: React.FC<Props> = ({cards}) => {
-    return <div className='Collection-CardList'>
-        {cards.map((card: any) => <Card key={card.id} name={card.name} image={card.image}/>)}
-    </div>
+  return <div className="Collection-CardList">
+    {cards.map((card: any) => <Card key={card.id}
+                                    name={card.name}
+                                    image={"https://www.pokecardex.com/assets/images/sets/CRE/"+card.localId}/>)}
+  </div>
 }
-

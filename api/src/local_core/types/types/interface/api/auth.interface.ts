@@ -1,5 +1,5 @@
 import { ErrorType } from "abyss_core";
-import { Card, User } from "../../../../../database";
+import {Card, CardSet, User} from "../../../../../database";
 import { UserCardPossession } from "../../../../../database/models/UserCardPossession";
 
 // TODO: trier les interface en dossiers
@@ -53,8 +53,13 @@ export interface IUpdateUserCardsResponse {
   code: string;
 }
 
-export interface IGetAllUserCardsBody {
-  pagination: IPagination;
+export interface ICardListResponse {
+  set: CardSet
+}
+
+export interface IGetAllUserCardsQuery {
+  page,
+  itemPerPage,
 }
 
 export interface IGetUserCardsResponse {

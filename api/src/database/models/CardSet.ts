@@ -68,6 +68,12 @@ export class CardSet extends CustomModel {
   releaseDate: Date;
 
 
+  @Column({
+    type: DataType.STRING,
+  })
+  code: Date;
+
+
   @ForeignKey(() => CardSerie)
   @Column({
     type: DataType.STRING,
