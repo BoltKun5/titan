@@ -245,68 +245,67 @@ async function test() {
       // )
     };
 
-    // await process('/data', 1);
+    await process('/data', 1);
 
-    // console.log(series[0].cardSets[0].cards.filter(el => el.localId === '170'));
-    // console.log(util.inspect(series, { showHidden: false, depth: null, colors: true }))
-    // console.log(series);
-    // console.log(series[0].cardSets[0].cards.length);
+    console.log(series[0].cardSets[0].cards.filter(el => el.localId === '170'));
+    console.log(series);
+    console.log(series[0].cardSets[0].cards.length);
 
-    // const [createdCardSeries, createdSets, createCards] = await Promise.all([
-    //   await CardSerie.findAll(),
-    //   await CardSet.findAll(),
-    //   await Card.findAll()])
-    //
-    // const c1 = createdCardSeries.map(el => el.name);
-    // const c2 = createdSets.map(el => el.name);
-    // const c3 = createCards.map(el => el.cardSet.cardSerie.name + el.cardSet.name + el.localId)
-    //
-    // await Promise.all(
-    //   series.filter((el) => !c1.includes(el.name)).map(async (serie) => {
-    //     const currentSerie = await CardSerie.create(serie);
-    //
-    //     await Promise.all(serie.cardSets.filter(el => !c2.includes(el.name)).map(async (cardSet) => {
-    //       const currentCardSet = await CardSet.create(cardSet);
-    //       await currentCardSet.$set("cardSerie", currentSerie);
-    //
-    //       await Promise.all(cardSet.cards.filter(el => !c3.includes(serie.name + cardSet.name + el.localId)).map(async (card) => {
-    //         const currentCard = await Card.create(card, {
-    //           include: [
-    //             {
-    //               model: CardType,
-    //               as: "types"
-    //             },
-    //             {
-    //               model: CardAttack,
-    //               as: "attacks",
-    //               include: [{
-    //                 model: CardAttackCost,
-    //                 as: "costs"
-    //               }]
-    //             },
-    //             {
-    //               model: CardAbility,
-    //               as: "abilities"
-    //             },
-    //             {
-    //               model: CardDamageModification,
-    //               as: "damageModifications"
-    //             },
-    //             {
-    //               model: CardAttribute,
-    //               as: "attributes"
-    //             },
-    //             {
-    //               model: CardDexId,
-    //               as: "dexIds"
-    //             }
-    //           ]
-    //         });
-    //         await currentCard.$set("cardSet", currentCardSet);
-    //       }));
-    //     }));
-    //   })
-    // );
+    const [createdCardSeries, createdSets, createCards] = await Promise.all([
+      await CardSerie.findAll(),
+      await CardSet.findAll(),
+      await Card.findAll()])
+
+    const c1 = createdCardSeries.map(el => el.name);
+    const c2 = createdSets.map(el => el.name);
+    const c3 = createCards.map(el => el.cardSet.cardSerie.name + el.cardSet.name + el.localId)
+
+    await Promise.all(
+      series.filter((el) => !c1.includes(el.name)).map(async (serie) => {
+        const currentSerie = await CardSerie.create(serie);
+
+        await Promise.all(serie.cardSets.filter(el => !c2.includes(el.name)).map(async (cardSet) => {
+          const currentCardSet = await CardSet.create(cardSet);
+          await currentCardSet.$set("cardSerie", currentSerie);
+
+          await Promise.all(cardSet.cards.filter(el => !c3.includes(serie.name + cardSet.name + el.localId)).map(async (card) => {
+            const currentCard = await Card.create(card, {
+              include: [
+                {
+                  model: CardType,
+                  as: "types"
+                },
+                {
+                  model: CardAttack,
+                  as: "attacks",
+                  include: [{
+                    model: CardAttackCost,
+                    as: "costs"
+                  }]
+                },
+                {
+                  model: CardAbility,
+                  as: "abilities"
+                },
+                {
+                  model: CardDamageModification,
+                  as: "damageModifications"
+                },
+                {
+                  model: CardAttribute,
+                  as: "attributes"
+                },
+                {
+                  model: CardDexId,
+                  as: "dexIds"
+                }
+              ]
+            });
+            await currentCard.$set("cardSet", currentCardSet);
+          }));
+        }));
+      })
+    );
 
     console.timeEnd("seed");
   } catch (error) {

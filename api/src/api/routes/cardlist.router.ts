@@ -1,11 +1,9 @@
 import {IResponseLocals} from "../../local_core";
-import {IGetUserCardsResponse, IResponse} from "../../local_core/types/types/interface";
+import {IResponse} from "../../local_core/types/types/interface";
 import {Request, Response, Router} from "express";
 import asyncHandler from "express-async-handler";
 import Auth from "../middlewares/auth";
-import {UserCardPossession} from "../../database/models/UserCardPossession";
-import {Card, CardSet} from "../../database";
-import {fullCardsConfig} from "../../local_core/sequelize_config/cards";
+import {Card, CardSerie, CardSet} from "../../database";
 import sequelize from "sequelize";
 
 const route = Router();
@@ -16,12 +14,9 @@ export const CardListRouter = (app: Router): Router => {
   route.get(
     "/:serieId/:setId",
     asyncHandler(async (req: Request<any, any, void, { serieId: string, setId: string }>, res: Response<IResponse<any>, IResponseLocals>) => {
-      console.time('a')
       const set = await CardSet.findOne({
-        where:
-          {code: req.params.serieId + req.params.setId},
+        where: {code: req.params.serieId + req.params.setId},
       });
-      console.timeEnd('a')
       try {
 
         const cards = await Card.findAll({
@@ -40,32 +35,20 @@ export const CardListRouter = (app: Router): Router => {
 
   //TODO: Typer la query correctement
   route.get(
-    "/:id/getAll",
+    "/:serieId",
     Auth,
-    asyncHandler(async (req: Request<any, any, void, { page, itemPerPage }>, res: Response<IResponse<IGetUserCardsResponse>, IResponseLocals>) => {
-      const cards = await UserCardPossession.findAll({
-        where: {
-          userId: res.locals.currentUser.id,
-        },
-        attributes: ["classicQuantity", "reverseQuantity"],
+    asyncHandler(async (req: Request<any, any, void, { serieId: string }>, res: Response<IResponse<any>, IResponseLocals>) => {
+      const serie = await CardSerie.findOne({
+        where: {code: req.params.serieId},
         include: [{
-          model: Card,
+          model: CardSet,
           as: "card",
-          include: fullCardsConfig,
+          order: [sequelize.col('CardSet.releaseDate'), 'ASC'],
         }],
-        // limit: req.query?.itemPerPage ?? "25",
-        // offset: toNumber(req.query?.page) - 1 ?? 0,
       });
 
       res.json({
-        data: {
-          totalCards: cards.length,
-          cardsList: cards,
-          paginationOptions: {
-            page: req.query.page,
-            itemPerPage: req.query.itemPerPage,
-          },
-        },
+        data: serie,
       });
     }),
   );

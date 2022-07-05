@@ -71,7 +71,7 @@ export class CardSet extends CustomModel {
   @Column({
     type: DataType.STRING,
   })
-  code: Date;
+  code: string;
 
 
   @ForeignKey(() => CardSerie)

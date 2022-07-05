@@ -30,6 +30,11 @@ export class CardSerie extends CustomModel {
   })
   name: string;
 
+  @Column({
+    type: DataType.STRING,
+  })
+  code: string;
+
 
   @HasMany(() => CardSet)
   cardSets: CardSet[]
