@@ -1,23 +1,34 @@
 import React, {ReactElement, useCallback, useEffect, useState} from "react";
+import TCGdex from '@tcgdex/sdk';
 import {CardList} from "../components/CardList";
+import defaultImage from '../assets/sets/default.png'
+import {Link, useParams} from "react-router-dom";
 import {api} from "../axios";
 
 export const SingleSerie: React.FC = () => {
-  const [cards, setCards] = useState<any[]>();
-
-  const fetchCards = useCallback(async () => {
-    const response = await api.get(`/cardlist/SSH/1`);
-    setCards(response.data.data.set.cards);
+  const [series, setSeries] = useState<any[]>();
+  const {serieId} = useParams();
+  const fetchSeries = useCallback(async () => {
+    const response = await api.get(`/cardlist/${serieId}`);
+    setSeries(response.data.data.set.cards);
   }, []);
   useEffect(() => {
-    if (cards) return;
-    fetchCards()
-  }, [cards, fetchCards]);
+    if (series) return;
+    fetchSeries()
+  }, [series, fetchSeries]);
 
-  if (!cards) {
+  if (!series) {
     return <span>Loading</span>
   }
-  return <div className="Collection-Main">
-    <CardList cards={cards}/>
+
+  return <div className="Bloc-List">
+    {series.slice(0).reverse().map((el: { id: string, name: string, logo: string }) => {
+      return <Link className="Bloc-Link" key={el.id} to={"/blocs/" + el.id}>
+        <div className="Bloc-Image">
+          <img width="50%" src={el.logo ?? defaultImage}/>
+        </div>
+        <div className="Bloc-Title">{el.logo ? '' : el.name}</div>
+      </Link>
+    })}
   </div>
 };

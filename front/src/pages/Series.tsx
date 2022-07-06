@@ -1,24 +1,21 @@
 import React, { ReactElement, useCallback, useEffect, useState } from "react";
-import { Card } from "../components/Card";
 import TCGdex from '@tcgdex/sdk';
 import { CardList } from "../components/CardList";
 import defaultImage from '../assets/sets/default.png'
 import { Link } from "react-router-dom";
+import {api} from "../axios";
 
-export const Blocs: React.FC = () => {
-    const tcgdex = new TCGdex('fr');
+export const Series: React.FC = () => {
     const [series, setSeries] = useState<any[]>();
 
     const fetchSeries = useCallback(async () => {
-        const response = await tcgdex.fetch('sets');
-        if (response) {
-            setSeries(response);
-        }
+        const response = await api.get(`/cardlist/allSeries`);
+        setSeries(response.data.data.set.cards);
     }, []);
-
     useEffect(() => {
-        if (!series) fetchSeries()
-    }, [series]);
+        if (series) return;
+        fetchSeries()
+    }, [series, fetchSeries]);
 
 
     if (!series) {

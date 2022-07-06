@@ -8,7 +8,7 @@ export const Prehome: React.FC = () => {
         <Link to="/collection" className="Prehome-MenuOption">
             <img src={collection} width="30%"></img>
             <div className="Prehome-MenuTitle">Ma collection</div></Link>
-        <Link to="/blocs" className="Prehome-MenuOption">
+        <Link to="/series" className="Prehome-MenuOption">
             <img src={extensions} width="40%"></img>
             <div className="Prehome-MenuTitle">Cartes par extensions</div></Link>
     </div >

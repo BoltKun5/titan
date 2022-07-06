@@ -11,6 +11,18 @@ const route = Router();
 export const CardListRouter = (app: Router): Router => {
   app.use("/cardlist", route);
 
+  //TODO: Typer la query correctement
+  route.get(
+    "/allSeries",
+    asyncHandler(async (req: Request<any, any, void, { serieId: string }>, res: Response<IResponse<any>, IResponseLocals>) => {
+      const series = await CardSerie.findAll();
+      console.log(series);
+      res.json({
+        data: series,
+      });
+    }),
+  );
+
   route.get(
     "/:serieId/:setId",
     asyncHandler(async (req: Request<any, any, void, { serieId: string, setId: string }>, res: Response<IResponse<any>, IResponseLocals>) => {
@@ -36,13 +48,12 @@ export const CardListRouter = (app: Router): Router => {
   //TODO: Typer la query correctement
   route.get(
     "/:serieId",
-    Auth,
     asyncHandler(async (req: Request<any, any, void, { serieId: string }>, res: Response<IResponse<any>, IResponseLocals>) => {
       const serie = await CardSerie.findOne({
         where: {code: req.params.serieId},
         include: [{
           model: CardSet,
-          as: "card",
+          as: "cardSets",
           order: [sequelize.col('CardSet.releaseDate'), 'ASC'],
         }],
       });
@@ -52,6 +63,8 @@ export const CardListRouter = (app: Router): Router => {
       });
     }),
   );
+
+
 
   return route;
 };

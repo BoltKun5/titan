@@ -41,6 +41,7 @@ export const UserCardsRouter = (app: Router): Router => {
       res.json({data: {code: "CARDS_UPDATED"}});
     }),
   );
+
   //TODO: Typer la query correctement
   route.get(
     "/:id/getAll",
