@@ -52,12 +52,14 @@ async function test() {
     console.time("seed");
     const series: {
       name: string,
+      code: string,
       cardSets: {
         name: string,
         cardCount: CardCountType,
         tcgOnline: string,
         isPlayableInStandard: boolean,
         isPlayableInExpanded: boolean,
+        code: string,
         cards: {
           name: string,
           rarity: CardRarityEnum,
@@ -154,7 +156,8 @@ async function test() {
                 releaseDate: file.default?.releaseDate ?? null,
                 isPlayableInStandard: false,
                 isPlayableInExpanded: false,
-                cards: []
+                cards: [],
+                code: file.default.code
               });
 
             } else {
@@ -232,7 +235,7 @@ async function test() {
             }
           } else {
 
-            newIndex = series.push({ name: file.default.name.fr ?? file.default.name.en, cardSets: [] });
+            newIndex = series.push({ name: file.default.name.fr ?? file.default.name.en, cardSets: [], code: file.default.code });
 
           }
 

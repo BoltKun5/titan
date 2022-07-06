@@ -1,10 +1,10 @@
 import { CardAbility } from './CardAbility';
 import { CardDexId } from './CardDexId';
-import { CardEnergyTypeEnum } from '../../local_core/types/enums/card-energy-type.enum';
-import { CardTrainerTypeEnum } from '../../local_core/types/enums/card-trainer-type.enum';
-import { CardEvolutionStageEnum } from '../../local_core/types/enums/card-evolution-stage.enum';
-import { CardCategoryEnum } from '../../local_core/types/enums/card-category.enum';
-import { CardRarityEnum } from '../../local_core/types/enums/card-rarity.enum';
+import { CardEnergyTypeEnum } from '../../local_core';
+import { CardTrainerTypeEnum } from '../../local_core';
+import { CardEvolutionStageEnum } from '../../local_core';
+import { CardCategoryEnum } from '../../local_core';
+import { CardRarityEnum } from '../../local_core';
 import { CardDamageModification } from './CardDamageModification';
 import { CardAttack } from './CardAttack';
 import {
@@ -25,7 +25,7 @@ import { CustomModel } from '../custom/CustomModel';
 import { CardSet } from './CardSet';
 import { CardType } from './CardType';
 import { CardAttribute } from './CardAttribute';
-import { HeldItemType } from '../../local_core/types/types';
+import { HeldItemType } from '../../local_core';
 import {UserCardPossession} from "./UserCardPossession";
 
 @DefaultScope(() => ({}))
@@ -153,6 +153,12 @@ export class Card extends CustomModel {
     type: DataType.STRING,
   })
   localId: string;
+
+
+  @Column({
+    type: DataType.STRING,
+  })
+  globalId: string;
 
 
   @HasMany(() => CardDexId)
