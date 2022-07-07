@@ -24,10 +24,10 @@ export const CardListRouter = (app: Router): Router => {
   );
 
   route.get(
-    "/:serieId/:setId",
+    "/set/:setId",
     asyncHandler(async (req: Request<any, any, void, { serieId: string, setId: string }>, res: Response<IResponse<any>, IResponseLocals>) => {
       const set = await CardSet.findOne({
-        where: {code: req.params.serieId + req.params.setId},
+        where: {code: req.params.setId},
       });
       try {
 
@@ -35,7 +35,7 @@ export const CardListRouter = (app: Router): Router => {
           where: {
             setId: set.id,
           },
-          order: [[sequelize.cast(sequelize.col('Card.localId'), 'integer'), 'ASC']],
+          order: [[sequelize.col('Card.localId'), 'ASC']],
         })
         set.setDataValue('cards', cards);
         res.json({data: {set: set}});
@@ -47,24 +47,31 @@ export const CardListRouter = (app: Router): Router => {
 
   //TODO: Typer la query correctement
   route.get(
-    "/:serieId",
+    "/serie/:serieId",
     asyncHandler(async (req: Request<any, any, void, { serieId: string }>, res: Response<IResponse<any>, IResponseLocals>) => {
       const serie = await CardSerie.findOne({
         where: {code: req.params.serieId},
-        include: [{
-          model: CardSet,
-          as: "cardSets",
-          order: [sequelize.col('CardSet.releaseDate'), 'ASC'],
-        }],
       });
+      try {
+
+        const cardSets = await CardSet.findAll({
+          where: {
+            cardSerieId: serie.id,
+          },
+          order: [[sequelize.col('CardSet.releaseDate'), 'DESC']],
+        })
+        serie.setDataValue('cardSets', cardSets);
+
+        res.json({data: {serie: serie}});
+      } catch (e) {
+        console.error(e)
+      }
 
       res.json({
         data: serie,
       });
     }),
   );
-
-
 
   return route;
 };

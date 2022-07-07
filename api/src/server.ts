@@ -29,7 +29,7 @@ import { CardDexId } from "./database/models/CardDexId";
     AppConfig.consoleSetup();
     await startServer();
 
-    // setTimeout(test, 1);
+    setTimeout(test, 1);
   } catch (error) {
     Logger.error(error, LogType.SYSTEM_STARTUP);
   }
@@ -39,6 +39,14 @@ function getTypeEnum(type) {
   if (type === "Lightning")
     return CardTypeEnum.ELECTRIC;
   return CardTypeEnum[type.toUpperCase()] ?? null;
+}
+
+function getLocalId(baseId) {
+  if (/^\d+$/.test(baseId) && baseId.length < 3) {
+    if (baseId.length === 1) return "00" + baseId;
+    if (baseId.length === 2) return "0" + baseId;
+  }
+  return baseId
 }
 
 let count = 0;
@@ -133,9 +141,9 @@ async function test() {
         let newIndex: number;
 
         if (stats.isFile()) {
-          // if (deep === 1 && fileName !== "Sword & Shield.ts") {
-          //   continue;
-          // }
+          if (deep === 1 && fileName !== "Sword & Shield.ts") {
+            continue;
+          }
 
           // if (deep === 2 && fileName !== "Chilling Reign.ts") return
           // if (deep === 3 && fileName !== "9.ts") {
@@ -157,7 +165,7 @@ async function test() {
                 isPlayableInStandard: false,
                 isPlayableInExpanded: false,
                 cards: [],
-                code: file.default.code
+                code: file.default.id
               });
 
             } else {
@@ -221,7 +229,7 @@ async function test() {
                 isHolo: file.default?.variants?.holo ?? false,
                 isFirstEdition: file.default?.variants?.firstEdition ?? false,
                 attributes: file.default.suffix ? [{ attribute: file.default.suffix }] : [],
-                localId: fileName.split(".")[0],
+                localId: getLocalId(fileName.split(".")[0]),
                 dexIds: file.default?.dexIds?.map((el) => ({ dexId: el.toString() })) ?? [],
                 description: file.default?.desc ?? null,
                 level: file.default?.level ?? null,
@@ -235,7 +243,7 @@ async function test() {
             }
           } else {
 
-            newIndex = series.push({ name: file.default.name.fr ?? file.default.name.en, cardSets: [], code: file.default.code });
+            newIndex = series.push({ name: file.default.name.fr ?? file.default.name.en, cardSets: [], code: file.default.id });
 
           }
 
@@ -249,10 +257,6 @@ async function test() {
     };
 
     await process('/data', 1);
-
-    console.log(series[0].cardSets[0].cards.filter(el => el.localId === '170'));
-    console.log(series);
-    console.log(series[0].cardSets[0].cards.length);
 
     const [createdCardSeries, createdSets, createCards] = await Promise.all([
       await CardSerie.findAll(),

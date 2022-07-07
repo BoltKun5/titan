@@ -4,30 +4,31 @@ import {CardList} from "../components/CardList";
 import defaultImage from '../assets/sets/default.png'
 import {Link, useParams} from "react-router-dom";
 import {api} from "../axios";
+import {CardSerie, CardSet} from "../../../api/src/database";
 
 export const SingleSerie: React.FC = () => {
-  const [series, setSeries] = useState<any[]>();
+  const [serie, setSerie] = useState<CardSerie>();
   const {serieId} = useParams();
-  const fetchSeries = useCallback(async () => {
-    const response = await api.get(`/cardlist/${serieId}`);
-    setSeries(response.data.data.set.cards);
+  const fetchSerie = useCallback(async () => {
+    const response = await api.get(`/cardlist/serie/${serieId}`);
+    setSerie(response.data.data.serie);
   }, []);
   useEffect(() => {
-    if (series) return;
-    fetchSeries()
-  }, [series, fetchSeries]);
+    if (serie) return;
+    fetchSerie()
+  }, [serie, fetchSerie]);
 
-  if (!series) {
+  if (!serie) {
     return <span>Loading</span>
   }
 
-  return <div className="Bloc-List">
-    {series.slice(0).reverse().map((el: { id: string, name: string, logo: string }) => {
-      return <Link className="Bloc-Link" key={el.id} to={"/blocs/" + el.id}>
-        <div className="Bloc-Image">
-          <img width="50%" src={el.logo ?? defaultImage}/>
+  return <div className="Set-List">
+    {serie.cardSets.map((el: CardSet) => {
+      return <Link className="Set-Link" key={el.id} to={el.code}>
+        <div className="Set-Image">
+          <img width="50%" src={defaultImage}/>
         </div>
-        <div className="Bloc-Title">{el.logo ? '' : el.name}</div>
+        <div className="Set">{el.name}</div>
       </Link>
     })}
   </div>
