@@ -15,7 +15,7 @@ export const App: React.FC = () => {
     <Route path="/prehome" element={<Prehome/>}/>
     <Route path="/series" element={<Series/>}/>
     <Route path="/series/:serieId" element={<SingleSerie/>}/>
-    <Route path="/series/:id/:setId" element={<SingleSet/>}/>
+    <Route path="/series/:serieId/:setId" element={<SingleSet/>}/>
     <Route path="/collection" element={<Collection/>}/>
   </Routes>
 }

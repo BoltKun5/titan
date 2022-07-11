@@ -19,6 +19,6 @@ export const SingleSet: React.FC = () => {
     return <span>Loading</span>
   }
   return <div className="Collection-Main">
-    <CardList cards={cards}/>
+    <CardList serieId={serieId ?? ''} setId={setId ?? ''} cards={cards}/>
   </div>
 };

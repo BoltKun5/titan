@@ -18,7 +18,7 @@ export default async (): Promise<Sequelize> => {
     });
     await connection.authenticate();
 
-    await connection.sync({ alter: true, force: true });
+    await connection.sync({ alter: true });
 
     if (process.env.NEW_SETUP) {
       await connection.query('DROP SCHEMA IF EXISTS public CASCADE;');
