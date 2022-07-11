@@ -26,8 +26,12 @@ export interface ISigninAuthResponse {
 }
 
 export interface IResponse<T> {
-  data: T;
-  error?: IApiError | Error;
+  data?: T;
+  error?: IApiError | Error | ICodeError;
+}
+
+export interface ICodeError {
+  code: string
 }
 
 export interface IApiError {

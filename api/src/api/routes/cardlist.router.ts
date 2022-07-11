@@ -2,7 +2,6 @@ import {IResponseLocals} from "../../local_core";
 import {IResponse} from "../../local_core/types/types/interface";
 import {Request, Response, Router} from "express";
 import asyncHandler from "express-async-handler";
-import Auth from "../middlewares/auth";
 import {Card, CardSerie, CardSet} from "../../database";
 import sequelize from "sequelize";
 
@@ -16,7 +15,6 @@ export const CardListRouter = (app: Router): Router => {
     "/allSeries",
     asyncHandler(async (req: Request<any, any, void, { serieId: string }>, res: Response<IResponse<any>, IResponseLocals>) => {
       const series = await CardSerie.findAll();
-      console.log(series);
       res.json({
         data: series,
       });
@@ -53,7 +51,7 @@ export const CardListRouter = (app: Router): Router => {
         where: {code: req.params.serieId},
       });
       try {
-
+        if (!serie) res.json({error: {code: 'SERIE_NOT_FOUND'}});
         const cardSets = await CardSet.findAll({
           where: {
             cardSerieId: serie.id,
