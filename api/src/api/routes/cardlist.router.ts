@@ -14,7 +14,12 @@ export const CardListRouter = (app: Router): Router => {
   route.get(
     "/allSeries",
     asyncHandler(async (req: Request<any, any, void, { serieId: string }>, res: Response<IResponse<any>, IResponseLocals>) => {
-      const series = await CardSerie.findAll();
+      const series = await CardSerie.findAll({
+        include: [{
+          model: CardSet,
+          as: 'cardSets'
+        }]
+      });
       res.json({
         data: series,
       });

@@ -191,6 +191,75 @@ code {
 .Manager {
   height: 100%;
   width: 100%;
+  display: flex;
+
+  &-mainContent {
+    width: 100%;
+    height: 100%;
+    margin-left: 150px;
+  }
+
+  &-filter {
+    width: 100%;
+    height: 200px;
+    background: lightblue;
+    display: flex;
+
+    &-textInput {
+      width: 400px;
+      margin: 20px !important;
+    }
+
+    &-right {
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+      justify-content: center;
+      align-items: center;
+    }
+
+    &-switchInput {
+      margin: 5px;
+
+      & label {
+        background: #323232;
+        color: #C9C9C9;
+        padding: 15px;
+        width: 280px;
+        border-radius: 10px;
+        font-weight: 600;
+        display: flex;
+        justify-content: space-between;
+        cursor: pointer;
+      }
+
+      &-light {
+        background: #d3d3d3;
+        width: 10px;
+        height: 10px;
+        border-radius: 1000px;
+        display: flex;
+        align-self: center;
+      }
+
+      &-disabled {
+        background-color: #707070 !important;
+        pointer-events: none;
+      }
+
+      &-activated {
+        background-color: black !important;
+
+        & div {
+          background: #f1b700;
+        }
+      }
+      
+      & input {
+        display: none;
+      }
+    }
+  }
 
   &-leftBar {
     display: flex;
@@ -199,10 +268,47 @@ code {
     height: 100%;
     align-items: center;
     flex-direction: column;
+    position: fixed;
+    z-index: 1000;
+
     &-title {
       margin-top: 10px;
       font-weight: 600;
       color: white
+    }
+
+    &-set {
+      &-Icon {
+        width: 40px;
+        height: 40px;
+        margin: auto;
+      }
+    }
+
+    &-serie {
+      transform: translateX(calc(50% - 30px));
+      pointer-events: none;
+
+      & > div {
+
+        & > button {
+          background: none;
+          box-shadow: none;
+
+          &:hover {
+            background: none;
+            box-shadow: none;
+          }
+        }
+
+        & > div {
+          padding-left: 80px !important;
+        }
+      }
+
+      &Image {
+        width: 150px;
+      }
     }
   }
 }
