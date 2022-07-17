@@ -2,9 +2,6 @@ import React from "react";
 import {Route, Routes, useParams} from "react-router-dom";
 import {Login} from "./Login";
 import {Prehome} from "./Prehome";
-import {Series} from "./Series";
-import {SingleSerie} from "./SingleSerie";
-import {SingleSet} from "./SingleSet";
 import {Collection} from "./Collection";
 import {CardManager} from "./CardManager";
 import logo from "../assets/logo.png";
@@ -23,10 +20,6 @@ export const GlobalRouter: React.FC = () => {
         <Route path="/" element={<Login/>}/>
         <Route path="/prehome" element={<Prehome/>}/>
         <Route path="/cards" element={<CardManager/>}/>
-        <Route path="/series" element={<Series/>}/>
-        <Route path="/series/:serieId" element={<SingleSerie/>}/>
-        <Route path="/series/:serieId/:setId" element={<SingleSet/>}/>
-        <Route path="/collection" element={<Collection/>}/>
       </Routes>
     </div>
   </div>

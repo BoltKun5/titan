@@ -29,7 +29,7 @@ export class CardDexId extends CustomModel {
   @Column({
     type: DataType.STRING,
   })
-  cardAttackId: string;
+  cardId: string;
 
   @BelongsTo(() => Card)
   cardEntity: Card

@@ -29,7 +29,7 @@ export const Login: React.FC = () => {
       });
       localStorage.setItem('token', response.data.data.token);
       localStorage.setItem('user', JSON.stringify(response.data.data.user))
-      navigate("/prehome");
+      navigate("/cards");
 
     } catch (e) {
       const errorCode = e.response?.data?.error?.code;

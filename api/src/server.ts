@@ -141,7 +141,7 @@ async function test() {
         let newIndex: number;
 
         if (stats.isFile()) {
-          if (deep === 1 && fileName !== "Base.ts") {
+          if (deep === 1 && fileName !== "XY.ts") {
             continue;
           }
 
@@ -266,7 +266,6 @@ async function test() {
     const c1 = createdCardSeries.map(el => el.name);
     const c2 = createdSets.map(el => el.name);
     const c3 = createCards.map(el => el?.cardSet?.cardSerie?.name + el?.cardSet?.name + el.localId)
-
     await Promise.all(
       series.filter((el) => !c1.includes(el.name)).map(async (serie) => {
         const currentSerie = await CardSerie.create(serie);
