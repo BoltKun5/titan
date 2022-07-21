@@ -133,27 +133,34 @@ export const CardManager: React.FC = () => {
 
   return <div className="Manager">
     <div className="Manager-leftBar">
-      {
-        series.map((serie, index) => (
-          <div className="Manager-leftBar-serie" key={serie.code}>
-            <SpeedDial
-              key={serie.code}
-              ariaLabel="serie dial"
-              icon={<img className="Manager-leftBar-serieImage" src={index === 0 ? img : img2}/>}
-              direction="right"
-            >
-              {serie.cardSets.map((set: CardSet) => (
-                <SpeedDialAction
-                  className="Manager-leftBar-set"
-                  key={set.code}
-                  icon={<img className="Manager-leftBar-setIcon" width="35px" height="35px"
-                             src={`https://assets.tcgdex.net/univ/${serie.code}/${set.code}/symbol`}/>}
-                  tooltipTitle={set.name}
-                  onClick={() => activateSetFilter(set.code)}
-                />
-              ))
-              }
-            </SpeedDial></div>))}
+      <div className="Manager-leftBar-content">
+        {
+          series.map((serie, index) => (
+            <div className="Manager-leftBar-serie" key={serie.code}>
+              <SpeedDial
+                key={serie.code}
+                ariaLabel="serie dial"
+                icon={<div className="Manager-leftBar-name">{serie.name}</div>}
+                direction="right"
+              >
+                {serie.cardSets.map((set: CardSet) => (
+                  <SpeedDialAction
+                    className="Manager-leftBar-set"
+                    key={set.code}
+                    icon={<img className="Manager-leftBar-setIcon" width="35px" height="35px"
+                               src={`https://assets.tcgdex.net/univ/${serie.code}/${set.code}/symbol`}
+                               onError={(event: SyntheticEvent<HTMLElement>) => {
+                                 event.currentTarget.setAttribute("src", "src/assets/setIcons/default.png")
+                               }
+                               }
+                    />}
+                    tooltipTitle={set.name}
+                    onClick={() => activateSetFilter(set.code)}
+                  />
+                ))
+                }
+              </SpeedDial></div>))}
+      </div>
     </div>
     <div className="Manager-mainContent">
       <div className="Manager-filter">
@@ -209,7 +216,8 @@ export const CardManager: React.FC = () => {
       <div className="Manager-cardList">
         <div className="Collection-CardList">
           {cards.map((card: any, index) =>
-            <div className="Collection-Card" key={card.localId + index} data-id={card.name + card.cardSet.code + card.cardSet.cardSerie.code}>
+            <div className="Collection-Card" key={card.localId + index}
+                 data-id={card.name + card.cardSet.code + card.cardSet.cardSerie.code}>
               <img
                 src={"https://assets.tcgdex.net/fr/" + card.cardSet.cardSerie.code + "/" + card.cardSet.code + "/" + card.localId + "/low.jpg"}
                 onError={(event: SyntheticEvent<HTMLElement>) => {
@@ -221,8 +229,12 @@ export const CardManager: React.FC = () => {
                     event.currentTarget.setAttribute("src", "src/assets/default_card_img.png")
                   }
                 }}
-                onLoad={(event) => {event.currentTarget.classList.remove("secondImage")}}
+                onLoad={(event) => {
+                  event.currentTarget.classList.remove("secondImage")
+                }}
               />
+              {collectionMode && <div key={card.localId + index} className="Collection-Card-overlay"/>}
+              {collectionMode && <div key={card.localId + index} className="Collection-Card-overlayBottom">s</div>}
             </div>,
           )}
         </div>
