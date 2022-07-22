@@ -66,6 +66,43 @@ code {
         height: 100px;
         background: #d3d3d3;
         border-radius: 9px;
+        z-index: 11;
+        position: relative;
+
+        &-content {
+          width: 80%;
+          margin: auto;
+          padding-top: 2px;
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+
+          &-input {
+            width: 40px;
+            margin: 0 10px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+          }
+
+          &-name {
+            align-self: center;
+          }
+
+          &-management {
+            display: flex;
+            margin: auto;
+          }
+
+          & button {
+            width: 30px;
+            height: 30px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+          }
+        }
       }
     }
   }
@@ -227,7 +264,7 @@ code {
     height: 100%;
     display: flex;
     flex-direction: column;
-    margin-left: 160px;
+    //margin-left: 160px;
   }
 
   &-filter {
@@ -298,6 +335,7 @@ code {
     flex-direction: column;
     position: fixed;
     z-index: 1000;
+    display: none;
 
     &-content {
       height: 1300px;
@@ -326,7 +364,7 @@ code {
       pointer-events: none;
 
       &:last-child {
-        margin-bottom:60px
+        margin-bottom: 60px
       }
 
       & > div {

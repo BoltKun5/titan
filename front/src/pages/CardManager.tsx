@@ -233,8 +233,26 @@ export const CardManager: React.FC = () => {
                   event.currentTarget.classList.remove("secondImage")
                 }}
               />
-              {collectionMode && <div key={card.localId + index} className="Collection-Card-overlay"/>}
-              {collectionMode && <div key={card.localId + index} className="Collection-Card-overlayBottom">s</div>}
+              {collectionMode && <div key={"overlay" + card.localId + index} className="Collection-Card-overlay"/>}
+              {collectionMode &&
+              <div key={"content" + card.localId + index} className="Collection-Card-overlayBottom">
+                <div className="Collection-Card-overlayBottom-content">
+                  <div className="Collection-Card-overlayBottom-content-name">Carte normale</div>
+                  <div className="Collection-Card-overlayBottom-content-management">
+                    <button className="Collection-Card-overlayBottom-content-minus">-</button>
+                    <input className="Collection-Card-overlayBottom-content-input" type="number"/>
+                    <button className="Collection-Card-overlayBottom-content-plus">+</button>
+                  </div>
+                </div>
+                {(!separateReverse && card.canBeReverse) && <div className="Collection-Card-overlayBottom-content">
+                  <div className="Collection-Card-overlayBottom-content-name">Carte reverse</div>
+                  <div className="Collection-Card-overlayBottom-content-management">
+                    <button className="Collection-Card-overlayBottom-content-minus">-</button>
+                    <input className="Collection-Card-overlayBottom-content-input" type="number"/>
+                    <button className="Collection-Card-overlayBottom-content-plus">+</button>
+                  </div>
+                </div>}
+              </div>}
             </div>,
           )}
         </div>
