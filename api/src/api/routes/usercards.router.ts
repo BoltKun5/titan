@@ -21,24 +21,33 @@ export const UserCardsRouter = (app: Router): Router => {
   app.use("/usercards", route);
 
   route.post(
-    "/:id/update",
+    "/update",
     Auth,
     asyncHandler(async (req: Request<any, any, IUpdateUserCardsBody>, res: Response<IResponse<IUpdateUserCardsResponse>, IResponseLocals>) => {
-      req.body.cards.map(async (card) => {
-        const currentCard = await Card.findOne({
-          where:
-            {
-              id: card.cardId,
-            },
-        });
-        await UserCardPossession.upsert({
-          cardId: currentCard.id,
+      const existing = await UserCardPossession.findOne({
+        where: {
+          cardId: req.body.cardId,
           userId: res.locals.currentUser.id,
-          classicQuantity: card.classicQuantity,
-          reverseQuantity: card.reverseQuantity,
-        });
+        },
       });
-      res.json({data: {code: "CARDS_UPDATED"}});
+      let result;
+      if (existing === null) {
+        result = await UserCardPossession.create({
+          cardId: req.body.cardId,
+          userId: res.locals.currentUser.id,
+          classicQuantity: req.body.classicQuantity,
+          reverseQuantity: req.body.reverseQuantity,
+        })
+      } else {
+        result = await existing.update({
+          cardId: req.body.cardId,
+          userId: res.locals.currentUser.id,
+          classicQuantity: req.body.classicQuantity,
+          reverseQuantity: req.body.reverseQuantity,
+        });
+      }
+
+      res.json({data: {code: "CARDS_UPDATED", result}});
     }),
   );
 

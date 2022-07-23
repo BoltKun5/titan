@@ -11,6 +11,8 @@ import {CardAbility} from "../../database/models/CardAbility";
 import {CardDamageModification} from "../../database/models/CardDamageModification";
 import {CardDexId} from "../../database/models/CardDexId";
 import {main} from "abyss_crypt_core";
+import {UserCardPossession} from "../../database/models/UserCardPossession";
+import auth from "../middlewares/auth";
 
 const route = Router();
 
@@ -34,6 +36,84 @@ export const CardListRouter = (app: Router): Router => {
   );
 
   //TODO: Typer la query correctement
+  route.get(
+    "/collection",
+    auth,
+    asyncHandler(async (req: Request<any, any, void>, res: Response<IResponse<any>, IResponseLocals>) => {
+      let mainOrder;
+      if (req.query?.order) {
+        switch (req.query.order) {
+          case "default":
+            mainOrder = [[{model: CardSet, as: "cardSet"}, 'releaseDate', 'desc'], ['localId', 'asc']];
+            break;
+          case "name":
+            mainOrder = [['name', 'asc']];
+            break;
+          case "type":
+            mainOrder = [[{model: CardType, as: "types"}, 'type', 'asc']]
+        }
+      }
+      const cards = await Card.findAll({
+        where: {...(req.query.namefilter ? {name: {[Sequelize.Op.like]: `%${req.query.namefilter}%`}} : {})},
+        order: mainOrder,
+        subQuery: false,
+        limit: 100,
+        include: [
+          {
+            model: UserCardPossession,
+            as: "userCardPossessions",
+            required: (req.query.unowned ? (req.query.unowned !== 'show') : false),
+            where: {
+              userId: res.locals.currentUser.id
+            }
+          },
+          {
+            model: CardType,
+            as: "types",
+          },
+          {
+            model: CardAttack,
+            as: "attacks",
+            include: [{
+              model: CardAttackCost,
+              as: "costs",
+            }],
+          },
+          {
+            model: CardAbility,
+            as: "abilities",
+          },
+          {
+            model: CardDamageModification,
+            as: "damageModifications",
+          },
+          {
+            model: CardAttribute,
+            as: "attributes",
+          },
+          {
+            model: CardDexId,
+            as: "dexIds",
+          },
+          {
+            where: {...(req.query.setfilter ? {code: req.query.setfilter} : {})},
+            model: CardSet,
+            as: "cardSet",
+            include: [
+              {
+                model: CardSerie,
+                as: "cardSerie",
+              },
+            ],
+          },
+        ],
+      });
+      res.json({
+        data: cards,
+      });
+    }),
+  );
+
   route.get(
     "/cards",
     asyncHandler(async (req: Request<any, any, void>, res: Response<IResponse<any>, IResponseLocals>) => {

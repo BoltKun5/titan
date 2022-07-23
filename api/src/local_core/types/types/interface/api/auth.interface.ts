@@ -44,17 +44,14 @@ export interface IApiError {
 
 export interface IUpdateUserCardsBody {
   token: string,
-  cards: [
-    {
-      cardId: string,
-      classicQuantity: string,
-      reverseQuantity: string
-    }
-  ]
+  cardId: string,
+  classicQuantity: string,
+  reverseQuantity: string,
 }
 
 export interface IUpdateUserCardsResponse {
-  code: string;
+  code: string,
+  result: any
 }
 
 export interface ICardListResponse {
