@@ -9,20 +9,26 @@ import {
   CardCategoryEnum,
   CardRarityEnum,
   CardCountType,
-  CardAbilityTypeEnum
+  CardAbilityTypeEnum,
 } from "./local_core";
-import { existsSync, readdirSync, statSync } from "fs-extra";
-import { LogType } from "abyss_crypt_core";
-import { startServer } from "./app";
+import {existsSync, readdirSync, statSync} from "fs-extra";
+import {LogType} from "abyss_crypt_core";
+import {startServer} from "./app";
 import AppConfig from "./modules/AppConfig";
 import Logger from "./modules/Logger";
 import path from "path";
-import { CardDamageModification } from "./database/models/CardDamageModification";
-import { CardAbility } from "./database/models/CardAbility";
-import { CardAttackCost } from "./database/models/CardAttackCost";
-import { Card, CardAttack, CardAttribute, CardSerie, CardSet } from "./database";
-import { CardType } from "./database/models/CardType";
-import { CardDexId } from "./database/models/CardDexId";
+import {CardDamageModification} from "./database/models/CardDamageModification";
+import {CardAbility} from "./database/models/CardAbility";
+import {CardAttackCost} from "./database/models/CardAttackCost";
+import {Card, CardAttack, CardAttribute, CardSerie, CardSet} from "./database";
+import {CardType} from "./database/models/CardType";
+import {CardDexId} from "./database/models/CardDexId";
+import axios from "axios";
+import * as fs from "fs";
+import * as buffer from "buffer";
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
+import {URLs} from "../temp";
 
 (async () => {
   try {
@@ -30,10 +36,43 @@ import { CardDexId } from "./database/models/CardDexId";
     await startServer();
 
     // setTimeout(test, 1);
+    // for (const name of URLs) {
+    //   const URL = `https://www.pokecardex.com/assets/images/sets/${name}/HD/`;
+    //   let i = 0;
+    //   while (true) {
+    //     i++
+    //     await sleep(1000);
+    //     try {
+    //       const finalUrl = URL + i + ".jpg";
+    //       console.log(finalUrl)
+    //       const res = await axios.get(finalUrl, {
+    //         responseType: 'arraybuffer',
+    //       });
+    //       if (!fs.existsSync(`./img/${name}`))
+    //         fs.mkdirSync(`./img/${name}`)
+    //       fs.writeFileSync(`./img/${name}/${i}.jpg`, Buffer.from(res.data as any));
+    //       if (i % 3 === 0) await sleep(5000);
+    //     } catch (e) {
+    //       console.log(URL + i + ".jpg")
+    //       break;
+    //     }
+    //   }
+    //
+    //   await sleep(2000);
+    // }
+
   } catch (error) {
     Logger.error(error, LogType.SYSTEM_STARTUP);
   }
 })();
+
+async function sleep(duration): Promise<void> {
+  new Promise(resolve => {
+    setTimeout(() => {
+      resolve(null)
+    }, duration)
+  })
+}
 
 function getTypeEnum(type) {
   if (type === "Lightning")
@@ -165,7 +204,7 @@ async function test() {
                 isPlayableInStandard: false,
                 isPlayableInExpanded: false,
                 cards: [],
-                code: file.default.id
+                code: file.default.id,
               });
 
             } else {
@@ -174,14 +213,14 @@ async function test() {
                 damageModifications.push({
                   modificationType: CardDamageModificationType.weakness,
                   type: getTypeEnum(el.type),
-                  value: el.value
+                  value: el.value,
                 });
               });
               file.default?.resistances?.forEach((el) => {
                 damageModifications.push({
                   modificationType: CardDamageModificationType.weakness,
                   type: getTypeEnum(el.type),
-                  value: el.value
+                  value: el.value,
                 });
               });
               newIndex = series[serieIndex - 1].cardSets[index - 1].cards.push({
@@ -192,7 +231,7 @@ async function test() {
                 evolveFrom: file.default?.evolveFrom?.fr ?? null,
                 stage: CardEvolutionStageEnum[file.default?.stage] ?? null,
                 types: file.default?.types?.map((el) => {
-                  return { type: getTypeEnum(el) };
+                  return {type: getTypeEnum(el)};
                 }) ?? [],
                 attacks: file.default?.attacks?.map((el) => {
                   const costs = [];
@@ -201,7 +240,7 @@ async function test() {
                     if (calculatedCosts.includes(costName)) return;
                     costs.push({
                       type: getTypeEnum(costName),
-                      cost: el?.cost.filter(x => x === costName).length
+                      cost: el?.cost.filter(x => x === costName).length,
                     });
                     calculatedCosts.push(costName);
                   });
@@ -209,14 +248,14 @@ async function test() {
                     name: el?.name?.fr ?? el?.name?.en,
                     effect: el?.effect?.fr ?? null,
                     damage: el?.damage ?? null,
-                    costs: costs
+                    costs: costs,
                   };
                 }) ?? [],
                 abilities: file.default?.abilities?.map((el) => {
                   return {
                     name: el.name?.fr ?? el.name.en,
                     effect: el.effect?.fr ?? el.effect.en,
-                    type: CardAbilityTypeEnum[el.type] ?? null
+                    type: CardAbilityTypeEnum[el.type] ?? null,
                   };
                 }) ?? [],
                 effect: file.default?.effect?.fr ?? null,
@@ -228,13 +267,13 @@ async function test() {
                 canBeReverse: file.default?.variants?.reverse ?? false,
                 isHolo: file.default?.variants?.holo ?? false,
                 isFirstEdition: file.default?.variants?.firstEdition ?? false,
-                attributes: file.default.suffix ? [{ attribute: file.default.suffix }] : [],
+                attributes: file.default.suffix ? [{attribute: file.default.suffix}] : [],
                 localId: getLocalId(fileName.split(".")[0]),
-                dexIds: file.default?.dexIds?.map((el) => ({ dexId: el.toString() })) ?? [],
+                dexIds: file.default?.dexIds?.map((el) => ({dexId: el.toString()})) ?? [],
                 description: file.default?.desc ?? null,
                 level: file.default?.level ?? null,
                 item: file.default?.item ?? null,
-                energyType: CardEnergyTypeEnum[file.default?.energyType] ?? null
+                energyType: CardEnergyTypeEnum[file.default?.energyType] ?? null,
 
               } as any);
               count++;
@@ -243,7 +282,11 @@ async function test() {
             }
           } else {
 
-            newIndex = series.push({ name: file.default.name.fr ?? file.default.name.en, cardSets: [], code: file.default.id });
+            newIndex = series.push({
+              name: file.default.name.fr ?? file.default.name.en,
+              cardSets: [],
+              code: file.default.id,
+            });
 
           }
 
@@ -279,38 +322,38 @@ async function test() {
               include: [
                 {
                   model: CardType,
-                  as: "types"
+                  as: "types",
                 },
                 {
                   model: CardAttack,
                   as: "attacks",
                   include: [{
                     model: CardAttackCost,
-                    as: "costs"
-                  }]
+                    as: "costs",
+                  }],
                 },
                 {
                   model: CardAbility,
-                  as: "abilities"
+                  as: "abilities",
                 },
                 {
                   model: CardDamageModification,
-                  as: "damageModifications"
+                  as: "damageModifications",
                 },
                 {
                   model: CardAttribute,
-                  as: "attributes"
+                  as: "attributes",
                 },
                 {
                   model: CardDexId,
-                  as: "dexIds"
-                }
-              ]
+                  as: "dexIds",
+                },
+              ],
             });
             await currentCard.$set("cardSet", currentCardSet);
           }));
         }));
-      })
+      }),
     );
 
     console.timeEnd("seed");

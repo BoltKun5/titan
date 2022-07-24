@@ -1,13 +1,11 @@
 import React, {EventHandler, ReactElement, SyntheticEvent, useCallback, useEffect, useRef, useState} from "react";
 import {api, loggedApi} from "../axios";
 import {FormControl, InputLabel, MenuItem, Select, SpeedDial, SpeedDialAction, TextField} from "@mui/material";
-import img from "../assets/img.png"
-import img2 from "../assets/img_1.png"
 import {CardSerie, CardSet, User} from "../../../api/src/database";
 
 import {CategorizedAutocompleteChecklist} from "../components/CategorizedAutocompleteChecklist";
 import {SetFilterListInterface} from "../../../api/src/local_core/types/types/interface/front";
-import {number} from "joi";
+import Joi, {number} from "joi";
 import {UserCardPossession} from "../../../api/src/database/models/UserCardPossession";
 
 export const CardManager: React.FC = () => {
@@ -144,6 +142,11 @@ export const CardManager: React.FC = () => {
         reverseQuantity: reverseQuantity,
       });
       element.removeAttribute("disabled");
+      if (cardType === 'reverse') { // @ts-ignore
+        // element.parentNode.querySelector('input').value = reverseQuantity;
+      } else { // @ts-ignore
+        // element.parentNode.querySelector('input').value = classicQuantity;
+      }
       setCards(cards.map((localCard) => {
         if (card.id === localCard.id) {
           localCard.userCardPossessions[0] = response.data.data.result;
@@ -160,6 +163,14 @@ export const CardManager: React.FC = () => {
     element.setAttribute("disabled", "true")
     let classicQuantity = card?.userCardPossessions[0]?.classicQuantity ?? 0;
     let reverseQuantity = card?.userCardPossessions[0]?.reverseQuantity ?? 0;
+    const regex = new RegExp('^[0-9]+$');
+    if (!regex.test(element.value)) {
+      element.style.backgroundColor = 'red';
+      element.removeAttribute("disabled");
+      return
+    }
+    element.style.backgroundColor = 'white';
+
     if (cardType === 'classic') {
       if (classicQuantity === Number(element.value)) {
         element.removeAttribute("disabled");
@@ -307,22 +318,11 @@ export const CardManager: React.FC = () => {
         <div className="Collection-CardList">
           {cards.map((card: any, index) =>
             <>
-              <div className={"Collection-Card" + getColorClassname(card.userCardPossessions[0])} key={card.localId + index}
+              <div className={"Collection-Card" + getColorClassname(card.userCardPossessions?.[0])}
+                   key={card.localId + index}
                    data-id={card.name + card.cardSet.code + card.cardSet.cardSerie.code}>
                 <img
-                  src={"https://assets.tcgdex.net/fr/" + card.cardSet.cardSerie.code + "/" + card.cardSet.code + "/" + card.localId + "/low.jpg"}
-                  onError={(event: SyntheticEvent<HTMLElement>) => {
-                    if (!event.currentTarget.classList.contains("secondImage")) {
-                      console.log("https://assets.tcgdex.net/fr/" + card.cardSet.cardSerie.code + "/" + card.cardSet.code + "/" + card.localId + "/low.jpg");
-                      event.currentTarget.classList.add("secondImage")
-                      event.currentTarget.setAttribute("src", `https://assets.tcgdex.net/fr/${card.cardSet.cardSerie.code}/${card.cardSet.code}/${Number(card.localId)}/low.jpg`);
-                    } else {
-                      event.currentTarget.setAttribute("src", "src/assets/default_card_img.png")
-                    }
-                  }}
-                  onLoad={(event) => {
-                    event.currentTarget.classList.remove("secondImage")
-                  }}
+                  src={"src/assets/cards/" + card.cardSet.code + "/" + Number(card.localId) + ".jpg"}
                 />
                 {collectionMode && <div key={"overlay" + card.localId + index} className="Collection-Card-overlay"/>}
                 {collectionMode &&
@@ -333,8 +333,9 @@ export const CardManager: React.FC = () => {
                       <button className="Collection-Card-overlayBottom-content-minus"
                               onClick={(event) => modifyQuantity(card, 'classic', 'minus', event.currentTarget)}>-
                       </button>
-                      <input className="Collection-Card-overlayBottom-content-input" onBlur={(event) => setQuantity(card, 'classic', event.currentTarget)}
-                             defaultValue={card?.userCardPossessions?.[0]?.classicQuantity ?? 0} type="number"/>
+                      <input className="Collection-Card-overlayBottom-content-input"
+                             onBlur={(event) => setQuantity(card, 'classic', event.currentTarget)} readOnly
+                             value={card?.userCardPossessions?.[0]?.classicQuantity ?? 0} type="number"/>
                       <button className="Collection-Card-overlayBottom-content-plus"
                               onClick={(event) => modifyQuantity(card, 'classic', 'plus', event.currentTarget)}>+
                       </button>
@@ -346,8 +347,9 @@ export const CardManager: React.FC = () => {
                       <button className="Collection-Card-overlayBottom-content-minus"
                               onClick={(event) => modifyQuantity(card, 'reverse', 'minus', event.currentTarget)}>-
                       </button>
-                      <input className="Collection-Card-overlayBottom-content-input" onBlur={(event) => setQuantity(card, 'reverse', event.currentTarget)}
-                             defaultValue={card?.userCardPossessions?.[0]?.reverseQuantity ?? 0} type="number"/>
+                      <input className="Collection-Card-overlayBottom-content-input" min="0"
+                             onBlur={(event) => setQuantity(card, 'reverse', event.currentTarget)} readOnly
+                             value={card?.userCardPossessions?.[0]?.reverseQuantity ?? 0} type="number"/>
                       <button className="Collection-Card-overlayBottom-content-plus"
                               onClick={(event) => modifyQuantity(card, 'reverse', 'plus', event.currentTarget)}>+
                       </button>
@@ -356,21 +358,11 @@ export const CardManager: React.FC = () => {
                 </div>}
               </div>
               {collectionMode && separateReverse && card.canBeReverse &&
-              <div className={"Collection-Card" + getColorClassname(card.userCardPossessions[0], true)} key={card.localId + index + "2"}
+              <div className={"Collection-Card" + getColorClassname(card.userCardPossessions[0], true)}
+                   key={card.localId + index + "2"}
                    data-id={card.name + card.cardSet.code + card.cardSet.cardSerie.code}>
                 <img
-                  src={"https://assets.tcgdex.net/fr/" + card.cardSet.cardSerie.code + "/" + card.cardSet.code + "/" + card.localId + "/low.jpg"}
-                  onError={(event: SyntheticEvent<HTMLElement>) => {
-                    if (!event.currentTarget.classList.contains("secondImage")) {
-                      event.currentTarget.classList.add("secondImage")
-                      event.currentTarget.setAttribute("src", `https://assets.tcgdex.net/fr/${card.cardSet.cardSerie.code}/${card.cardSet.code}/${Number(card.localId)}/low.jpg`);
-                    } else {
-                      event.currentTarget.setAttribute("src", "src/assets/default_card_img.png")
-                    }
-                  }}
-                  onLoad={(event) => {
-                    event.currentTarget.classList.remove("secondImage")
-                  }}
+                  src={"src/assets/cards" + card.cardSet.code + "/" + Number(card.localId) + ".jpg"}
                 />
                 <div key={"overlay" + card.localId + index + "2"} className="Collection-Card-overlay"/>
                 <div key={"content" + card.localId + index + "2"} className="Collection-Card-overlayBottom">
@@ -380,8 +372,9 @@ export const CardManager: React.FC = () => {
                       <button className="Collection-Card-overlayBottom-content-minus"
                               onClick={(event) => modifyQuantity(card, 'reverse', 'minus', event.currentTarget)}>-
                       </button>
-                      <input className="Collection-Card-overlayBottom-content-input" onBlur={(event) => setQuantity(card, 'reverse', event.currentTarget)}
-                             defaultValue={card?.userCardPossessions?.[0]?.reverseQuantity ?? 0} type="number"/>
+                      <input className="Collection-Card-overlayBottom-content-input" min="0"
+                             onBlur={(event) => setQuantity(card, 'reverse', event.currentTarget)} readOnly
+                             value={card?.userCardPossessions?.[0]?.reverseQuantity ?? 0} type="number"/>
                       <button className="Collection-Card-overlayBottom-content-plus"
                               onClick={(event) => modifyQuantity(card, 'reverse', 'plus', event.currentTarget)}>+
                       </button>
