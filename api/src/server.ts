@@ -36,26 +36,19 @@ import {URLs} from "../temp";
     await startServer();
 
     // setTimeout(test, 1);
+
+    //
     // for (const name of URLs) {
-    //   const URL = `https://www.pokecardex.com/assets/images/sets/${name}/HD/`;
-    //   let i = 0;
-    //   while (true) {
-    //     i++
-    //     await sleep(1000);
-    //     try {
-    //       const finalUrl = URL + i + ".jpg";
-    //       console.log(finalUrl)
-    //       const res = await axios.get(finalUrl, {
-    //         responseType: 'arraybuffer',
-    //       });
-    //       if (!fs.existsSync(`./img/${name}`))
-    //         fs.mkdirSync(`./img/${name}`)
-    //       fs.writeFileSync(`./img/${name}/${i}.jpg`, Buffer.from(res.data as any));
-    //       if (i % 3 === 0) await sleep(5000);
-    //     } catch (e) {
-    //       console.log(URL + i + ".jpg")
-    //       break;
-    //     }
+    //   const URL = `https://www.pokecardex.com/assets/images/symboles/${name}.png`;
+    //   try {
+    //     const res = await axios.get(URL, {
+    //       responseType: 'arraybuffer',
+    //     });
+    //     if (!fs.existsSync(`./img`))
+    //       fs.mkdirSync(`./img`)
+    //     fs.writeFileSync(`./img/${name}.png`, Buffer.from(res.data as any));
+    //   } catch (e) {
+    //     break;
     //   }
     //
     //   await sleep(2000);

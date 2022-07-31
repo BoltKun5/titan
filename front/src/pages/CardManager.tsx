@@ -1,6 +1,6 @@
 import React, {EventHandler, ReactElement, SyntheticEvent, useCallback, useEffect, useRef, useState} from "react";
 import {api, loggedApi} from "../axios";
-import {FormControl, InputLabel, MenuItem, Select, SpeedDial, SpeedDialAction, TextField} from "@mui/material";
+import {FormControl, InputLabel, MenuItem, Select, SpeedDial, SpeedDialAction, TextField, Tooltip} from "@mui/material";
 import {CardSerie, CardSet, User} from "../../../api/src/database";
 
 import {CategorizedAutocompleteChecklist} from "../components/CategorizedAutocompleteChecklist";
@@ -233,36 +233,29 @@ export const CardManager: React.FC = () => {
   // TODO : Tris pas type, rareté, brillance par rareté
 
   return <div className="Manager">
-    {/*<div className="Manager-leftBar">*/}
-    {/*  <div className="Manager-leftBar-content">*/}
-    {/*    {*/}
-    {/*      series.map((serie, index) => (*/}
-    {/*        <div className="Manager-leftBar-serie" key={serie.code}>*/}
-    {/*          <SpeedDial*/}
-    {/*            key={serie.code}*/}
-    {/*            ariaLabel="serie dial"*/}
-    {/*            icon={<div className="Manager-leftBar-name">{serie.name}</div>}*/}
-    {/*            direction="right"*/}
-    {/*          >*/}
-    {/*            {serie.cardSets.map((set: CardSet) => (*/}
-    {/*              <SpeedDialAction*/}
-    {/*                className="Manager-leftBar-set"*/}
-    {/*                key={set.code}*/}
-    {/*                icon={<img className="Manager-leftBar-setIcon" width="35px" height="35px"*/}
-    {/*                           src={`https://assets.tcgdex.net/univ/${serie.code}/${set.code}/symbol`}*/}
-    {/*                           onError={(event: SyntheticEvent<HTMLElement>) => {*/}
-    {/*                             event.currentTarget.setAttribute("src", "src/assets/setIcons/default.png")*/}
-    {/*                           }*/}
-    {/*                           }*/}
-    {/*                />}*/}
-    {/*                tooltipTitle={set.name}*/}
-    {/*                onClick={() => activateSetFilter(set.code)}*/}
-    {/*              />*/}
-    {/*            ))*/}
-    {/*            }*/}
-    {/*          </SpeedDial></div>))}*/}
-    {/*  </div>*/}
-    {/*</div>*/}
+    <div className="Manager-leftBar">
+      {
+        series.map((serie, index) => (
+          <div className="Manager-leftBar-serie" key={serie.code}>
+            <div className="Manager-leftBar-serieName">{serie.name}</div>
+            <div className="Manager-leftBar-setList">
+              {serie.cardSets.map((set: CardSet) => (
+                <div
+                  className="Manager-leftBar-setElement"
+                  key={set.code}
+                  onClick={() => activateSetFilter(set.code)}
+                >
+                  <Tooltip title={set.name}>
+                    <img src={`./src/assets/setIcons/${set.code}.png`}/>
+                  </Tooltip>
+                </div>
+              ))}
+            </div>
+          </div>
+        ))
+      }
+    </div>
+
     <div className="Manager-mainContent">
       <div className="Manager-filter">
         <TextField className="Manager-filter-textInput" id="nameFilter" label="Filtrer par nom"
@@ -324,7 +317,8 @@ export const CardManager: React.FC = () => {
                 <img
                   src={"src/assets/cards/" + card.cardSet.code + "/" + Number(card.localId) + ".jpg"}
                 />
-                {collectionMode && <div key={"overlay" + card.localId + index} className="Collection-Card-overlay"/>}
+                {collectionMode &&
+                <div key={"overlay" + card.localId + index} className="Collection-Card-overlay"/>}
                 {collectionMode &&
                 <div key={"content" + card.localId + index} className="Collection-Card-overlayBottom">
                   <div className="Collection-Card-overlayBottom-content">
@@ -341,7 +335,8 @@ export const CardManager: React.FC = () => {
                       </button>
                     </div>
                   </div>
-                  {(!separateReverse && card.canBeReverse) && <div className="Collection-Card-overlayBottom-content">
+                  {(!separateReverse && card.canBeReverse) &&
+                  <div className="Collection-Card-overlayBottom-content">
                     <div className="Collection-Card-overlayBottom-content-name">Carte reverse</div>
                     <div className="Collection-Card-overlayBottom-content-management">
                       <button className="Collection-Card-overlayBottom-content-minus"

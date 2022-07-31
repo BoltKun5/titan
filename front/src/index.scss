@@ -5,7 +5,8 @@ body {
   sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background-image: url('./assets/background.jpeg');
+  //background-image: url('./assets/background.jpeg');
+  background: #de3d2b;
   overflow: overlay;
 }
 
@@ -34,9 +35,9 @@ code {
   &-CardList {
     width: 100%;
     height: 100%;
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
+    display: grid;
+    margin: auto;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
   }
 
   &-Card {
@@ -54,15 +55,15 @@ code {
       position: absolute;
       left: 0;
       top: 0;
+      width: 210px;
       border: 10.5px #d3d3d3 solid;
-      width: calc(100% - 20px);
       height: calc(100% - 24px);
       border-radius: 9px;
       z-index: 10;
 
       &Bottom {
         transform: translateY(-12px);
-        width: 100%;
+        width: 230px;
         height: 100px;
         background: #d3d3d3;
         border-radius: 9px;
@@ -223,7 +224,7 @@ code {
   width: 100vw;
   height: 70px;
   background-color: #11100f;
-  display: flex;
+  display: none;
   justify-content: space-between;
 
   &-logo {
@@ -255,7 +256,7 @@ code {
 
 .content {
   width: calc(100vw);
-  height: calc(100vh - 70px);
+  height: calc(100vh);
 }
 
 .Manager {
@@ -264,8 +265,11 @@ code {
   display: flex;
 
   &-cardList {
+    display: flex;
     flex: 1 1 auto;
-    overflow: auto scroll
+    overflow: auto scroll;
+    border: #282c34 3px solid;
+    box-sizing: border-box;
   }
 
   &-mainContent {
@@ -273,12 +277,14 @@ code {
     height: 100%;
     display: flex;
     flex-direction: column;
-    //margin-left: 160px;
+    margin-left: 215px;
   }
 
   &-filter {
     width: 100%;
-    background: lightblue;
+    background: #c6c6c6;
+    border: #282c34 solid 3px;
+    box-sizing: border-box;
     display: flex;
     flex-wrap: wrap;
     flex: 0 1 auto;
@@ -337,68 +343,71 @@ code {
 
   &-leftBar {
     display: flex;
-    width: 160px;
-    background-color: #42403d;
+    width: 215px;
+    background-color: #d84432;
     height: 100%;
+    box-sizing: border-box;
     align-items: center;
     flex-direction: column;
     position: fixed;
     z-index: 1000;
-    display: none;
-
-    &-content {
-      height: 1300px;
-    }
-
-    &-title {
-      margin-top: 10px;
-      font-weight: 600;
-      color: white
-    }
-
-    &-set {
-      &-Icon {
-        width: 40px;
-        height: 40px;
-        margin: auto;
-      }
-    }
-
-    &-name {
-      width: 150px;
-    }
+    border: #323230 3px solid;
+    overflow-y: visible;
 
     &-serie {
-      transform: translateX(calc(50% - 65px));
-      pointer-events: none;
+      display: flex;
+      margin: 3.3px 0;
+      text-align: center;
+      position: relative;
+      z-index: 1000;
+      transform: translateX(calc(50% - 102px));
 
-      &:last-child {
-        margin-bottom: 60px
-      }
-
-      & > div {
-
-        & > button {
-          background: none;
-          box-shadow: none;
-          width: 130px;
-
-          &:hover {
-            background: none;
-            box-shadow: none;
-          }
-        }
-
-        & > div {
-          padding-left: 60px !important;
+      &:hover {
+        .Manager-leftBar-setList {
+          display: flex;
         }
       }
 
-      &Image {
-        width: 140px;
+      &Name {
+        border: #323232 solid 2px;
+        border-radius: 6px;
+        background: #2c2c2c;
+        width: 178px;
+        font-weight: bold;
+        padding:10px;
+        color: #c6c6c6;
+      }
+    }
+
+    &-setList {
+      display: none;
+      margin: auto;
+      z-index: 10000;
+      position: relative;
+      padding-left: 15px;
+    }
+
+    &-setElement {
+      background: white;
+      border-radius: 100%;
+      display: flex;
+      justify-content: center;
+      margin: 3px;
+      cursor: pointer;
+
+      &:hover {
+        background: #eaeaea;
+      }
+      img {
+        width: 35px;
+        height: 35px;
       }
     }
   }
+}
+
+.main-list {
+  background: #de3d2b;
 }
 
 .AutocompleteCheck {
@@ -494,7 +503,7 @@ code {
   position: absolute;
 }
 
-.unowned img{
+.unowned img {
   -webkit-filter: grayscale(100%); /* Chrome, Safari, Opera */
   filter: grayscale(100%);
 }
