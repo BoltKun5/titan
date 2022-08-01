@@ -19,7 +19,6 @@ const route = Router();
 export const CardListRouter = (app: Router): Router => {
   app.use("/cardlist", route);
 
-  //TODO: Typer la query correctement
   route.get(
     "/allSeries",
     asyncHandler(async (req: Request<any, any, void, { serieId: string }>, res: Response<IResponse<any>, IResponseLocals>) => {

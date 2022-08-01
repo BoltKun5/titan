@@ -44,39 +44,82 @@ code {
     margin: 10px;
     position: relative;
     height: fit-content;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 
-    & img {
+    &-imgContainer {
       border-radius: 9px;
       height: 316px;
       width: 230px;
+      position: relative;
+      overflow: hidden;
+
+      & img {
+        width: 100%;
+        height: 100%;
+      }
+    }
+
+    &-img {
+      position: absolute;
+      top: 0;
+      width: 270px;
+      height: 470px;
+      &-classicFilter {
+        left: 73px;
+        top: 30px;
+        transform: rotateZ(35deg);
+        background-color: lightgrey;
+      }
+      &-reverseFilter {
+        left: -152px;
+        top: -118px;
+        transform: rotateZ(35deg);
+        background-color: lightcoral;
+      }
     }
 
     &-overlay {
-      position: absolute;
-      left: 0;
-      top: 0;
-      width: 210px;
-      border: 10.5px #d3d3d3 solid;
-      height: calc(100% - 24px);
+      width: 100%;
+      border: 10.5px #c6c6c6 solid;
+      height: calc(100% - 3px);
+      box-sizing: border-box;
+      outline: #282c34 solid 3px;
       border-radius: 9px;
       z-index: 10;
 
+      &Container {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        display: flex;
+        justify-content: center;
+      }
+
       &Bottom {
-        transform: translateY(-12px);
-        width: 230px;
-        height: 100px;
-        background: #d3d3d3;
-        border-radius: 9px;
+        transform: translateY(-9px);
+        width: 100%;
+        background: #c6c6c6;
+        border-radius: 0 0 9px 9px;
         z-index: 11;
         position: relative;
 
         &-content {
-          width: 80%;
-          margin: auto;
-          padding-top: 2px;
+          margin: 10px;
+          background-color: #ececec;
           display: flex;
+          border: #282c34 solid 1px;
           flex-direction: column;
           justify-content: center;
+          align-items: center;
+          padding: 5px 0;
+
+          &Element {
+
+          }
 
           &-input {
             /* Chrome, Safari, Edge, Opera */
@@ -268,7 +311,6 @@ code {
     display: flex;
     flex: 1 1 auto;
     overflow: auto scroll;
-    border: #282c34 3px solid;
     box-sizing: border-box;
   }
 
@@ -281,7 +323,9 @@ code {
   }
 
   &-filter {
-    width: 100%;
+    width: 95%;
+    margin: 15px auto;
+    border-radius: 10px;
     background: #c6c6c6;
     border: #282c34 solid 3px;
     box-sizing: border-box;
@@ -374,7 +418,7 @@ code {
         background: #2c2c2c;
         width: 178px;
         font-weight: bold;
-        padding:10px;
+        padding: 10px;
         color: #c6c6c6;
       }
     }
@@ -398,6 +442,7 @@ code {
       &:hover {
         background: #eaeaea;
       }
+
       img {
         width: 35px;
         height: 35px;
@@ -503,7 +548,11 @@ code {
   position: absolute;
 }
 
-.unowned img {
-  -webkit-filter: grayscale(100%); /* Chrome, Safari, Opera */
-  filter: grayscale(100%);
+.CardQuantity {
+  &-notOwned {
+    img {
+      -webkit-filter: grayscale(100%); /* Chrome, Safari, Opera */
+      filter: grayscale(100%);
+    }
+  }
 }

@@ -1,8 +1,6 @@
-import React, {EventHandler, ReactElement, useEffect, useState} from "react";
-import style from "../index.css"
-import {ClickAwayListener, FormGroup, TextField} from "@mui/material";
+import React, {useEffect, useState} from "react";
+import {ClickAwayListener, TextField} from "@mui/material";
 import {SetFilterListInterface} from "../../../api/src/local_core/types/types/interface/front";
-import {useOutsideClick} from "../hook/useOutsideClick";
 
 type Props = {
   items: SetFilterListInterface[],
@@ -14,7 +12,6 @@ export const CategorizedAutocompleteChecklist: React.FC<Props> = ({items, placeh
   const [searchTerm, setSearchTerm] = useState<string>("");
   const [isDropdownOpen, setIsDropdownOpen] = useState<boolean>(false);
   const [filteredItems, setFilteredItems] = useState<any[]>([]);
-  // const [searchTerm, setSearchTerm] = useState<string>("");
 
   useEffect(() => {
     updateFilteredItems(items);

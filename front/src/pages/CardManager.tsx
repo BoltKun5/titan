@@ -1,11 +1,10 @@
-import React, {EventHandler, ReactElement, SyntheticEvent, useCallback, useEffect, useRef, useState} from "react";
-import {api, loggedApi} from "../axios";
-import {FormControl, InputLabel, MenuItem, Select, SpeedDial, SpeedDialAction, TextField, Tooltip} from "@mui/material";
+import React, {useCallback, useEffect, useRef, useState} from "react";
+import {loggedApi} from "../axios";
+import {FormControl, InputLabel, MenuItem, Select, TextField, Tooltip} from "@mui/material";
 import {CardSerie, CardSet, User} from "../../../api/src/database";
 
 import {CategorizedAutocompleteChecklist} from "../components/CategorizedAutocompleteChecklist";
 import {SetFilterListInterface} from "../../../api/src/local_core/types/types/interface/front";
-import Joi, {number} from "joi";
 import {UserCardPossession} from "../../../api/src/database/models/UserCardPossession";
 
 export const CardManager: React.FC = () => {
@@ -142,11 +141,6 @@ export const CardManager: React.FC = () => {
         reverseQuantity: reverseQuantity,
       });
       element.removeAttribute("disabled");
-      if (cardType === 'reverse') { // @ts-ignore
-        // element.parentNode.querySelector('input').value = reverseQuantity;
-      } else { // @ts-ignore
-        // element.parentNode.querySelector('input').value = classicQuantity;
-      }
       setCards(cards.map((localCard) => {
         if (card.id === localCard.id) {
           localCard.userCardPossessions[0] = response.data.data.result;
@@ -204,7 +198,22 @@ export const CardManager: React.FC = () => {
     }
   }
 
-  const getColorClassname = (userCardPossession: UserCardPossession, reverseOnly: boolean = false) => {
+  const getColorClassname = (userCardPossession: UserCardPossession, reverseOnly: boolean = false, canBeReverse: boolean = true) => {
+    if (reverseOnly) return (userCardPossession?.reverseQuantity < 1 ? 'CardQuantity-notOwned' : 'CardQuantity-owned');
+    if (!canBeReverse || (separateReverse && !reverseOnly)) return (userCardPossession?.classicQuantity < 1 ? 'CardQuantity-notOwned' : 'CardQuantity-owned');
+
+    if (userCardPossession?.reverseQuantity < 1 && userCardPossession?.classicQuantity < 1) {
+      return 'CardQuantity-notOwned';
+    }
+    if (userCardPossession?.reverseQuantity > 0 && userCardPossession?.classicQuantity > 0) {
+      return 'CardQuantity-notOwned';
+    }
+    if (userCardPossession?.reverseQuantity > 0 && userCardPossession?.classicQuantity < 1) {
+      return 'CardQuantity-onlyReverse'
+    }
+    if (userCardPossession?.classicQuantity > 0 && userCardPossession?.reverseQuantity < 1) {
+      return 'CardQuantity-onlyClassic'
+    }
     return ""
   }
 
@@ -230,7 +239,7 @@ export const CardManager: React.FC = () => {
   }
 
   // TODO : Nettoyer la leftBar, mettre un loader, gérer les disabled d'input, séparer en components ?, problème de render ?, finir la color pour la possession
-  // TODO : Tris pas type, rareté, brillance par rareté
+  // TODO : Tris pas type, rareté, brillance par rareté, limit de sequelize ?
 
   return <div className="Manager">
     <div className="Manager-leftBar">
@@ -311,68 +320,81 @@ export const CardManager: React.FC = () => {
         <div className="Collection-CardList">
           {cards.map((card: any, index) =>
             <>
-              <div className={"Collection-Card" + getColorClassname(card.userCardPossessions?.[0])}
-                   key={card.localId + index}
+              <div
+                className={"Collection-Card " + getColorClassname(card.userCardPossessions?.[0], false, card.canBeReverse)}
+                key={card.localId + index}
+                data-id={card.name + card.cardSet.code + card.cardSet.cardSerie.code}>
+                <div className="Collection-Card-imgContainer">
+                  <img
+                    src={"src/assets/cards/" + card.cardSet.code + "/" + Number(card.localId) + ".jpg"}
+                  />
+                  <div className="Collection-Card-img Collection-Card-img-reverseFilter" />
+                  <div className="Collection-Card-img Collection-Card-img-classicFilter" />
+                </div>
+                {collectionMode &&
+                <div key={"overlay" + card.localId + index} className="Collection-Card-overlayContainer">
+                  <div className="Collection-Card-overlay"/>
+                </div>}
+                {collectionMode &&
+                <div key={"content" + card.localId + index} className="Collection-Card-overlayBottom">
+                  <div className="Collection-Card-overlayBottom-content">
+                    <div className="Collection-Card-overlayBottom-contentElement">
+                      <div className="Collection-Card-overlayBottom-content-name">Carte normale</div>
+                      <div className="Collection-Card-overlayBottom-content-management">
+                        <button className="Collection-Card-overlayBottom-content-minus"
+                                onClick={(event) => modifyQuantity(card, 'classic', 'minus', event.currentTarget)}>-
+                        </button>
+                        <input className="Collection-Card-overlayBottom-content-input"
+                               onBlur={(event) => setQuantity(card, 'classic', event.currentTarget)}
+                               value={card?.userCardPossessions?.[0]?.classicQuantity ?? 0} type="number"/>
+                        <button className="Collection-Card-overlayBottom-content-plus"
+                                onClick={(event) => modifyQuantity(card, 'classic', 'plus', event.currentTarget)}>+
+                        </button>
+                      </div>
+                    </div>
+                    {(!separateReverse && card.canBeReverse) &&
+                    <div className="Collection-Card-overlayBottom-contentElement">
+                      <div className="Collection-Card-overlayBottom-content-name">Carte reverse</div>
+                      <div className="Collection-Card-overlayBottom-content-management">
+                        <button className="Collection-Card-overlayBottom-content-minus"
+                                onClick={(event) => modifyQuantity(card, 'reverse', 'minus', event.currentTarget)}>-
+                        </button>
+                        <input className="Collection-Card-overlayBottom-content-input" min="0"
+                               onBlur={(event) => setQuantity(card, 'reverse', event.currentTarget)}
+                               value={card?.userCardPossessions?.[0]?.reverseQuantity ?? 0} type="number"/>
+                        <button className="Collection-Card-overlayBottom-content-plus"
+                                onClick={(event) => modifyQuantity(card, 'reverse', 'plus', event.currentTarget)}>+
+                        </button>
+                      </div>
+                    </div>}
+                  </div>
+                </div>}
+              </div>
+              {collectionMode && separateReverse && card.canBeReverse &&
+              <div className={"Collection-Card " + getColorClassname(card.userCardPossessions[0], true)}
+                   key={"reverseOnly" + card.localId + index}
                    data-id={card.name + card.cardSet.code + card.cardSet.cardSerie.code}>
                 <img
                   src={"src/assets/cards/" + card.cardSet.code + "/" + Number(card.localId) + ".jpg"}
                 />
-                {collectionMode &&
-                <div key={"overlay" + card.localId + index} className="Collection-Card-overlay"/>}
-                {collectionMode &&
-                <div key={"content" + card.localId + index} className="Collection-Card-overlayBottom">
+                <div className="Collection-Card-overlayContainer">
+                  <div className="Collection-Card-overlay"/>
+                </div>
+                <div className="Collection-Card-overlayBottom">
                   <div className="Collection-Card-overlayBottom-content">
-                    <div className="Collection-Card-overlayBottom-content-name">Carte normale</div>
-                    <div className="Collection-Card-overlayBottom-content-management">
-                      <button className="Collection-Card-overlayBottom-content-minus"
-                              onClick={(event) => modifyQuantity(card, 'classic', 'minus', event.currentTarget)}>-
-                      </button>
-                      <input className="Collection-Card-overlayBottom-content-input"
-                             onBlur={(event) => setQuantity(card, 'classic', event.currentTarget)} readOnly
-                             value={card?.userCardPossessions?.[0]?.classicQuantity ?? 0} type="number"/>
-                      <button className="Collection-Card-overlayBottom-content-plus"
-                              onClick={(event) => modifyQuantity(card, 'classic', 'plus', event.currentTarget)}>+
-                      </button>
-                    </div>
-                  </div>
-                  {(!separateReverse && card.canBeReverse) &&
-                  <div className="Collection-Card-overlayBottom-content">
-                    <div className="Collection-Card-overlayBottom-content-name">Carte reverse</div>
-                    <div className="Collection-Card-overlayBottom-content-management">
-                      <button className="Collection-Card-overlayBottom-content-minus"
-                              onClick={(event) => modifyQuantity(card, 'reverse', 'minus', event.currentTarget)}>-
-                      </button>
-                      <input className="Collection-Card-overlayBottom-content-input" min="0"
-                             onBlur={(event) => setQuantity(card, 'reverse', event.currentTarget)} readOnly
-                             value={card?.userCardPossessions?.[0]?.reverseQuantity ?? 0} type="number"/>
-                      <button className="Collection-Card-overlayBottom-content-plus"
-                              onClick={(event) => modifyQuantity(card, 'reverse', 'plus', event.currentTarget)}>+
-                      </button>
-                    </div>
-                  </div>}
-                </div>}
-              </div>
-              {collectionMode && separateReverse && card.canBeReverse &&
-              <div className={"Collection-Card" + getColorClassname(card.userCardPossessions[0], true)}
-                   key={card.localId + index + "2"}
-                   data-id={card.name + card.cardSet.code + card.cardSet.cardSerie.code}>
-                <img
-                  src={"src/assets/cards" + card.cardSet.code + "/" + Number(card.localId) + ".jpg"}
-                />
-                <div key={"overlay" + card.localId + index + "2"} className="Collection-Card-overlay"/>
-                <div key={"content" + card.localId + index + "2"} className="Collection-Card-overlayBottom">
-                  <div className="Collection-Card-overlayBottom-content">
-                    <div className="Collection-Card-overlayBottom-content-name">Carte reverse</div>
-                    <div className="Collection-Card-overlayBottom-content-management">
-                      <button className="Collection-Card-overlayBottom-content-minus"
-                              onClick={(event) => modifyQuantity(card, 'reverse', 'minus', event.currentTarget)}>-
-                      </button>
-                      <input className="Collection-Card-overlayBottom-content-input" min="0"
-                             onBlur={(event) => setQuantity(card, 'reverse', event.currentTarget)} readOnly
-                             value={card?.userCardPossessions?.[0]?.reverseQuantity ?? 0} type="number"/>
-                      <button className="Collection-Card-overlayBottom-content-plus"
-                              onClick={(event) => modifyQuantity(card, 'reverse', 'plus', event.currentTarget)}>+
-                      </button>
+                    <div className="Collection-Card-overlayBottom-contentElement">
+                      <div className="Collection-Card-overlayBottom-content-name">Carte reverse</div>
+                      <div className="Collection-Card-overlayBottom-content-management">
+                        <button className="Collection-Card-overlayBottom-content-minus"
+                                onClick={(event) => modifyQuantity(card, 'reverse', 'minus', event.currentTarget)}>-
+                        </button>
+                        <input className="Collection-Card-overlayBottom-content-input" min="0"
+                               onBlur={(event) => setQuantity(card, 'reverse', event.currentTarget)} readOnly
+                               value={card?.userCardPossessions?.[0]?.reverseQuantity ?? 0} type="number"/>
+                        <button className="Collection-Card-overlayBottom-content-plus"
+                                onClick={(event) => modifyQuantity(card, 'reverse', 'plus', event.currentTarget)}>+
+                        </button>
+                      </div>
                     </div>
                   </div>
                 </div>
