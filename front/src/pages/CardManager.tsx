@@ -374,9 +374,13 @@ export const CardManager: React.FC = () => {
               <div className={"Collection-Card " + getColorClassname(card.userCardPossessions[0], true)}
                    key={"reverseOnly" + card.localId + index}
                    data-id={card.name + card.cardSet.code + card.cardSet.cardSerie.code}>
-                <img
-                  src={"src/assets/cards/" + card.cardSet.code + "/" + Number(card.localId) + ".jpg"}
-                />
+                <div className="Collection-Card-imgContainer">
+                  <img
+                    src={"src/assets/cards/" + card.cardSet.code + "/" + Number(card.localId) + ".jpg"}
+                  />
+                  <div className="Collection-Card-img Collection-Card-img-reverseFilter" />
+                  <div className="Collection-Card-img Collection-Card-img-classicFilter" />
+                </div>
                 <div className="Collection-Card-overlayContainer">
                   <div className="Collection-Card-overlay"/>
                 </div>

@@ -1,9 +1,9 @@
 {
     "host": "127.0.0.1",
     "port": 5432,
-    "username": "root",
+    "username": "postgres",
     "password": "WWxX26SVWhr29",
-    "database": "pokecard",
+    "database": "pokecards",
     "dialect": "postgres",
     "options": {
         "logging": false,

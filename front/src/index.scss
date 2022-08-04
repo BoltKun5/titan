@@ -6,7 +6,7 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   //background-image: url('./assets/background.jpeg');
-  background: #de3d2b;
+  background: #fff;
   overflow: overlay;
 }
 
@@ -70,18 +70,30 @@ code {
         left: 73px;
         top: 30px;
         transform: rotateZ(35deg);
-        background-color: lightgrey;
+        &::before {
+          content: "";
+          position: absolute;
+          width: 100%;
+          height: 100%;
+          top: 0;
+          left: 0;
+          z-index: 1000;
+          background: url('src/assets/cards/ASR/3.jpg');
+          background-repeat: no-repeat;
+          background-size: 104%;
+          background-position: -10px 20px;
+          transform: rotateZ(-35deg);
+        }
       }
       &-reverseFilter {
         left: -152px;
         top: -118px;
         transform: rotateZ(35deg);
-        background-color: lightcoral;
       }
     }
 
     &-overlay {
-      width: 100%;
+      width: 233px;
       border: 10.5px #c6c6c6 solid;
       height: calc(100% - 3px);
       box-sizing: border-box;
@@ -554,5 +566,11 @@ code {
       -webkit-filter: grayscale(100%); /* Chrome, Safari, Opera */
       filter: grayscale(100%);
     }
+  }
+  &-onlyReverse .Collection-Card-img-classicFilter{
+    filter: grayscale(100%);
+  }
+  &-onlyClassic .Collection-Card-img-reverseFilter{
+    filter: grayscale(100%);
   }
 }
