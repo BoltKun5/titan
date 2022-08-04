@@ -1,4 +1,4 @@
-export interface SetFilterListInterface {
+export interface CardSetFilterInterface {
   name: string,
   id: string,
   category: string,

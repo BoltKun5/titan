@@ -1,9 +1,9 @@
 import React, {useEffect, useState} from "react";
 import {ClickAwayListener, TextField} from "@mui/material";
-import {SetFilterListInterface} from "../../../api/src/local_core/types/types/interface/front";
+import {CardSetFilterInterface} from "../../../api/src/local_core/types/types/interface/front";
 
 type Props = {
-  items: SetFilterListInterface[],
+  items: CardSetFilterInterface[],
   placeholder: string,
   onFilterChange: React.MouseEventHandler<HTMLElement>,
 }
@@ -17,7 +17,7 @@ export const CategorizedAutocompleteChecklist: React.FC<Props> = ({items, placeh
     updateFilteredItems(items);
   }, [searchTerm, items]);
 
-  const updateFilteredItems = (propsItems: SetFilterListInterface[]) => {
+  const updateFilteredItems = (propsItems: CardSetFilterInterface[]) => {
     if (!propsItems) {
       return [];
     }
@@ -36,7 +36,7 @@ export const CategorizedAutocompleteChecklist: React.FC<Props> = ({items, placeh
           i++;
         }
       });
-      items = items.sort((a: SetFilterListInterface, b) =>
+      items = items.sort((a: CardSetFilterInterface, b) =>
         // @ts-ignore
         allCategories[a.category] - allCategories[b.category])
     }
@@ -83,7 +83,7 @@ export const CategorizedAutocompleteChecklist: React.FC<Props> = ({items, placeh
 
   }
 
-  const getTitleClassList = (item: SetFilterListInterface) => {
+  const getTitleClassList = (item: CardSetFilterInterface) => {
     if (filteredItems.filter((filteredElement) => (item.title === filteredElement.category) && !filteredElement.status).length === 0) {
       return "AutocompleteCheck-title titleSelected"
     }
@@ -104,7 +104,7 @@ export const CategorizedAutocompleteChecklist: React.FC<Props> = ({items, placeh
       </TextField>
       <div className={"AutocompleteCheck-dropdown " + (isDropdownOpen ? 'show' : '')}>
         {
-          filteredItems.map((item: SetFilterListInterface, index: number) => {
+          filteredItems.map((item: CardSetFilterInterface, index: number) => {
             if (item.title) {
               return <div key={item.title + index.toString()}
                           className={getTitleClassList(item)}

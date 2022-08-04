@@ -1,7 +1,6 @@
 <template>
   <div
     class="main-list"
-    :style="`background: url('${require('@/assets/background.jpeg')}')`"
   >
     <SearchComponent @updateFilters="updateFilters" />
     <div class="card-list">
