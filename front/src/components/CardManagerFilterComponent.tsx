@@ -1,9 +1,10 @@
 import React, {useContext} from "react";
 import {FormControl, InputLabel, MenuItem, Select, TextField, Tooltip} from "@mui/material";
 import {CardSet} from "../../../api/src/database";
-import {SideBareComponentPropsType} from "../../typing/types";
+import {SideBarComponentPropsType} from "../../typing/types";
 import CardManagerContext from "../contexts/CardManagerContext";
 import {CategorizedAutocompleteChecklist} from "./CategorizedAutocompleteChecklist";
+import {SwitchComponent} from "./SwitchComponent";
 
 export const CardManagerFilterComponent: React.FC<{}> = () => {
   const {
@@ -58,31 +59,27 @@ export const CardManagerFilterComponent: React.FC<{}> = () => {
                  variant="outlined" onKeyUp={startCountdown} onKeyDown={() => clearTimeout(nameInputTimer)}/>
       <CategorizedAutocompleteChecklist items={cardSetFilter} placeholder={"Trier par sets"}
                                         onFilterChange={updateSetFilters}/>
-
-      <div className="Manager-filter-switchInput">
-        <label htmlFor={"collectionMode"}
-               className={collectionMode ? "Manager-filter-switchInput-activated" : ""}>
-          Activer le mode Collection
-          <div className={"Manager-filter-switchInput-light"}/>
-        </label>
-        <input type={"checkbox"} onChange={e => setCollectionMode(e.target.checked)} id={"collectionMode"}/>
-      </div>
-      <div className="Manager-filter-switchInput">
-        <label htmlFor={"separateReverse"}
-               className={!collectionMode ? "Manager-filter-switchInput-disabled" : separateReverse ? "Manager-filter-switchInput-activated" : ""}>
-          Séparer les cartes Reverse
-          <div className={"Manager-filter-switchInput-light"}/>
-        </label>
-        <input type={"checkbox"} onChange={e => setSeparateReverse(e.target.checked)} id={"separateReverse"}/>
-      </div>
-      <div className="Manager-filter-switchInput">
-        <label htmlFor={"showUnowned"}
-               className={!collectionMode ? "Manager-filter-switchInput-disabled" : showUnowned ? "Manager-filter-switchInput-activated" : ""}>
-          Afficher les cartes non-possédées
-          <div className={"Manager-filter-switchInput-light"}/>
-        </label>
-        <input type={"checkbox"} onChange={e => setShowUnowned(e.target.checked)} id={"showUnowned"}/>
-      </div>
+      <SwitchComponent
+        value={collectionMode}
+        isDisabled={false}
+        modifyValue={setCollectionMode}
+        label={'Activer le mode Collection'}
+        id={'collectionMode'}
+      />
+      <SwitchComponent
+        value={separateReverse}
+        isDisabled={!collectionMode}
+        modifyValue={setSeparateReverse}
+        label={'Séparer les cartes Reverse'}
+        id={'separateReverse'}
+      />
+      <SwitchComponent
+        value={showUnowned}
+        isDisabled={!collectionMode}
+        modifyValue={setShowUnowned}
+        label={'Afficher les cartes non possédées'}
+        id={'showUnowned'}
+      />
       <div className="Manager-filter-selectInput">
         <FormControl>
           <InputLabel id={"orderLabel"}>Trier par</InputLabel>

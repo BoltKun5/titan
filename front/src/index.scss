@@ -56,6 +56,7 @@ code {
       overflow: hidden;
 
       & img {
+        z-index: 5;
         width: 100%;
         height: 100%;
       }
@@ -66,36 +67,18 @@ code {
       top: 0;
       width: 100%;
       height: 100%;
+      z-index: 10;
 
       &-classicFilter {
-
-        &::before {
-          content: "";
-          position: absolute;
-          width: 100%;
-          height: 100%;
-          top: 0;
-          left: 0;
-          z-index: 1000;
-          background: url('src/assets/cards/ASR/3.jpg');
-          background-size: 100%;
-          clip-path: polygon(0% 100%, 100% 100%, 100% 0%);
-          filter: grayscale(100%);
-        }
+        top: 0;
+        left: 0;
+        clip-path: polygon(0% 99%, 100% 100%, 100% 0%);
       }
 
       &-reverseFilter {
-        content: "";
-        position: absolute;
-        width: 100%;
-        height: 100%;
         top: 0;
         left: 0;
-        z-index: -1;
-        background: url('src/assets/cards/ASR/3.jpg');
-        background-size: 100%;
         clip-path: polygon(0% 0%, 100% 0%, 0% 100%);
-        filter: grayscale(100%);
       }
     }
 
@@ -106,9 +89,9 @@ code {
       box-sizing: border-box;
       outline: #282c34 solid 3px;
       border-radius: 9px;
-      z-index: 10;
 
       &Container {
+        z-index: 100;
         position: absolute;
         left: 0;
         top: 0;
@@ -120,10 +103,10 @@ code {
 
       &Bottom {
         transform: translateY(-9px);
-        width: 100%;
+        width: 220px;
         background: #c6c6c6;
         border-radius: 0 0 9px 9px;
-        z-index: 11;
+        z-index: 101;
         position: relative;
 
         &-content {
@@ -422,7 +405,6 @@ code {
       margin: 3.3px 0;
       text-align: center;
       position: relative;
-      z-index: 1000;
       transform: translateX(calc(50% - 102px));
 
       &:hover {
@@ -445,7 +427,6 @@ code {
     &-setList {
       display: none;
       margin: auto;
-      z-index: 10000;
       position: relative;
       padding-left: 15px;
     }
@@ -504,7 +485,7 @@ code {
     box-shadow: 0 5px 5px -3px rgba(0, 0, 0, 0.2), 0 8px 10px 1px rgba(0, 0, 0, 0.14), 0 3px 14px 2px rgba(0, 0, 0, 0.12);
     border-radius: 4px;
     max-height: 400px;
-    z-index: 8000;
+    z-index: 999;
 
     &-element {
       width: 100% !important;
@@ -575,11 +556,11 @@ code {
     }
   }
 
-  &-onlyReverse .Collection-Card-img-classicFilter {
+  &-onlyReverse .Collection-Card-img-reverseFilter {
     filter: grayscale(100%);
   }
 
-  &-onlyClassic .Collection-Card-img-reverseFilter {
+  &-onlyClassic .Collection-Card-img-classicFilter {
     filter: grayscale(100%);
   }
 }

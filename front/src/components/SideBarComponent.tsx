@@ -1,10 +1,10 @@
 import React, {useContext} from "react";
 import {Tooltip} from "@mui/material";
 import {CardSet} from "../../../api/src/database";
-import {SideBareComponentPropsType} from "../../typing/types";
+import {SideBarComponentPropsType} from "../../typing/types";
 import CardManagerContext from "../contexts/CardManagerContext";
 
-export const SideBarComponent: React.FC<SideBareComponentPropsType> = ({series}) => {
+export const SideBarComponent: React.FC<SideBarComponentPropsType> = ({series}) => {
   const {cardSetFilter, setCardSetFilter, resetAllFilters} = useContext(CardManagerContext);
 
   const activateSetFilter = (setCode: string) => {
