@@ -53,6 +53,17 @@ import {URLs} from "../temp";
     //
     //   await sleep(2000);
     // }
+    // if (!fs.existsSync(`./img`))
+    //   fs.mkdirSync(`./img`)
+    //
+    // for (let i = 187; i <= 216; i++) {
+    //   try {
+    //     fs.renameSync('./img/BRS/' + i + '.jpg', './img/BRS/TG' + String(i - 186).padStart(2, "0") + '.jpg');
+    //     console.log(i + " => " + 'TG' + String(i - 186).padStart(2, "0"))
+    //   } catch (e) {
+    //     console.log(e)
+    //   }
+    // }
 
   } catch (error) {
     Logger.error(error, LogType.SYSTEM_STARTUP);

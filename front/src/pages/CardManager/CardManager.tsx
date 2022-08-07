@@ -112,8 +112,8 @@ export const CardManager: React.FC = () => {
     resetAllFilters,
   }
 
-  // TODO : mettre un loader, gérer les disabled d'input, séparer en components ?, problème de render ?, finir la color pour la possession
-  // TODO : Tris pas type, rareté, brillance par rareté, limit de sequelize ?
+  // TODO : mettre un loader,
+  // TODO : Tris pas type, rareté, brillance par rareté, limit de sequelize, lazy loading
 
   return (
     <CardManagerContext.Provider value={contextValue}>

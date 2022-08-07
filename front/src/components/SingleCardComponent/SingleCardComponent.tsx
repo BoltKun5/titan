@@ -30,9 +30,9 @@ export const SingleCardComponent: React.FC<SingleCardComponentPropsType> = ({car
 
   const coloredImage = (card: Card) => (
     collectionMode && card.canBeReverse && <>
-      <img className="SingleCard-possession-reverse"
+      <img className="SingleCard-possession-reverse" loading={"lazy"}
            src={"src/assets/cards/" + card.cardSet.code + "/" + Number(card.localId) + ".jpg"}/>
-      <img className="SingleCard-possession-classic"
+      <img className="SingleCard-possession-classic" loading={"lazy"}
            src={"src/assets/cards/" + card.cardSet.code + "/" + Number(card.localId) + ".jpg"}/>
     </>
   )
@@ -44,7 +44,8 @@ export const SingleCardComponent: React.FC<SingleCardComponentPropsType> = ({car
       data-id={card.name + card.cardSet.code + card.cardSet.cardSerie.code}>
 
       <div className="SingleCard-imgContainer">
-        <img className="SingleCard-img" src={"src/assets/cards/" + card.cardSet.code + "/" + Number(card.localId) + ".jpg"}/>
+        <img className="SingleCard-img"
+             src={"src/assets/cards/" + card.cardSet.code + "/" + Number(card.localId) + ".jpg"} loading={"lazy"}/>
         {coloredImage(card)}
       </div>
 
