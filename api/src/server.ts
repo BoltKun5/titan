@@ -59,9 +59,23 @@ import {URLs} from "../temp";
     // for (let i = 187; i <= 216; i++) {
     //   try {
     //     fs.renameSync('./img/BRS/' + i + '.jpg', './img/BRS/TG' + String(i - 186).padStart(2, "0") + '.jpg');
-    //     console.log(i + " => " + 'TG' + String(i - 186).padStart(2, "0"))
     //   } catch (e) {
     //     console.log(e)
+    //   }
+    // }
+
+    // for (let i = 1; i <= 246; i++) {
+    //   const URL = `https://www.pokecardex.com/assets/images/sets/BRS/HD/${i}.jpg`;
+    //   try {
+    //     const res = await axios.get(URL, {
+    //       responseType: 'arraybuffer',
+    //     });
+    //     if (!fs.existsSync(`./img/BRS`))
+    //       fs.mkdirSync(`./img/BRS`)
+    //     fs.writeFileSync(`./img/BRS/${i}.jpg`, Buffer.from(res.data as any));
+    //     console.log(i+".jpg")
+    //   } catch (e) {
+    //     break;
     //   }
     // }
 

@@ -37,6 +37,13 @@ export const SingleCardComponent: React.FC<SingleCardComponentPropsType> = ({car
     </>
   )
 
+  const getImageSource = (card: Card): string => {
+    const isValid = !isNaN(Number(card.localId));
+    console.log(Number(card.localId) + " : " + isValid)
+    if (isValid) return "src/assets/cards/" + card.cardSet.code + "/" + Number(card.localId) + ".jpg"
+    return "src/assets/cards/" + card.cardSet.code + "/" + card.localId + ".jpg"
+  }
+
   return (
     <div
       className={"SingleCard " + getColorClassname(card.userCardPossessions?.[0], firstType === 'reverse', card.canBeReverse)}
@@ -44,8 +51,7 @@ export const SingleCardComponent: React.FC<SingleCardComponentPropsType> = ({car
       data-id={card.name + card.cardSet.code + card.cardSet.cardSerie.code}>
 
       <div className="SingleCard-imgContainer">
-        <img className="SingleCard-img"
-             src={"src/assets/cards/" + card.cardSet.code + "/" + Number(card.localId) + ".jpg"} loading={"lazy"}/>
+        <img className="SingleCard-img" src={getImageSource(card)} loading={"lazy"}/>
         {coloredImage(card)}
       </div>
 
