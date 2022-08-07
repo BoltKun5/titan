@@ -1,0 +1,21 @@
+.SingleCardOverlay {
+  &-overlay {
+    width: 233px;
+    border: 10.5px #c6c6c6 solid;
+    height: calc(100% - 3px);
+    box-sizing: border-box;
+    outline: #282c34 solid 3px;
+    border-radius: 9px;
+  }
+
+  &-container {
+    z-index: 100;
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+  }
+}

@@ -1,0 +1,14 @@
+.CardManagerCardList {
+  display: flex;
+  flex: 1 1 auto;
+  overflow: auto scroll;
+  box-sizing: border-box;
+
+  &-grid {
+    width: 97.5%;
+    height: 100%;
+    display: grid;
+    margin: auto;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  }
+}

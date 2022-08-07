@@ -1,0 +1,22 @@
+.CardManagerFilter {
+  width: 95%;
+  margin: 15px auto;
+  border-radius: 10px;
+  background: #c6c6c6;
+  border: #282c34 solid 3px;
+  box-sizing: border-box;
+  display: flex;
+  flex-wrap: wrap;
+  flex: 0 1 auto;
+
+  & > * {
+    width: 300px !important;
+    align-self: center;
+    margin: 20px;
+  }
+
+  &-textInput {
+    width: 400px;
+    margin: 20px !important;
+  }
+}

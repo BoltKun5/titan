@@ -4,7 +4,7 @@ export type SideBarComponentPropsType = {
   series: CardSerie[]
 }
 
-export type SwitchComponentPropsType = {
+export type SwitchInputComponentPropsType = {
   value: boolean,
   isDisabled: boolean,
   modifyValue: Function,

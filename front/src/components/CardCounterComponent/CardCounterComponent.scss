@@ -1,0 +1,39 @@
+.CardCounter {
+  &-name {
+    align-self: center;
+
+  }
+
+  &-input {
+    /* Chrome, Safari, Edge, Opera */
+    &::-webkit-outer-spin-button,
+    &::-webkit-inner-spin-button {
+      -webkit-appearance: none;
+    }
+
+    /* Firefox */
+    -moz-appearance: textfield;
+
+    width: 40px;
+    margin: 0 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  &-buttons {
+    display: flex;
+    margin: auto;
+
+    & button {
+      width: 30px;
+      height: 30px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      cursor: pointer;
+    }
+
+
+  }
+}

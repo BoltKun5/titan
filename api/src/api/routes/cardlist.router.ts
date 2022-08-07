@@ -10,7 +10,6 @@ import {CardAttackCost} from "../../database/models/CardAttackCost";
 import {CardAbility} from "../../database/models/CardAbility";
 import {CardDamageModification} from "../../database/models/CardDamageModification";
 import {CardDexId} from "../../database/models/CardDexId";
-import {main} from "abyss_crypt_core";
 import {UserCardPossession} from "../../database/models/UserCardPossession";
 import auth from "../middlewares/auth";
 
@@ -62,8 +61,26 @@ export const CardListRouter = (app: Router): Router => {
             as: "userCardPossessions",
             required: (req.query.unowned ? (req.query.unowned !== 'show') : false),
             where: {
-              userId: res.locals.currentUser.id
-            }
+              [sequelize.Op.and]: [
+                {
+                  [sequelize.Op.or]: [
+                    {
+                      classicQuantity: {
+                        [sequelize.Op.gt]: 0,
+                      },
+                    },
+                    {
+                      reverseQuantity: {
+                        [sequelize.Op.gt]: 0,
+                      },
+                    },
+                  ],
+                },
+                {
+                  userId: res.locals.currentUser.id,
+                },
+              ],
+            },
           },
           {
             model: CardType,

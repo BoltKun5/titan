@@ -1,0 +1,62 @@
+.SideBar {
+  display: flex;
+  width: 215px;
+  background-color: #d84432;
+  height: 100%;
+  box-sizing: border-box;
+  align-items: center;
+  flex-direction: column;
+  position: fixed;
+  z-index: 1000;
+  border: #323230 3px solid;
+  overflow-y: visible;
+
+  &-serie {
+    display: flex;
+    margin: 3.3px 0;
+    text-align: center;
+    position: relative;
+    transform: translateX(calc(50% - 102px));
+
+    &:hover {
+      .SideBar-setList {
+        display: flex;
+      }
+    }
+
+    &Name {
+      border: #323232 solid 2px;
+      border-radius: 6px;
+      background: #2c2c2c;
+      width: 178px;
+      font-weight: bold;
+      padding: 10px;
+      color: #c6c6c6;
+    }
+  }
+
+  &-setList {
+    display: none;
+    margin: auto;
+    position: relative;
+    padding-left: 15px;
+  }
+
+  &-setElement {
+    background: white;
+    border-radius: 100%;
+    display: flex;
+    justify-content: center;
+    margin: 3px;
+    cursor: pointer;
+
+    &:hover {
+      background: #eaeaea;
+    }
+
+    img {
+      width: 35px;
+      height: 35px;
+    }
+  }
+}
