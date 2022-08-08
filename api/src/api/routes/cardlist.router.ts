@@ -88,8 +88,9 @@ export const CardListRouter = (app: Router): Router => {
             as: "types",
           },
           {
-            where: {...(req.query.setfilter ? {code: req.query.setfilter} : {})},
+            where: {...(req.query.setFilter ? {code: req.query.setFilter} : {})},
             model: CardSet,
+            required: true,
             duplicating: false,
             attributes: {
               exclude: ["cardSerieId", "isPlayableInExpanded", "isPlayableInStandard", "id", "name", "releaseDate", "tcgOnline"],
@@ -157,7 +158,7 @@ export const CardListRouter = (app: Router): Router => {
             as: "dexIds",
           },
           {
-            where: {...(req.query.setfilter ? {code: req.query.setfilter} : {})},
+            where: {...(req.query.setFilter ? {code: req.query.setFilter} : {})},
             model: CardSet,
             as: "cardSet",
             include: [

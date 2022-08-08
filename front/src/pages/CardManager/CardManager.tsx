@@ -56,13 +56,13 @@ export const CardManager: React.FC = () => {
   }, [series, fetchSeries]);
 
   const fetchCards = useCallback(async () => {
-    const setFilters = cardSetFilter.filter((setFilter) => setFilter.status);
+    const setFilter = cardSetFilter.filter((setFilter) => setFilter.status);
     const params: Record<string, any> = {};
 
-    if (setFilters.length > 0) {
-      params.setFilters = []
-      setFilters.forEach((setFilter) => {
-        params.setFilters.push(setFilter.id);
+    if (setFilter.length > 0) {
+      params.setFilter = []
+      setFilter.forEach((setFilter) => {
+        params.setFilter.push(setFilter.id);
       })
     }
 
