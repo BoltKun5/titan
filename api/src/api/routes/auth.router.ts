@@ -36,7 +36,10 @@ export const AuthRouter = (app: Router): Router => {
       res.json({
         data: {
           token: token(user),
-          user: user,
+          user: {
+            shownName: user.shownName,
+            id: user.id,
+          },
         },
       });
     }),
@@ -65,7 +68,7 @@ export const AuthRouter = (app: Router): Router => {
         password: req.body.password,
         username: req.body.username,
         shownName: req.body.shownName,
-        role: 0
+        role: 0,
       });
 
       res.json({

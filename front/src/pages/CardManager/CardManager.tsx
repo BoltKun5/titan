@@ -81,7 +81,10 @@ export const CardManager: React.FC = () => {
   }, [cardSetFilter, nameFilter, collectionMode, showUnowned, order])
 
   const resetAllFilters = () => {
-    setCardSetFilter([]);
+    setCardSetFilter(cardSetFilter.map((element) => {
+      element.status = false;
+      return element
+    }));
     const nameFilterElement = document.querySelector("#nameFilter");
     if (nameFilterElement) {
       // @ts-ignore

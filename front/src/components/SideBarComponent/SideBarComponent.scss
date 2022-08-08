@@ -18,6 +18,10 @@
     position: relative;
     transform: translateX(calc(50% - 102px));
 
+    &.selected .SideBar-serieName {
+      color: #f1b700;
+    }
+
     &:hover {
       .SideBar-setList {
         display: flex;
@@ -32,6 +36,7 @@
       font-weight: bold;
       padding: 10px;
       color: #c6c6c6;
+      cursor: pointer;
     }
   }
 
@@ -40,6 +45,7 @@
     margin: auto;
     position: relative;
     padding-left: 15px;
+
   }
 
   &-setElement {
@@ -49,6 +55,10 @@
     justify-content: center;
     margin: 3px;
     cursor: pointer;
+
+    &.selected {
+      background: #f1b700;
+    }
 
     &:hover {
       background: #eaeaea;

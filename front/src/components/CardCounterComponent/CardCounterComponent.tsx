@@ -1,14 +1,20 @@
-import React, {useContext, useState} from "react";
+import React, {useContext, useEffect, useState} from "react";
 import {CardCounterComponentPropsType} from "../../../typing/types";
 import {loggedApi} from "../../axios";
 import CardManagerContext from "../../contexts/CardManagerContext";
 import './CardCounterComponent.scss';
+import {Card} from "../../../../api/src/database";
 
 export const CardCounterComponent: React.FC<CardCounterComponentPropsType> = ({
                                                                                 card, label, type,
                                                                               }) => {
-  const {setCards, cards} = useContext(CardManagerContext)
-  const [isDisabled, setIsDisabled] = useState<boolean>(false)
+  const {setCards, cards} = useContext(CardManagerContext);
+  const [isDisabled, setIsDisabled] = useState<boolean>(false);
+  const [value, setValue] = useState<string>("");
+
+  useEffect(() => {
+    setValue(getValue(card))
+  }, [cards])
 
   const modifyQuantity = async (card: any, cardType: string, modification: string) => {
     setIsDisabled(true)
@@ -94,6 +100,17 @@ export const CardCounterComponent: React.FC<CardCounterComponentPropsType> = ({
     }
   }
 
+  const getValue = (card: Card) => {
+    return String(
+      type === 'classic' ? (card?.userCardPossessions?.[0]?.classicQuantity ?? 0) :
+        (card?.userCardPossessions?.[0]?.reverseQuantity ?? 0),
+    )
+  }
+
+  const changeHandler = (element: EventTarget & HTMLInputElement) => {
+    setValue(element.value);
+  }
+
   return (
     <div className="CardCounter">
       <div className="CardCounter-name">{label}</div>
@@ -103,9 +120,7 @@ export const CardCounterComponent: React.FC<CardCounterComponentPropsType> = ({
         </button>
         <input className="CardCounter-input" disabled={isDisabled}
                onBlur={(ev) => setQuantity(card, type, ev.currentTarget)}
-               // TODO: Mettre ça dans une fonction
-               //  @ts-ignore
-               value={card?.userCardPossessions?.[0]?.[`${type}Quantity`] ?? 0} type="number"/>
+               value={value} type="number" onChange={(ev) => changeHandler(ev.currentTarget)}/>
         <button className="CardCounter-plus" disabled={isDisabled}
                 onClick={() => modifyQuantity(card, type, 'plus')}>+
         </button>

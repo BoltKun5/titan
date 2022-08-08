@@ -21,7 +21,10 @@ export interface ISignupAuthResponse {
 }
 
 export interface ISigninAuthResponse {
-  user: User,
+  user: {
+    shownName: string,
+    id: string
+  },
   token: string
 }
 

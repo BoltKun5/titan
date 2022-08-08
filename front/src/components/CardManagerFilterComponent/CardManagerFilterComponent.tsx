@@ -1,5 +1,5 @@
 import React, {useContext} from "react";
-import {FormControl, InputLabel, MenuItem, Select, TextField} from "@mui/material";
+import {Button, FormControl, InputLabel, MenuItem, Select, TextField} from "@mui/material";
 import CardManagerContext from "../../contexts/CardManagerContext";
 import {CategorizedAutocompleteChecklist} from "../CategorizedAutocompleteChecklist/CategorizedAutocompleteChecklist";
 import {SwitchInputComponent} from "../SwitchInputComponent/SwitchInputComponent"
@@ -18,6 +18,7 @@ export const CardManagerFilterComponent: React.FC<{}> = () => {
     order,
     setOrder,
     setNameFilter,
+    resetAllFilters
   } = useContext(CardManagerContext);
 
   const updateSetFilters = (event: any) => {
@@ -96,6 +97,7 @@ export const CardManagerFilterComponent: React.FC<{}> = () => {
             <MenuItem value={"type"}>Type</MenuItem>
           </Select>
         </FormControl>
+        <Button className="CardManagerFilter-button" variant="contained" onClick={resetAllFilters}>Réinitialiser filtres</Button>
       </div>
     </div>
   )
