@@ -93,17 +93,17 @@ export const CategorizedAutocompleteChecklist: React.FC<Props> = ({items, placeh
 
   return <ClickAwayListener onClickAway={closeDropdown} mouseEvent={'onClick'}>
     <div className="CategorizedAutocompleteChecklist">
-      <TextField
-        autoComplete={"false"}
-        fullWidth
+      <input
+        id={"CategorizedAutocompleteChecklist-textInput"}
+        className="CategorizedAutocompleteChecklist-textInput"
         type="text"
-        label={placeholder}
         onChange={(e) => setSearchTerm(e.target.value)}
         value={searchTerm}
         onClick={openDropdown}
-        variant="outlined"
-      >
-      </TextField>
+      />
+      <label htmlFor={'CategorizedAutocompleteChecklist-textInput'}
+             className={'CategorizedAutocompleteChecklist-textInput ' + (isDropdownOpen ? 'isOpened' : '')}>{placeholder}</label>
+
       <div className={"CategorizedAutocompleteChecklist-dropdown " + (isDropdownOpen ? 'show' : '')}>
         {
           filteredItems.map((item: CardSetFilterInterface, index: number) => {
@@ -114,7 +114,8 @@ export const CategorizedAutocompleteChecklist: React.FC<Props> = ({items, placeh
             } else {
               return <div key={item.id + index.toString()}
                           onClick={(ev) => onFilterChange(ev)}>
-                <div id={item.id} className={"CategorizedAutocompleteChecklist-dropdownElement " + (item.status ? 'selected' : '')}>
+                <div id={item.id}
+                     className={"CategorizedAutocompleteChecklist-dropdownElement " + (item.status ? 'selected' : '')}>
                   {item.name}
                 </div>
               </div>

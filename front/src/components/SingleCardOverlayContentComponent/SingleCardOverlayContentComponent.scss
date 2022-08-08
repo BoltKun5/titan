@@ -1,21 +1,24 @@
 .SingleCardOverlayContent {
   &-container {
     transform: translateY(-9px);
-    width: 220px;
-    background: #c6c6c6;
+    width: 230px;
+    background: #fff;
     border-radius: 0 0 9px 9px;
     z-index: 101;
     position: relative;
+    margin-top: 1px;
   }
 
   &-content {
     margin: 10px;
-    background-color: #ececec;
+    background-color: #e5e5e5;
     display: flex;
     border: #282c34 solid 1px;
+    border-radius: 3px;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    padding: 5px 0;
+    padding-bottom: 5px;
+    margin-bottom: 6px;
   }
 }

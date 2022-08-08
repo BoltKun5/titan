@@ -52,14 +52,15 @@ export const CardListRouter = (app: Router): Router => {
         }
       }
       const cards = await Card.findAll({
-        where: {...(req.query.namefilter ? {name: {[Sequelize.Op.like]: `%${req.query.namefilter}%`}} : {})},
+        where: {...(req.query.namefilter ? {name: {[Sequelize.Op.iLike]: `%${req.query.namefilter}%`}} : {})},
         order: mainOrder,
-        subQuery: false,
+        attributes: {exclude: ["cardSet"]},
         include: [
           {
             model: UserCardPossession,
             as: "userCardPossessions",
             required: (req.query.unowned ? (req.query.unowned !== 'show') : false),
+            duplicating: false,
             where: {
               [sequelize.Op.and]: [
                 {
@@ -87,41 +88,17 @@ export const CardListRouter = (app: Router): Router => {
             as: "types",
           },
           {
-            model: CardAttack,
-            as: "attacks",
-            include: [{
-              model: CardAttackCost,
-              as: "costs",
-            }],
-          },
-          {
-            model: CardAbility,
-            as: "abilities",
-          },
-          {
-            model: CardDamageModification,
-            as: "damageModifications",
-          },
-          {
-            model: CardAttribute,
-            as: "attributes",
-          },
-          {
-            model: CardDexId,
-            as: "dexIds",
-          },
-          {
             where: {...(req.query.setfilter ? {code: req.query.setfilter} : {})},
             model: CardSet,
+            duplicating: false,
+            attributes: {
+              exclude: ["cardSerieId", "isPlayableInExpanded", "isPlayableInStandard", "id", "name", "releaseDate", "tcgOnline"],
+            },
             as: "cardSet",
-            include: [
-              {
-                model: CardSerie,
-                as: "cardSerie",
-              },
-            ],
           },
         ],
+        limit: 300,
+        subQuery: false,
       });
       res.json({
         data: cards,

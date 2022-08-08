@@ -168,7 +168,7 @@ export default class Logger {
           error.stack
         }`,
       );
-    else Logger.logConsole.log('error', `${error.stack}`);
+    else Logger.logConsole.log('error', `${error.message}`);
 
     if (AppConfig.process.sequelizeReady)
       return await LogConsoleService.create({

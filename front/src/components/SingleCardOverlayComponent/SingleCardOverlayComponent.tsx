@@ -8,6 +8,7 @@ export const SingleCardOverlayComponent: React.FC<SingleCardOverlayComponentProp
     <>
       <div key={"overlay" + card.localId + index} className="SingleCardOverlay-container">
         <div className="SingleCardOverlay-overlay"/>
+        <div className="SingleCardOverlay-overlay-inner"/>
       </div>
       <SingleCardOverlayContentComponent firstType={firstType} card={card} index={index}/>
     </>

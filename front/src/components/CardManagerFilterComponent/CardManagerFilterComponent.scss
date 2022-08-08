@@ -6,17 +6,135 @@
   border: #282c34 solid 3px;
   box-sizing: border-box;
   display: flex;
-  flex-wrap: wrap;
   flex: 0 1 auto;
 
   & > * {
-    width: 300px !important;
     align-self: center;
-    margin: 20px;
+    margin: 0 10px;
+  }
+
+  &-selectInput {
+    position: relative;
+
+    & select {
+      display: inline-block;
+      padding: 15px 0 15px 15px;
+      height: 100%;
+      font-weight: 400;
+      font-size: 17px;
+      color: #377D6A;
+      background: #efefef;
+      border: 0;
+      border-radius: 3px;
+      box-sizing: border-box;
+      outline: 0;
+      transition: all .3s ease-in-out;
+      line-height: 1.15;
+      min-width: 150px;
+      width: 100%;
+    }
+
+    & label {
+      position: absolute;
+      background: #d84432;
+      padding: 5px 8px;
+      border-radius: 3px;
+      top: -25px;
+      left: 7px;
+      color: white;
+      width: 70px;
+    }
   }
 
   &-textInput {
-    width: 400px;
-    margin: 20px !important;
+    display: inline-block;
+    padding: 10px 0 10px 15px;
+    height: 100%;
+    font-weight: 400;
+    font-size: 17px;
+    color: #377D6A;
+    background: #efefef;
+    border: 0;
+    border-radius: 3px;
+    box-sizing: border-box;
+    outline: 0;
+    transition: all .3s ease-in-out;
+    line-height: 1.15;
+    margin: 0;
+    width: 100%;
+
+    &Container {
+      position: relative;
+
+      & label {
+        position: absolute;
+        background: #d84432;
+        padding: 5px 8px;
+        border-radius: 3px;
+        top: -25px;
+        left: 7px;
+        color: white;
+      }
+    }
+
+    &:active, &:focus, &:not(:empty) {
+      color: #377D6A;
+      background: #fff;
+    }
+  }
+
+  &-switchGroup > * {
+    margin: 10px 0;
+    width: 300px;
+  }
+
+  &-top {
+    display: flex;
+    height: 70px;
+    justify-content: left;
+
+    & > * {
+      margin: 10px;
+      width: 33%;
+      max-width: 350px;
+      align-items: center;
+
+    }
+  }
+
+  &-bottom {
+    height: 70px;
+    display: flex;
+    justify-content: left;
+
+    & > * {
+      margin: 10px;
+      width: 33%;
+      max-width: 350px;
+      align-items: center;
+
+    }
+  }
+
+  &-left {
+    height: 80%;
+    flex: 1 0;
+  }
+
+  &-button {
+    background: #d84432;
+    display: inline-block;
+    padding: 5px 8px;
+    font-weight: 400;
+    font-size: 17px;
+    color: white;
+    border: 0;
+    border-radius: 3px;
+    box-sizing: border-box;
+    outline: 0;
+    transition: all .3s ease-in-out;
+    line-height: 1.15;
+    width: 200px;
+    cursor: pointer;
   }
 }

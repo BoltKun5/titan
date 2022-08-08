@@ -5,11 +5,13 @@ import {CardCounterComponent} from "../CardCounterComponent/CardCounterComponent
 import {notReverseRarities} from "../CardManagerCardListComponent/CardManagerCardListComponent";
 import './SingleCardOverlayContentComponent.scss'
 
-export const SingleCardOverlayContentComponent: React.FC<SingleCardOverlayContentComponentPropsType> = ({
-                                                                                                          card,
-                                                                                                          index,
-                                                                                                          firstType,
-                                                                                                        }) => {
+export const SingleCardOverlayContentComponent:
+  React.FC<SingleCardOverlayContentComponentPropsType>
+  = ({
+       card,
+       index,
+       firstType,
+     }) => {
   const {separateReverse} = useContext(CardManagerContext);
 
   return (

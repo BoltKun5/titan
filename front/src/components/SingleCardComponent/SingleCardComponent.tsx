@@ -10,6 +10,8 @@ export const SingleCardComponent: React.FC<SingleCardComponentPropsType> = ({car
   const {collectionMode, separateReverse} = useContext(CardManagerContext);
 
   const getColorClassname = (userCardPossession: UserCardPossession, reverseOnly: boolean = false, canBeReverse: boolean = true) => {
+    if (!collectionMode) return;
+    if (userCardPossession === undefined) return 'CardQuantity-notOwned';
     if (reverseOnly) return (userCardPossession?.reverseQuantity < 1 ? 'CardQuantity-notOwned' : 'CardQuantity-owned');
     if (!canBeReverse || (separateReverse && !reverseOnly)) return (userCardPossession?.classicQuantity < 1 ? 'CardQuantity-notOwned' : 'CardQuantity-owned');
 
@@ -28,30 +30,26 @@ export const SingleCardComponent: React.FC<SingleCardComponentPropsType> = ({car
     return ""
   }
 
-  const coloredImage = (card: Card) => (
-    collectionMode && card.canBeReverse && <>
-      <img className="SingleCard-possession-reverse" loading={"lazy"}
-           src={"src/assets/cards/" + card.cardSet.code + "/" + Number(card.localId) + ".jpg"}/>
-      <img className="SingleCard-possession-classic" loading={"lazy"}
-           src={"src/assets/cards/" + card.cardSet.code + "/" + Number(card.localId) + ".jpg"}/>
-    </>
-  )
-
   const getImageSource = (card: Card): string => {
     const isValid = !isNaN(Number(card.localId));
     if (isValid) return "src/assets/cards/" + card.cardSet.code + "/" + Number(card.localId) + ".jpg"
     return "src/assets/cards/" + card.cardSet.code + "/" + card.localId + ".jpg"
   }
-
   return (
     <div
       className={"SingleCard " + getColorClassname(card.userCardPossessions?.[0], firstType === 'reverse', card.canBeReverse)}
-      key={card.localId + index}
-      data-id={card.name + card.cardSet.code + card.cardSet.cardSerie.code}>
+      key={card.id}>
 
       <div className="SingleCard-imgContainer">
-        <img className="SingleCard-img" src={getImageSource(card)} loading={"lazy"}/>
-        {coloredImage(card)}
+        {
+          collectionMode && card.canBeReverse ?
+            <>
+              <img className="SingleCard-possession-reverse" loading={"lazy"}
+                   src={"src/assets/cards/" + card.cardSet.code + "/" + Number(card.localId) + ".jpg"}/>
+              <img className="SingleCard-possession-classic" loading={"lazy"}
+                   src={"src/assets/cards/" + card.cardSet.code + "/" + Number(card.localId) + ".jpg"}/>
+            </> : <img className="SingleCard-img" src={getImageSource(card)} loading={"lazy"}/>
+        }
       </div>
 
       {collectionMode && <SingleCardOverlayComponent firstType={firstType} card={card} index={index}/>}

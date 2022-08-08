@@ -84,4 +84,48 @@
     }
   }
 
+  &-textInput {
+    display: inline-block;
+    padding: 10px 0 10px 15px;
+    height: 100%;
+    font-weight: 400;
+    font-size: 17px;
+    color: #377D6A;
+    background: #efefef;
+    border: 0;
+    border-radius: 3px;
+    box-sizing: border-box;
+    outline: 0;
+    transition: all .3s ease-in-out;
+    line-height: 1.15;
+    margin: 0;
+    width: 100%;
+
+  }
+
+  & label {
+    transform-origin: center;
+    position: absolute;
+    background: #d84432;
+    padding: 5px 8px;
+    box-sizing: border-box;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    transition: all .3s ease-in-out;
+    width: 100%;
+    height: 100%;
+    border-radius: 3px;
+    top: 0;
+    left: 0;
+    color: white;
+
+    &.isOpened {
+      top: -20px;
+      left: 10px;
+      width: 130px;
+      height: 30px;
+    }
+  }
 }

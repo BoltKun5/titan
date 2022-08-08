@@ -26,10 +26,11 @@
   }
 
   &-activated {
-    background-color: black !important;
+    background-color: #d84432 !important;
+    color: white !important;
 
     & div {
-      background: #f1b700;
+      background: #e3ea0c;
     }
   }
 

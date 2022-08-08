@@ -18,7 +18,7 @@ export const CardManagerFilterComponent: React.FC<{}> = () => {
     order,
     setOrder,
     setNameFilter,
-    resetAllFilters
+    resetAllFilters,
   } = useContext(CardManagerContext);
 
   const updateSetFilters = (event: any) => {
@@ -55,49 +55,54 @@ export const CardManagerFilterComponent: React.FC<{}> = () => {
 
   return (
     <div className="CardManagerFilter">
-      <TextField className="CardManagerFilter-textInput" id="nameFilter" label="Filtrer par nom"
-                 variant="outlined" onKeyUp={startCountdown} onKeyDown={() => clearTimeout(nameInputTimer)}/>
-      <CategorizedAutocompleteChecklist items={cardSetFilter} placeholder={"Trier par sets"}
-                                        onFilterChange={updateSetFilters}/>
-      <SwitchInputComponent
-        value={collectionMode}
-        isDisabled={false}
-        modifyValue={setCollectionMode}
-        label={'Activer le mode Collection'}
-        id={'collectionMode'}
-      />
-      <SwitchInputComponent
-        value={separateReverse}
-        isDisabled={!collectionMode}
-        modifyValue={setSeparateReverse}
-        label={'Séparer les cartes Reverse'}
-        id={'separateReverse'}
-      />
-      <SwitchInputComponent
-        value={showUnowned}
-        isDisabled={!collectionMode}
-        modifyValue={setShowUnowned}
-        label={'Afficher les cartes non possédées'}
-        id={'showUnowned'}
-      />
-      <div className="CardManagerFilter-selectInput">
-        <FormControl>
-          <InputLabel id={"orderLabel"}>Trier par</InputLabel>
-          <Select
-            sx={{
-              width: 300,
-            }}
-            labelId={"orderLabel"}
-            value={order}
-            label={"Trier par"}
-            onChange={(event) => setOrder(event.target.value)}
-          >
-            <MenuItem defaultChecked value={"default"}>Set</MenuItem>
-            <MenuItem value={"name"}>Nom</MenuItem>
-            <MenuItem value={"type"}>Type</MenuItem>
-          </Select>
-        </FormControl>
-        <Button className="CardManagerFilter-button" variant="contained" onClick={resetAllFilters}>Réinitialiser filtres</Button>
+      <div className="CardManagerFilter-left">
+        <div className="CardManagerFilter-top">
+          <div className="CardManagerFilter-textInputContainer">
+            <label>Filtrer par nom</label>
+            <input type="text" className="CardManagerFilter-textInput" id="nameFilter"
+                   onKeyUp={startCountdown} onKeyDown={() => clearTimeout(nameInputTimer)}/>
+          </div>
+          <div className="CardManagerFilter-selectInput">
+            <label>Trier par</label>
+            <select onChange={(event) => setOrder(event.target.value)} value={order}>
+              <option defaultChecked={true} value={"default"}>Set</option>
+              <option value={"name"}>Nom</option>
+              <option value={"type"}>Type</option>
+            </select>
+          </div>
+
+          <CategorizedAutocompleteChecklist items={cardSetFilter} placeholder={"Filtrer par sets"}
+                                            onFilterChange={updateSetFilters}/>
+
+        </div>
+        <div className="CardManagerFilter-bottom">
+          <button className="CardManagerFilter-button" onClick={resetAllFilters}>Réinitialiser
+            filtres</button>
+        </div>
+      </div>
+
+      <div className="CardManagerFilter-switchGroup">
+        <SwitchInputComponent
+          value={collectionMode}
+          isDisabled={false}
+          modifyValue={setCollectionMode}
+          label={'Activer le mode Collection'}
+          id={'collectionMode'}
+        />
+        <SwitchInputComponent
+          value={separateReverse}
+          isDisabled={!collectionMode}
+          modifyValue={setSeparateReverse}
+          label={'Séparer les cartes Reverse'}
+          id={'separateReverse'}
+        />
+        <SwitchInputComponent
+          value={showUnowned}
+          isDisabled={!collectionMode}
+          modifyValue={setShowUnowned}
+          label={'Afficher les cartes non possédées'}
+          id={'showUnowned'}
+        />
       </div>
     </div>
   )

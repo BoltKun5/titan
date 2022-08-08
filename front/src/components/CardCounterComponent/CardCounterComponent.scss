@@ -1,7 +1,7 @@
 .CardCounter {
   &-name {
-    align-self: center;
-
+    text-align: center;
+    font-weight: 400;
   }
 
   &-input {
@@ -19,6 +19,17 @@
     display: flex;
     justify-content: center;
     align-items: center;
+
+    padding: 5px;
+    text-align: center;
+    font-weight: 400;
+    font-size: 17px;
+    color: #282c34;
+    border: 0;
+    border-radius: 3px;
+    box-sizing: border-box;
+    outline: 0;
+    line-height: 1.15;
   }
 
   &-buttons {
@@ -26,14 +37,17 @@
     margin: auto;
 
     & button {
+      font-weight: 800;
       width: 30px;
       height: 30px;
       display: flex;
       justify-content: center;
       align-items: center;
       cursor: pointer;
+      background: #d84432;
+      color: white;
+      border-radius: 10%;
+      border: 1.5px #282c34 solid;
     }
-
-
   }
 }

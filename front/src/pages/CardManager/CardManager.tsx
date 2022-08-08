@@ -7,6 +7,7 @@ import {SideBarComponent} from "../../components/SideBarComponent/SideBarCompone
 import {CardManagerFilterComponent} from "../../components/CardManagerFilterComponent/CardManagerFilterComponent";
 import {CardManagerCardListComponent} from "../../components/CardManagerCardListComponent/CardManagerCardListComponent";
 import './CardManager.scss'
+import {useFetchCards} from "../../hook/api/cards";
 
 export const CardManager: React.FC = () => {
   // Données de la base
@@ -25,7 +26,9 @@ export const CardManager: React.FC = () => {
   const [separateReverse, setSeparateReverse] = useState<boolean>(false);
   const [showUnowned, setShowUnowned] = useState<boolean>(false);
 
-  const firstUpdate = useRef(true);
+  const [firstUpdate, setFirstUpdate] = useState<boolean>(true);
+
+  const {isLoading, fetch} = useFetchCards();
 
   const fetchSeries = useCallback(async () => {
     const response = await loggedApi.get(`/cardlist/allSeries`);
@@ -52,32 +55,44 @@ export const CardManager: React.FC = () => {
     fetchSeries();
   }, [series, fetchSeries]);
 
-  useEffect(() => {
-    if (firstUpdate.current) {
-      firstUpdate.current = false;
-      return;
-    }
-    const fetchData = async (path: string) => {
-      const response = await loggedApi.get(path);
-      setCards(response.data.data)
-    }
-    let params = "?";
+  const fetchCards = useCallback(async () => {
     const setFilters = cardSetFilter.filter((setFilter) => setFilter.status);
+    const params: Record<string, any> = {};
+
     if (setFilters.length > 0) {
+      params.setFilters = []
       setFilters.forEach((setFilter) => {
-        params += "&setfilter[]=" + setFilter.id
+        params.setFilters.push(setFilter.id);
       })
     }
+
     if (nameFilter !== "") {
-      params += "&namefilter=" + nameFilter;
+      params.namefilter = nameFilter;
     }
-    (order === "" || order === null) ? params += "&order=default" : params += `&order=${order}`
-    if (!collectionMode) {
-      const response = fetchData('/cardlist/cards' + params);
+
+    if (order === "" || order === null) {
+      params.order = "default"
     } else {
-      params += "&unowned=" + (showUnowned ? 'show' : 'hide');
-      const response = fetchData('/cardlist/collection' + params);
+      params.order = order
     }
+
+    let response;
+    if (!collectionMode) {
+      response = await fetch('/cardlist/cards', params);
+    } else {
+      params.unowned = (showUnowned ? 'show' : 'hide')
+      response = await fetch('/cardlist/collection', params);
+    }
+    setCards(response.data)
+  }, [cardSetFilter, nameFilter, collectionMode, showUnowned, order])
+
+  useEffect(() => {
+    if (firstUpdate) {
+      setFirstUpdate(false);
+      return;
+    }
+
+    fetchCards();
   }, [cardSetFilter, nameFilter, collectionMode, showUnowned, order])
 
   const resetAllFilters = () => {
@@ -115,8 +130,8 @@ export const CardManager: React.FC = () => {
     resetAllFilters,
   }
 
-  // TODO : mettre un loader,
-  // TODO : Tris pas type, rareté, brillance par rareté, limit de sequelize, lazy loading
+  // TODO : mettre un loader, mask css, remplacer, mettre les queries en objet, utiliser formik, utiliser useMemo pour les call api sur cards
+  // TODO : Tris pas type, rareté, brillance par rareté, limit de sequelize
 
   return (
     <CardManagerContext.Provider value={contextValue}>
@@ -124,7 +139,20 @@ export const CardManager: React.FC = () => {
         <SideBarComponent series={series}/>
         <div className="CardManager-mainContent">
           <CardManagerFilterComponent/>
-          <CardManagerCardListComponent/>
+          {
+            isLoading ?
+              <div className="CardManager-loaderContainer">
+                <div className="CardManager-loader">
+                  <div className="CardManager-loaderElement"/>
+                  <div className="CardManager-loaderElement"/>
+                  <div className="CardManager-loaderElement"/>
+                  <div className="CardManager-loaderElement"/>
+                </div>
+              </div>
+              :
+              <CardManagerCardListComponent/>
+          }
+
         </div>
       </div>
     </CardManagerContext.Provider>
