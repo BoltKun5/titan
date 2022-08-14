@@ -1,8 +1,8 @@
 import React, {useContext} from "react";
 import {SingleCardOverlayContentComponentPropsType} from "../../../typing/types";
-import CardManagerContext from "../../contexts/CardManagerContext";
+import CardManagerContext from "../../hook/contexts/CardManagerContext";
 import {CardCounterComponent} from "../CardCounterComponent/CardCounterComponent";
-import {notReverseRarities} from "../CardManagerCardListComponent/CardManagerCardListComponent";
+import {canBeReverse, notReverseRarities} from "../CardManagerCardListComponent/CardManagerCardListComponent";
 import './SingleCardOverlayContentComponent.scss'
 
 export const SingleCardOverlayContentComponent:
@@ -19,7 +19,7 @@ export const SingleCardOverlayContentComponent:
       <div className="SingleCardOverlayContent-content">
         <CardCounterComponent label={firstType === 'classic' ? "Carte normale" : "Carte reverse"} type={firstType}
                               card={card}/>
-        {(!separateReverse && (card.canBeReverse || !notReverseRarities.includes(card.rarity))) &&
+        {(!separateReverse && canBeReverse(card)) &&
         <CardCounterComponent card={card} label={'Carte reverse'} type={'reverse'}/>}
       </div>
     </div>

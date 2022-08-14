@@ -2,7 +2,7 @@ import React, {useContext} from "react";
 import {Tooltip} from "@mui/material";
 import {CardSerie, CardSet} from "../../../../api/src/database";
 import {SideBarComponentPropsType} from "../../../typing/types";
-import CardManagerContext from "../../contexts/CardManagerContext";
+import CardManagerContext from "../../hook/contexts/CardManagerContext";
 import './SideBarComponent.scss';
 
 export const SideBarComponent: React.FC<SideBarComponentPropsType> = ({series}) => {

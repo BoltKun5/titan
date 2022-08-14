@@ -93,7 +93,7 @@ export const CardListRouter = (app: Router): Router => {
             required: true,
             duplicating: false,
             attributes: {
-              exclude: ["cardSerieId", "isPlayableInExpanded", "isPlayableInStandard", "id", "name", "releaseDate", "tcgOnline"],
+              exclude: ["cardSerieId", "isPlayableInExpanded", "isPlayableInStandard", "id", "releaseDate", "tcgOnline"],
             },
             as: "cardSet",
           },

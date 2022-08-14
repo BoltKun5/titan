@@ -9,6 +9,7 @@
     height: 100%;
     display: grid;
     margin: auto;
-    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    margin-top: 10px;
+    grid-template-columns: repeat(auto-fit, minmax(265px, 1fr));
   }
 }

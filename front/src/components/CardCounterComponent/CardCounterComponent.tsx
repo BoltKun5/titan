@@ -1,7 +1,7 @@
 import React, {useContext, useEffect, useState} from "react";
 import {CardCounterComponentPropsType} from "../../../typing/types";
 import {loggedApi} from "../../axios";
-import CardManagerContext from "../../contexts/CardManagerContext";
+import CardManagerContext from "../../hook/contexts/CardManagerContext";
 import './CardCounterComponent.scss';
 import {Card} from "../../../../api/src/database";
 
@@ -119,7 +119,7 @@ export const CardCounterComponent: React.FC<CardCounterComponentPropsType> = ({
                 onClick={() => modifyQuantity(card, type, 'minus')}>-
         </button>
         <input className="CardCounter-input" disabled={isDisabled}
-               onBlur={(ev) => setQuantity(card, type, ev.currentTarget)}
+               onBlur={(ev) => setQuantity(card, type, ev.currentTarget)} onClick={(ev) => ev.currentTarget.select()}
                value={value} type="number" onChange={(ev) => changeHandler(ev.currentTarget)}/>
         <button className="CardCounter-plus" disabled={isDisabled}
                 onClick={() => modifyQuantity(card, type, 'plus')}>+

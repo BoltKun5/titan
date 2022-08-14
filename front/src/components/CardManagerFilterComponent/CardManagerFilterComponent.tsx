@@ -1,6 +1,6 @@
 import React, {useContext} from "react";
 import {Button, FormControl, InputLabel, MenuItem, Select, TextField} from "@mui/material";
-import CardManagerContext from "../../contexts/CardManagerContext";
+import CardManagerContext from "../../hook/contexts/CardManagerContext";
 import {CategorizedAutocompleteChecklist} from "../CategorizedAutocompleteChecklist/CategorizedAutocompleteChecklist";
 import {SwitchInputComponent} from "../SwitchInputComponent/SwitchInputComponent"
 import './CardManagerFilterComponent.scss'
@@ -19,6 +19,8 @@ export const CardManagerFilterComponent: React.FC<{}> = () => {
     setOrder,
     setNameFilter,
     resetAllFilters,
+    setMassInput,
+    massInput
   } = useContext(CardManagerContext);
 
   const updateSetFilters = (event: any) => {
@@ -78,6 +80,7 @@ export const CardManagerFilterComponent: React.FC<{}> = () => {
         <div className="CardManagerFilter-bottom">
           <button className="CardManagerFilter-button" onClick={resetAllFilters}>Réinitialiser
             filtres</button>
+          {collectionMode && <button className="CardManagerFilter-button" onClick={() => setMassInput(true)}>Entrer toutes les valeurs</button>}
         </div>
       </div>
 

@@ -1,6 +1,6 @@
 import React from "react";
-import {CardSet} from "../../../api/src/database";
-import {CardManagerContextType} from "../../typing/types";
+import {CardSet} from "../../../../api/src/database";
+import {CardManagerContextType} from "../../../typing/types";
 
 export default React.createContext<CardManagerContextType>({
   cardSetFilter: [],
@@ -25,5 +25,8 @@ export default React.createContext<CardManagerContextType>({
   setCards: () => {
   },
   resetAllFilters: () => {
+  },
+  massInput: false,
+  setMassInput: () => {
   },
 })

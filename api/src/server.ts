@@ -28,7 +28,6 @@ import * as fs from "fs";
 import * as buffer from "buffer";
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
-import {URLs} from "../temp";
 
 (async () => {
   try {
@@ -36,48 +35,6 @@ import {URLs} from "../temp";
     await startServer();
 
     // setTimeout(test, 1);
-
-    //
-    // for (const name of URLs) {
-    //   const URL = `https://www.pokecardex.com/assets/images/symboles/${name}.png`;
-    //   try {
-    //     const res = await axios.get(URL, {
-    //       responseType: 'arraybuffer',
-    //     });
-    //     if (!fs.existsSync(`./img`))
-    //       fs.mkdirSync(`./img`)
-    //     fs.writeFileSync(`./img/${name}.png`, Buffer.from(res.data as any));
-    //   } catch (e) {
-    //     break;
-    //   }
-    //
-    //   await sleep(2000);
-    // }
-    // if (!fs.existsSync(`./img`))
-    //   fs.mkdirSync(`./img`)
-    //
-    // for (let i = 187; i <= 216; i++) {
-    //   try {
-    //     fs.renameSync('./img/BRS/' + i + '.jpg', './img/BRS/TG' + String(i - 186).padStart(2, "0") + '.jpg');
-    //   } catch (e) {
-    //     console.log(e)
-    //   }
-    // }
-
-    // for (let i = 1; i <= 246; i++) {
-    //   const URL = `https://www.pokecardex.com/assets/images/sets/BRS/HD/${i}.jpg`;
-    //   try {
-    //     const res = await axios.get(URL, {
-    //       responseType: 'arraybuffer',
-    //     });
-    //     if (!fs.existsSync(`./img/BRS`))
-    //       fs.mkdirSync(`./img/BRS`)
-    //     fs.writeFileSync(`./img/BRS/${i}.jpg`, Buffer.from(res.data as any));
-    //     console.log(i+".jpg")
-    //   } catch (e) {
-    //     break;
-    //   }
-    // }
 
   } catch (error) {
     Logger.error(error, LogType.SYSTEM_STARTUP);

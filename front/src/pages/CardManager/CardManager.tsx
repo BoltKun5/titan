@@ -1,13 +1,15 @@
-import React, {useCallback, useEffect, useRef, useState} from "react";
+import React, {useCallback, useEffect, useReducer, useRef, useState} from "react";
 import {loggedApi} from "../../axios";
 import {CardSerie, CardSet, Card} from "../../../../api/src/database";
-import CardManagerContext from "../../contexts/CardManagerContext";
+import CardManagerContext from "../../hook/contexts/CardManagerContext";
 import {CardSetFilterInterface} from "../../../../api/src/local_core/types/types/interface/front";
 import {SideBarComponent} from "../../components/SideBarComponent/SideBarComponent";
 import {CardManagerFilterComponent} from "../../components/CardManagerFilterComponent/CardManagerFilterComponent";
 import {CardManagerCardListComponent} from "../../components/CardManagerCardListComponent/CardManagerCardListComponent";
 import './CardManager.scss'
 import {useFetchCards} from "../../hook/api/cards";
+import {MassInputComponent} from "../../components/MassInputComponent/MassInputComponent";
+import {reducer} from "../../hook/CardManagerReducer";
 
 export const CardManager: React.FC = () => {
   // Données de la base
@@ -26,9 +28,11 @@ export const CardManager: React.FC = () => {
   const [separateReverse, setSeparateReverse] = useState<boolean>(false);
   const [showUnowned, setShowUnowned] = useState<boolean>(false);
 
+  const [massInput, setMassInput] = useState<boolean>(false);
   const [firstUpdate, setFirstUpdate] = useState<boolean>(true);
 
   const {isLoading, fetch} = useFetchCards();
+
 
   const fetchSeries = useCallback(async () => {
     const response = await loggedApi.get(`/cardlist/allSeries`);
@@ -128,6 +132,8 @@ export const CardManager: React.FC = () => {
     cards,
     setCards,
     resetAllFilters,
+    massInput,
+    setMassInput
   }
 
   // TODO : mettre un loader, mask css, remplacer, mettre les queries en objet, utiliser formik, utiliser useMemo pour les call api sur cards
@@ -136,6 +142,7 @@ export const CardManager: React.FC = () => {
   return (
     <CardManagerContext.Provider value={contextValue}>
       <div className="CardManager">
+        {massInput && <MassInputComponent />}
         <SideBarComponent series={series}/>
         <div className="CardManager-mainContent">
           <CardManagerFilterComponent/>
@@ -152,7 +159,6 @@ export const CardManager: React.FC = () => {
               :
               <CardManagerCardListComponent/>
           }
-
         </div>
       </div>
     </CardManagerContext.Provider>

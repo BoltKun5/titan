@@ -17,4 +17,6 @@ export type CardManagerContextType = {
   cards: Card[],
   setCards: React.Dispatch<React.SetStateAction<Card[]>>,
   resetAllFilters: () => void,
+  massInput: boolean,
+  setMassInput: React.Dispatch<React.SetStateAction<boolean>>
 }

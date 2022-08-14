@@ -27,6 +27,23 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+  margin-bottom: 20px;
+
+  &-data {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    font-weight: bold;
+    font-size: 17px;
+    z-index: 0;
+    text-align: center;
+  }
 
   &-imgContainer {
     border-radius: 9px;
@@ -40,6 +57,7 @@
     z-index: 5;
     width: 100%;
     height: 100%;
+    position: relative;
   }
 }
 
