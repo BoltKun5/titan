@@ -26,6 +26,9 @@ export const CardListRouter = (app: Router): Router => {
           model: CardSet,
           as: 'cardSets',
         }],
+        order: [
+          [{model: CardSet, as: 'cardSets'}, 'releaseDate', 'ASC']],
+
       });
       res.json({
         data: series,
@@ -54,8 +57,8 @@ export const CardListRouter = (app: Router): Router => {
       const cards = await Card.findAll({
         where: {
           name: {
-            [Sequelize.Op.iLike]: `%${req.query.namefilter ?? ''}%`
-          }
+            [Sequelize.Op.iLike]: `%${req.query.namefilter ?? ''}%`,
+          },
         },
         order: mainOrder,
         attributes: {exclude: ["cardSet"]},
