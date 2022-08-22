@@ -4,5 +4,6 @@ export interface CardSetFilterInterface {
   category: string,
   status: boolean,
   categoryCode: string,
-  title?: string
+  title?: string,
+  code?: string
 }

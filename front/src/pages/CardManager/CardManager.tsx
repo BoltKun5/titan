@@ -50,6 +50,7 @@ export const CardManager: React.FC = () => {
             category: serie.name,
             categoryCode: serie.code,
             status: false,
+            code: set.code
           })
         })
       })

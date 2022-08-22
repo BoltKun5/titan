@@ -26,6 +26,7 @@ import {CardDexId} from "./database/models/CardDexId";
 import axios from "axios";
 import * as fs from "fs";
 import * as buffer from "buffer";
+import {changeAze, getDataFromLimitless} from "./serverFunctions";
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 
@@ -137,7 +138,7 @@ async function test() {
 
     const process = async (localPath: string, deep: number, index = -1, serieIndex = -1) => {
 
-      // console.log(localPath, deep, index, serieIndex)
+      console.log(localPath, deep, index, serieIndex)
 
       if (!existsSync("./src" + localPath))
         return;
@@ -147,7 +148,7 @@ async function test() {
       // await Promise.all(
 
       for (const fileName of src) {
-        // console.log(fileName)
+        console.log(fileName)
 
         const currentFilePath = path.join(localPath, fileName);
         const stats = statSync("./src" + currentFilePath);
@@ -155,9 +156,9 @@ async function test() {
         let newIndex: number;
 
         if (stats.isFile()) {
-          if (deep === 1 && fileName !== "XY.ts") {
-            continue;
-          }
+          // if (deep === 1 && fileName !== "XY.ts") {
+          //   continue;
+          // }
 
           // if (deep === 2 && fileName !== "Chilling Reign.ts") return
           // if (deep === 3 && fileName !== "9.ts") {
@@ -276,23 +277,28 @@ async function test() {
 
     await process('/data', 1);
 
-    const [createdCardSeries, createdSets, createCards] = await Promise.all([
-      await CardSerie.findAll(),
-      await CardSet.findAll(),
-      await Card.findAll()])
+    // const [createdCardSeries, createdSets, createCards] = await Promise.all([
+    //   await CardSerie.findAll(),
+    //   await CardSet.findAll(),
+    //   await Card.findAll()])
 
-    const c1 = createdCardSeries.map(el => el.name);
-    const c2 = createdSets.map(el => el.name);
-    const c3 = createCards.map(el => el?.cardSet?.cardSerie?.name + el?.cardSet?.name + el.localId)
+    // const c1 = createdCardSeries.map(el => el.name);
+    // const c2 = createdSets.map(el => el.name);
+    // const c3 = createCards.map(el => el?.cardSet?.cardSerie?.name + el?.cardSet?.name + el.localId)
+    console.log(series)
     await Promise.all(
-      series.filter((el) => !c1.includes(el.name)).map(async (serie) => {
-        const currentSerie = await CardSerie.create(serie);
-
-        await Promise.all(serie.cardSets.filter(el => !c2.includes(el.name)).map(async (cardSet) => {
+      series.map(async (serie) => {
+        // const currentSerie = await CardSerie.create(serie);
+        const currentSerie = await CardSerie.findOne({
+          where: {
+            name: "Épée et Bouclier"
+          }
+        })
+        await Promise.all(serie.cardSets.map(async (cardSet) => {
           const currentCardSet = await CardSet.create(cardSet);
           await currentCardSet.$set("cardSerie", currentSerie);
 
-          await Promise.all(cardSet.cards.filter(el => !c3.includes(serie.name + cardSet.name + el.localId)).map(async (card) => {
+          await Promise.all(cardSet.cards.map(async (card) => {
             const currentCard = await Card.create(card, {
               include: [
                 {

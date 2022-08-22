@@ -52,8 +52,10 @@ export const SingleCardComponent: React.FC<SingleCardComponentPropsType> = ({car
               <img className="SingleCard-possession-reverse" loading={"lazy"}
                    src={"src/assets/cards/" + card.cardSet.code + "/" + Number(card.localId) + ".jpg"}/>
               <img className="SingleCard-possession-classic" loading={"lazy"}
-                   src={"src/assets/cards/" + card.cardSet.code + "/" + Number(card.localId) + ".jpg"}/>
-            </> : <img className="SingleCard-img" src={getImageSource(card)} loading={"lazy"}/>
+                   src={"src/assets/cards/" + card.cardSet.code + "/" + Number(card.localId) + ".jpg"}
+                    onError={(el) => el.currentTarget.setAttribute("src", "")}/>
+            </> : <img className="SingleCard-img" src={getImageSource(card)} loading={"lazy"}
+                       onError={el => el.currentTarget.style.display = "none"}/>
         }
       </div>
 

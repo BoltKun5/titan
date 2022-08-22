@@ -116,7 +116,7 @@ export const CategorizedAutocompleteChecklist: React.FC<Props> = ({items, placeh
                           onClick={(ev) => onFilterChange(ev)}>
                 <div id={item.id}
                      className={"CategorizedAutocompleteChecklist-dropdownElement " + (item.status ? 'selected' : '')}>
-                  {item.name}
+                  {item.name} ({item.code})
                 </div>
               </div>
             }

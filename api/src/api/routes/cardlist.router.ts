@@ -52,7 +52,11 @@ export const CardListRouter = (app: Router): Router => {
         }
       }
       const cards = await Card.findAll({
-        where: {...(req.query.namefilter ? {name: {[Sequelize.Op.iLike]: `%${req.query.namefilter}%`}} : {})},
+        where: {
+          name: {
+            [Sequelize.Op.iLike]: `%${req.query.namefilter ?? ''}%`
+          }
+        },
         order: mainOrder,
         attributes: {exclude: ["cardSet"]},
         include: [
@@ -125,7 +129,7 @@ export const CardListRouter = (app: Router): Router => {
       }
       const cards = await Card.findAll({
         limit: 1000,
-        where: {...(req.query.namefilter ? {name: {[Sequelize.Op.like]: `%${req.query.namefilter}%`}} : {})},
+        where: {...(req.query.namefilter ? {name: {[Sequelize.Op.iLike]: `%${req.query.namefilter}%`}} : {})},
         order: mainOrder,
         subQuery: false,
         include: [
