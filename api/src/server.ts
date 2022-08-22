@@ -35,6 +35,8 @@ import {changeAze, getDataFromLimitless} from "./serverFunctions";
     AppConfig.consoleSetup();
     await startServer();
 
+    await getDataFromLimitless()
+
     // setTimeout(test, 1);
 
   } catch (error) {

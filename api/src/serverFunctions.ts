@@ -49,7 +49,7 @@ export const renameImages = (setCode: string, startIndex: number, endIndex: numb
 export const getDataFromLimitless = async () => {
   const jsdom = require("jsdom");
   const {JSDOM} = jsdom;
-  const response = await axios.get("https://limitlesstcg.com/cards/fr?q=%21set%3ASSP&show=100&page=3", {
+  const response = await axios.get("https://limitlesstcg.com/cards/fr?q=%21set%3ASMP&show=100&page=3", {
     headers: {
       Cookie: "cards_display=full",
     },
@@ -57,14 +57,14 @@ export const getDataFromLimitless = async () => {
   const dom = new JSDOM(response.data);
   const cardSet = await CardSet.findOne({
     where: {
-      code: 'PGO',
+      code: 'SMP',
     },
   })
-  await Card.destroy({
-    where: {
-      setId: cardSet.id
-    }
-  })
+  // await Card.destroy({
+  //   where: {
+  //     setId: cardSet.id
+  //   }
+  // })
   dom.window.document.querySelectorAll('.card-page-main').forEach(async (el, index) => {
     const data = el.querySelector('.card-details-main');
 
@@ -348,9 +348,9 @@ export async function changeAze() {
     // SLG: "SLE",
     // STS: "STS",
     // SUM: "SM01",
-    // SMP: "PRSM",
+    SMP: "PRSM",
     // SSH: "SWSH1",
-    SSP: "PRSWSH",
+    // SSP: "PRSWSH",
     // TEU: "SM09",
     // TM: "TM",
     // UPR: "SM05",
@@ -370,19 +370,19 @@ export async function changeAze() {
     //   i++
     // }
 
-    for (let i = 73; i <= 250; i++) {
+    for (let i = 1; i <= 250; i++) {
       const URL = `https://limitlesstcg.nyc3.digitaloceanspaces.com/tpci/${key}/${key}_${String(i).padStart(3, "0")}_R_FR_LG.png`;
       try {
         const res = await axios.get(URL, {
           responseType: 'arraybuffer',
         });
-        if (!res.data) return
+        if (!res.data) continue
         if (!fs.existsSync(`./img/${key}`))
           fs.mkdirSync(`./img/${key}`)
         fs.writeFileSync(`./img/${key}/${i}.jpg`, Buffer.from(res.data as any));
         console.log(i)
       } catch (e) {
-
+        console.log(URL)
       }
 
 
