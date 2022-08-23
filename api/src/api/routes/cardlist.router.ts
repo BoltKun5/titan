@@ -12,6 +12,7 @@ import {CardDamageModification} from "../../database/models/CardDamageModificati
 import {CardDexId} from "../../database/models/CardDexId";
 import {UserCardPossession} from "../../database/models/UserCardPossession";
 import auth from "../middlewares/auth";
+import {getFilterConfig} from "../utils/getFilterConfig";
 
 const route = Router();
 
@@ -41,73 +42,7 @@ export const CardListRouter = (app: Router): Router => {
     "/collection",
     auth,
     asyncHandler(async (req: Request<any, any, void>, res: Response<IResponse<any>, IResponseLocals>) => {
-      let mainOrder;
-      if (req.query?.order) {
-        switch (req.query.order) {
-          case "default":
-            mainOrder = [[{model: CardSet, as: "cardSet"}, 'releaseDate', 'desc'], ['localId', 'asc']];
-            break;
-          case "name":
-            mainOrder = [['name', 'asc']];
-            break;
-          case "type":
-            mainOrder = [[{model: CardType, as: "types"}, 'type', 'asc']]
-        }
-      }
-      const cards = await Card.findAll({
-        where: {
-          name: {
-            [Sequelize.Op.iLike]: `%${req.query.namefilter ?? ''}%`,
-          },
-        },
-        order: mainOrder,
-        attributes: {exclude: ["cardSet"]},
-        include: [
-          {
-            model: UserCardPossession,
-            as: "userCardPossessions",
-            required: (req.query.unowned ? (req.query.unowned !== 'show') : false),
-            duplicating: false,
-            where: {
-              [sequelize.Op.and]: [
-                {
-                  [sequelize.Op.or]: [
-                    {
-                      classicQuantity: {
-                        [sequelize.Op.gt]: 0,
-                      },
-                    },
-                    {
-                      reverseQuantity: {
-                        [sequelize.Op.gt]: 0,
-                      },
-                    },
-                  ],
-                },
-                {
-                  userId: res.locals.currentUser.id,
-                },
-              ],
-            },
-          },
-          {
-            model: CardType,
-            as: "types",
-          },
-          {
-            where: {...(req.query.setFilter ? {code: req.query.setFilter} : {})},
-            model: CardSet,
-            required: true,
-            duplicating: false,
-            attributes: {
-              exclude: ["cardSerieId", "isPlayableInExpanded", "isPlayableInStandard", "id", "releaseDate", "tcgOnline"],
-            },
-            as: "cardSet",
-          },
-        ],
-        limit: 300,
-        subQuery: false,
-      });
+      const cards = await Card.findAll(getFilterConfig(req, res, 'collection'));
       res.json({
         data: cards,
       });
@@ -117,66 +52,7 @@ export const CardListRouter = (app: Router): Router => {
   route.get(
     "/cards",
     asyncHandler(async (req: Request<any, any, void>, res: Response<IResponse<any>, IResponseLocals>) => {
-      let mainOrder;
-      if (req.query?.order) {
-        switch (req.query.order) {
-          case "default":
-            mainOrder = [[{model: CardSet, as: "cardSet"}, 'releaseDate', 'desc'], ['localId', 'asc']];
-            break;
-          case "name":
-            mainOrder = [['name', 'asc']];
-            break;
-          case "type":
-            mainOrder = [[{model: CardType, as: "types"}, 'type', 'asc']]
-        }
-      }
-      const cards = await Card.findAll({
-        limit: 1000,
-        where: {...(req.query.namefilter ? {name: {[Sequelize.Op.iLike]: `%${req.query.namefilter}%`}} : {})},
-        order: mainOrder,
-        subQuery: false,
-        include: [
-          {
-            model: CardType,
-            as: "types",
-          },
-          {
-            model: CardAttack,
-            as: "attacks",
-            include: [{
-              model: CardAttackCost,
-              as: "costs",
-            }],
-          },
-          {
-            model: CardAbility,
-            as: "abilities",
-          },
-          {
-            model: CardDamageModification,
-            as: "damageModifications",
-          },
-          {
-            model: CardAttribute,
-            as: "attributes",
-          },
-          {
-            model: CardDexId,
-            as: "dexIds",
-          },
-          {
-            where: {...(req.query.setFilter ? {code: req.query.setFilter} : {})},
-            model: CardSet,
-            as: "cardSet",
-            include: [
-              {
-                model: CardSerie,
-                as: "cardSerie",
-              },
-            ],
-          },
-        ],
-      });
+      const cards = await Card.findAll(getFilterConfig(req, res, 'cards'));
       res.json({
         data: cards,
       });

@@ -35,14 +35,40 @@ import {changeAze, getDataFromLimitless} from "./serverFunctions";
     AppConfig.consoleSetup();
     await startServer();
 
-    await getDataFromLimitless()
-
+    // Card.findAll({
+    //   where: {
+    //     rarity: 8,
+    //   },
+    //   include: [{
+    //     model: CardSet,
+    //     as: 'cardSet',
+    //   }],
+    //   limit: 1000
+    // }).then((cards) => {
+    //   cards.forEach(Card => {
+    //     if (isNumeric(Card.localId)) {
+    //       if (Card.name.substring(Card.name.length - 1, Card.name.length) === "V" || Card.name.substring(Card.name.length - 4, Card.name.length) === "VMAX") {
+    //         console.log(Card.name)
+    //         Card.update({
+    //           rarity: 6
+    //         })
+    //       }
+    //     }
+    //   })
+    // })
     // setTimeout(test, 1);
 
   } catch (error) {
     Logger.error(error, LogType.SYSTEM_STARTUP);
   }
 })();
+
+function isNumeric(str) {
+  if (typeof str != "string") return false // we only process strings!
+  // @ts-ignore
+  return !isNaN(str) && // use type coercion to parse the _entirety_ of the string (`parseFloat` alone does not do this)...
+    !isNaN(parseFloat(str)) // ...and ensure strings of whitespace fail
+}
 
 async function sleep(duration): Promise<void> {
   new Promise(resolve => {
@@ -293,8 +319,8 @@ async function test() {
         // const currentSerie = await CardSerie.create(serie);
         const currentSerie = await CardSerie.findOne({
           where: {
-            name: "Épée et Bouclier"
-          }
+            name: "Épée et Bouclier",
+          },
         })
         await Promise.all(serie.cardSets.map(async (cardSet) => {
           const currentCardSet = await CardSet.create(cardSet);

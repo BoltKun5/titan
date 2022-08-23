@@ -10,8 +10,40 @@ import './CardManager.scss'
 import {useFetchCards} from "../../hook/api/cards";
 import {MassInputComponent} from "../../components/MassInputComponent/MassInputComponent";
 import {reducer} from "../../hook/CardManagerReducer";
+import {CardRarityEnum, CardTypeEnum} from "../../../../api/src/local_core";
 
 export const CardManager: React.FC = () => {
+  const initialRarityFilter = [
+    {
+      rarity: "Common",
+      value: false
+    },
+    {
+      rarity: "Uncommon",
+      value: false
+    },
+    {
+      rarity: "Rare",
+      value: false
+    },
+    {
+      rarity: "Holo",
+      value: false
+    },
+    {
+      rarity: "Ultra Rare",
+      value: false
+    },
+    {
+      rarity: "Secret Rare",
+      value: false
+    },
+    {
+      rarity: "None",
+      value: false
+    }
+  ]
+
   // Données de la base
   const [series, setSeries] = useState<CardSerie[]>();
   const [cards, setCards] = useState<Card[]>([]);
@@ -19,6 +51,8 @@ export const CardManager: React.FC = () => {
   // Filtres
   const [cardSetFilter, setCardSetFilter] = useState<CardSetFilterInterface[]>([]);
   const [nameFilter, setNameFilter] = useState<string>("");
+  const [typeFilter, setTypeFilter] = useState<CardTypeEnum[]>([]);
+  const [rarityFilter, setRarityFilter] = useState<any[]>(initialRarityFilter);
 
   // Tris
   const [order, setOrder] = useState<string>("default");
@@ -81,6 +115,15 @@ export const CardManager: React.FC = () => {
       params.order = order
     }
 
+
+    if (rarityFilter.filter((filter) => filter.value === true).length !== 0) {
+      params.rarity = [];
+      rarityFilter.forEach((filter) => {
+        if (filter.value)
+          params.rarity.push(CardRarityEnum[filter.rarity])
+      })
+    }
+
     let response;
     if (!collectionMode) {
       response = await fetch('/cardlist/cards', params);
@@ -98,7 +141,7 @@ export const CardManager: React.FC = () => {
     }
 
     fetchCards();
-  }, [cardSetFilter, nameFilter, collectionMode, showUnowned, order])
+  }, [cardSetFilter, nameFilter, collectionMode, showUnowned, order, rarityFilter])
 
   const resetAllFilters = () => {
     setCardSetFilter(cardSetFilter.map((element) => {
@@ -134,7 +177,11 @@ export const CardManager: React.FC = () => {
     setCards,
     resetAllFilters,
     massInput,
-    setMassInput
+    setMassInput,
+    typeFilter,
+    setTypeFilter,
+    rarityFilter,
+    setRarityFilter
   }
 
   // TODO : mettre un loader, mask css, remplacer, mettre les queries en objet, utiliser formik, utiliser useMemo pour les call api sur cards

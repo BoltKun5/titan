@@ -20,7 +20,9 @@ export const CardManagerFilterComponent: React.FC<{}> = () => {
     setNameFilter,
     resetAllFilters,
     setMassInput,
-    massInput
+    massInput,
+    rarityFilter,
+    setRarityFilter
   } = useContext(CardManagerContext);
 
   const updateSetFilters = (event: any) => {
@@ -46,6 +48,14 @@ export const CardManagerFilterComponent: React.FC<{}> = () => {
     }
   }
 
+  const updateRarityFilter = (rarity: string) => {
+    setRarityFilter(rarityFilter.map((filter) => {
+      if (filter.rarity === rarity)
+        filter.value = !filter.value
+      return filter
+    }))
+  }
+
   let nameInputTimer: string | number | NodeJS.Timeout | undefined;
 
   const startCountdown = (event: any) => {
@@ -54,6 +64,8 @@ export const CardManagerFilterComponent: React.FC<{}> = () => {
       setNameFilter(event.target.value);
     }, 300);
   }
+
+  const rarities = ["common", "uncommon", "rare", "holo", "secrete", "ur"]
 
   return (
     <div className="CardManagerFilter">
@@ -79,8 +91,25 @@ export const CardManagerFilterComponent: React.FC<{}> = () => {
         </div>
         <div className="CardManagerFilter-bottom">
           <button className="CardManagerFilter-button" onClick={resetAllFilters}>Réinitialiser
-            filtres</button>
-          {collectionMode && <button className="CardManagerFilter-button" onClick={() => setMassInput(true)}>Entrer toutes les valeurs</button>}
+            filtres
+          </button>
+          <div className="CardManagerFilter-rarityFilter">
+            {
+              rarityFilter.map((filter) =>
+                <React.Fragment key={"rarity" + filter.rarity}>
+                  <div className={"CardManagerFilter-rarityContainer " + (filter.value ? 'selected' : '')} onClick={() => {
+                    updateRarityFilter(filter.rarity)
+                  }}>
+                    <img className="CardManagerFilter-rarityImg" src={"./src/assets/icons/" + filter.rarity + ".png"}/>
+                  </div>
+                </React.Fragment>,
+              )
+            }
+
+          </div>
+          {collectionMode &&
+          <button className="CardManagerFilter-button marginLeft" onClick={() => setMassInput(true)}>Entrer toutes les
+            valeurs</button>}
         </div>
       </div>
 

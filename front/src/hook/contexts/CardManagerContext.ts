@@ -29,4 +29,7 @@ export default React.createContext<CardManagerContextType>({
   massInput: false,
   setMassInput: () => {
   },
+  rarityFilter: [],
+  setRarityFilter: () => {
+  }
 })
