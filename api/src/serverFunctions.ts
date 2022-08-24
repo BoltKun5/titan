@@ -49,7 +49,7 @@ export const renameImages = (setCode: string, startIndex: number, endIndex: numb
 export const getDataFromLimitless = async () => {
   const jsdom = require("jsdom");
   const {JSDOM} = jsdom;
-  const response = await axios.get("https://limitlesstcg.com/cards/fr?q=%21set%3ASMP&show=100&page=3", {
+  const response = await axios.get("https://limitlesstcg.com/cards/en?q=%21set%3ASSP+Kleavor+VStar&show=100", {
     headers: {
       Cookie: "cards_display=full",
     },
@@ -57,7 +57,7 @@ export const getDataFromLimitless = async () => {
   const dom = new JSDOM(response.data);
   const cardSet = await CardSet.findOne({
     where: {
-      code: 'SMP',
+      code: 'SSP',
     },
   })
   // await Card.destroy({

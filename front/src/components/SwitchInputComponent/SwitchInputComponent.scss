@@ -1,17 +1,19 @@
 .SwitchInput {
   & label {
-    background: #323232;
-    color: #C9C9C9;
-    padding: 15px;
-    border-radius: 10px;
-    font-weight: 600;
+    padding: 10px 10px;
+    font-size: 16px;
     display: flex;
     justify-content: space-between;
     cursor: pointer;
+    border: #323232 solid 2px;
+    border-radius: 6px;
+    background: #d3d3d3;
+    font-weight: bold;
+    color: #2c2c2c;
   }
 
   &-light {
-    background: #d3d3d3;
+    background: #282c34;
     margin-left: 10px;
     width: 10px;
     height: 10px;
@@ -26,11 +28,11 @@
   }
 
   &-activated {
-    background-color: #d84432 !important;
-    color: white !important;
+    color: #282c34 !important;
+    background: #f1b700 !important;
 
     & div {
-      background: #e3ea0c;
+      background: #d84432;
     }
   }
 

@@ -35,6 +35,8 @@ import {changeAze, getDataFromLimitless} from "./serverFunctions";
     AppConfig.consoleSetup();
     await startServer();
 
+    // getDataFromLimitless()
+
     // Card.findAll({
     //   where: {
     //     rarity: 8,

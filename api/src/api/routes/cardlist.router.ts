@@ -28,7 +28,7 @@ export const CardListRouter = (app: Router): Router => {
           as: 'cardSets',
         }],
         order: [
-          [{model: CardSet, as: 'cardSets'}, 'releaseDate', 'ASC']],
+          [{model: CardSet, as: 'cardSets'}, 'releaseDate', 'DESC']],
 
       });
       res.json({

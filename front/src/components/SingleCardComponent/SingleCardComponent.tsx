@@ -1,4 +1,4 @@
-import React, {useContext} from "react";
+import React, {useContext, useState} from "react";
 import {SingleCardComponentPropsType} from "../../../typing/types";
 import {UserCardPossession} from "../../../../api/src/database/models/UserCardPossession";
 import CardManagerContext from "../../hook/contexts/CardManagerContext";
@@ -6,9 +6,11 @@ import {SingleCardOverlayComponent} from "../SingleCardOverlayComponent/SingleCa
 import {Card} from "../../../../api/src/database"
 import './SingleCardComponent.scss'
 import {canBeReverse} from "../CardManagerCardListComponent/CardManagerCardListComponent";
+import {CardModal} from "../MassInputComponent/CardModal";
 
 export const SingleCardComponent: React.FC<SingleCardComponentPropsType> = ({card, index, firstType}) => {
   const {collectionMode, separateReverse} = useContext(CardManagerContext);
+  const [cardModal, setCardModal] = useState<Card | null>(null);
 
   const getColorClassname = (userCardPossession: UserCardPossession, reverseOnly: boolean = false, canBeReverse: boolean = true) => {
     if (!collectionMode) return;
@@ -36,30 +38,41 @@ export const SingleCardComponent: React.FC<SingleCardComponentPropsType> = ({car
     if (isValid) return "src/assets/cards/" + card.cardSet.code + "/" + Number(card.localId) + ".jpg"
     return "src/assets/cards/" + card.cardSet.code + "/" + card.localId + ".jpg"
   }
+
+  const openCardInfo = (card: Card) => {
+    setCardModal(card);
+  }
+
   return (
-    <div
-      className={"SingleCard " + getColorClassname(card.userCardPossessions?.[0], firstType === 'reverse', canBeReverse(card))}
-      key={card.id}>
+    <>
+      {
+        cardModal !== null && <CardModal card={cardModal} closeModal={() => setCardModal(null)}/>
+      }
 
-      <div className="SingleCard-imgContainer">
-        <div className="SingleCard-data">
-          {card.name} ({card.localId})<br/>
-          {card.cardSet.code} - {card.cardSet.name}
+      <div
+        className={"SingleCard " + (collectionMode ? getColorClassname(card.userCardPossessions?.[0], firstType === 'reverse', canBeReverse(card)) : '')}
+        key={card.id}>
+
+        <div className="SingleCard-imgContainer" onClick={() => openCardInfo(card)}>
+          <div className="SingleCard-data">
+            {card.name} ({card.localId})<br/>
+            {card.cardSet.code} - {card.cardSet.name}
+          </div>
+          {
+            collectionMode && canBeReverse(card) ?
+              <>
+                <img className="SingleCard-possession-reverse" loading={"lazy"}
+                     src={getImageSource(card)}/>
+                <img className="SingleCard-possession-classic" loading={"lazy"}
+                     src={getImageSource(card)}
+                     onError={(el) => el.currentTarget.setAttribute("src", "")}/>
+              </> : <img className="SingleCard-img" src={getImageSource(card)} loading={"lazy"}
+                         onError={el => el.currentTarget.style.display = "none"}/>
+          }
         </div>
-        {
-          collectionMode && canBeReverse(card) ?
-            <>
-              <img className="SingleCard-possession-reverse" loading={"lazy"}
-                   src={"src/assets/cards/" + card.cardSet.code + "/" + Number(card.localId) + ".jpg"}/>
-              <img className="SingleCard-possession-classic" loading={"lazy"}
-                   src={"src/assets/cards/" + card.cardSet.code + "/" + Number(card.localId) + ".jpg"}
-                    onError={(el) => el.currentTarget.setAttribute("src", "")}/>
-            </> : <img className="SingleCard-img" src={getImageSource(card)} loading={"lazy"}
-                       onError={el => el.currentTarget.style.display = "none"}/>
-        }
-      </div>
 
-      {collectionMode && <SingleCardOverlayComponent firstType={firstType} card={card} index={index}/>}
-    </div>
+        {collectionMode && <SingleCardOverlayComponent firstType={firstType} card={card} index={index}/>}
+      </div>
+    </>
   )
 }

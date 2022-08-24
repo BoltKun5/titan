@@ -8,9 +8,8 @@ import {CardManagerFilterComponent} from "../../components/CardManagerFilterComp
 import {CardManagerCardListComponent} from "../../components/CardManagerCardListComponent/CardManagerCardListComponent";
 import './CardManager.scss'
 import {useFetchCards} from "../../hook/api/cards";
-import {MassInputComponent} from "../../components/MassInputComponent/MassInputComponent";
-import {reducer} from "../../hook/CardManagerReducer";
 import {CardRarityEnum, CardTypeEnum} from "../../../../api/src/local_core";
+import {MassInputComponent} from "../../components/CardModal/MassInputComponent";
 
 export const CardManager: React.FC = () => {
   const initialRarityFilter = [

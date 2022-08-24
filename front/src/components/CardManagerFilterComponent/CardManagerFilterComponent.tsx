@@ -1,5 +1,5 @@
 import React, {useContext} from "react";
-import {Button, FormControl, InputLabel, MenuItem, Select, TextField} from "@mui/material";
+import {Button, FormControl, InputLabel, MenuItem, Select, TextField, Tooltip} from "@mui/material";
 import CardManagerContext from "../../hook/contexts/CardManagerContext";
 import {CategorizedAutocompleteChecklist} from "../CategorizedAutocompleteChecklist/CategorizedAutocompleteChecklist";
 import {SwitchInputComponent} from "../SwitchInputComponent/SwitchInputComponent"
@@ -22,7 +22,7 @@ export const CardManagerFilterComponent: React.FC<{}> = () => {
     setMassInput,
     massInput,
     rarityFilter,
-    setRarityFilter
+    setRarityFilter,
   } = useContext(CardManagerContext);
 
   const updateSetFilters = (event: any) => {
@@ -65,76 +65,57 @@ export const CardManagerFilterComponent: React.FC<{}> = () => {
     }, 300);
   }
 
-  const rarities = ["common", "uncommon", "rare", "holo", "secrete", "ur"]
+  const frontRarity: any = {
+    "Common": "Commune",
+    "Uncommon": "Peu commune",
+    "Rare": "Rare",
+    "Holo": "Holographique",
+    "Secret Rare": "Secrète",
+    "Ultra Rare": "Ultra Rare",
+    None: "Promotionnelle",
+  }
 
   return (
     <div className="CardManagerFilter">
-      <div className="CardManagerFilter-left">
-        <div className="CardManagerFilter-top">
-          <div className="CardManagerFilter-textInputContainer">
-            <label>Filtrer par nom</label>
-            <input type="text" className="CardManagerFilter-textInput" id="nameFilter"
-                   onKeyUp={startCountdown} onKeyDown={() => clearTimeout(nameInputTimer)}/>
-          </div>
-          <div className="CardManagerFilter-selectInput">
-            <label>Trier par</label>
-            <select onChange={(event) => setOrder(event.target.value)} value={order}>
-              <option defaultChecked={true} value={"default"}>Set</option>
-              <option value={"name"}>Nom</option>
-              <option value={"type"}>Type</option>
-            </select>
-          </div>
-
-          <CategorizedAutocompleteChecklist items={cardSetFilter} placeholder={"Filtrer par sets"}
-                                            onFilterChange={updateSetFilters}/>
-
+      <div className="CardManagerFilter-top">
+        <div className="CardManagerFilter-textInputContainer">
+          <label>Filtrer par nom</label>
+          <input type="text" className="CardManagerFilter-textInput" id="nameFilter"
+                 onKeyUp={startCountdown} onKeyDown={() => clearTimeout(nameInputTimer)}/>
         </div>
-        <div className="CardManagerFilter-bottom">
-          <button className="CardManagerFilter-button" onClick={resetAllFilters}>Réinitialiser
-            filtres
-          </button>
-          <div className="CardManagerFilter-rarityFilter">
+        <div className="CardManagerFilter-selectInput">
+          <label>Trier par</label>
+          <select onChange={(event) => setOrder(event.target.value)} value={order}>
+            <option defaultChecked={true} value={"default"}>Set</option>
+            <option value={"name"}>Nom</option>
+            <option value={"type"}>Type</option>
+          </select>
+        </div>
+
+        <CategorizedAutocompleteChecklist items={cardSetFilter} placeholder={"Filtrer par sets"}
+                                          onFilterChange={updateSetFilters}/>
+        <button className="CardManagerFilter-button" onClick={resetAllFilters}>Réinitialiser les
+          filtres
+        </button>
+      </div>
+      <div className="CardManagerFilter-bottom">
+        <div className="CardManagerFilter-rarityFilter">
+          <label>Filtrer par rareté</label>
+          <div className="CardManagerFilter-rarityList">
             {
               rarityFilter.map((filter) =>
-                <React.Fragment key={"rarity" + filter.rarity}>
-                  <div className={"CardManagerFilter-rarityContainer " + (filter.value ? 'selected' : '')} onClick={() => {
-                    updateRarityFilter(filter.rarity)
-                  }}>
+                <Tooltip title={frontRarity[filter.rarity]} key={"rarity" + filter.rarity}>
+                  <div className={"CardManagerFilter-rarityContainer " + (filter.value ? 'selected' : '')}
+                       onClick={() => {
+                         updateRarityFilter(filter.rarity)
+                       }}>
                     <img className="CardManagerFilter-rarityImg" src={"./src/assets/icons/" + filter.rarity + ".png"}/>
                   </div>
-                </React.Fragment>,
+                </Tooltip>,
               )
             }
-
           </div>
-          {collectionMode &&
-          <button className="CardManagerFilter-button marginLeft" onClick={() => setMassInput(true)}>Entrer toutes les
-            valeurs</button>}
         </div>
-      </div>
-
-      <div className="CardManagerFilter-switchGroup">
-        <SwitchInputComponent
-          value={collectionMode}
-          isDisabled={false}
-          modifyValue={setCollectionMode}
-          label={'Activer le mode Collection'}
-          id={'collectionMode'}
-        />
-        <SwitchInputComponent
-          value={separateReverse}
-          isDisabled={!collectionMode}
-          modifyValue={setSeparateReverse}
-          label={'Séparer les cartes Reverse'}
-          id={'separateReverse'}
-        />
-        <SwitchInputComponent
-          value={showUnowned}
-          isDisabled={!collectionMode}
-          modifyValue={setShowUnowned}
-          label={'Afficher les cartes non possédées'}
-          id={'showUnowned'}
-        />
       </div>
     </div>
   )

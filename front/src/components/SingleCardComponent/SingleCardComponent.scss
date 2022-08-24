@@ -1,4 +1,10 @@
 .SingleCard {
+
+
+  &:last-of-type {
+    margin-bottom: 30px;
+  }
+
   &-possession {
     &-classic {
       top: 0;
@@ -52,6 +58,10 @@
     position: relative;
     overflow: hidden;
     background: #8c8c8c;
+    &:hover *{
+      filter: none !important;
+      cursor: pointer;
+    }
   }
 
   &-img {
@@ -65,15 +75,15 @@
 .CardQuantity {
   &-notOwned {
     img {
-      filter: grayscale(100%);
+      filter: brightness(0.3) grayscale(100%);
     }
   }
 
   &-onlyReverse .SingleCard-possession-reverse {
-    filter: grayscale(100%);
+    filter: brightness(0.3) grayscale(100%);
   }
 
   &-onlyClassic .SingleCard-possession-classic {
-    filter: grayscale(100%);
+    filter: brightness(0.3) grayscale(100%);
   }
 }
