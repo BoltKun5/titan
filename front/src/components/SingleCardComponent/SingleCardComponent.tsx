@@ -6,7 +6,7 @@ import {SingleCardOverlayComponent} from "../SingleCardOverlayComponent/SingleCa
 import {Card} from "../../../../api/src/database"
 import './SingleCardComponent.scss'
 import {canBeReverse} from "../CardManagerCardListComponent/CardManagerCardListComponent";
-import {CardModal} from "../MassInputComponent/CardModal";
+import {CardModal} from "../CardModalComponent/CardModal";
 
 export const SingleCardComponent: React.FC<SingleCardComponentPropsType> = ({card, index, firstType}) => {
   const {collectionMode, separateReverse} = useContext(CardManagerContext);
@@ -50,7 +50,7 @@ export const SingleCardComponent: React.FC<SingleCardComponentPropsType> = ({car
       }
 
       <div
-        className={"SingleCard " + (collectionMode ? getColorClassname(card.userCardPossessions?.[0], firstType === 'reverse', canBeReverse(card)) : '')}
+        className={"SingleCard " + (collectionMode ? getColorClassname(card.userCardPossessions?.[0], firstType === 'reverse', card.canBeReverse) : '')}
         key={card.id}>
 
         <div className="SingleCard-imgContainer" onClick={() => openCardInfo(card)}>
@@ -59,7 +59,7 @@ export const SingleCardComponent: React.FC<SingleCardComponentPropsType> = ({car
             {card.cardSet.code} - {card.cardSet.name}
           </div>
           {
-            collectionMode && canBeReverse(card) ?
+            collectionMode && card.canBeReverse ?
               <>
                 <img className="SingleCard-possession-reverse" loading={"lazy"}
                      src={getImageSource(card)}/>

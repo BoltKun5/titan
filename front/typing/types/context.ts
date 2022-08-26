@@ -20,5 +20,7 @@ export type CardManagerContextType = {
   massInput: boolean,
   setMassInput: React.Dispatch<React.SetStateAction<boolean>>,
   rarityFilter: any[],
-  setRarityFilter: React.Dispatch<React.SetStateAction<any[]>>
+  setRarityFilter: React.Dispatch<React.SetStateAction<any[]>>,
+  showStats: boolean,
+  setShowStats: React.Dispatch<React.SetStateAction<boolean>>,
 }

@@ -35,3 +35,13 @@ export type SingleCardOverlayContentComponentPropsType = {
   index: number,
   firstType: 'classic' | 'reverse'
 }
+
+export type StatCardComponentType = {
+  data: {
+    icon?: string,
+    ownedQuantity: number,
+    distinctQuantity: number,
+    possibleQuantity: number,
+    label: string
+  }
+}

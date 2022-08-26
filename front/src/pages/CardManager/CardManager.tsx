@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect, useReducer, useRef, useState} from "react";
+import React, {useCallback, useEffect, useState} from "react";
 import {loggedApi} from "../../axios";
 import {CardSerie, CardSet, Card} from "../../../../api/src/database";
 import CardManagerContext from "../../hook/contexts/CardManagerContext";
@@ -9,39 +9,11 @@ import {CardManagerCardListComponent} from "../../components/CardManagerCardList
 import './CardManager.scss'
 import {useFetchCards} from "../../hook/api/cards";
 import {CardRarityEnum, CardTypeEnum} from "../../../../api/src/local_core";
-import {MassInputComponent} from "../../components/CardModal/MassInputComponent";
+import {MassInputComponent} from "../../components/MassInputComponent/MassInputComponent";
+import {initialRarityFilter} from "./CardManagerUtils";
+import {SearchStatisticsComponent} from "../../components/SearchStatisticsComponent/SearchStatisticsComponent";
 
 export const CardManager: React.FC = () => {
-  const initialRarityFilter = [
-    {
-      rarity: "Common",
-      value: false
-    },
-    {
-      rarity: "Uncommon",
-      value: false
-    },
-    {
-      rarity: "Rare",
-      value: false
-    },
-    {
-      rarity: "Holo",
-      value: false
-    },
-    {
-      rarity: "Ultra Rare",
-      value: false
-    },
-    {
-      rarity: "Secret Rare",
-      value: false
-    },
-    {
-      rarity: "None",
-      value: false
-    }
-  ]
 
   // Données de la base
   const [series, setSeries] = useState<CardSerie[]>();
@@ -62,13 +34,15 @@ export const CardManager: React.FC = () => {
   const [showUnowned, setShowUnowned] = useState<boolean>(false);
 
   const [massInput, setMassInput] = useState<boolean>(false);
+  const [showStats, setShowStats] = useState<boolean>(false);
   const [firstUpdate, setFirstUpdate] = useState<boolean>(true);
+
+  const [stats, setStats] = useState({});
 
   const {isLoading, fetch} = useFetchCards();
 
-
   const fetchSeries = useCallback(async () => {
-    const response = await loggedApi.get(`/cardlist/allSeries`);
+    const response = await loggedApi.get(`/series/allSeries`);
     setSeries(response.data.data);
   }, []);
 
@@ -83,7 +57,7 @@ export const CardManager: React.FC = () => {
             category: serie.name,
             categoryCode: serie.code,
             status: false,
-            code: set.code
+            code: set.code,
           })
         })
       })
@@ -114,7 +88,6 @@ export const CardManager: React.FC = () => {
       params.order = order
     }
 
-
     if (rarityFilter.filter((filter) => filter.value === true).length !== 0) {
       params.rarity = [];
       rarityFilter.forEach((filter) => {
@@ -130,7 +103,13 @@ export const CardManager: React.FC = () => {
       params.unowned = (showUnowned ? 'show' : 'hide')
       response = await fetch('/cardlist/collection', params);
     }
-    setCards(response.data)
+    setCards(response.data);
+
+    if (collectionMode) {
+      response = await fetch('/cardlist/stats', params);
+      setStats( response.data);
+    }
+
   }, [cardSetFilter, nameFilter, collectionMode, showUnowned, order])
 
   useEffect(() => {
@@ -153,6 +132,10 @@ export const CardManager: React.FC = () => {
       nameFilterElement.value = "";
     }
     setNameFilter("");
+    setRarityFilter(rarityFilter.map((filter) => {
+      filter.value = false
+      return filter
+    }))
   }
 
   if (!series) {
@@ -180,16 +163,20 @@ export const CardManager: React.FC = () => {
     typeFilter,
     setTypeFilter,
     rarityFilter,
-    setRarityFilter
+    setRarityFilter,
+    showStats,
+    setShowStats,
   }
 
-  // TODO : mettre un loader, mask css, remplacer, mettre les queries en objet, utiliser formik, utiliser useMemo pour les call api sur cards
-  // TODO : Tris pas type, rareté, brillance par rareté, limit de sequelize
+  // TODO : mettre les queries en objet, utiliser formik
+  // TODO : rareté, brillance par rareté,
 
   return (
     <CardManagerContext.Provider value={contextValue}>
+      {/* @ts-ignore */}
+      {showStats && <SearchStatisticsComponent data={stats}/>}
       <div className="CardManager">
-        {massInput && <MassInputComponent />}
+        {massInput && <MassInputComponent/>}
         <SideBarComponent series={series}/>
         <div className="CardManager-mainContent">
           <CardManagerFilterComponent/>

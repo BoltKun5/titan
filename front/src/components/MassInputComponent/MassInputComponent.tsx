@@ -2,7 +2,6 @@ import React, {useContext, useEffect, useLayoutEffect, useState} from "react";
 import CardManagerContext from "../../hook/contexts/CardManagerContext";
 import './MassInputComponent.scss';
 import {CardCounterComponent} from "../CardCounterComponent/CardCounterComponent";
-import {canBeReverse} from "../CardManagerCardListComponent/CardManagerCardListComponent";
 import {ClickAwayListener} from "@mui/material";
 import {Card} from "../../../../api/src/database";
 
@@ -80,7 +79,7 @@ export const MassInputComponent: React.FC<{}> = () => {
             <div className="MassInput-name">{currentCard.name}</div>
             <CardCounterComponent key={currentCard.cardSet.code + currentCard.localId} card={currentCard}
                                   label={"Carte normale"} type={"classic"}/>
-            {canBeReverse(currentCard) &&
+            {currentCard.canBeReverse &&
             <CardCounterComponent key={currentCard.cardSet.code + currentCard.localId + "r"} card={currentCard}
                                   label={"Carte reverse"} type={"reverse"}/>}
             <button className="MassInput-button" onClick={() => getToNextCard()}>Carte suivante

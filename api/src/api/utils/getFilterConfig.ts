@@ -5,9 +5,9 @@ import {UserCardPossession} from "../../database/models/UserCardPossession";
 import sequelize from "sequelize";
 
 // @ts-ignore
-export const getFilterConfig = (req, res, type) => {
+export const getFilterConfig = (req, res, type, page = 0) => {
   let mainOrder;
-  if (req.query?.order) {
+  if (req.query?.order && page !== -1) {
     switch (req.query.order) {
       case "default":
         mainOrder = [[{model: CardSet, as: "cardSet"}, 'releaseDate', 'desc'], ['localId', 'asc']];
@@ -31,9 +31,9 @@ export const getFilterConfig = (req, res, type) => {
         },
       }),
     },
-    order: mainOrder,
+    ...(mainOrder ? {order: mainOrder} : {}),
     subQuery: false,
-    attributes: {exclude: ["cardSet"]},
+    ...(page !== -1 ? {attributes: {exclude: ["cardSet"]}} : {}),
     include: [
       {
         model: UserCardPossession,
@@ -41,25 +41,27 @@ export const getFilterConfig = (req, res, type) => {
         required: (req.query.unowned ? (req.query.unowned !== 'show') : false),
         duplicating: false,
         where: {
-        ...(type === 'collection' ? {[sequelize.Op.and]: [
-            {
-              [sequelize.Op.or]: [
-                {
-                  classicQuantity: {
-                    [sequelize.Op.gt]: 0,
+          ...(type === 'collection' ? {
+            [sequelize.Op.and]: [
+              {
+                [sequelize.Op.or]: [
+                  {
+                    classicQuantity: {
+                      [sequelize.Op.gt]: 0,
+                    },
                   },
-                },
-                {
-                  reverseQuantity: {
-                    [sequelize.Op.gt]: 0,
+                  {
+                    reverseQuantity: {
+                      [sequelize.Op.gt]: 0,
+                    },
                   },
-                },
-              ],
-            },
-            {
-              userId: res.locals.currentUser.id,
-            },
-          ]} : {}),
+                ],
+              },
+              {
+                userId: res.locals.currentUser.id,
+              },
+            ],
+          } : {}),
         },
       },
       {
@@ -77,6 +79,6 @@ export const getFilterConfig = (req, res, type) => {
         as: "cardSet",
       },
     ],
-    limit: 300,
+    ...(page === 0 ? {limit: 300} : (page === -1 ? {} : {limit: 100})),
   }
 }

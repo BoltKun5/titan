@@ -19,7 +19,7 @@ export const SingleCardOverlayContentComponent:
       <div className="SingleCardOverlayContent-content">
         <CardCounterComponent label={firstType === 'classic' ? "Carte normale" : "Carte reverse"} type={firstType}
                               card={card}/>
-        {(!separateReverse && canBeReverse(card)) &&
+        {(!separateReverse && card.canBeReverse) &&
         <CardCounterComponent card={card} label={'Carte reverse'} type={'reverse'}/>}
       </div>
     </div>

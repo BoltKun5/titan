@@ -1,8 +1,4 @@
-import { ErrorType } from "abyss_core";
-import {Card, CardSet, User} from "../../../../../database";
-import { UserCardPossession } from "../../../../../database/models/UserCardPossession";
-
-// TODO: trier les interface en dossiers
+import {CardSet, User} from "../../../../../database";
 
 export interface ISigninAuthBody {
   password: string,
@@ -28,23 +24,6 @@ export interface ISigninAuthResponse {
   token: string
 }
 
-export interface IResponse<T> {
-  data?: T;
-  error?: IApiError | Error | ICodeError;
-}
-
-export interface ICodeError {
-  code: string
-}
-
-export interface IApiError {
-  type: ErrorType;
-  code: string;
-  message: string;
-  params?: string;
-  field?: string;
-}
-
 export interface IUpdateUserCardsBody {
   token: string,
   cardId: string,
@@ -59,20 +38,4 @@ export interface IUpdateUserCardsResponse {
 
 export interface ICardListResponse {
   set: CardSet
-}
-
-export interface IGetAllUserCardsQuery {
-  page,
-  itemPerPage,
-}
-
-export interface IGetUserCardsResponse {
-  totalCards: number,
-  paginationOptions: IPagination,
-  cardsList: UserCardPossession[]
-}
-
-export interface IPagination {
-  page: number,
-  itemPerPage: number
 }

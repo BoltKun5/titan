@@ -31,5 +31,8 @@ export default React.createContext<CardManagerContextType>({
   },
   rarityFilter: [],
   setRarityFilter: () => {
-  }
+  },
+  showStats: false,
+  setShowStats: () => {
+  },
 })

@@ -1,48 +1,29 @@
-import {IResponseLocals} from "../../local_core";
-import {IResponse} from "../../local_core/types/types/interface";
+import {CardRarityEnum, IResponseLocals, StatisticsDataType} from "../../local_core";
+import {ICollectionCardlistQuery, IResponse} from "../../local_core/types/types/interface";
 import {Request, Response, Router} from "express";
 import asyncHandler from "express-async-handler";
-import {Card, CardAttack, CardAttribute, CardSerie, CardSet} from "../../database";
+import {Card, CardSerie, CardSet} from "../../database";
 import sequelize from "sequelize";
-import Sequelize from "sequelize";
-import {CardType} from "../../database/models/CardType";
-import {CardAttackCost} from "../../database/models/CardAttackCost";
-import {CardAbility} from "../../database/models/CardAbility";
-import {CardDamageModification} from "../../database/models/CardDamageModification";
-import {CardDexId} from "../../database/models/CardDexId";
-import {UserCardPossession} from "../../database/models/UserCardPossession";
 import auth from "../middlewares/auth";
 import {getFilterConfig} from "../utils/getFilterConfig";
+import {UserCardPossession} from "../../database/models/UserCardPossession";
+import {include} from "underscore";
 
 const route = Router();
 
 export const CardListRouter = (app: Router): Router => {
   app.use("/cardlist", route);
 
-  route.get(
-    "/allSeries",
-    asyncHandler(async (req: Request<any, any, void, { serieId: string }>, res: Response<IResponse<any>, IResponseLocals>) => {
-      const series = await CardSerie.findAll({
-        include: [{
-          model: CardSet,
-          as: 'cardSets',
-        }],
-        order: [
-          [{model: CardSet, as: 'cardSets'}, 'releaseDate', 'DESC']],
+  //TODO: Typer les queries
 
-      });
-      res.json({
-        data: series,
-      });
-    }),
-  );
-
-  //TODO: Typer la query correctement
   route.get(
     "/collection",
     auth,
     asyncHandler(async (req: Request<any, any, void>, res: Response<IResponse<any>, IResponseLocals>) => {
-      const cards = await Card.findAll(getFilterConfig(req, res, 'collection'));
+      const cards = await Card.findAll({
+        ...getFilterConfig(req, res, 'collection'),
+      });
+
       res.json({
         data: cards,
       });
@@ -60,54 +41,128 @@ export const CardListRouter = (app: Router): Router => {
   );
 
   route.get(
-    "/set/:setId",
-    asyncHandler(async (req: Request<any, any, void, { serieId: string, setId: string }>, res: Response<IResponse<any>, IResponseLocals>) => {
-      const set = await CardSet.findOne({
-        where: {code: req.params.setId},
+    "/stats",
+    auth,
+    asyncHandler(async (req: Request<any, any, void>, res: Response<IResponse<StatisticsDataType>, IResponseLocals>) => {
+      const cards = await Card.findAll({
+        ...getFilterConfig(req, res, 'collection', -1),
       });
-      try {
 
-        const cards = await Card.findAll({
-          where: {
-            setId: set.id,
+      const stats: StatisticsDataType = {
+        distinctPossible: 0,
+        distinctOwned: 0,
+        distinctNormal: 0,
+        distinctNormalPossible: 0,
+        distinctReverse: 0,
+        distinctReversePossible: 0,
+
+        totalOwned: 0,
+        totalNormal: 0,
+        totalReverse: 0,
+
+        countByRarity: {
+          "Common": {
+            totalOwned: 0,
+            distinctOwned: 0,
+            distinctPossible: 0,
           },
-          order: [[sequelize.col('Card.localId'), 'ASC']],
-        })
-        set.setDataValue('cards', cards);
-        res.json({data: {set: set}});
-      } catch (e) {
-        console.error(e)
-      }
+          "Uncommon": {
+            totalOwned: 0,
+            distinctOwned: 0,
+            distinctPossible: 0,
+          },
+          "Rare": {
+            totalOwned: 0,
+            distinctOwned: 0,
+            distinctPossible: 0,
+          },
+          "Holo": {
+            totalOwned: 0,
+            distinctOwned: 0,
+            distinctPossible: 0,
+          },
+          "Ultra Rare": {
+            totalOwned: 0,
+            distinctOwned: 0,
+            distinctPossible: 0,
+          },
+          "Secret Rare": {
+            totalOwned: 0,
+            distinctOwned: 0,
+            distinctPossible: 0,
+          },
+          "None": {
+            totalOwned: 0,
+            distinctOwned: 0,
+            distinctPossible: 0,
+          },
+          "Amazing": {
+            totalOwned: 0,
+            distinctOwned: 0,
+            distinctPossible: 0,
+          },
+        },
+        countBySet: {},
+      };
 
-    }));
+      cards.forEach((card) => {
+        if (!stats.countBySet[card.cardSet.code]) {
+          stats.countBySet[card.cardSet.code] = {
+            totalNormal: 0,
+            totalReverse: 0,
+            totalOwned: 0,
+            distinctNormal: 0,
+            distinctReverse: 0,
+            distinctPossibleNormal: 0,
+            distinctPossibleReverse: 0,
+            distinctOwned: 0,
+            distinctPossible: 0,
+          };
+        }
 
-  //TODO: Typer la query correctement
-  route.get(
-    "/serie/:serieId",
-    asyncHandler(async (req: Request<any, any, void, { serieId: string }>, res: Response<IResponse<any>, IResponseLocals>) => {
-      const serie = await CardSerie.findOne({
-        where: {code: req.params.serieId},
+        if (card?.userCardPossessions?.[0]) {
+          stats.totalReverse += card.userCardPossessions[0].reverseQuantity;
+          stats.totalNormal += card.userCardPossessions[0].classicQuantity;
+          stats.distinctNormal += (card.userCardPossessions[0].classicQuantity > 0 ? 1 : 0)
+          stats.distinctReverse += (card.userCardPossessions[0].reverseQuantity > 0 ? 1 : 0)
+
+          stats.countBySet[card.cardSet.code].totalNormal += card.userCardPossessions[0].classicQuantity;
+          stats.countBySet[card.cardSet.code].totalReverse += card.userCardPossessions[0].reverseQuantity;
+
+          stats.countBySet[card.cardSet.code].distinctNormal += (card.userCardPossessions[0].classicQuantity > 0 ? 1 : 0)
+          stats.countBySet[card.cardSet.code].distinctReverse += (card.userCardPossessions[0].reverseQuantity > 0 ? 1 : 0)
+
+          stats.countBySet[card.cardSet.code].distinctOwned += (card.userCardPossessions[0].classicQuantity > 0 ? 1 : 0);
+          stats.countBySet[card.cardSet.code].distinctOwned += (card.userCardPossessions[0].reverseQuantity > 0 ? 1 : 0);
+          stats.countByRarity[CardRarityEnum[card.rarity]].distinctOwned += (card.userCardPossessions[0].reverseQuantity
+          > 0 || card.userCardPossessions[0].classicQuantity > 0 ? 1 : 0);
+          stats.countByRarity[CardRarityEnum[card.rarity]].totalOwned += card.userCardPossessions[0].classicQuantity + card.userCardPossessions[0].reverseQuantity
+        }
+
+        stats.distinctNormalPossible++;
+        stats.distinctReversePossible += (card.canBeReverse ? 1 : 0);
+
+        stats.countBySet[card.cardSet.code].distinctPossibleNormal++;
+        stats.countBySet[card.cardSet.code].distinctPossibleReverse += (card.canBeReverse ? 1 : 0);
+
+        stats.countByRarity[CardRarityEnum[card.rarity]].distinctPossible++;
+
       });
-      try {
-        if (!serie) res.json({error: {code: 'SERIE_NOT_FOUND'}});
-        const cardSets = await CardSet.findAll({
-          where: {
-            cardSerieId: serie.id,
-          },
-          order: [[sequelize.col('CardSet.releaseDate'), 'DESC']],
-        })
-        serie.setDataValue('cardSets', cardSets);
 
-        res.json({data: {serie: serie}});
-      } catch (e) {
-        console.error(e)
+      stats.totalOwned = stats.totalReverse + stats.totalNormal;
+      stats.distinctOwned = stats.distinctReverse + stats.distinctNormal
+      stats.distinctPossible = stats.distinctReversePossible + stats.distinctNormalPossible
+
+      for (let [key, value] of Object.entries(stats.countBySet)) {
+        stats.countBySet[key].distinctPossible = value.distinctPossibleNormal + value.distinctPossibleReverse;
+        stats.countBySet[key].totalOwned = value.totalNormal + value.totalReverse;
       }
 
       res.json({
-        data: serie,
+        data: stats,
       });
     }),
-  );
+  )
 
   return route;
 };

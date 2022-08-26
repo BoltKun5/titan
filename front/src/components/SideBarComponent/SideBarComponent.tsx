@@ -17,7 +17,8 @@ export const SideBarComponent: React.FC<SideBarComponentPropsType> = ({series}) 
     setSeparateReverse,
     showUnowned,
     setShowUnowned,
-    setMassInput
+    setMassInput,
+    setShowStats
   } = useContext(CardManagerContext);
 
   const activateSetFilter = (setCode: string) => {
@@ -111,7 +112,7 @@ export const SideBarComponent: React.FC<SideBarComponentPropsType> = ({series}) 
               label={'Afficher non possédées'}
               id={'showUnowned'}
             />
-            <button className="SideBar-secondaryButton" disabled={!collectionMode}>Voir les statistiques</button>
+            <button className="SideBar-secondaryButton" disabled={!collectionMode} onClick={() => setShowStats(true)}>Voir les statistiques</button>
             <button className="SideBar-secondaryButton" disabled={!collectionMode} onClick={() => setMassInput(true)}>Entrer toutes les
               valeurs</button>
           </div>

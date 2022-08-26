@@ -4,6 +4,7 @@ import CardManagerContext from "../../hook/contexts/CardManagerContext";
 import {CategorizedAutocompleteChecklist} from "../CategorizedAutocompleteChecklist/CategorizedAutocompleteChecklist";
 import {SwitchInputComponent} from "../SwitchInputComponent/SwitchInputComponent"
 import './CardManagerFilterComponent.scss'
+import {frontRarity} from "../../pages/CardManager/CardManagerUtils";
 
 export const CardManagerFilterComponent: React.FC<{}> = () => {
   const {
@@ -65,16 +66,6 @@ export const CardManagerFilterComponent: React.FC<{}> = () => {
     }, 300);
   }
 
-  const frontRarity: any = {
-    "Common": "Commune",
-    "Uncommon": "Peu commune",
-    "Rare": "Rare",
-    "Holo": "Holographique",
-    "Secret Rare": "Secrète",
-    "Ultra Rare": "Ultra Rare",
-    None: "Promotionnelle",
-  }
-
   return (
     <div className="CardManagerFilter">
       <div className="CardManagerFilter-top">
@@ -104,6 +95,7 @@ export const CardManagerFilterComponent: React.FC<{}> = () => {
           <div className="CardManagerFilter-rarityList">
             {
               rarityFilter.map((filter) =>
+                // @ts-ignore
                 <Tooltip title={frontRarity[filter.rarity]} key={"rarity" + filter.rarity}>
                   <div className={"CardManagerFilter-rarityContainer " + (filter.value ? 'selected' : '')}
                        onClick={() => {

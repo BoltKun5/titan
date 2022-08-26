@@ -23,10 +23,7 @@ import {CardAttackCost} from "./database/models/CardAttackCost";
 import {Card, CardAttack, CardAttribute, CardSerie, CardSet} from "./database";
 import {CardType} from "./database/models/CardType";
 import {CardDexId} from "./database/models/CardDexId";
-import axios from "axios";
-import * as fs from "fs";
-import * as buffer from "buffer";
-import {changeAze, getDataFromLimitless} from "./serverFunctions";
+import {canBeReverse} from "./utils/global.utils";
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 
@@ -35,29 +32,30 @@ import {changeAze, getDataFromLimitless} from "./serverFunctions";
     AppConfig.consoleSetup();
     await startServer();
 
-    // getDataFromLimitless()
-
-    // Card.findAll({
-    //   where: {
-    //     rarity: 8,
-    //   },
-    //   include: [{
-    //     model: CardSet,
-    //     as: 'cardSet',
-    //   }],
-    //   limit: 1000
-    // }).then((cards) => {
-    //   cards.forEach(Card => {
-    //     if (isNumeric(Card.localId)) {
-    //       if (Card.name.substring(Card.name.length - 1, Card.name.length) === "V" || Card.name.substring(Card.name.length - 4, Card.name.length) === "VMAX") {
-    //         console.log(Card.name)
-    //         Card.update({
-    //           rarity: 6
-    //         })
-    //       }
-    //     }
-    //   })
-    // })
+    Card.findAll({
+      where: {
+        setId: '1e849902-0640-4c60-8ac6-4b18555b1eee'
+      },
+        include: [{
+          model: CardSet,
+          as: 'cardSet',
+        }],
+      limit: 1000
+    }).then((cards) => {
+      cards.forEach(Card => {
+        Card.update({
+          canBeReverse: canBeReverse(Card)
+        });
+        // if (isNumeric(Card.localId)) {
+        //   if (Card.name.substring(Card.name.length - 1, Card.name.length) === "V" || Card.name.substring(Card.name.length - 4, Card.name.length) === "VMAX") {
+        //     console.log(Card.name)
+        //     Card.update({
+        //       rarity: 6
+        //     })
+        //   }
+        // }
+      })
+    })
     // setTimeout(test, 1);
 
   } catch (error) {
