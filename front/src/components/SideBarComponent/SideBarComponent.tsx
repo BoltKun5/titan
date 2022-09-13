@@ -18,13 +18,14 @@ export const SideBarComponent: React.FC<SideBarComponentPropsType> = ({series}) 
     showUnowned,
     setShowUnowned,
     setMassInput,
-    setShowStats
+    setShowStats,
+    setOpeningModule
   } = useContext(CardManagerContext);
 
   const activateSetFilter = (setCode: string) => {
     resetAllFilters();
     setCardSetFilter(cardSetFilter.map((setFilter) => {
-      setFilter.status = (setFilter.id === setCode);
+      setFilter.status = (setFilter.code === setCode);
       return setFilter
     }))
   }
@@ -115,6 +116,7 @@ export const SideBarComponent: React.FC<SideBarComponentPropsType> = ({series}) 
             <button className="SideBar-secondaryButton" disabled={!collectionMode} onClick={() => setShowStats(true)}>Voir les statistiques</button>
             <button className="SideBar-secondaryButton" disabled={!collectionMode} onClick={() => setMassInput(true)}>Entrer toutes les
               valeurs</button>
+            <button className="SideBar-secondaryButton" onClick={() => setOpeningModule(true)}>Ouvrir un booster</button>
           </div>
         </div>
       </div>

@@ -31,8 +31,8 @@ export const initialRarityFilter = [
   },
   {
     rarity: "Amazing",
-    value: false
-  }
+    value: false,
+  },
 ]
 
 export const frontRarity: frontRarityType = {
@@ -43,7 +43,7 @@ export const frontRarity: frontRarityType = {
   "Secret Rare": "Secrète",
   "Ultra Rare": "Ultra Rare",
   "None": "Promotionnelle",
-  "Amazing": "Incroyable"
+  "Amazing": "Incroyable",
 }
 
 type frontRarityType = {
@@ -55,4 +55,49 @@ type frontRarityType = {
   "Ultra Rare": string,
   None: string,
   Amazing: string
+}
+
+export const initialCardList = [
+  {
+    card: null,
+  },
+  {
+    card: null,
+  },
+  {
+    card: null,
+  },
+  {
+    card: null,
+  },
+  {
+    card: null,
+  },
+  {
+    card: null,
+  },
+  {
+    card: null,
+  },
+  {
+    card: null,
+  },
+  {
+    card: null,
+  },
+  {
+    card: null,
+  },
+]
+
+export type CardListElement = {
+  card: Card | null,
+  type?: "normal" | "reverse",
+  error?: string
+}
+
+export const getImageSource = (card: Card): string => {
+  const isValid = !isNaN(Number(card.localId));
+  if (isValid) return "src/assets/cards/" + card.cardSet.code + "/" + Number(card.localId) + ".jpg"
+  return "src/assets/cards/" + card.cardSet.code + "/" + card.localId + ".jpg"
 }

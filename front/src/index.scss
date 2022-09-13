@@ -1,8 +1,8 @@
 body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-  'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-  sans-serif;
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   //background-image: url('./assets/background.jpeg');
@@ -21,7 +21,7 @@ body {
 
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-  monospace;
+    monospace;
 }
 
 #root {
@@ -72,4 +72,20 @@ code {
 
 .main-list {
   background: #de3d2b;
+}
+
+.button {
+  padding: 15px;
+  font-weight: 400;
+  font-size: 17px;
+  color: #377D6A;
+  background: #efefef;
+  border: 0;
+  border-radius: 3px;
+  box-sizing: border-box;
+  outline: 0;
+  transition: all .3s ease-in-out;
+  line-height: 1.15;
+  min-width: 150px;
+  cursor: pointer;
 }

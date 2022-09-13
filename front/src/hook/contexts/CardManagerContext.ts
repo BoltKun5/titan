@@ -35,4 +35,7 @@ export default React.createContext<CardManagerContextType>({
   showStats: false,
   setShowStats: () => {
   },
+  openingModule: false,
+  setOpeningModule: () => {
+  },
 })

@@ -5,8 +5,8 @@ import CardManagerContext from "../../hook/contexts/CardManagerContext";
 import {SingleCardOverlayComponent} from "../SingleCardOverlayComponent/SingleCardOverlayComponent";
 import {Card} from "../../../../api/src/database"
 import './SingleCardComponent.scss'
-import {canBeReverse} from "../CardManagerCardListComponent/CardManagerCardListComponent";
 import {CardModal} from "../CardModalComponent/CardModal";
+import {getImageSource} from "../../pages/CardManager/CardManagerUtils";
 
 export const SingleCardComponent: React.FC<SingleCardComponentPropsType> = ({card, index, firstType}) => {
   const {collectionMode, separateReverse} = useContext(CardManagerContext);
@@ -31,12 +31,6 @@ export const SingleCardComponent: React.FC<SingleCardComponentPropsType> = ({car
       return 'CardQuantity-onlyClassic'
     }
     return ""
-  }
-
-  const getImageSource = (card: Card): string => {
-    const isValid = !isNaN(Number(card.localId));
-    if (isValid) return "src/assets/cards/" + card.cardSet.code + "/" + Number(card.localId) + ".jpg"
-    return "src/assets/cards/" + card.cardSet.code + "/" + card.localId + ".jpg"
   }
 
   const openCardInfo = (card: Card) => {

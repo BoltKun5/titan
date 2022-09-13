@@ -23,4 +23,6 @@ export type CardManagerContextType = {
   setRarityFilter: React.Dispatch<React.SetStateAction<any[]>>,
   showStats: boolean,
   setShowStats: React.Dispatch<React.SetStateAction<boolean>>,
+  openingModule: boolean,
+  setOpeningModule: React.Dispatch<React.SetStateAction<boolean>>
 }

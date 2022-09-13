@@ -8,10 +8,12 @@ import {CardManagerFilterComponent} from "../../components/CardManagerFilterComp
 import {CardManagerCardListComponent} from "../../components/CardManagerCardListComponent/CardManagerCardListComponent";
 import './CardManager.scss'
 import {useFetchCards} from "../../hook/api/cards";
-import {CardRarityEnum, CardTypeEnum} from "../../../../api/src/local_core";
+import {CardRarityEnum, CardTypeEnum, StatisticsDataType} from "../../../../api/src/local_core";
 import {MassInputComponent} from "../../components/MassInputComponent/MassInputComponent";
 import {initialRarityFilter} from "./CardManagerUtils";
 import {SearchStatisticsComponent} from "../../components/SearchStatisticsComponent/SearchStatisticsComponent";
+import {StatCardComponentType} from "../../../typing/types";
+import {OpeningModuleComponent} from "../../components/OpeningModuleComponent/OpeningModuleComponent";
 
 export const CardManager: React.FC = () => {
 
@@ -36,8 +38,9 @@ export const CardManager: React.FC = () => {
   const [massInput, setMassInput] = useState<boolean>(false);
   const [showStats, setShowStats] = useState<boolean>(false);
   const [firstUpdate, setFirstUpdate] = useState<boolean>(true);
+  const [openingModule, setOpeningModule] = useState<boolean>(false);
 
-  const [stats, setStats] = useState({});
+  const [stats, setStats] = useState<StatisticsDataType | null>(null);
 
   const {isLoading, fetch} = useFetchCards();
 
@@ -53,7 +56,7 @@ export const CardManager: React.FC = () => {
         serie.cardSets.forEach((set: CardSet) => {
           setFilterList.push({
             name: set.name,
-            id: set.code,
+            id: set.id,
             category: serie.name,
             categoryCode: serie.code,
             status: false,
@@ -74,7 +77,7 @@ export const CardManager: React.FC = () => {
     if (setFilter.length > 0) {
       params.setFilter = []
       setFilter.forEach((setFilter) => {
-        params.setFilter.push(setFilter.id);
+        params.setFilter.push(setFilter.code);
       })
     }
 
@@ -107,7 +110,7 @@ export const CardManager: React.FC = () => {
 
     if (collectionMode) {
       response = await fetch('/cardlist/stats', params);
-      setStats( response.data);
+      setStats(response.data);
     }
 
   }, [cardSetFilter, nameFilter, collectionMode, showUnowned, order])
@@ -166,15 +169,18 @@ export const CardManager: React.FC = () => {
     setRarityFilter,
     showStats,
     setShowStats,
+    openingModule,
+    setOpeningModule
   }
 
-  // TODO : mettre les queries en objet, utiliser formik
-  // TODO : rareté, brillance par rareté,
+  // TODO : Mettre à jour la connexion, mettre une inscription ?
+  // TODO : review les sécurités
+  // TODO : utiliser formik
 
   return (
     <CardManagerContext.Provider value={contextValue}>
-      {/* @ts-ignore */}
-      {showStats && <SearchStatisticsComponent data={stats}/>}
+      {showStats && stats !== null && <SearchStatisticsComponent data={stats}/>}
+      {openingModule && <OpeningModuleComponent/>}
       <div className="CardManager">
         {massInput && <MassInputComponent/>}
         <SideBarComponent series={series}/>
