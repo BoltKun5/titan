@@ -1,19 +1,19 @@
-import React, {useCallback, useEffect, useState} from "react";
-import {loggedApi} from "../../axios";
-import {CardSerie, CardSet, Card} from "../../../../api/src/database";
+import React, { useCallback, useEffect, useState } from "react";
+import { loggedApi } from "../../axios";
+import { CardSerie, CardSet, Card } from "../../../../api/src/database";
 import CardManagerContext from "../../hook/contexts/CardManagerContext";
-import {CardSetFilterInterface} from "../../../../api/src/local_core/types/types/interface/front";
-import {SideBarComponent} from "../../components/SideBarComponent/SideBarComponent";
-import {CardManagerFilterComponent} from "../../components/CardManagerFilterComponent/CardManagerFilterComponent";
-import {CardManagerCardListComponent} from "../../components/CardManagerCardListComponent/CardManagerCardListComponent";
+import { CardSetFilterInterface } from "../../../../api/src/local_core/types/types/interface/front";
+import { SideBarComponent } from "../../components/SideBarComponent/SideBarComponent";
+import { CardManagerFilterComponent } from "../../components/CardManagerFilterComponent/CardManagerFilterComponent";
+import { CardManagerCardListComponent } from "../../components/CardManagerCardListComponent/CardManagerCardListComponent";
 import './CardManager.scss'
-import {useFetchCards} from "../../hook/api/cards";
-import {CardRarityEnum, CardTypeEnum, StatisticsDataType} from "../../../../api/src/local_core";
-import {MassInputComponent} from "../../components/MassInputComponent/MassInputComponent";
-import {initialRarityFilter} from "./CardManagerUtils";
-import {SearchStatisticsComponent} from "../../components/SearchStatisticsComponent/SearchStatisticsComponent";
-import {StatCardComponentType} from "../../../typing/types";
-import {OpeningModuleComponent} from "../../components/OpeningModuleComponent/OpeningModuleComponent";
+import { useFetchData } from "../../hook/api/cards";
+import { CardRarityEnum, CardTypeEnum, StatisticsDataType } from "../../../../api/src/local_core";
+import { MassInputComponent } from "../../components/MassInputComponent/MassInputComponent";
+import { initialRarityFilter } from "./CardManagerUtils";
+import { SearchStatisticsComponent } from "../../components/SearchStatisticsComponent/SearchStatisticsComponent";
+import { StatCardComponentType } from "../../../typing/types";
+import { OpeningModuleComponent } from "../../components/OpeningModuleComponent/OpeningModuleComponent";
 
 export const CardManager: React.FC = () => {
 
@@ -42,7 +42,7 @@ export const CardManager: React.FC = () => {
 
   const [stats, setStats] = useState<StatisticsDataType | null>(null);
 
-  const {isLoading, fetch} = useFetchCards();
+  const { isLoading, fetch } = useFetchData();
 
   const fetchSeries = useCallback(async () => {
     const response = await loggedApi.get(`/series/allSeries`);
@@ -179,25 +179,25 @@ export const CardManager: React.FC = () => {
 
   return (
     <CardManagerContext.Provider value={contextValue}>
-      {showStats && stats !== null && <SearchStatisticsComponent data={stats}/>}
-      {openingModule && <OpeningModuleComponent/>}
+      {showStats && stats !== null && <SearchStatisticsComponent data={stats} />}
+      {openingModule && <OpeningModuleComponent />}
       <div className="CardManager">
-        {massInput && <MassInputComponent/>}
-        <SideBarComponent series={series}/>
+        {massInput && <MassInputComponent />}
+        <SideBarComponent series={series} />
         <div className="CardManager-mainContent">
-          <CardManagerFilterComponent/>
+          <CardManagerFilterComponent />
           {
             isLoading ?
               <div className="CardManager-loaderContainer">
                 <div className="CardManager-loader">
-                  <div className="CardManager-loaderElement"/>
-                  <div className="CardManager-loaderElement"/>
-                  <div className="CardManager-loaderElement"/>
-                  <div className="CardManager-loaderElement"/>
+                  <div className="CardManager-loaderElement" />
+                  <div className="CardManager-loaderElement" />
+                  <div className="CardManager-loaderElement" />
+                  <div className="CardManager-loaderElement" />
                 </div>
               </div>
               :
-              <CardManagerCardListComponent/>
+              <CardManagerCardListComponent />
           }
         </div>
       </div>

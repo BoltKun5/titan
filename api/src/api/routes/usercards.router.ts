@@ -1,3 +1,7 @@
+import { include } from 'underscore';
+import { getCardAttributesExcludeArray } from './../utils/getAttributeExcludeList';
+import { CardPossessionHistoric } from './../../database/models/CardPossessionHistoric';
+import { IHistoricResponse, IHistoricQuery } from './../../local_core/types/types/interface/api/auth.interface';
 import { IResponseLocals } from "../../local_core";
 import {
   IIncrementManyUserCardsBody,
@@ -9,6 +13,9 @@ import { Request, Response, Router } from "express";
 import asyncHandler from "express-async-handler";
 import Auth from "../middlewares/auth";
 import { UserCardPossession } from "../../database/models/UserCardPossession";
+import { v4 } from "uuid";
+import { Card } from '../../database/models/Card';
+import { CardSet } from '../../database';
 
 const route = Router();
 
@@ -81,6 +88,9 @@ export const UserCardsRouter = (app: Router): Router => {
     "/incrementMany",
     Auth,
     asyncHandler(async (req: Request<any, any, IIncrementManyUserCardsBody>, res: Response<IResponse<IUpdateUserCardsResponse>, IResponseLocals>) => {
+      const options = {
+        boosterId: v4()
+      }
       const result = [];
       for (const card of req.body.cards) {
         const existing = await UserCardPossession.findOne({
@@ -97,17 +107,61 @@ export const UserCardsRouter = (app: Router): Router => {
               reverseQuantity: 1,
               classicQuantity: 0,
             }),
-          }));
+          }, options as any));
         } else {
           result.push(await existing.update({
             ...(card.type === "normal" ? { classicQuantity: existing.classicQuantity += 1 } : { reverseQuantity: existing.reverseQuantity += 1 }),
-          }));
+          }, options as any));
         }
       }
 
       res.json({ data: { code: "CARDS_UPDATED", result } });
     }),
   );
+
+  route.get(
+    "/historic",
+    Auth,
+    asyncHandler(async (req: Request<any, any, IHistoricQuery>, res: Response<IResponse<IHistoricResponse>, IResponseLocals>) => {
+
+      const result = await CardPossessionHistoric.findAll({
+        order: [['createdAt', 'DESC']],
+        include: [{
+          where: {
+            userId: req.query.userId
+          },
+          model: UserCardPossession,
+          required: true,
+          duplicating: false,
+          attributes: {
+            exclude: ["cardId", "classicQuantity", "createdAt", "reverseQuantity", "updatedAt", "userId"],
+          },
+          include: [{
+            model: Card,
+            duplicating: false,
+            as: 'card',
+            attributes: {
+              exclude: getCardAttributesExcludeArray(['localId', 'name'])
+            },
+            include: [{
+              model: CardSet,
+              duplicating: false,
+              as: 'cardSet',
+              attributes: {
+                exclude: ["cardCount", "cardSerieId", "isPlayableInExpanded", "isPlayableInStandard", "releaseDate", "tcgOnline"]
+              },
+            }]
+          }]
+        }]
+      })
+
+      console.log(result)
+
+
+      res.json({ data: { result } });
+    }),
+  );
+
 
   return route;
 };

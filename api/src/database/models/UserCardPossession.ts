@@ -1,3 +1,4 @@
+import { CardPossessionHistoric } from './CardPossessionHistoric';
 import { Card } from './Card';
 import {
   DataType,
@@ -10,6 +11,9 @@ import {
   Default,
   ForeignKey,
   BelongsTo,
+  BeforeCreate,
+  BeforeUpdate,
+  HasMany,
 } from 'sequelize-typescript';
 import { v4 as uuidv4 } from 'uuid';
 import { CustomModel } from '../custom/CustomModel';
@@ -56,4 +60,7 @@ export class UserCardPossession extends CustomModel {
     type: DataType.INTEGER,
   })
   reverseQuantity: number;
+
+  @HasMany(() => CardPossessionHistoric)
+  types: CardPossessionHistoric[]
 }

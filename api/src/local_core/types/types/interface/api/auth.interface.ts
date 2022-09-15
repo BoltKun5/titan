@@ -45,6 +45,11 @@ export interface IIncrementManyUserCardsBody {
   }]
 }
 
+export interface IHistoricQuery {
+  token: string,
+  userId: string
+}
+
 export interface IUpdateUserCardsResponse {
   code: string,
   result: any
@@ -52,4 +57,8 @@ export interface IUpdateUserCardsResponse {
 
 export interface ICardListResponse {
   set: CardSet
+}
+
+export interface IHistoricResponse {
+  result: any
 }

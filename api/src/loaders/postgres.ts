@@ -1,9 +1,11 @@
+import { CardPossessionHistoric } from './../database/models/CardPossessionHistoric';
 import { Sequelize } from 'sequelize-typescript';
 import AppConfig from '../modules/AppConfig';
 import Logger from '../modules/Logger';
 import { readdirSync } from 'fs-extra';
 import path from 'path';
 import { requireModules } from '../utils/import.utils';
+import { UserCardPossession } from '../database/models/UserCardPossession';
 
 export default async (): Promise<Sequelize> => {
   const { database } = AppConfig.config;
@@ -18,7 +20,26 @@ export default async (): Promise<Sequelize> => {
     });
     await connection.authenticate();
 
-    await connection.sync({ alter: true });
+    const createUserCardHistoric = (data, options: any = null) => {
+      const { dataValues, _previousDataValues } = data;
+      CardPossessionHistoric.create({
+        cardPossessionId: dataValues.id,
+        boosterId: options?.boosterId ?? null,
+        oldClassicQuantity: _previousDataValues.classicQuantity ?? 0,
+        newClassicQuantity: dataValues.classicQuantity ?? 0,
+        oldReverseQuantity: _previousDataValues.reverseQuantity ?? 0,
+        newReverseQuantity: dataValues.reverseQuantity ?? 0
+      })
+    }
+
+    UserCardPossession.afterBulkCreate(createUserCardHistoric);
+    UserCardPossession.afterBulkUpdate(createUserCardHistoric);
+    UserCardPossession.afterCreate(createUserCardHistoric);
+    UserCardPossession.afterUpdate(createUserCardHistoric);
+
+    await connection.sync(
+      // { alter: true }
+    );
 
     if (process.env.NEW_SETUP) {
       await connection.query('DROP SCHEMA IF EXISTS public CASCADE;');

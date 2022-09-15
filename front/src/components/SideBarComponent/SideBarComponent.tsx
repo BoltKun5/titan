@@ -1,12 +1,13 @@
-import React, {useContext} from "react";
-import {Tooltip} from "@mui/material";
-import {CardSerie, CardSet} from "../../../../api/src/database";
-import {SideBarComponentPropsType} from "../../../typing/types";
+import React, { useContext } from "react";
+import { Tooltip } from "@mui/material";
+import { CardSerie, CardSet } from "../../../../api/src/database";
+import { SideBarComponentPropsType } from "../../../typing/types";
 import CardManagerContext from "../../hook/contexts/CardManagerContext";
 import './SideBarComponent.scss';
-import {SwitchInputComponent} from "../SwitchInputComponent/SwitchInputComponent";
+import { SwitchInputComponent } from "../SwitchInputComponent/SwitchInputComponent";
+import { Link } from "react-router-dom";
 
-export const SideBarComponent: React.FC<SideBarComponentPropsType> = ({series}) => {
+export const SideBarComponent: React.FC<SideBarComponentPropsType> = ({ series }, context) => {
   const {
     cardSetFilter,
     setCardSetFilter,
@@ -77,7 +78,7 @@ export const SideBarComponent: React.FC<SideBarComponentPropsType> = ({series}) 
                         onClick={() => activateSetFilter(set.code)}
                       >
                         <Tooltip title={set.name}>
-                          <img src={`./src/assets/setIcons/${set.code}.png`}/>
+                          <img src={`./src/assets/setIcons/${set.code}.png`} />
                         </Tooltip>
                       </div>
                     ))}
@@ -117,6 +118,7 @@ export const SideBarComponent: React.FC<SideBarComponentPropsType> = ({series}) 
             <button className="SideBar-secondaryButton" disabled={!collectionMode} onClick={() => setMassInput(true)}>Entrer toutes les
               valeurs</button>
             <button className="SideBar-secondaryButton" onClick={() => setOpeningModule(true)}>Ouvrir un booster</button>
+            <Link to="/historic"><button className="SideBar-secondaryButton">Historique</button></Link>
           </div>
         </div>
       </div>

@@ -66,8 +66,7 @@ export default class Logger {
         handleExceptions: true,
         format: winston.format.combine(
           winston.format.printf((info) => {
-            const message = `${chalk.grey(Logger.dateFormatedConsole())} | ${
-              infoLevel[info.level.toUpperCase()]
+            const message = `${chalk.grey(Logger.dateFormatedConsole())} | ${infoLevel[info.level.toUpperCase()]
             } | ${info.message} `;
 
             return message;
@@ -92,10 +91,8 @@ export default class Logger {
           if (typeof info === 'object') {
             const data = info as unknown as ParamsAPI;
 
-            message += `${APIMethod[data.method]} | ${data.endpoint} | ${data.httpResultCode} | ${
-              data.durationMs
-            } ms | ${data.ipRequest} | ${
-              data.requestParams ? JSON.stringify(data.requestParams) : ''
+            message += `${APIMethod[data.method]} | ${data.endpoint} | ${data.httpResultCode} | ${data.durationMs
+            } ms | ${data.ipRequest} | ${data.requestParams ? JSON.stringify(data.requestParams) : ''
             } | ${data.requestQuery ? JSON.stringify(data.requestQuery) : ''} | `;
 
             message +=
@@ -116,8 +113,7 @@ export default class Logger {
         handleExceptions: true,
         format: winston.format.combine(
           winston.format.printf((info) => {
-            let message = `${chalk.grey(Logger.dateFormatedConsole())} | ${
-              infoLevel[info.level.toUpperCase()]
+            let message = `${chalk.grey(Logger.dateFormatedConsole())} | ${infoLevel[info.level.toUpperCase()]
             } | `;
 
             if (typeof info === 'object') {
@@ -164,8 +160,7 @@ export default class Logger {
     if (error instanceof ServiceException)
       Logger.logConsole.log(
         'error',
-        `${error.message || 'no message'} (${(error as ServiceException).getCode()}) - ${
-          error.stack
+        `${error.message || 'no message'} (${(error as ServiceException).getCode()}) - ${error.stack
         }`,
       );
     else Logger.logConsole.log('error', `${error.message}`);
@@ -235,7 +230,7 @@ export default class Logger {
             ip: params.ipRequest,
           },
         },
-        { include: [LogEndpoint] },
+        { include: [...(level === 1 || level === 2) ? [LogEndpoint] : []] },
       );
 
       return logConsole;

@@ -1,13 +1,10 @@
-import {CardRarityEnum, IResponseLocals, StatisticsDataType} from "../../local_core";
-import {ICollectionCardlistQuery, IResponse} from "../../local_core/types/types/interface";
-import {Request, Response, Router} from "express";
+import { CardRarityEnum, IResponseLocals, StatisticsDataType } from "../../local_core";
+import { IResponse } from "../../local_core/types/types/interface";
+import { Request, Response, Router } from "express";
 import asyncHandler from "express-async-handler";
-import {Card, CardSerie, CardSet} from "../../database";
-import sequelize from "sequelize";
+import { Card } from "../../database";
 import auth from "../middlewares/auth";
-import {getFilterConfig} from "../utils/getFilterConfig";
-import {UserCardPossession} from "../../database/models/UserCardPossession";
-import {include} from "underscore";
+import { getFilterConfig } from "../utils/getFilterConfig";
 
 const route = Router();
 
@@ -135,7 +132,7 @@ export const CardListRouter = (app: Router): Router => {
           stats.countBySet[card.cardSet.code].distinctOwned += (card.userCardPossessions[0].classicQuantity > 0 ? 1 : 0);
           stats.countBySet[card.cardSet.code].distinctOwned += (card.userCardPossessions[0].reverseQuantity > 0 ? 1 : 0);
           stats.countByRarity[CardRarityEnum[card.rarity]].distinctOwned += (card.userCardPossessions[0].reverseQuantity
-          > 0 || card.userCardPossessions[0].classicQuantity > 0 ? 1 : 0);
+            > 0 || card.userCardPossessions[0].classicQuantity > 0 ? 1 : 0);
           stats.countByRarity[CardRarityEnum[card.rarity]].totalOwned += card.userCardPossessions[0].classicQuantity + card.userCardPossessions[0].reverseQuantity
         }
 
@@ -153,7 +150,7 @@ export const CardListRouter = (app: Router): Router => {
       stats.distinctOwned = stats.distinctReverse + stats.distinctNormal
       stats.distinctPossible = stats.distinctReversePossible + stats.distinctNormalPossible
 
-      for (let [key, value] of Object.entries(stats.countBySet)) {
+      for (const [key, value] of Object.entries(stats.countBySet)) {
         stats.countBySet[key].distinctPossible = value.distinctPossibleNormal + value.distinctPossibleReverse;
         stats.countBySet[key].totalOwned = value.totalNormal + value.totalReverse;
       }

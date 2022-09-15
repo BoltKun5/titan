@@ -5,7 +5,7 @@ import { ClickAwayListener, Tooltip } from "@mui/material";
 import { CardListElement, getImageSource, initialCardList } from "../../pages/CardManager/CardManagerUtils";
 import { Card } from "../../../../api/src/database";
 import { api, loggedApi } from "../../axios";
-import { useFetchCards } from "../../hook/api/cards";
+import { useFetchData } from "../../hook/api/cards";
 
 export const OpeningModuleComponent: React.FC = () => {
   const { setOpeningModule, cardSetFilter } = useContext(CardManagerContext);
@@ -26,7 +26,7 @@ export const OpeningModuleComponent: React.FC = () => {
   const [possibleCards, setPossibleCards] = useState<Card[]>([]);
   const [isConfirmationOpen, setIsConfirmationOpen] = useState<boolean>(false);
 
-  const { fetch } = useFetchCards();
+  const { fetch } = useFetchData();
 
   type LocalCardSet = {
     name: string,
