@@ -1,4 +1,3 @@
-import { CardTypeEnum } from '../../local_core/types/enums/card-type.enum';
 import { Card } from './Card';
 import {
   DataType,
@@ -14,7 +13,7 @@ import {
 } from 'sequelize-typescript';
 import { v4 as uuidv4 } from 'uuid';
 import { CustomModel } from '../custom/CustomModel';
-import { CardDamageModificationType } from '../../local_core/types/enums/card-damage-modification-type.enum';
+import { CardDamageModificationType, CardTypeEnum } from '../../../../local-core/enums';
 
 @DefaultScope(() => ({}))
 @Scopes(() => ({}))

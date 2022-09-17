@@ -1,21 +1,21 @@
 import axios from "axios";
 import * as fs from "fs";
 import api from "./config/api";
-import {response} from "express";
-import {replace, split} from "lodash";
+import { response } from "express";
+import { replace, split } from "lodash";
 import {
   CardAbilityTypeEnum,
   CardCategoryEnum, CardDamageModificationType, CardEnergyTypeEnum,
   CardEvolutionStageEnum,
   CardRarityEnum,
   CardTrainerTypeEnum, CardTypeEnum,
-} from "./local_core";
-import {Card, CardAttack, CardAttribute, CardSet} from "./database";
-import {CardType} from "./database/models/CardType";
-import {CardAttackCost} from "./database/models/CardAttackCost";
-import {CardAbility} from "./database/models/CardAbility";
-import {CardDamageModification} from "./database/models/CardDamageModification";
-import {CardDexId} from "./database/models/CardDexId";
+} from "./local-core";
+import { Card, CardAttack, CardAttribute, CardSet } from "./database";
+import { CardType } from "./database/models/CardType";
+import { CardAttackCost } from "./database/models/CardAttackCost";
+import { CardAbility } from "./database/models/CardAbility";
+import { CardDamageModification } from "./database/models/CardDamageModification";
+import { CardDexId } from "./database/models/CardDexId";
 
 export const getSetIcons = async () => {
   for (const name of ["a"]) {
@@ -48,7 +48,7 @@ export const renameImages = (setCode: string, startIndex: number, endIndex: numb
 
 export const getDataFromLimitless = async () => {
   const jsdom = require("jsdom");
-  const {JSDOM} = jsdom;
+  const { JSDOM } = jsdom;
   const response = await axios.get("https://limitlesstcg.com/cards/en?q=%21set%3ASSP+Kleavor+VStar&show=100", {
     headers: {
       Cookie: "cards_display=full",

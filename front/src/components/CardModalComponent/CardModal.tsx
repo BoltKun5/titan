@@ -1,23 +1,23 @@
 import React from "react";
 import './CardModal.scss';
-import {ClickAwayListener} from "@mui/material";
-import {Card} from "../../../../api/src/database";
-import {CardRarityEnum} from "../../../../api/src/local_core";
+import { ClickAwayListener } from "@mui/material";
+import { Card } from "../../../../api/src/database";
+import { CardRarityEnum } from "./../../../../local-core";
 
-export const CardModal: React.FC<{ card: Card, closeModal: () => void }> = ({card, closeModal}) => {
+export const CardModal: React.FC<{ card: Card, closeModal: () => void }> = ({ card, closeModal }) => {
   return (
     <div className="CardModal">
       <ClickAwayListener onClickAway={() => closeModal()}>
         <div className="CardModal-modale">
           <div className="CardModal-image">
-            <img src={"src/assets/cards/" + card.cardSet.code + "/" + Number(card.localId) + ".jpg"}/>
+            <img src={"src/assets/cards/" + card.cardSet.code + "/" + Number(card.localId) + ".jpg"} />
           </div>
           <div className="CardModal-informations">
             <div className="CardModal-name">
               {card.name}
               <div className={"CardModal-logos"}>
-                <img className="CardModal-rarityImg" src={"./src/assets/icons/" + CardRarityEnum[card.rarity] + ".png"}/>
-                <img className="CardModal-setLogo" src={"./src/assets/setIcons/" + card.cardSet.code + ".png"}/>
+                <img className="CardModal-rarityImg" src={"./src/assets/icons/" + CardRarityEnum[card.rarity] + ".png"} />
+                <img className="CardModal-setLogo" src={"./src/assets/setIcons/" + card.cardSet.code + ".png"} />
               </div>
             </div>
             <div className="CardModal-setInfo">

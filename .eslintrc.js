@@ -1,13 +1,14 @@
 module.exports = {
     // Global ESLint Settings
     // =================================
-    root: true,
     env: {
         browser: true,
         es6: true,
         node: true,
         jest: true,
     },
+
+
 
     // ===========================================
     // Set up ESLint for .js / .jsx files
@@ -16,7 +17,6 @@ module.exports = {
     parser: 'babel-eslint',
     parserOptions: {
         project: 'tsconfig.json',
-        tsconfigRootDir: __dirname,
         sourceType: 'module',
     },
 
@@ -25,6 +25,9 @@ module.exports = {
             version: "detect",
         },
         "import/resolver": {
+            "node": {
+                "paths": ["./local-core"]
+            },
             typescript: {},
             "babel-module": {
                 root: ["."],
@@ -34,6 +37,7 @@ module.exports = {
                 },
             },
         },
+        
     },
 
     // Extend Other Configs

@@ -1,5 +1,5 @@
-import {Card} from "../../../api/src/database";
-import {CardSetFilterInterface} from "../../../api/src/local_core/types/types/interface/front";
+import { Card } from "../../../api/src/database";
+import { CardSetFilterInterface } from "../../../api/src/local-core/types/types/interface/front";
 
 export type CardManagerContextType = {
   cardSetFilter: CardSetFilterInterface[],

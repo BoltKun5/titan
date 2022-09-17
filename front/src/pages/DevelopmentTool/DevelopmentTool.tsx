@@ -2,10 +2,7 @@ import React, { useCallback, useEffect, useReducer, useRef, useState } from "rea
 import './DevelopmentTool.scss'
 import { Card, CardSerie } from "../../../../api/src/database";
 import { useFetchData } from "../../hook/api/cards";
-import { CardCounterComponent } from "../../components/CardCounterComponent/CardCounterComponent";
-import { CardSetFilterInterface } from "../../../../api/src/local_core/types/types/interface/front";
-import { CardRarityEnum, CardTypeEnum } from "../../../../api/src/local_core";
-import axios from "axios";
+import { CardRarityEnum, CardTypeEnum } from "../../../../local-core";
 import { api } from "../../axios";
 
 export const DevelopmentTool: React.FC = () => {

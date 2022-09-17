@@ -1,6 +1,6 @@
 import createError from 'http-errors';
 import { Response, Request } from 'express';
-import { IResponseLocals } from '../local_core';
+import { IResponseLocals } from '../../../local-core';
 import { ServiceException } from '../utils/error.utils';
 import { ErrorType, Code } from 'abyss_crypt_core';
 

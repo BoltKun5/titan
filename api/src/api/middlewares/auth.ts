@@ -1,11 +1,11 @@
 import jwt from 'jsonwebtoken';
-import {Request, Response, NextFunction} from 'express';
+import { Request, Response, NextFunction } from 'express';
 import * as contentType from 'content-type';
-import {IResponseLocals} from '../../local_core';
-import {handleError, Code, ErrorType, SessionToken} from 'abyss_core';
+import { IResponseLocals } from './../../../../local-core';
+import { handleError, Code, ErrorType, SessionToken } from 'abyss_core';
 import AppConfig from '../../modules/AppConfig';
-import {User} from '../../database';
-import {HttpResponseError} from '../../modules/HttpResponseError';
+import { User } from '../../database';
+import { HttpResponseError } from '../../modules/HttpResponseError';
 
 export default async (
   req: Request,
@@ -14,7 +14,7 @@ export default async (
 ): Promise<void> => {
   try {
     if (req.headers['content-type']) {
-      const contentT = contentType.parse({headers: req.headers});
+      const contentT = contentType.parse({ headers: req.headers });
       const requestTypes = [
         'application/json',
         'multipart/form-data',
@@ -30,7 +30,7 @@ export default async (
     const token: string = req.headers.authorization.split(' ')[1];
     const decodedToken = <SessionToken>jwt.verify(token, AppConfig.config.app.auth.secretToken);
 
-    const {UUID} = decodedToken;
+    const { UUID } = decodedToken;
 
     const currentUser = await User.findOne({
       where: {

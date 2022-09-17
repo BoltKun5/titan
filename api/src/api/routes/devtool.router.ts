@@ -1,17 +1,6 @@
-import {IResponseLocals} from "../../local_core";
-import {IResponse} from "../../local_core/types/types/interface";
-import {Request, Response, Router} from "express";
+import { Request, Response, Router } from "express";
 import asyncHandler from "express-async-handler";
-import {Card, CardAttack, CardAttribute, CardSerie, CardSet} from "../../database";
-import sequelize from "sequelize";
-import Sequelize from "sequelize";
-import {CardType} from "../../database/models/CardType";
-import {CardAttackCost} from "../../database/models/CardAttackCost";
-import {CardAbility} from "../../database/models/CardAbility";
-import {CardDamageModification} from "../../database/models/CardDamageModification";
-import {CardDexId} from "../../database/models/CardDexId";
-import {UserCardPossession} from "../../database/models/UserCardPossession";
-import auth from "../middlewares/auth";
+import { Card } from "../../database";
 
 const route = Router();
 
@@ -28,9 +17,9 @@ export const DevtoolRouter = (app: Router): Router => {
           id: req.body.cardId,
         },
       })
-      console.log("card "+req.body.cardId+ " : " + req.body.rarity)
+      console.log("card " + req.body.cardId + " : " + req.body.rarity)
       res.json(
-        {msg: "ok"},
+        { msg: "ok" },
       )
     }),
   );

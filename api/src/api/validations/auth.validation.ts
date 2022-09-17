@@ -1,5 +1,5 @@
-import {ISigninAuthBody, ISignupAuthBody} from '../../local_core/types/types/interface';
-import {HttpResponseError} from '../../modules/HttpResponseError';
+import { ISigninAuthBody, ISignupAuthBody } from './../../../../local-core';
+import { HttpResponseError } from '../../modules/HttpResponseError';
 import Joi from 'joi';
 
 export default class AuthValidation {
@@ -12,7 +12,7 @@ export default class AuthValidation {
     const result = querySchema.validate(data);
     if (result.error) throw HttpResponseError.createValidationError(result.error.message);
 
-    return {...result.value};
+    return { ...result.value };
   }
 
   static signupBody(data: ISignupAuthBody): ISignupAuthBody {
@@ -25,6 +25,6 @@ export default class AuthValidation {
     const result = querySchema.validate(data);
     if (result.error) throw HttpResponseError.createValidationError(result.error.message);
 
-    return {...result.value};
+    return { ...result.value };
   }
 }

@@ -1,5 +1,5 @@
-import { CardRarityEnum, IResponseLocals, StatisticsDataType } from "../../local_core";
-import { IResponse } from "../../local_core/types/types/interface";
+import { CardRarityEnum, IResponseLocals, StatisticsDataType } from "./../../../../local-core";
+import { IResponse } from "./../../../../local-core";
 import { Request, Response, Router } from "express";
 import asyncHandler from "express-async-handler";
 import { Card } from "../../database";

@@ -1,18 +1,18 @@
-import {IResponseLocals} from '../../local_core';
 import {
   IResponse,
+  IResponseLocals,
   ISigninAuthBody,
   ISigninAuthResponse, ISignupAuthBody,
   ISignupAuthResponse,
-} from '../../local_core/types/types/interface';
-import {Request, Response, Router} from 'express';
+} from '@local-core';
+import { Request, Response, Router } from 'express';
 import asyncHandler from 'express-async-handler';
-import {User} from '../../database';
+import { User } from '../../database';
 import AuthValidation from '../validations/auth.validation';
-import {token} from '../../utils/auth.utils';
-import {HttpResponseError} from '../../modules/HttpResponseError';
+import { token } from '../../utils/auth.utils';
+import { HttpResponseError } from '../../modules/HttpResponseError';
 import createError from "http-errors";
-import {ErrorType} from "abyss_crypt_core";
+import { ErrorType } from "abyss_crypt_core";
 
 const route = Router();
 

@@ -5,7 +5,7 @@ import { SideBarComponentPropsType } from "../../../typing/types";
 import CardManagerContext from "../../hook/contexts/CardManagerContext";
 import './SideBarComponent.scss';
 import { SwitchInputComponent } from "../SwitchInputComponent/SwitchInputComponent";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 export const SideBarComponent: React.FC<SideBarComponentPropsType> = ({ series }, context) => {
   const {
@@ -22,6 +22,8 @@ export const SideBarComponent: React.FC<SideBarComponentPropsType> = ({ series }
     setShowStats,
     setOpeningModule
   } = useContext(CardManagerContext);
+
+  const navigate = useNavigate()
 
   const activateSetFilter = (setCode: string) => {
     resetAllFilters();
@@ -46,12 +48,18 @@ export const SideBarComponent: React.FC<SideBarComponentPropsType> = ({ series }
     return "SideBar-setElement"
   }
 
-  const activateSerie = (serie: CardSerie) => {
-    const localCardSetFilter = cardSetFilter.map((setFilterElement) => {
-      setFilterElement.status = (setFilterElement.categoryCode === serie.code);
-      return setFilterElement
-    });
-    setCardSetFilter(localCardSetFilter);
+  // const activateSerie = (serie: CardSerie) => {
+  //   const localCardSetFilter = cardSetFilter.map((setFilterElement) => {
+  //     setFilterElement.status = (setFilterElement.categoryCode === serie.code);
+  //     return setFilterElement
+  //   });
+  //   setCardSetFilter(localCardSetFilter);
+  // }
+
+  const disconnect = () => {
+    localStorage.removeItem('token');
+    localStorage.removeItem('user');
+    navigate('/')
   }
 
   return (
@@ -121,6 +129,7 @@ export const SideBarComponent: React.FC<SideBarComponentPropsType> = ({ series }
             <Link to="/historic"><button className="SideBar-secondaryButton">Historique</button></Link>
           </div>
         </div>
+        <button style={{ marginTop: "auto", width: '98%' }} className="SideBar-secondaryButton" onClick={() => disconnect()}>Se déconnecter</button>
       </div>
     </>
   )

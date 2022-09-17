@@ -1,9 +1,9 @@
-import {Button, TextField} from "@mui/material";
-import React, {useState} from "react";
+import { Button, TextField } from "@mui/material";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
-import {ISigninAuthBody, ISigninAuthResponse} from "../../../../api/src/local_core/types/types/interface";
+import { ISigninAuthBody, ISigninAuthResponse } from "../../../../api/src/local-core/types/types/interface";
 import Joi from "joi";
-import {useNavigate} from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import './Login.scss'
 
 export const Login: React.FC = () => {
@@ -20,7 +20,7 @@ export const Login: React.FC = () => {
       password: Joi.string().min(5).max(30).required(),
     });
 
-    const result = querySchema.validate({username: username, password: password});
+    const result = querySchema.validate({ username: username, password: password });
 
     try {
       const response: { data: { data: ISigninAuthResponse } } = await axios.post("http://localhost:10101/api/auth/signin", {
@@ -39,18 +39,32 @@ export const Login: React.FC = () => {
     }
   };
 
+  useEffect(() => {
+    const user = localStorage.getItem('user');
+    const token = localStorage.getItem('token');
+    if (user !== null && token !== null) {
+      navigate("/cards");
+    }
+  })
+
   return <div className="Login-Page">
     <form onSubmit={handleSubmit} className="Login-Form">
-      <TextField
-        id="username"
-        value={username}
-        label="Nom de compte"
-        onChange={e =>
-          setUsername(e.target.value)
-        }/>
-      <TextField id="password" value={password} label="Mot de passe" onChange={e => setPassword(e.target.value)}/>
+      <h2>Connexion</h2>
+      <div className="Login-textInputContainer">
+        <label>Nom de compte</label>
+        <input className="Login-textInput"
+          id="username"
+          value={username}
+          onChange={e =>
+            setUsername(e.target.value)
+          } />
+      </div>
+      <div className="Login-textInputContainer">
+        <label>Mot de passe</label>
+        <input className="Login-textInput" id="password" value={password} onChange={e => setPassword(e.target.value)} />
+      </div>
       {(errorMessage !== "") && <div>{errorMessage}</div>}
-      <Button variant="outlined" type="submit">Se connecter</Button>
+      <button className="button" type="submit">Se connecter</button>
     </form>
   </div>
 };

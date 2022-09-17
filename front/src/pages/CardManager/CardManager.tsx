@@ -2,13 +2,13 @@ import React, { useCallback, useEffect, useState } from "react";
 import { loggedApi } from "../../axios";
 import { CardSerie, CardSet, Card } from "../../../../api/src/database";
 import CardManagerContext from "../../hook/contexts/CardManagerContext";
-import { CardSetFilterInterface } from "../../../../api/src/local_core/types/types/interface/front";
+import { CardSetFilterInterface } from "../../../../local-core";
 import { SideBarComponent } from "../../components/SideBarComponent/SideBarComponent";
 import { CardManagerFilterComponent } from "../../components/CardManagerFilterComponent/CardManagerFilterComponent";
 import { CardManagerCardListComponent } from "../../components/CardManagerCardListComponent/CardManagerCardListComponent";
 import './CardManager.scss'
 import { useFetchData } from "../../hook/api/cards";
-import { CardRarityEnum, CardTypeEnum, StatisticsDataType } from "../../../../api/src/local_core";
+import { CardRarityEnum, CardTypeEnum, StatisticsDataType } from "../../../../local-core";
 import { MassInputComponent } from "../../components/MassInputComponent/MassInputComponent";
 import { initialRarityFilter } from "./CardManagerUtils";
 import { SearchStatisticsComponent } from "../../components/SearchStatisticsComponent/SearchStatisticsComponent";

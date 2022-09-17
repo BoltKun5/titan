@@ -1,4 +1,4 @@
-import { CardSet, User } from "../../../../../database";
+import { CardSet, User } from './../../../api/src/database';
 
 export interface ISigninAuthBody {
   password: string,

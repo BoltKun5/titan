@@ -6,7 +6,8 @@ import AppConfig from './AppConfig';
 import { LogConsole, LogEndpoint } from '../database';
 import dayjs from 'dayjs';
 import { ServiceException } from 'abyss_core';
-import { APIMethod, IResponse, LogLevel, LogType } from 'abyss_crypt_core';
+import { APIMethod, LogLevel, LogType } from 'abyss_crypt_core';
+import { IResponse } from '@local-core';
 
 interface ParamsAPI {
   controller: string;
@@ -67,7 +68,7 @@ export default class Logger {
         format: winston.format.combine(
           winston.format.printf((info) => {
             const message = `${chalk.grey(Logger.dateFormatedConsole())} | ${infoLevel[info.level.toUpperCase()]
-            } | ${info.message} `;
+              } | ${info.message} `;
 
             return message;
           }),
@@ -92,8 +93,8 @@ export default class Logger {
             const data = info as unknown as ParamsAPI;
 
             message += `${APIMethod[data.method]} | ${data.endpoint} | ${data.httpResultCode} | ${data.durationMs
-            } ms | ${data.ipRequest} | ${data.requestParams ? JSON.stringify(data.requestParams) : ''
-            } | ${data.requestQuery ? JSON.stringify(data.requestQuery) : ''} | `;
+              } ms | ${data.ipRequest} | ${data.requestParams ? JSON.stringify(data.requestParams) : ''
+              } | ${data.requestQuery ? JSON.stringify(data.requestQuery) : ''} | `;
 
             message +=
               typeof data.requestBody === 'object'
@@ -114,7 +115,7 @@ export default class Logger {
         format: winston.format.combine(
           winston.format.printf((info) => {
             let message = `${chalk.grey(Logger.dateFormatedConsole())} | ${infoLevel[info.level.toUpperCase()]
-            } | `;
+              } | `;
 
             if (typeof info === 'object') {
               const data = info as unknown as ParamsAPI;

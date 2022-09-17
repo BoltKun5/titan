@@ -13,7 +13,7 @@ import {
 } from "sequelize-typescript";
 import { v4 as uuidv4 } from "uuid";
 import { CustomModel } from "../custom/CustomModel";
-import { CardAbilityTypeEnum } from "../../local_core";
+import { CardAbilityTypeEnum } from "./../../../../local-core";
 
 @DefaultScope(() => ({}))
 @Scopes(() => ({}))

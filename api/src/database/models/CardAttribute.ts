@@ -1,4 +1,3 @@
-import { CardAttributeEnum } from '../../local_core/types/enums/card-attributes.enum';
 import { Card } from './Card';
 import {
   DataType,

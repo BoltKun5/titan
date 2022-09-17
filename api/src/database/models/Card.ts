@@ -1,10 +1,10 @@
 import { CardAbility } from './CardAbility';
 import { CardDexId } from './CardDexId';
-import { CardEnergyTypeEnum } from '../../local_core';
-import { CardTrainerTypeEnum } from '../../local_core';
-import { CardEvolutionStageEnum } from '../../local_core';
-import { CardCategoryEnum } from '../../local_core';
-import { CardRarityEnum } from '../../local_core';
+import { CardEnergyTypeEnum } from './../../../../local-core';
+import { CardTrainerTypeEnum } from './../../../../local-core';
+import { CardEvolutionStageEnum } from './../../../../local-core';
+import { CardCategoryEnum } from './../../../../local-core';
+import { CardRarityEnum } from './../../../../local-core';
 import { CardDamageModification } from './CardDamageModification';
 import { CardAttack } from './CardAttack';
 import {
@@ -25,8 +25,8 @@ import { CustomModel } from '../custom/CustomModel';
 import { CardSet } from './CardSet';
 import { CardType } from './CardType';
 import { CardAttribute } from './CardAttribute';
-import { HeldItemType } from '../../local_core';
-import {UserCardPossession} from "./UserCardPossession";
+import { HeldItemType } from './../../../../local-core';
+import { UserCardPossession } from "./UserCardPossession";
 
 @DefaultScope(() => ({}))
 @Scopes(() => ({}))

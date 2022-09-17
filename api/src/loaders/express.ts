@@ -9,9 +9,7 @@ import AppConfig from '../modules/AppConfig';
 import Logger from '../modules/Logger';
 import { get } from 'stack-trace';
 import path from 'path';
-import swaggerUi from 'swagger-ui-express';
-import appRoot from 'app-root-path';
-import { IResponseLocals } from '../local_core';
+import { IResponseLocals } from '@local-core';
 import { getDurationInMilliseconds } from 'abyss_core';
 import { APIMethod, LogLevel } from 'abyss_crypt_core';
 

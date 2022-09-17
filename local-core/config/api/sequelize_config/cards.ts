@@ -1,9 +1,4 @@
-import {CardType} from "../../../../database/models/CardType";
-import {CardAttack, CardAttribute} from "../../../../database";
-import {CardAttackCost} from "../../../../database/models/CardAttackCost";
-import {CardDamageModification} from "../../../../database/models/CardDamageModification";
-import {CardDexId} from "../../../../database/models/CardDexId";
-import {CardAbility} from "../../../../database/models/CardAbility";
+import { CardAttack, CardAttribute, CardType, CardAttackCost, CardDamageModification, CardDexId, CardAbility } from './../../../../api/src/database';
 
 export const fullCardsConfig = [
   {

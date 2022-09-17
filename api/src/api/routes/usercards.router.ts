@@ -1,14 +1,14 @@
 import { include } from 'underscore';
 import { getCardAttributesExcludeArray } from './../utils/getAttributeExcludeList';
 import { CardPossessionHistoric } from './../../database/models/CardPossessionHistoric';
-import { IHistoricResponse, IHistoricQuery } from './../../local_core/types/types/interface/api/auth.interface';
-import { IResponseLocals } from "../../local_core";
+import { IHistoricResponse, IHistoricQuery } from '././../../../../local-core';
+import { IResponseLocals } from "./../../../../local-core";
 import {
   IIncrementManyUserCardsBody,
   IIncrementUserCardsBody,
   IResponse,
   IUpdateUserCardsBody, IUpdateUserCardsResponse,
-} from "../../local_core/types/types/interface";
+} from "./../../../../local-core";
 import { Request, Response, Router } from "express";
 import asyncHandler from "express-async-handler";
 import Auth from "../middlewares/auth";
