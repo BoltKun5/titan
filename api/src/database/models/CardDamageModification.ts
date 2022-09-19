@@ -14,11 +14,19 @@ import {
 import { v4 as uuidv4 } from 'uuid';
 import { CustomModel } from '../custom/CustomModel';
 import { CardDamageModificationType, CardTypeEnum } from '../../../../local-core/enums';
+import { Overwrite } from 'abyss_core';
+import { ICardDamageModification } from '../../../../local-core';
+
+export type ModelCardDamageModification = Overwrite<ICardDamageModification,
+  {
+    cardEntity: Card
+  }
+>;
 
 @DefaultScope(() => ({}))
 @Scopes(() => ({}))
 @Table({ tableName: 'CardDamageModification', paranoid: false, timestamps: false })
-export class CardDamageModification extends CustomModel {
+export class CardDamageModification extends CustomModel implements ModelCardDamageModification {
   @IsUUID(4)
   @PrimaryKey
   @Default(() => uuidv4())

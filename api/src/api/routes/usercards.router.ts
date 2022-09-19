@@ -154,10 +154,6 @@ export const UserCardsRouter = (app: Router): Router => {
           }]
         }]
       })
-
-      console.log(result)
-
-
       res.json({ data: { result } });
     }),
   );

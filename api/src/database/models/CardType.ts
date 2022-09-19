@@ -13,12 +13,20 @@ import {
 } from 'sequelize-typescript';
 import { v4 as uuidv4 } from 'uuid';
 import { CustomModel } from '../custom/CustomModel';
-import { CardTypeEnum } from '../../../../local-core';
+import { CardTypeEnum, ICardType } from '../../../../local-core';
+import { Overwrite } from 'abyss_core';
+
+export type ModelCardType = Overwrite<ICardType,
+  {
+    card: Card,
+
+  }
+>;
 
 @DefaultScope(() => ({}))
 @Scopes(() => ({}))
 @Table({ tableName: 'CardType', paranoid: false, timestamps: false })
-export class CardType extends CustomModel {
+export class CardType extends CustomModel implements ModelCardType {
   @IsUUID(4)
   @PrimaryKey
   @Default(() => uuidv4())

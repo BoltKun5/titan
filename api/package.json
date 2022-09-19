@@ -27,6 +27,7 @@
         "abyss_crypt_core": "0.0.11",
         "app-root-path": "^3.1.0",
         "axios": "^0.23.0",
+        "bcryptjs": "^2.4.3",
         "chalk": "^4.1.1",
         "chart.js": "^3.9.1",
         "chartjs-node-canvas": "^4.1.6",

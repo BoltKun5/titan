@@ -1,6 +1,6 @@
 import React, {useContext} from "react";
 import './StatCardComponent.scss';
-import {StatCardComponentType} from "../../../typing/types";
+import {StatCardComponentType} from "../../types";
 import CardManagerContext from "../../hook/contexts/CardManagerContext";
 
 export const StatCardComponent: React.FC<StatCardComponentType> = ({data}) => {

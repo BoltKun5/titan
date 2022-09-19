@@ -1,4 +1,4 @@
-import { CardSet, User } from './../../../api/src/database';
+import { CardSet } from './../../../api/src/database';
 
 export interface ISigninAuthBody {
   password: string,
@@ -12,14 +12,19 @@ export interface ISignupAuthBody {
 }
 
 export interface ISignupAuthResponse {
-  user: User,
+  user: {
+    shownName: string,
+    id: string,
+    role: number
+  },
   token: string
 }
 
 export interface ISigninAuthResponse {
   user: {
     shownName: string,
-    id: string
+    id: string,
+    role: number
   },
   token: string
 }

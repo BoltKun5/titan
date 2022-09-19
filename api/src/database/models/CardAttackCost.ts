@@ -1,4 +1,4 @@
-import { CardTypeEnum } from './../../../../local-core';
+import { CardTypeEnum, ICardAttackCost } from './../../../../local-core';
 import { CardAttack } from './CardAttack';
 import {
   DataType,
@@ -14,11 +14,18 @@ import {
 } from 'sequelize-typescript';
 import { v4 as uuidv4 } from 'uuid';
 import { CustomModel } from '../custom/CustomModel';
+import { Overwrite } from 'abyss_core';
+
+export type ModelCardAttackCost = Overwrite<ICardAttackCost,
+  {
+    cardAttack: CardAttack
+  }
+>;
 
 @DefaultScope(() => ({}))
 @Scopes(() => ({}))
 @Table({ tableName: 'CardAttackCost', paranoid: false, timestamps: false })
-export class CardAttackCost extends CustomModel {
+export class CardAttackCost extends CustomModel implements ModelCardAttackCost {
   @IsUUID(4)
   @PrimaryKey
   @Default(() => uuidv4())

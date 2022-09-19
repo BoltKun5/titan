@@ -7,3 +7,4 @@ export * from "./card-rarity.enum";
 export * from "./card-trainer-type.enum";
 export * from "./card-damage-modification-type.enum";
 export * from "./card-ability-type.enum";
+export * from './user-role.enum'

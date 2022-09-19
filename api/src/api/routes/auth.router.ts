@@ -1,18 +1,12 @@
-import {
-  IResponse,
-  IResponseLocals,
-  ISigninAuthBody,
-  ISigninAuthResponse, ISignupAuthBody,
-  ISignupAuthResponse,
-} from '@local-core';
+import { AuthService } from './../../services/auth.service';
 import { Request, Response, Router } from 'express';
 import asyncHandler from 'express-async-handler';
 import { User } from '../../database';
 import AuthValidation from '../validations/auth.validation';
 import { token } from '../../utils/auth.utils';
-import { HttpResponseError } from '../../modules/HttpResponseError';
 import createError from "http-errors";
-import { ErrorType } from "abyss_crypt_core";
+import { ErrorType, IResponse } from "abyss_crypt_core";
+import { ISigninAuthBody, ISigninAuthResponse, IResponseLocals, ISignupAuthBody, ISignupAuthResponse } from '../../../../local-core/interface';
 
 const route = Router();
 
@@ -23,22 +17,17 @@ export const AuthRouter = (app: Router): Router => {
     '/signin',
     asyncHandler(async (req: Request<any, any, ISigninAuthBody>, res: Response<IResponse<ISigninAuthResponse>, IResponseLocals>) => {
       req.body = AuthValidation.signinBody(req.body);
-      const user = await User.findOne({
-        where: {
-          password: req.body.password,
-          username: req.body.username,
-        },
-      });
-      if (!user) {
-        throw HttpResponseError.createUserNotFound()
-      }
+
+
+      const { user, token } = await AuthService.login({ username: req.body.username, password: req.body.password })
 
       res.json({
         data: {
-          token: token(user),
+          token: token,
           user: {
             shownName: user.shownName,
             id: user.id,
+            role: user.role
           },
         },
       });
@@ -55,7 +44,6 @@ export const AuthRouter = (app: Router): Router => {
         },
       });
 
-      //TODO: créer des fonctions pour les erreurs
       if (existingUser) {
         throw createError(409, {
           type: ErrorType.resourceError,
@@ -64,17 +52,16 @@ export const AuthRouter = (app: Router): Router => {
         });
       }
 
-      const user = await User.create({
-        password: req.body.password,
-        username: req.body.username,
-        shownName: req.body.shownName,
-        role: 0,
-      });
+      const user = await AuthService.signup({ shownName: req.body.shownName, username: req.body.username, password: req.body.password })
 
       res.json({
         data: {
           token: token(user),
-          user: user,
+          user: {
+            shownName: user.shownName,
+            id: user.id,
+            role: user.role
+          },
         },
       });
     }),

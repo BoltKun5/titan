@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { ClickAwayListener, TextField } from "@mui/material";
-import { CardSetFilterInterface } from "../../../../api/src/local-core/types/types/interface/front";
 import './CategorizedAutocompleteChecklist.scss'
+import { CardSetFilterInterface } from "../../../../local-core";
 
 type Props = {
   items: CardSetFilterInterface[],

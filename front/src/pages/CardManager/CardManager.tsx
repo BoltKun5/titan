@@ -1,25 +1,25 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { loggedApi } from "../../axios";
-import { CardSerie, CardSet, Card } from "../../../../api/src/database";
 import CardManagerContext from "../../hook/contexts/CardManagerContext";
-import { CardSetFilterInterface } from "../../../../local-core";
 import { SideBarComponent } from "../../components/SideBarComponent/SideBarComponent";
 import { CardManagerFilterComponent } from "../../components/CardManagerFilterComponent/CardManagerFilterComponent";
 import { CardManagerCardListComponent } from "../../components/CardManagerCardListComponent/CardManagerCardListComponent";
 import './CardManager.scss'
 import { useFetchData } from "../../hook/api/cards";
-import { CardRarityEnum, CardTypeEnum, StatisticsDataType } from "../../../../local-core";
 import { MassInputComponent } from "../../components/MassInputComponent/MassInputComponent";
 import { initialRarityFilter } from "./CardManagerUtils";
 import { SearchStatisticsComponent } from "../../components/SearchStatisticsComponent/SearchStatisticsComponent";
-import { StatCardComponentType } from "../../../typing/types";
 import { OpeningModuleComponent } from "../../components/OpeningModuleComponent/OpeningModuleComponent";
+import { CardSetFilterInterface, CardTypeEnum, CardRarityEnum, StatisticsDataType } from "../../../../local-core";
+import { ICardSerie } from "../../../../local-core/types/models/card-serie.dto";
+import { ICardSet } from "../../../../local-core/types/models/card-set.dto";
+import { ICard } from "../../../../local-core/types/models/card.dto";
 
 export const CardManager: React.FC = () => {
 
   // Données de la base
-  const [series, setSeries] = useState<CardSerie[]>();
-  const [cards, setCards] = useState<Card[]>([]);
+  const [series, setSeries] = useState<ICardSerie[]>();
+  const [cards, setCards] = useState<ICard[]>([]);
 
   // Filtres
   const [cardSetFilter, setCardSetFilter] = useState<CardSetFilterInterface[]>([]);
@@ -52,8 +52,8 @@ export const CardManager: React.FC = () => {
   useEffect(() => {
     if (series) {
       let setFilterList: CardSetFilterInterface[] = [];
-      series.forEach((serie: CardSerie) => {
-        serie.cardSets.forEach((set: CardSet) => {
+      series.forEach((serie: ICardSerie) => {
+        serie.cardSets.forEach((set: ICardSet) => {
           setFilterList.push({
             name: set.name,
             id: set.id,

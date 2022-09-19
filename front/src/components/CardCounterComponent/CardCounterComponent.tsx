@@ -1,9 +1,9 @@
 import React, { useContext, useEffect, useState } from "react";
-import { CardCounterComponentPropsType } from "../../../typing/types";
+import { ICard } from "../../../../local-core";
+import { CardCounterComponentPropsType } from "../../types";
 import { loggedApi } from "../../axios";
 import CardManagerContext from "../../hook/contexts/CardManagerContext";
 import './CardCounterComponent.scss';
-import { Card } from "../../../../api/src/database";
 
 export const CardCounterComponent: React.FC<CardCounterComponentPropsType> = ({
   card, label, type,
@@ -134,7 +134,7 @@ export const CardCounterComponent: React.FC<CardCounterComponentPropsType> = ({
     }
   }
 
-  const getValue = (card: Card) => {
+  const getValue = (card: ICard) => {
     return String(
       type === 'classic' ? (card?.userCardPossessions?.[0]?.classicQuantity ?? 0) :
         (card?.userCardPossessions?.[0]?.reverseQuantity ?? 0),

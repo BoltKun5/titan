@@ -1,18 +1,17 @@
 import React, {useContext, useState} from "react";
-import {SingleCardComponentPropsType} from "../../../typing/types";
-import {UserCardPossession} from "../../../../api/src/database/models/UserCardPossession";
+import {SingleCardComponentPropsType} from "../../types";
 import CardManagerContext from "../../hook/contexts/CardManagerContext";
 import {SingleCardOverlayComponent} from "../SingleCardOverlayComponent/SingleCardOverlayComponent";
-import {Card} from "../../../../api/src/database"
 import './SingleCardComponent.scss'
 import {CardModal} from "../CardModalComponent/CardModal";
 import {getImageSource} from "../../pages/CardManager/CardManagerUtils";
+import { ICard, IUserCardPossession } from "../../../../local-core";
 
 export const SingleCardComponent: React.FC<SingleCardComponentPropsType> = ({card, index, firstType}) => {
   const {collectionMode, separateReverse} = useContext(CardManagerContext);
-  const [cardModal, setCardModal] = useState<Card | null>(null);
+  const [cardModal, setCardModal] = useState<ICard | null>(null);
 
-  const getColorClassname = (userCardPossession: UserCardPossession, reverseOnly: boolean = false, canBeReverse: boolean = true) => {
+  const getColorClassname = (userCardPossession: IUserCardPossession, reverseOnly: boolean = false, canBeReverse: boolean = true) => {
     if (!collectionMode) return;
     if (userCardPossession === undefined) return 'CardQuantity-notOwned';
     if (reverseOnly) return (userCardPossession?.reverseQuantity < 1 ? 'CardQuantity-notOwned' : 'CardQuantity-owned');
@@ -33,7 +32,7 @@ export const SingleCardComponent: React.FC<SingleCardComponentPropsType> = ({car
     return ""
   }
 
-  const openCardInfo = (card: Card) => {
+  const openCardInfo = (card: ICard) => {
     setCardModal(card);
   }
 

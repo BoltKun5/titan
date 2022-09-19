@@ -2,7 +2,6 @@ import React, {useContext} from "react";
 import CardManagerContext from "../../hook/contexts/CardManagerContext";
 import {SingleCardComponent} from "../SingleCardComponent/SingleCardComponent";
 import './CardManagerCardListComponent.scss'
-import {Card} from "../../../../api/src/database";
 
 export const CardManagerCardListComponent: React.FC = () => {
   const {cards, collectionMode, separateReverse} = useContext(CardManagerContext);

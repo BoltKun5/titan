@@ -1,7 +1,7 @@
-import {CardSerie, Card} from "../../../api/src/database";
+import { ICardSerie, ICard } from "../../../local-core"
 
 export type SideBarComponentPropsType = {
-  series: CardSerie[]
+  series: ICardSerie[]
 }
 
 export type SwitchInputComponentPropsType = {
@@ -13,25 +13,25 @@ export type SwitchInputComponentPropsType = {
 }
 
 export type SingleCardComponentPropsType = {
-  card: Card,
+  card: ICard,
   index: number,
   firstType: 'classic' | 'reverse'
 }
 
 export type SingleCardOverlayComponentPropsType = {
-  card: Card,
+  card: ICard,
   index: number,
   firstType: 'classic' | 'reverse'
 }
 
 export type CardCounterComponentPropsType = {
-  card: Card,
+  card: ICard,
   label: string,
   type: 'classic' | 'reverse'
 }
 
 export type SingleCardOverlayContentComponentPropsType = {
-  card: Card,
+  card: ICard,
   index: number,
   firstType: 'classic' | 'reverse'
 }

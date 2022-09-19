@@ -1,5 +1,5 @@
 import React from "react";
-import {SingleCardOverlayComponentPropsType} from "../../../typing/types";
+import {SingleCardOverlayComponentPropsType} from "../../types";
 import {SingleCardOverlayContentComponent} from "../SingleCardOverlayContentComponent/SingleCardOverlayContentComponent";
 import './SingleCardOverlayComponent.scss'
 

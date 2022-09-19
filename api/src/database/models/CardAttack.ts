@@ -15,11 +15,20 @@ import {
 } from 'sequelize-typescript';
 import { v4 as uuidv4 } from 'uuid';
 import { CustomModel } from '../custom/CustomModel';
+import { Overwrite } from 'abyss_core';
+import { ICardAttack } from '../../../../local-core';
+
+export type ModelCardAttack = Overwrite<ICardAttack,
+  {
+    cardEntity: Card,
+    costs: CardAttackCost[]
+  }
+>;
 
 @DefaultScope(() => ({}))
 @Scopes(() => ({}))
 @Table({ tableName: 'CardAttack', paranoid: false, timestamps: false })
-export class CardAttack extends CustomModel {
+export class CardAttack extends CustomModel implements ModelCardAttack {
   @IsUUID(4)
   @PrimaryKey
   @Default(() => uuidv4())

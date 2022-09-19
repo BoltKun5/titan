@@ -4,7 +4,7 @@ import { CustomModel, IncludeOptionsCustom } from '../../database/custom/CustomM
 import { handleError } from '../../utils/error.utils';
 
 export type _ParamsFetch<T> = {
-  model: T | WhereOptions<T>;
+  model: T | WhereOptions<T> | any;
 };
 
 export class DefaultService {

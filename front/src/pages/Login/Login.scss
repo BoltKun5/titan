@@ -7,7 +7,7 @@
 
   &-Form {
     padding: 0 0 20px 0;
-    width: 400px;
+    width: 500px;
     justify-content: center;
     align-items: center;
     margin: auto;
@@ -33,7 +33,7 @@
     transition: all .3s ease-in-out;
     line-height: 1.15;
     margin: 0;
-    width: 100%;
+    width: 290px;
 
     &Container {
       position: relative;
@@ -56,5 +56,26 @@
       color: #377D6A;
       background: #fff;
     }
+  }
+
+  &-toSignUp {
+    font-size: 15px;
+    width: 290px;
+    margin-bottom: 20px;
+
+    & a {
+      text-decoration: none;
+      font-weight: bold;
+      color: #d84432
+    }
+  }
+
+  &-errorMessage {
+    width: 282px;
+    color: #630e03;
+    background-color: #d84432;
+    border: 2px solid #630e03;
+    padding: 3px;
+    margin-bottom: 10px;
   }
 }

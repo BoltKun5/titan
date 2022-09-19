@@ -1,6 +1,6 @@
-import { CardAttack, CardAttribute, CardType, CardAttackCost, CardDamageModification, CardDexId, CardAbility } from './../../../../api/src/database';
+import { CardAttack, CardAttribute, CardType, CardAttackCost, CardDamageModification, CardDexId, CardAbility } from '../../database';
 
-export const fullCardsConfig = [
+export const getFullCardsConfig = () => [
   {
     model: CardType,
     as: "types",

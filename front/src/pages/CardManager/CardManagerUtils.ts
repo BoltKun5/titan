@@ -1,4 +1,4 @@
-import {Card} from "../../../../api/src/database";
+import { ICard } from "../../../../local-core/types/models/card.dto"
 
 export const initialRarityFilter = [
   {
@@ -91,12 +91,12 @@ export const initialCardList = [
 ]
 
 export type CardListElement = {
-  card: Card | null,
+  card: ICard | null,
   type?: "normal" | "reverse",
   error?: string
 }
 
-export const getImageSource = (card: Card): string => {
+export const getImageSource = (card: ICard): string => {
   const isValid = !isNaN(Number(card.localId));
   if (isValid) return "src/assets/cards/" + card.cardSet.code + "/" + Number(card.localId) + ".jpg"
   return "src/assets/cards/" + card.cardSet.code + "/" + card.localId + ".jpg"

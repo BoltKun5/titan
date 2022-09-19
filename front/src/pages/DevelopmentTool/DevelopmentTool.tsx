@@ -1,16 +1,20 @@
-import React, { useCallback, useEffect, useReducer, useRef, useState } from "react";
+import React, { useCallback, useContext, useEffect, useReducer, useRef, useState } from "react";
 import './DevelopmentTool.scss'
-import { Card, CardSerie } from "../../../../api/src/database";
 import { useFetchData } from "../../hook/api/cards";
-import { CardRarityEnum, CardTypeEnum } from "../../../../local-core";
+import { CardRarityEnum, ICard } from "../../../../local-core";
 import { api } from "../../axios";
+import LoginContext from "../../hook/contexts/LoginContext";
 
 export const DevelopmentTool: React.FC = () => {
-  const [cards, setCards] = useState<Card[]>([]);
-  const [currentCard, setCurrentCard] = useState<Card | null>(null)
+  const [cards, setCards] = useState<ICard[]>([]);
+  const [currentCard, setCurrentCard] = useState<ICard | null>(null)
   const [currentIndex, setCurrentIndex] = useState<number>(0);
   const { isLoading, fetch } = useFetchData();
   const [init, setInit] = useState(false)
+
+  const { currentUser } = useContext(LoginContext);
+
+
 
   const initialRarityFilter = [
     {
@@ -80,7 +84,11 @@ export const DevelopmentTool: React.FC = () => {
   }
 
 
-  return currentCard === null || currentCard === undefined ? (
+  return currentUser?.role === 1 ? (
+    <div>
+      Accès refusé
+    </div>
+  ) : currentCard === null || currentCard === undefined ? (
     <div>
 
     </div>

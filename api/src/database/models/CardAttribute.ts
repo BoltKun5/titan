@@ -13,11 +13,19 @@ import {
 } from 'sequelize-typescript';
 import { v4 as uuidv4 } from 'uuid';
 import { CustomModel } from '../custom/CustomModel';
+import { Overwrite } from 'abyss_core';
+import { ICardAttribute } from '../../../../local-core';
+
+export type ModelCardAttribute = Overwrite<ICardAttribute,
+  {
+    cardEntity: Card,
+  }
+>;
 
 @DefaultScope(() => ({}))
 @Scopes(() => ({}))
 @Table({ tableName: 'CardAttribute', paranoid: false, timestamps: false })
-export class CardAttribute extends CustomModel {
+export class CardAttribute extends CustomModel implements ModelCardAttribute {
   @IsUUID(4)
   @PrimaryKey
   @Default(() => uuidv4())

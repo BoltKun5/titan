@@ -1,5 +1,5 @@
 import React, {useContext} from "react";
-import {SingleCardOverlayContentComponentPropsType} from "../../../typing/types";
+import {SingleCardOverlayContentComponentPropsType} from "../../types";
 import CardManagerContext from "../../hook/contexts/CardManagerContext";
 import {CardCounterComponent} from "../CardCounterComponent/CardCounterComponent";
 import {canBeReverse, notReverseRarities} from "../CardManagerCardListComponent/CardManagerCardListComponent";

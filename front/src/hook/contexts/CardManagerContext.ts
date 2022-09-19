@@ -1,6 +1,5 @@
 import React from "react";
-import {CardSet} from "../../../../api/src/database";
-import {CardManagerContextType} from "../../../typing/types";
+import { CardManagerContextType } from "../../../../local-core";
 
 export default React.createContext<CardManagerContextType>({
   cardSetFilter: [],

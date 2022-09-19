@@ -1,5 +1,7 @@
-import { Card } from "../../../api/src/database";
-import { CardSetFilterInterface } from "../../../api/src/local-core/types/types/interface/front";
+import { UserRoleEnum } from '../../../local-core/enums/user-role.enum';
+import { ICard } from '../../../local-core/types/models/card.dto';
+import { CardSetFilterInterface } from "../../../local-core";
+import React from 'react'
 
 export type CardManagerContextType = {
   cardSetFilter: CardSetFilterInterface[],
@@ -14,8 +16,8 @@ export type CardManagerContextType = {
   setSeparateReverse: React.Dispatch<React.SetStateAction<boolean>>,
   showUnowned: boolean,
   setShowUnowned: React.Dispatch<React.SetStateAction<boolean>>,
-  cards: Card[],
-  setCards: React.Dispatch<React.SetStateAction<Card[]>>,
+  cards: ICard[],
+  setCards: React.Dispatch<React.SetStateAction<ICard[]>>,
   resetAllFilters: () => void,
   massInput: boolean,
   setMassInput: React.Dispatch<React.SetStateAction<boolean>>,

@@ -10,7 +10,7 @@ export default class AuthValidation {
     });
 
     const result = querySchema.validate(data);
-    if (result.error) throw HttpResponseError.createValidationError(result.error.message);
+    if (result.error) throw HttpResponseError.createSignInValidationError();
 
     return { ...result.value };
   }
@@ -23,7 +23,7 @@ export default class AuthValidation {
     });
 
     const result = querySchema.validate(data);
-    if (result.error) throw HttpResponseError.createValidationError(result.error.message);
+    if (result.error) throw HttpResponseError.createSignUpValidationError();
 
     return { ...result.value };
   }

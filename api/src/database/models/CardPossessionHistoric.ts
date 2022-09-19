@@ -14,13 +14,19 @@ import {
 } from 'sequelize-typescript';
 import { v4 as uuidv4 } from 'uuid';
 import { CustomModel } from '../custom/CustomModel';
-import { Card } from './Card';
+import { ICardPossessionHistoric } from '../../../../local-core/types';
+import { BaseEntity, Overwrite } from 'abyss_core';
 
+export type ModelCardPossessionHistoric = BaseEntity<Overwrite<ICardPossessionHistoric,
+  {
+    cardPossession: UserCardPossession,
+  }
+>>;
 
 @DefaultScope(() => ({}))
 @Scopes(() => ({}))
 @Table({ tableName: 'CardPossessionHistoric', paranoid: false, timestamps: true })
-export class CardPossessionHistoric extends CustomModel {
+export class CardPossessionHistoric extends CustomModel implements ModelCardPossessionHistoric {
   @IsUUID(4)
   @PrimaryKey
   @Default(() => uuidv4())

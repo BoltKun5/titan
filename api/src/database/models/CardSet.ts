@@ -1,4 +1,3 @@
-import { CardCountType } from '@local-core';
 import { Card } from './Card';
 /* eslint-disable @typescript-eslint/indent */
 import {
@@ -17,11 +16,20 @@ import {
 import { v4 as uuidv4 } from 'uuid';
 import { CustomModel } from '../custom/CustomModel';
 import { CardSerie } from './CardSerie';
+import { Overwrite } from 'abyss_core';
+import { CardCountType, ICardSet } from '../../../../local-core';
+
+export type ModelCardSet = Overwrite<ICardSet,
+  {
+    cardSerie: CardSerie,
+
+  }
+>;
 
 @DefaultScope(() => ({}))
 @Scopes(() => ({}))
 @Table({ tableName: 'CardSet', paranoid: false, timestamps: false })
-export class CardSet extends CustomModel {
+export class CardSet extends CustomModel implements ModelCardSet {
   @IsUUID(4)
   @PrimaryKey
   @Default(() => uuidv4())

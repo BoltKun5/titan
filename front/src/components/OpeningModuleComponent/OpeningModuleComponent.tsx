@@ -3,9 +3,9 @@ import './OpeningModuleComponent.scss';
 import CardManagerContext from "../../hook/contexts/CardManagerContext";
 import { ClickAwayListener, Tooltip } from "@mui/material";
 import { CardListElement, getImageSource, initialCardList } from "../../pages/CardManager/CardManagerUtils";
-import { Card } from "../../../../api/src/database";
 import { api, loggedApi } from "../../axios";
 import { useFetchData } from "../../hook/api/cards";
+import { ICard } from "../../../../local-core";
 
 export const OpeningModuleComponent: React.FC = () => {
   const { setOpeningModule, cardSetFilter } = useContext(CardManagerContext);
@@ -18,12 +18,12 @@ export const OpeningModuleComponent: React.FC = () => {
   const [cardList, setCardList] = useState<CardListElement[]>(initialCardList);
   const [cardAmount, setCardAmount] = useState<number>(10);
   const [cardLocalId, setCardLocalId] = useState<string>("");
-  const [preselectedCard, setPreselectedCard] = useState<Card | null>(null);
+  const [preselectedCard, setPreselectedCard] = useState<ICard | null>(null);
   const [isPrevalidated, setIsPrevalidated] = useState<boolean>(false);
   const [currentIndex, setCurrentIndex] = useState<number>(0);
   const [isWrongId, setIsWrongId] = useState<boolean>(false);
   const [cardType, setCardType] = useState<"normal" | "reverse">("normal");
-  const [possibleCards, setPossibleCards] = useState<Card[]>([]);
+  const [possibleCards, setPossibleCards] = useState<ICard[]>([]);
   const [isConfirmationOpen, setIsConfirmationOpen] = useState<boolean>(false);
 
   const { fetch } = useFetchData();

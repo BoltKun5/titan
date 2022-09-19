@@ -1,7 +1,7 @@
-import {Card} from "../../../api/src/database";
 import {loggedApi} from "../axios";
 import {useContext} from "react";
 import CardManagerContext from "./contexts/CardManagerContext";
+import { ICard } from "../../../local-core";
 
 export const init = (cards: any) => {
   return cards
@@ -9,7 +9,7 @@ export const init = (cards: any) => {
 
 const {cards, setCards} = useContext(CardManagerContext);
 
-export async function reducer(state: Card[], data: { action: string, card: Card, values: { type: "classic" | "reverse", quantity: string } }) {
+export async function reducer(state: ICard[], data: { action: string, card: ICard, values: { type: "classic" | "reverse", quantity: string } }) {
   switch (data.action) {
     case 'increment':
       state

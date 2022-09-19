@@ -1,7 +1,6 @@
-import { IResponseLocals } from "@local-core";
-import { IResponse } from "@local-core";
 import { Request, Response, Router } from "express";
 import asyncHandler from "express-async-handler";
+import { IResponse, IResponseLocals } from "../../../../local-core";
 import { Card, CardSet } from "../../database";
 
 const route = Router();

@@ -1,10 +1,9 @@
 import React from "react";
 import './CardModal.scss';
 import { ClickAwayListener } from "@mui/material";
-import { Card } from "../../../../api/src/database";
-import { CardRarityEnum } from "./../../../../local-core";
+import { CardRarityEnum, ICard } from "./../../../../local-core";
 
-export const CardModal: React.FC<{ card: Card, closeModal: () => void }> = ({ card, closeModal }) => {
+export const CardModal: React.FC<{ card: ICard, closeModal: () => void }> = ({ card, closeModal }) => {
   return (
     <div className="CardModal">
       <ClickAwayListener onClickAway={() => closeModal()}>

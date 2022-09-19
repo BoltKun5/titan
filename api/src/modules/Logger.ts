@@ -7,7 +7,7 @@ import { LogConsole, LogEndpoint } from '../database';
 import dayjs from 'dayjs';
 import { ServiceException } from 'abyss_core';
 import { APIMethod, LogLevel, LogType } from 'abyss_crypt_core';
-import { IResponse } from '@local-core';
+import { IResponse } from '../../../local-core';
 
 interface ParamsAPI {
   controller: string;

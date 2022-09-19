@@ -3,11 +3,11 @@ import CardManagerContext from "../../hook/contexts/CardManagerContext";
 import './MassInputComponent.scss';
 import {CardCounterComponent} from "../CardCounterComponent/CardCounterComponent";
 import {ClickAwayListener} from "@mui/material";
-import {Card} from "../../../../api/src/database";
+import { ICard } from "../../../../local-core";
 
 export const MassInputComponent: React.FC<{}> = () => {
   const {cards, setMassInput, massInput} = useContext(CardManagerContext);
-  const [currentCard, setCurrentCard] = useState<Card | null>(null)
+  const [currentCard, setCurrentCard] = useState<ICard | null>(null)
   const [currentIndex, setCurrentIndex] = useState<number>(0);
   const [currentType, setCurrentType] = useState<"classic" | "reverse">("classic")
 

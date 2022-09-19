@@ -1,5 +1,5 @@
 import React from "react";
-import {SwitchInputComponentPropsType} from "../../../typing/types";
+import {SwitchInputComponentPropsType} from "../../types";
 import './SwitchInputComponent.scss'
 
 export const SwitchInputComponent: React.FC<SwitchInputComponentPropsType> = ({value, isDisabled, modifyValue, label, id}) => {

@@ -1,7 +1,7 @@
-import {CardSet} from "../../database";
-import {CardType} from "../../database/models/CardType";
+import { CardSet } from "../../database";
+import { CardType } from "../../database/models/CardType";
 import Sequelize from "sequelize";
-import {UserCardPossession} from "../../database/models/UserCardPossession";
+import { UserCardPossession } from "../../database/models/UserCardPossession";
 import sequelize from "sequelize";
 
 // @ts-ignore
@@ -10,13 +10,13 @@ export const getFilterConfig = (req, res, type, page = 0) => {
   if (req.query?.order && page !== -1) {
     switch (req.query.order) {
       case "default":
-        mainOrder = [[{model: CardSet, as: "cardSet"}, 'releaseDate', 'desc'], ['localId', 'asc']];
+        mainOrder = [[{ model: CardSet, as: "cardSet" }, 'releaseDate', 'desc'], ['localId', 'asc']];
         break;
       case "name":
         mainOrder = [['name', 'asc']];
         break;
       case "type":
-        mainOrder = [[{model: CardType, as: "types"}, 'type', 'asc']]
+        mainOrder = [[{ model: CardType, as: "types" }, 'type', 'asc']]
     }
   }
 
@@ -31,9 +31,9 @@ export const getFilterConfig = (req, res, type, page = 0) => {
         },
       }),
     },
-    ...(mainOrder ? {order: mainOrder} : {}),
+    ...(mainOrder ? { order: mainOrder } : {}),
     subQuery: false,
-    ...(page !== -1 ? {attributes: {exclude: ["cardSet"]}} : {}),
+    ...(page !== -1 ? { attributes: { exclude: ["cardSet"] } } : {}),
     include: [
       {
         model: UserCardPossession,
@@ -69,7 +69,7 @@ export const getFilterConfig = (req, res, type, page = 0) => {
         as: "types",
       },
       {
-        where: {...(req.query.setFilter ? {code: req.query.setFilter} : {})},
+        where: { ...(req.query.setFilter ? { code: req.query.setFilter } : {}) },
         model: CardSet,
         required: true,
         duplicating: false,
@@ -79,6 +79,6 @@ export const getFilterConfig = (req, res, type, page = 0) => {
         as: "cardSet",
       },
     ],
-    ...(page === 0 ? {limit: 300} : (page === -1 ? {} : {limit: 100})),
+    ...(page === 0 ? { limit: 300 } : (page === -1 ? {} : { limit: 100 })),
   }
 }

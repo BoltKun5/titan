@@ -1,10 +1,9 @@
-import { Button, TextField } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { ISigninAuthBody, ISigninAuthResponse } from "../../../../api/src/local-core/types/types/interface";
 import Joi from "joi";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import './Login.scss'
+import { ISigninAuthBody, ISigninAuthResponse } from "../../../../local-core";
 
 export const Login: React.FC = () => {
   const [errorMessage, setErrorMessage] = useState("");
@@ -22,19 +21,24 @@ export const Login: React.FC = () => {
 
     const result = querySchema.validate({ username: username, password: password });
 
+    if (result.error) {
+      setErrorMessage("Les informations fournies ne peuvent pas correspondre à un compte.");
+      return
+    }
+
     try {
       const response: { data: { data: ISigninAuthResponse } } = await axios.post("http://localhost:10101/api/auth/signin", {
         ...result.value,
       });
       localStorage.setItem('token', response.data.data.token);
-      localStorage.setItem('user', JSON.stringify(response.data.data.user))
+      localStorage.setItem('user', JSON.stringify(response.data.data.user));
       navigate("/cards");
 
     } catch (e: any) {
       const errorCode = e.response?.data?.error?.code;
       switch (errorCode) {
         case "USER_NOT_FOUND":
-          setErrorMessage("Mauvais identifiants");
+          setErrorMessage("Ces informations ne correspondent à aucun compte.");
       }
     }
   };
@@ -61,9 +65,10 @@ export const Login: React.FC = () => {
       </div>
       <div className="Login-textInputContainer">
         <label>Mot de passe</label>
-        <input className="Login-textInput" id="password" value={password} onChange={e => setPassword(e.target.value)} />
+        <input className="Login-textInput" id="password" type={"password"} value={password} onChange={e => setPassword(e.target.value)} />
       </div>
-      {(errorMessage !== "") && <div>{errorMessage}</div>}
+      {(errorMessage !== "") && <div className="Login-errorMessage">{errorMessage}</div>}
+      <span className="Login-toSignUp">Pas encore de compte ? <Link to="/signup">Inscrivez-vous</Link></span>
       <button className="button" type="submit">Se connecter</button>
     </form>
   </div>

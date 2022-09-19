@@ -1,10 +1,5 @@
 import { CardAbility } from './CardAbility';
 import { CardDexId } from './CardDexId';
-import { CardEnergyTypeEnum } from './../../../../local-core';
-import { CardTrainerTypeEnum } from './../../../../local-core';
-import { CardEvolutionStageEnum } from './../../../../local-core';
-import { CardCategoryEnum } from './../../../../local-core';
-import { CardRarityEnum } from './../../../../local-core';
 import { CardDamageModification } from './CardDamageModification';
 import { CardAttack } from './CardAttack';
 import {
@@ -25,13 +20,27 @@ import { CustomModel } from '../custom/CustomModel';
 import { CardSet } from './CardSet';
 import { CardType } from './CardType';
 import { CardAttribute } from './CardAttribute';
-import { HeldItemType } from './../../../../local-core';
 import { UserCardPossession } from "./UserCardPossession";
+import { Overwrite } from 'abyss_core';
+import { CardCategoryEnum, CardEnergyTypeEnum, CardEvolutionStageEnum, CardRarityEnum, CardTrainerTypeEnum, HeldItemType, ICard } from '../../../../local-core';
+
+export type ModelCard = Overwrite<ICard,
+  {
+    cardSet: CardSet,
+    types: CardType[],
+    attacks: CardAttack[],
+    abilities: CardAbility[],
+    damageModifications: CardDamageModification[],
+    attributes: CardAttribute[],
+    dexIds: CardDexId[],
+    userCardPossessions: UserCardPossession[]
+  }
+>;
 
 @DefaultScope(() => ({}))
 @Scopes(() => ({}))
 @Table({ tableName: 'Card', paranoid: false, timestamps: false })
-export class Card extends CustomModel {
+export class Card extends CustomModel implements ModelCard {
   @IsUUID(4)
   @PrimaryKey
   @Default(() => uuidv4())

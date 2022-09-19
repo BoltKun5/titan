@@ -1,11 +1,11 @@
 import React, { useContext } from "react";
 import { Tooltip } from "@mui/material";
-import { CardSerie, CardSet } from "../../../../api/src/database";
-import { SideBarComponentPropsType } from "../../../typing/types";
+import { SideBarComponentPropsType } from "../../types";
 import CardManagerContext from "../../hook/contexts/CardManagerContext";
 import './SideBarComponent.scss';
 import { SwitchInputComponent } from "../SwitchInputComponent/SwitchInputComponent";
 import { Link, useNavigate } from "react-router-dom";
+import { ICardSerie, ICardSet } from "../../../../local-core";
 
 export const SideBarComponent: React.FC<SideBarComponentPropsType> = ({ series }, context) => {
   const {
@@ -33,14 +33,14 @@ export const SideBarComponent: React.FC<SideBarComponentPropsType> = ({ series }
     }))
   }
 
-  const getSerieClassname = (serie: CardSerie) => {
+  const getSerieClassname = (serie: ICardSerie) => {
     if (cardSetFilter.filter((filteredElement) => (serie.code === filteredElement.categoryCode) && !filteredElement.status).length === 0) {
       return "SideBar-serie selected"
     }
     return "SideBar-serie"
   }
 
-  const getSetClassname = (set: CardSet) => {
+  const getSetClassname = (set: ICardSet) => {
     const localCardSetFilter = cardSetFilter.find((filteredElement) => (set.code === filteredElement.id))
     if (localCardSetFilter?.status) {
       return "SideBar-setElement selected"
@@ -79,7 +79,7 @@ export const SideBarComponent: React.FC<SideBarComponentPropsType> = ({ series }
                     ev.currentTarget.classList.toggle("isOpened")
                   }}>{serie.name}</div>
                   <div className="SideBar-setList">
-                    {serie.cardSets.map((set: CardSet) => (
+                    {serie.cardSets.map((set: ICardSet) => (
                       <div
                         className={getSetClassname(set)}
                         key={set.code}

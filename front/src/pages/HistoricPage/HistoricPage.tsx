@@ -41,8 +41,8 @@ export const HistoricPage: React.FC = () => {
         </div>
         <div className="HistoricPage-tableContent">
           {
-            historicList.map((historyElement) => (
-              <div className="HistoricPage-tableLine">
+            historicList.map((historyElement, index) => (
+              <div className="HistoricPage-tableLine" key={"HistoryElementKey" + index}>
                 <div className="HistoricPage-cardName">{historyElement.cardPossession.card.name}</div>
                 <div className="HistoricPage-normalQuantity">{historyElement.oldClassicQuantity} -{">"} {historyElement.newClassicQuantity}</div>
                 <div className="HistoricPage-reverseQuantity">{historyElement.oldReverseQuantity} -{">"} {historyElement.newReverseQuantity}</div>
@@ -55,8 +55,8 @@ export const HistoricPage: React.FC = () => {
       </div>
       <div className="HistoricPage-boosterContent">
         {
-          historicList.filter((element) => element.boosterId === boosterIdToShow).map((historyElement) => (
-            <div>
+          historicList.filter((element) => element.boosterId === boosterIdToShow).map((historyElement, index) => (
+            <div key={"HistoryBoosterContentElement" + index}>
               <img src={getImageSource(historyElement.cardPossession.card)} />
             </div>
           ))
