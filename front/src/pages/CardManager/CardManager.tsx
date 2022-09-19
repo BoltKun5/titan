@@ -173,10 +173,6 @@ export const CardManager: React.FC = () => {
     setOpeningModule
   }
 
-  // TODO : Mettre à jour la connexion, mettre une inscription ?
-  // TODO : review les sécurités
-  // TODO : utiliser formik
-
   return (
     <CardManagerContext.Provider value={contextValue}>
       {showStats && stats !== null && <SearchStatisticsComponent data={stats} />}

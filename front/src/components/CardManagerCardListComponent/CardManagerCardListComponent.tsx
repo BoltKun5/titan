@@ -1,19 +1,19 @@
-import React, {useContext} from "react";
+import React, { useContext } from "react";
 import CardManagerContext from "../../hook/contexts/CardManagerContext";
-import {SingleCardComponent} from "../SingleCardComponent/SingleCardComponent";
+import { SingleCardComponent } from "../SingleCardComponent/SingleCardComponent";
 import './CardManagerCardListComponent.scss'
 
 export const CardManagerCardListComponent: React.FC = () => {
-  const {cards, collectionMode, separateReverse} = useContext(CardManagerContext);
+  const { cards, collectionMode, separateReverse } = useContext(CardManagerContext);
   return (
     <div className="CardManagerCardList">
 
       <div className="CardManagerCardList-grid">
-        {cards.map((card: any, index) =>
+        {cards.map((card: any, index: number) =>
           <React.Fragment key={"firstCard" + card.localId + "0" + index}>
-            <SingleCardComponent firstType={'classic'} card={card} index={index}/>
+            <SingleCardComponent firstType={'classic'} card={card} index={index} />
             {collectionMode && separateReverse && card.canBeReverse &&
-            <SingleCardComponent firstType={'reverse'} card={card} index={index}/>}
+              <SingleCardComponent firstType={'reverse'} card={card} index={index} />}
           </React.Fragment>,
         )}
       </div>

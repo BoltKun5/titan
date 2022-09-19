@@ -37,11 +37,16 @@ export class AuthService {
   }
 
   public static async login({ username, password }: ParamsLogin): Promise<ResultLogin> {
-    const user = await UserService.getUser({
-      user: { username },
+    const user = await User.findOne({
+      where: { username },
     });
 
+    if (!user) {
+      throw HttpResponseError.createWrongUsernameError();
+    }
+
     const isCorrect = bcrypt.compareSync(password, user.password);
+
     if (!isCorrect)
       throw HttpResponseError.createWrongPasswordError();
 

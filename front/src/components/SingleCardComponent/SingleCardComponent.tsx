@@ -1,15 +1,15 @@
-import React, {useContext, useState} from "react";
-import {SingleCardComponentPropsType} from "../../types";
+import React, { SyntheticEvent, useContext, useState } from "react";
 import CardManagerContext from "../../hook/contexts/CardManagerContext";
-import {SingleCardOverlayComponent} from "../SingleCardOverlayComponent/SingleCardOverlayComponent";
+import { SingleCardOverlayComponent } from "../SingleCardOverlayComponent/SingleCardOverlayComponent";
 import './SingleCardComponent.scss'
-import {CardModal} from "../CardModalComponent/CardModal";
-import {getImageSource} from "../../pages/CardManager/CardManagerUtils";
-import { ICard, IUserCardPossession } from "../../../../local-core";
+import { CardModal } from "../CardModalComponent/CardModal";
+import { getImageSource } from "../../pages/CardManager/CardManagerUtils";
+import { ICard, IUserCardPossession, SingleCardComponentPropsType } from "../../../../local-core";
 
-export const SingleCardComponent: React.FC<SingleCardComponentPropsType> = ({card, index, firstType}) => {
-  const {collectionMode, separateReverse} = useContext(CardManagerContext);
+export const SingleCardComponent: React.FC<SingleCardComponentPropsType> = ({ card, index, firstType }) => {
+  const { collectionMode, separateReverse } = useContext(CardManagerContext);
   const [cardModal, setCardModal] = useState<ICard | null>(null);
+  const [isMissingImage, setIsMissingImage] = useState<boolean>(false);
 
   const getColorClassname = (userCardPossession: IUserCardPossession, reverseOnly: boolean = false, canBeReverse: boolean = true) => {
     if (!collectionMode) return;
@@ -36,10 +36,15 @@ export const SingleCardComponent: React.FC<SingleCardComponentPropsType> = ({car
     setCardModal(card);
   }
 
+  const handleMissingImage = (error: SyntheticEvent<HTMLImageElement, Event>) => {
+    error.currentTarget.src = "src/assets/default_card_img.png"
+    setIsMissingImage(true)
+  }
+
   return (
     <>
       {
-        cardModal !== null && <CardModal card={cardModal} closeModal={() => setCardModal(null)}/>
+        cardModal !== null && <CardModal card={cardModal} closeModal={() => setCardModal(null)} />
       }
 
       <div
@@ -47,24 +52,23 @@ export const SingleCardComponent: React.FC<SingleCardComponentPropsType> = ({car
         key={card.id}>
 
         <div className="SingleCard-imgContainer" onClick={() => openCardInfo(card)}>
-          <div className="SingleCard-data">
-            {card.name} ({card.localId})<br/>
+          <div className="SingleCard-data" style={{ zIndex: isMissingImage ? 100 : 0 }}>
+            {card.name} ({card.localId})<br />
             {card.cardSet.code} - {card.cardSet.name}
           </div>
           {
             collectionMode && card.canBeReverse ?
               <>
                 <img className="SingleCard-possession-reverse" loading={"lazy"}
-                     src={getImageSource(card)}/>
+                  src={getImageSource(card)} onError={handleMissingImage} />
                 <img className="SingleCard-possession-classic" loading={"lazy"}
-                     src={getImageSource(card)}
-                     onError={(el) => el.currentTarget.setAttribute("src", "")}/>
+                  src={getImageSource(card)} onError={handleMissingImage} />
               </> : <img className="SingleCard-img" src={getImageSource(card)} loading={"lazy"}
-                         onError={el => el.currentTarget.style.display = "none"}/>
+                onError={handleMissingImage} />
           }
         </div>
 
-        {collectionMode && <SingleCardOverlayComponent firstType={firstType} card={card} index={index}/>}
+        {collectionMode && <SingleCardOverlayComponent firstType={firstType} card={card} index={index} />}
       </div>
     </>
   )

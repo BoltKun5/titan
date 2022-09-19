@@ -1,4 +1,4 @@
-import React, {  useState } from "react";
+import React, { useState } from "react";
 import Joi from "joi";
 import { Link, useNavigate } from "react-router-dom";
 import './SignUp.scss'
@@ -51,7 +51,6 @@ export const SignUp: React.FC = () => {
       <div className="SignUp-textInputContainer">
         <label>Nom de compte</label>
         <input className="SignUp-textInput"
-          id="username"
           value={username}
           onChange={e =>
             setUsername(e.target.value)
@@ -59,11 +58,11 @@ export const SignUp: React.FC = () => {
       </div>
       <div className="SignUp-textInputContainer">
         <label>Pseudo affiché</label>
-        <input className="SignUp-textInput" id="password" value={shownName} onChange={e => setShownName(e.target.value)} />
+        <input className="SignUp-textInput" value={shownName} onChange={e => setShownName(e.target.value)} />
       </div>
       <div className="SignUp-textInputContainer">
         <label>Mot de passe</label>
-        <input className="SignUp-textInput" id="password" type={"password"} value={password} onChange={e => setPassword(e.target.value)} />
+        <input className="SignUp-textInput" type={"password"} value={password} onChange={e => setPassword(e.target.value)} />
       </div>
 
       {(errorMessage !== "") && <div className="SignUp-errorMessage">{errorMessage}</div>}

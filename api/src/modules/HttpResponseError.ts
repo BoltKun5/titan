@@ -47,6 +47,13 @@ export class HttpResponseError {
     })
   }
 
+  public static createWrongUsernameError(): createError.HttpError {
+    return createError(404, {
+      code: HttpErrorCode.badusername,
+      message: 'the username doesnt exist'
+    })
+  }
+
   public static sendError(
     error: Error | createError.HttpError,
     req: Request,

@@ -4,5 +4,6 @@ export enum HttpErrorCode {
   signupvalidation = "BAD_SIGNUP_VALUES",
   signinvalidation = "BAD_SIGNIN_VALUES",
   invaliduser = "USER_NOT_FOUND",
-  badpassword = "INCORRECT_PASSWORD"
+  badpassword = "INCORRECT_PASSWORD",
+  badusername = "UNKNOWN_USER"
 }

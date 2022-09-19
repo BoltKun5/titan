@@ -17,12 +17,12 @@ export interface ParamsGetUser {
 
 export class UserService extends DefaultService {
 
-  public static async getUser(
-    params: ParamsGetUser,
-    include?: IncludeOptionsCustom[],
-  ): Promise<User> {
-    return UserService._fetch<User>(User, { model: params.user }, include);
-  }
+  // public static async getUser(
+  //   params: ParamsGetUser,
+  //   include?: IncludeOptionsCustom[],
+  // ): Promise<User> {
+  //   return UserService._fetch<User>(User, { model: params.user }, include);
+  // }
 
   public static async create(params: ParamsCreate): Promise<User> {
     try {

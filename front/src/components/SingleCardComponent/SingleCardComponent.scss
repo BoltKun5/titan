@@ -49,6 +49,7 @@
     font-size: 17px;
     z-index: 0;
     text-align: center;
+    background-color: rgba(0, 0, 0, 0.5);
   }
 
   &-imgContainer {
@@ -58,7 +59,8 @@
     position: relative;
     overflow: hidden;
     background: #8c8c8c;
-    &:hover *{
+
+    &:hover * {
       filter: none !important;
       cursor: pointer;
     }
