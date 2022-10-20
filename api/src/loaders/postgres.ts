@@ -57,8 +57,8 @@ export default async (): Promise<Sequelize> => {
 
     AppConfig.sequelize = connection;
 
-    await customMigrations(connection);
-    await customSeeders(connection);
+    // await customMigrations(connection);
+    // await customSeeders(connection);
 
     AppConfig.process.sequelizeReady = true;
 

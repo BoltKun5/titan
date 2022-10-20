@@ -1,4 +1,3 @@
-import { CardRarityEnum } from './../../../../local-core/types/enums/card-rarity.enum';
 import axios from "axios";
 import { Card } from "../models/Card";
 

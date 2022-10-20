@@ -77,25 +77,28 @@ export const renameImages = (setCode: string, startIndex: number, endIndex: numb
 }
 
 export const getAllCardImg = async () => {
-  const myArray = fullSetList;
-  for (const [key, value] of Object.entries(myArray)) {
+  const myArray = aze.filter((el) => !Object.values(fullSetList).includes(el));
+  for (const key of myArray) {
+    console.log(key)
 
     for (let i = 1; i <= 300; i++) {
-      const URL = `https://limitlesstcg.nyc3.digitaloceanspaces.com/tpci/${key}/${key}_${String(i).padStart(3, "0")}_R_FR_LG.png`;
+      const URL = `https://www.pokecardex.com/assets/images/sets/${key}/HD/${i}.jpg`;
       try {
-        if (fs.existsSync(`./img/${key}/${i}.jpg`)) {
-          continue
-        }
+        // if (fs.existsSync(`./img/${key}/${i}.jpg`)) {
+        //   continue
+        // }
         const res = await axios.get(URL, {
           responseType: 'arraybuffer',
         });
         if (!res.data) continue
+        if (!fs.existsSync(`./img`))
+          fs.mkdirSync(`./img`)
         if (!fs.existsSync(`./img/${key}`))
           fs.mkdirSync(`./img/${key}`)
         fs.writeFileSync(`./img/${key}/${i}.jpg`, Buffer.from(res.data as any));
-        console.log(i)
+        // console.log(i)
       } catch (e) {
-        // console.log(URL)
+        console.log(URL)
         continue
       }
 

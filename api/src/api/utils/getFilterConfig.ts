@@ -1,11 +1,10 @@
+import { FindOptions } from 'sequelize/types';
 import { CardSet } from "../../database";
 import { CardType } from "../../database/models/CardType";
-import Sequelize from "sequelize";
 import { UserCardPossession } from "../../database/models/UserCardPossession";
-import sequelize from "sequelize";
+import { Op, Options } from "sequelize";
 
-// @ts-ignore
-export const getFilterConfig = (req, res, type, page = 0) => {
+export const getFilterConfig = (req, res, type, page = 0): FindOptions => {
   let mainOrder;
   if (req.query?.order && page !== -1) {
     switch (req.query.order) {
@@ -23,11 +22,11 @@ export const getFilterConfig = (req, res, type, page = 0) => {
   return {
     where: {
       name: {
-        [Sequelize.Op.iLike]: `%${req.query.namefilter ?? ''}%`,
+        [Op.iLike]: `%${req.query.namefilter ?? ''}%`,
       },
       ...(req.query.rarity && {
         rarity: {
-          [Sequelize.Op.in]: req.query.rarity,
+          [Op.in]: req.query.rarity,
         },
       }),
     },
@@ -42,17 +41,17 @@ export const getFilterConfig = (req, res, type, page = 0) => {
         duplicating: false,
         where: {
           ...(type === 'collection' ? {
-            [sequelize.Op.and]: [
+            [Op.and]: [
               {
-                [sequelize.Op.or]: [
+                [Op.or]: [
                   {
                     classicQuantity: {
-                      [sequelize.Op.gt]: 0,
+                      [Op.gt]: 0,
                     },
                   },
                   {
                     reverseQuantity: {
-                      [sequelize.Op.gt]: 0,
+                      [Op.gt]: 0,
                     },
                   },
                 ],

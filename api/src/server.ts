@@ -1,4 +1,4 @@
-import { getSetIcons, renamePokecardexSetIcons, getAllTGCardImg } from './serverFunctions';
+import { getSetIcons, renamePokecardexSetIcons, getAllTGCardImg, getAllCardImg } from './serverFunctions';
 import { existsSync, readdirSync, statSync } from "fs-extra";
 import { LogType } from "abyss_crypt_core";
 import { startServer } from "./app";
@@ -31,6 +31,7 @@ async function test() {
   try {
     console.time("seed");
 
+    // getAllCardImg()
 
     console.timeEnd("seed");
   } catch (error) {
