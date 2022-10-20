@@ -5,11 +5,18 @@ import Logger from './modules/Logger';
 
 export async function startServer(): Promise<void> {
   const app = express();
+  var https = require('https');
+  const fs = require("fs");
 
   // eslint-disable-next-line @typescript-eslint/no-var-requires
   AppConfig.sequelize = await require('./loaders').default(app);
 
-  const server = app
+  const httpsServer = https.createServer({
+    key: fs.readFileSync("key.pem"),
+    cert: fs.readFileSync("cert.pem")
+  }, app)
+
+  const server = httpsServer
     .listen(AppConfig.config.app.port, () => {
       Logger.info(
         `
