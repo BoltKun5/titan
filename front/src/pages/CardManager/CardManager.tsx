@@ -1,19 +1,16 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { loggedApi } from "../../axios";
 import CardManagerContext from "../../hook/contexts/CardManagerContext";
-import { SideBarComponent } from "../../components/SideBarComponent/SideBarComponent";
 import { CardManagerFilterComponent } from "../../components/CardManagerFilterComponent/CardManagerFilterComponent";
 import { CardManagerCardListComponent } from "../../components/CardManagerCardListComponent/CardManagerCardListComponent";
-import './CardManager.scss'
+import './style.scss'
 import { useFetchData } from "../../hook/api/cards";
-import { MassInputComponent } from "../../components/MassInputComponent/MassInputComponent";
 import { initialRarityFilter } from "./CardManagerUtils";
-import { SearchStatisticsComponent } from "../../components/SearchStatisticsComponent/SearchStatisticsComponent";
-import { OpeningModuleComponent } from "../../components/OpeningModuleComponent/OpeningModuleComponent";
-import { CardSetFilterInterface, CardTypeEnum, CardRarityEnum, StatisticsDataType } from "../../../../local-core";
+import { CardSetFilterInterface, CardTypeEnum, CardRarityEnum, StatisticsDataType, PaginationData } from "../../../../local-core";
 import { ICardSerie } from "../../../../local-core/types/models/card-serie.dto";
 import { ICardSet } from "../../../../local-core/types/models/card-set.dto";
 import { ICard } from "../../../../local-core/types/models/card.dto";
+import { HeaderComponent } from "../../components/HeaderComponent/HeaderComponent";
 
 export const CardManager: React.FC = () => {
 
@@ -39,8 +36,9 @@ export const CardManager: React.FC = () => {
   const [showStats, setShowStats] = useState<boolean>(false);
   const [firstUpdate, setFirstUpdate] = useState<boolean>(true);
   const [openingModule, setOpeningModule] = useState<boolean>(false);
-
-  const [stats, setStats] = useState<StatisticsDataType | null>(null);
+  const [showOptionCards, setShowOptionCards] = useState(false);
+  const [page, setPage] = useState(1);
+  const [pagination, setPagination] = useState<PaginationData | null>(null);
 
   const { isLoading, fetch } = useFetchData();
 
@@ -99,6 +97,8 @@ export const CardManager: React.FC = () => {
       })
     }
 
+    params.page = page;
+
     let response;
     if (!collectionMode) {
       response = await fetch('/cardlist/cards', params);
@@ -106,14 +106,15 @@ export const CardManager: React.FC = () => {
       params.unowned = (showUnowned ? 'show' : 'hide')
       response = await fetch('/cardlist/collection', params);
     }
-    setCards(response.data);
+    setCards(response.data.cards);
+    setPagination(response.data.pagination)
 
-    if (collectionMode) {
-      response = await fetch('/cardlist/stats', params);
-      setStats(response.data);
-    }
+    // if (collectionMode) {
+    //   response = await fetch('/cardlist/stats', params);
+    //   setStats(response.data);
+    // }
 
-  }, [cardSetFilter, nameFilter, collectionMode, showUnowned, order])
+  }, [cardSetFilter, nameFilter, collectionMode, showUnowned, order, page])
 
   useEffect(() => {
     if (firstUpdate) {
@@ -122,7 +123,11 @@ export const CardManager: React.FC = () => {
     }
 
     fetchCards();
-  }, [cardSetFilter, nameFilter, collectionMode, showUnowned, order, rarityFilter])
+  }, [cardSetFilter, nameFilter, collectionMode, showUnowned, order, rarityFilter, page])
+
+  useEffect(() => {
+    setPage(1)
+  }, [cardSetFilter, nameFilter, collectionMode, showUnowned, rarityFilter])
 
   const resetAllFilters = () => {
     setCardSetFilter(cardSetFilter.map((element) => {
@@ -170,18 +175,22 @@ export const CardManager: React.FC = () => {
     showStats,
     setShowStats,
     openingModule,
-    setOpeningModule
+    setOpeningModule,
+    series,
+    showOptionCards,
+    setShowOptionCards,
+    page,
+    setPage,
+    pagination,
+    setPagination
   }
 
   return (
     <CardManagerContext.Provider value={contextValue}>
-      {showStats && stats !== null && <SearchStatisticsComponent data={stats} />}
-      {openingModule && <OpeningModuleComponent />}
+      <HeaderComponent />
+      <CardManagerFilterComponent />
       <div className="CardManager">
-        {massInput && <MassInputComponent />}
-        <SideBarComponent series={series} />
         <div className="CardManager-mainContent">
-          <CardManagerFilterComponent />
           {
             isLoading ?
               <div className="CardManager-loaderContainer">

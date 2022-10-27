@@ -20,9 +20,22 @@ export const CardListRouter = (app: Router): Router => {
       const cards = await Card.findAll({
         ...getFilterConfig(req, res, 'collection'),
       });
+      const count = await Card.count({
+        ...getFilterConfig(req, res, 'collection')
+      })
+
+      const page = Number(req.query?.page) ?? 0
 
       res.json({
-        data: cards,
+        data: {
+          cards,
+          pagination: {
+            total: count,
+            page,
+            totalPages: Math.ceil(count / 200),
+            resultPerPage: 200
+          }
+        }
       });
     }),
   );
@@ -31,8 +44,22 @@ export const CardListRouter = (app: Router): Router => {
     "/cards",
     asyncHandler(async (req: Request<any, any, void>, res: Response<IResponse<any>, IResponseLocals>) => {
       const cards = await Card.findAll(getFilterConfig(req, res, 'cards'));
+      const count = await Card.count({
+        ...getFilterConfig(req, res, 'cards')
+      })
+
+      const page = Number(req.query?.page) ?? 0
+
       res.json({
-        data: cards,
+        data: {
+          cards,
+          pagination: {
+            total: count,
+            page,
+            totalPages: Math.ceil(count / 200),
+            resultPerPage: 200
+          }
+        }
       });
     }),
   );
@@ -42,7 +69,7 @@ export const CardListRouter = (app: Router): Router => {
     auth,
     asyncHandler(async (req: Request<any, any, void>, res: Response<IResponse<StatisticsDataType>, IResponseLocals>) => {
       const cards = await Card.findAll({
-        ...getFilterConfig(req, res, 'collection', -1),
+        ...getFilterConfig(req, res, 'collection'),
       });
 
       const stats: StatisticsDataType = {

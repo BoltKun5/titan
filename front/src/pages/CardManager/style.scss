@@ -2,6 +2,9 @@
   height: 100%;
   width: 100%;
   display: flex;
+  height: calc(100vh - 126px);
+  margin-top: 50px;
+  transition: 0.5s;
 
 
   &-mainContent {
@@ -9,8 +12,6 @@
     height: 100%;
     display: flex;
     flex-direction: column;
-    margin-left: 250px;
-    background: #525252;
   }
 
   &-loader {
@@ -62,6 +63,7 @@
     width: 25px;
     height: 25px;
   }
+
   to {
     width: 35px;
     height: 35px;

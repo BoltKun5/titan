@@ -1,8 +1,25 @@
+@import "../../scss/variables.scss";
+
 .SingleCard {
+  margin: auto;
+  position: relative;
+  height: 507px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: fit-content;
+  padding: 12px 10px 12px !important;
+  background-color: $primary-bg;
+  border: 1px solid $primary-border;
 
+  &-notCollection {
+    height: 316px;
+    padding: 0 !important;
+    border: 0;
 
-  &:last-of-type {
-    margin-bottom: 30px;
+    & .SingleCard-imgContainer::after {
+      box-shadow: none;
+    }
   }
 
   &-possession {
@@ -27,13 +44,36 @@
     }
   }
 
-  margin: 10px;
-  position: relative;
-  height: fit-content;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  margin-bottom: 20px;
+  &-notCollection {
+    padding: 0;
+    width: fit-content;
+    clip-path: none;
+  }
+
+  &-collectionBackground {
+    position: absolute;
+    border: 2px solid $primary-bg;
+    width: calc(100% - 36px);
+    height: 309px;
+    margin: 16px 16px;
+    top: 0;
+    left: 0;
+    // clip-path: clipPath(26px);
+    pointer-events: none;
+    z-index: 10;
+  }
+
+  &:not(.SingleCard-notCollection) &-imgContainer {
+    clip-path: polygon(5px 5px,
+        calc(100% - 5px) 5px,
+        calc(100% - 5px) calc(100% - 5px),
+        calc(100% - 5px) calc(100% - 5px),
+        5px calc(100% - 5px),
+        5px 5px);
+    ;
+  }
+
+
 
   &-data {
     position: absolute;
@@ -59,6 +99,19 @@
     position: relative;
     overflow: hidden;
     background: #8c8c8c;
+    z-index: 2;
+
+    &::after {
+      width: 100%;
+      height: 100%;
+      position: absolute;
+      content: "";
+      box-shadow: inset $primary-bg 0 0 5px 10px;
+      z-index: 10;
+      pointer-events: none;
+      left: 0;
+      top: 0;
+    }
 
     &:hover * {
       filter: none !important;

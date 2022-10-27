@@ -1,6 +1,6 @@
 import axios, { AxiosRequestConfig, AxiosResponse } from "axios";
 
-const baseURL = "http://localhost:10101/api";
+const baseURL = "https://localhost:10101/api";
 
 export class loggedApi {
 
@@ -17,7 +17,7 @@ export class loggedApi {
     return this.getAxiosInstance(localStorage.getItem("token")).get(url, options)
   }
 
-  public static post = (url: string, data: AxiosRequestConfig<any> | undefined = undefined, config: AxiosRequestConfig | undefined = undefined): Promise<AxiosResponse<any, any>> => {
+  public static post = (url: string, data: any | undefined = undefined, config: AxiosRequestConfig | undefined = undefined): Promise<AxiosResponse<any, any>> => {
     return this.getAxiosInstance(localStorage.getItem("token")).post(url, data, config)
   }
 }

@@ -1,10 +1,11 @@
-import React, { SyntheticEvent, useContext, useState } from "react";
+import React, { createRef, SyntheticEvent, useCallback, useContext, useEffect, useRef, useState } from "react";
 import CardManagerContext from "../../hook/contexts/CardManagerContext";
 import { SingleCardOverlayComponent } from "../SingleCardOverlayComponent/SingleCardOverlayComponent";
-import './SingleCardComponent.scss'
+import './style.scss'
 import { CardModal } from "../CardModalComponent/CardModal";
 import { getImageSource } from "../../pages/CardManager/CardManagerUtils";
 import { ICard, IUserCardPossession, SingleCardComponentPropsType } from "../../../../local-core";
+import { boolean } from "joi";
 
 export const SingleCardComponent: React.FC<SingleCardComponentPropsType> = ({ card, index, firstType }) => {
   const { collectionMode, separateReverse } = useContext(CardManagerContext);
@@ -41,6 +42,40 @@ export const SingleCardComponent: React.FC<SingleCardComponentPropsType> = ({ ca
     setIsMissingImage(true)
   }
 
+  const elementRef = createRef<HTMLDivElement>();
+
+  const [show, setShow] = useState(false);
+
+  const [parent, setParent] = useState<HTMLElement | null | undefined>(null);
+
+
+
+  const isElementInViewport = useCallback(() => {
+    let windowHeight = parent?.clientHeight
+    let rect = elementRef.current?.getBoundingClientRect();
+    if (show) return true;
+    if (!rect || !windowHeight) return false;
+
+    const requiredNullTop = (rect?.top - 126 + rect.height);
+    const requiredNullBottom = (rect?.bottom - 126 - windowHeight - rect.height);
+
+    return (requiredNullTop > 0 && requiredNullBottom < 0)
+  }, [parent, elementRef])
+
+  const scrollEventHandler = () => {
+    setShow(isElementInViewport())
+  }
+
+  useEffect(() => {
+    setParent(elementRef.current?.parentElement?.parentElement);
+    setShow(isElementInViewport);
+    if (!show)
+      parent?.addEventListener("scroll", scrollEventHandler)
+    return () => {
+      parent?.removeEventListener("scroll", scrollEventHandler);
+    }
+  });
+
   return (
     <>
       {
@@ -48,27 +83,39 @@ export const SingleCardComponent: React.FC<SingleCardComponentPropsType> = ({ ca
       }
 
       <div
-        className={"SingleCard " + (collectionMode ? getColorClassname(card.userCardPossessions?.[0], firstType === 'reverse', card.canBeReverse) : '')}
-        key={card.id}>
+        className={"SingleCard  " + (collectionMode ? getColorClassname(card.userCardPossessions?.[0], firstType === 'reverse', card.canBeReverse) : 'SingleCard-notCollection')}
+        key={card.id} style={{ ...(separateReverse && collectionMode ? { height: 420 } : {}) }} ref={elementRef}>
 
-        <div className="SingleCard-imgContainer" onClick={() => openCardInfo(card)}>
-          <div className="SingleCard-data" style={{ zIndex: isMissingImage ? 100 : 0 }}>
-            {card.name} ({card.localId})<br />
-            {card.cardSet.code} - {card.cardSet.name}
-          </div>
-          {
-            collectionMode && card.canBeReverse ?
+        {
+          show && <>
+            <div className="SingleCard-imgContainer" onClick={() => openCardInfo(card)}>
+              <div className="SingleCard-data" style={{ zIndex: isMissingImage ? 100 : 0 }}>
+                {card.name} ({card.localId})<br />
+                {card.cardSet.code} - {card.cardSet.name}
+              </div>
+              {
+                collectionMode && card.canBeReverse ?
+                  <>
+                    <img className="SingleCard-possession-reverse" loading={"lazy"}
+                      src={getImageSource(card)} onError={handleMissingImage} />
+                    <img className="SingleCard-possession-classic" loading={"lazy"}
+                      src={getImageSource(card)} onError={handleMissingImage} />
+                  </> : <img className="SingleCard-img" src={getImageSource(card)} loading={"lazy"}
+                    onError={handleMissingImage} />
+              }
+            </div>
+
+
+            {collectionMode && (
               <>
-                <img className="SingleCard-possession-reverse" loading={"lazy"}
-                  src={getImageSource(card)} onError={handleMissingImage} />
-                <img className="SingleCard-possession-classic" loading={"lazy"}
-                  src={getImageSource(card)} onError={handleMissingImage} />
-              </> : <img className="SingleCard-img" src={getImageSource(card)} loading={"lazy"}
-                onError={handleMissingImage} />
-          }
-        </div>
+                <div className="SingleCard-collectionBackground" />
+                <SingleCardOverlayComponent firstType={firstType} card={card} index={index} />
+              </>
+            )}
+          </>
+        }
 
-        {collectionMode && <SingleCardOverlayComponent firstType={firstType} card={card} index={index} />}
+
       </div>
     </>
   )

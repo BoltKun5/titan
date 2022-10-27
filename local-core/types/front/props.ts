@@ -1,3 +1,4 @@
+import { canBeReverse } from './../../../api/src/utils/global.utils';
 import { ICardSerie, ICard } from "../../../local-core"
 
 export type SideBarComponentPropsType = {
@@ -15,7 +16,7 @@ export type SwitchInputComponentPropsType = {
 export type SingleCardComponentPropsType = {
   card: ICard,
   index: number,
-  firstType: 'classic' | 'reverse'
+  firstType: 'classic' | 'reverse',
 }
 
 export type SingleCardOverlayComponentPropsType = {
@@ -27,7 +28,8 @@ export type SingleCardOverlayComponentPropsType = {
 export type CardCounterComponentPropsType = {
   card: ICard,
   label: string,
-  type: 'classic' | 'reverse'
+  type: 'classic' | 'reverse',
+  canBeReverse: boolean
 }
 
 export type SingleCardOverlayContentComponentPropsType = {
@@ -44,4 +46,20 @@ export type StatCardComponentType = {
     possibleQuantity: number,
     label: string
   }
+}
+
+export type TextInputComponentType = {
+  value?: string,
+  modifyValue?: Function,
+  label?: string,
+  id?: string,
+  type?: string,
+  onKeyUpCallback?: any,
+  onKeyDownCallback?: any
+}
+
+export type ButtonComponentPropsType = {
+  label: string,
+  type?: "button" | "submit" | "reset" | undefined,
+  size?: 200 | 300
 }

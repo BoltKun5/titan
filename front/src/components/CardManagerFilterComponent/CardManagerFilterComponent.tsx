@@ -1,35 +1,39 @@
-import React, {useContext} from "react";
-import {Button, FormControl, InputLabel, MenuItem, Select, TextField, Tooltip} from "@mui/material";
+import React, { KeyboardEventHandler, useContext, useEffect, useState } from "react";
+import { ClickAwayListener, Tooltip } from "@mui/material";
 import CardManagerContext from "../../hook/contexts/CardManagerContext";
-import {CategorizedAutocompleteChecklist} from "../CategorizedAutocompleteChecklist/CategorizedAutocompleteChecklist";
-import {SwitchInputComponent} from "../SwitchInputComponent/SwitchInputComponent"
-import './CardManagerFilterComponent.scss'
-import {frontRarity} from "../../pages/CardManager/CardManagerUtils";
+import { CategorizedAutocompleteChecklist } from "../CategorizedAutocompleteChecklist/CategorizedAutocompleteChecklist";
+import './style.scss'
+import { frontRarity } from "../../pages/CardManager/CardManagerUtils";
+import { CardSetFilterInterface } from "../../../../local-core";
+import FilterAltIcon from '@mui/icons-material/FilterAlt';
+import { TextInputComponent } from "../UI/TextInputComponent/TextInputComponent";
+import { ButtonComponent } from "../UI/Button/ButtonComponent";
+import { CardManagerOptions } from "../CardManagerOptionsComponent/CardManagerOptionsComponent";
+import { ArrowBackIosNew, ArrowForwardIos, Settings, ViewCarousel } from "@mui/icons-material";
 
 export const CardManagerFilterComponent: React.FC<{}> = () => {
   const {
-    cardSetFilter,
     setCardSetFilter,
-    collectionMode,
-    setCollectionMode,
-    separateReverse,
-    setSeparateReverse,
-    showUnowned,
-    setShowUnowned,
     order,
     setOrder,
     setNameFilter,
     resetAllFilters,
-    setMassInput,
-    massInput,
     rarityFilter,
+    cardSetFilter,
+    nameFilter,
     setRarityFilter,
+    pagination,
+    setPage,
+    page
   } = useContext(CardManagerContext);
+
+  const [isFilterPanelOpen, setIsFilterPanelOpen] = useState(false)
+  const [isOptionOpen, setIsOptionOpen] = useState(false)
 
   const updateSetFilters = (event: any) => {
     if (event.target.classList.contains('CategorizedAutocompleteChecklist-dropdownElement')) {
       const id = event.target.getAttribute("id");
-      const newSetFilterList = cardSetFilter.map((setFilter) => {
+      const newSetFilterList = cardSetFilter.map((setFilter: CardSetFilterInterface) => {
         if (setFilter.id === id) {
           setFilter.status = !setFilter.status;
         }
@@ -38,19 +42,19 @@ export const CardManagerFilterComponent: React.FC<{}> = () => {
       setCardSetFilter(newSetFilterList);
     } else if (event.target.classList.contains('CategorizedAutocompleteChecklist-title')) {
       const name = event.target.innerText;
-      const areAllActivated = cardSetFilter.filter((setFilter) => !setFilter.status && setFilter.category === name).length === 0;
-      setCardSetFilter(cardSetFilter.map((setFilter) => {
-          if (setFilter.category === name) {
-            setFilter.status = !areAllActivated;
-          }
-          return setFilter
-        },
+      const areAllActivated = cardSetFilter.filter((setFilter: CardSetFilterInterface) => !setFilter.status && setFilter.category === name).length === 0;
+      setCardSetFilter(cardSetFilter.map((setFilter: CardSetFilterInterface) => {
+        if (setFilter.category === name) {
+          setFilter.status = !areAllActivated;
+        }
+        return setFilter
+      },
       ));
     }
   }
 
   const updateRarityFilter = (rarity: string) => {
-    setRarityFilter(rarityFilter.map((filter) => {
+    setRarityFilter(rarityFilter.map((filter: any) => {
       if (filter.rarity === rarity)
         filter.value = !filter.value
       return filter
@@ -66,50 +70,176 @@ export const CardManagerFilterComponent: React.FC<{}> = () => {
     }, 300);
   }
 
-  return (
-    <div className="CardManagerFilter">
-      <div className="CardManagerFilter-top">
-        <div className="CardManagerFilter-textInputContainer">
-          <label>Filtrer par nom</label>
-          <input type="text" className="CardManagerFilter-textInput" id="nameFilter"
-                 onKeyUp={startCountdown} onKeyDown={() => clearTimeout(nameInputTimer)}/>
-        </div>
-        <div className="CardManagerFilter-selectInput">
-          <label>Trier par</label>
-          <select onChange={(event) => setOrder(event.target.value)} value={order}>
-            <option defaultChecked={true} value={"default"}>Set</option>
-            <option value={"name"}>Nom</option>
-            <option value={"type"}>Type</option>
-          </select>
-        </div>
+  const getSelectedElementBgStyle = () => {
+    let offset;
+    if (order === "default") offset = 5;
+    if (order === "name") offset = 135;
+    if (order === "type") offset = 265;
+    return { transform: `translateX(${offset}px)` }
+  }
 
-        <CategorizedAutocompleteChecklist items={cardSetFilter} placeholder={"Filtrer par sets"}
-                                          onFilterChange={updateSetFilters}/>
-        <button className="CardManagerFilter-button" onClick={resetAllFilters}>Réinitialiser les
-          filtres
-        </button>
-      </div>
-      <div className="CardManagerFilter-bottom">
-        <div className="CardManagerFilter-rarityFilter">
-          <label>Filtrer par rareté</label>
-          <div className="CardManagerFilter-rarityList">
+  const getActiveFiltersList = () => {
+    let allFilters = [];
+    if (nameFilter && nameFilter !== "") {
+      allFilters.push({
+        text: "Nom : " + nameFilter,
+        color: "$primary"
+      });
+    }
+    if (cardSetFilter) {
+      cardSetFilter.map((cardSet) => {
+        if (cardSet.status) {
+          allFilters.push({
+            text: "Set : " + cardSet.name,
+            color: "$primary"
+          })
+        }
+      })
+    }
+    if (rarityFilter) {
+      rarityFilter.map((rarityFilterElement) => {
+        if (rarityFilterElement.value) {
+          allFilters.push({
+            text: "Rareté : " + frontRarity[rarityFilterElement.rarity],
+            color: "$primary"
+          })
+        }
+      })
+    }
+    return allFilters
+  }
+
+  useEffect(() => {
+    setPageNewValue(page)
+  }, [page])
+
+  const [pageNewValue, setPageNewValue] = useState<any>(0)
+
+  const setPageValue = (element: EventTarget & HTMLInputElement) => {
+    const regex = new RegExp('^[0-9]+$');
+    if (!regex.test(element.value)) {
+      setPageNewValue(page)
+      return
+    }
+    const newValue = Number(element.value)
+    if (newValue < 1 || newValue > (pagination?.totalPages ?? 0)) {
+      setPageNewValue(page)
+      return
+    }
+    setPage(Number(element.value))
+  }
+
+  const changeHandler = (element: EventTarget & HTMLInputElement) => {
+    setPageNewValue(element.value);
+  }
+
+  const nextPage = () => {
+    if (!pagination) return
+    if ((page + 1) > pagination.totalPages)
+      return
+    setPage(page + 1)
+  }
+
+  const prevPage = () => {
+    if (page === 1)
+      return
+    setPage(page - 1)
+  }
+
+  // @ts-ignore
+  const handleKeyDown: KeyboardEventHandler<HTMLInputElement> = (event: KeyboardEvent) => {
+    if (event.key === 'Enter')
+      // @ts-ignore
+      event.currentTarget?.blur()
+  }
+
+  return (
+    <>
+      {isFilterPanelOpen && <div className="CardManagerFilter-blurFilter" onClick={() => setIsFilterPanelOpen(false)} />}
+      <div className={"CardManagerFilter" + (isFilterPanelOpen ? " blured" : "")} style={{ transform: (isFilterPanelOpen ? "" : "translateY(calc(-100% + 51px))") }}>
+        <div className="CardManagerFilter-top">
+          <TextInputComponent label={"Nom"} id={"nameFilter"} onKeyUpCallback={startCountdown} onKeyDownCallback={() => clearTimeout(nameInputTimer)} />
+
+          <div className="CardManagerFilter-selectInput">
+            <label>Trier par</label>
+            <div className="CardManagerFilter-selectInputOptions-container">
+              <div className="CardManagerFilter-selectInputOptions">
+                <span onClick={() => setOrder("default")} className={order === "default" ? "CardManagerFilter-selectInputOptionSelected" : ""}>Set</span>
+                <span onClick={() => setOrder("name")} className={order === "name" ? "CardManagerFilter-selectInputOptionSelected" : ""}>Nom</span>
+                <span onClick={() => setOrder("type")} className={order === "type" ? "CardManagerFilter-selectInputOptionSelected" : ""}>Type</span>
+                <div className="CardManagerFilter-selectedElementFilter" style={getSelectedElementBgStyle()} />
+              </div>
+            </div>
+          </div>
+
+          <CategorizedAutocompleteChecklist items={cardSetFilter} placeholder={"Filtrer par sets"}
+            onFilterChange={updateSetFilters} />
+
+          <div className="CardManagerFilter-rarityFilter">
+            <label>Filtrer par rareté</label>
+            <div className="CardManagerFilter-rarityList">
+              {
+                rarityFilter.map((filter: any) =>
+                  // @ts-ignore
+                  <Tooltip title={frontRarity[filter.rarity]} key={"rarity" + filter.rarity}>
+                    <div className={"CardManagerFilter-rarityContainer " + (filter.value ? 'selected' : '')}
+                      onClick={() => {
+                        updateRarityFilter(filter.rarity)
+                      }}>
+                      <img className="CardManagerFilter-rarityImg" src={"./src/assets/icons/" + filter.rarity + ".png"} />
+                    </div>
+                  </Tooltip>,
+                )
+              }
+            </div>
+          </div>
+          <div className="CardManagerFilter-resetContainer" onClick={resetAllFilters}>
+            <ButtonComponent label={"Réinitialiser"} />
+          </div>
+        </div>
+        <div className="CardManagerFilter-activeFilters">
+          {pagination &&
+            <div className="CardManagerFilter-pagination">
+              <div className={"CardManagerFilter-paginationButton" + ((page === 1) ? 'Disabled' : '')} onClick={() => prevPage()}>
+                <ArrowBackIosNew />
+              </div>
+              <div className="CardManagerFilter-paginationInputContainer">
+                <input className="CardManagerFilter-paginationInput" onBlur={(ev) => setPageValue(ev.currentTarget)} onClick={(ev) => ev.currentTarget.select()}
+                  value={pageNewValue} type="number" onChange={(ev) => changeHandler(ev.currentTarget)} min={1} onKeyDown={handleKeyDown} />
+                <span> / {pagination.totalPages}</span>
+              </div>
+              <div className={"CardManagerFilter-paginationButton" + ((page + 1 > pagination.totalPages) ? 'Disabled' : '')} onClick={() => nextPage()}>
+                <ArrowForwardIos />
+              </div>
+            </div>
+          }
+          <div className="CardManagerFilter-activeFiltersList">
+            <span>Filtres actifs</span>
             {
-              rarityFilter.map((filter) =>
-                // @ts-ignore
-                <Tooltip title={frontRarity[filter.rarity]} key={"rarity" + filter.rarity}>
-                  <div className={"CardManagerFilter-rarityContainer " + (filter.value ? 'selected' : '')}
-                       onClick={() => {
-                         updateRarityFilter(filter.rarity)
-                       }}>
-                    <img className="CardManagerFilter-rarityImg" src={"./src/assets/icons/" + filter.rarity + ".png"}/>
-                  </div>
-                </Tooltip>,
-              )
+              getActiveFiltersList().map((activeFilter) => <div className="CardManagerFilter-activeFilter" key={activeFilter.text}>{activeFilter.text}</div>)
+            }
+          </div>
+          <div className="CardManagerFilter-openFilters" onClick={() => setIsFilterPanelOpen(!isFilterPanelOpen)}>
+            {
+              <FilterAltIcon />
+            }
+          </div>
+          <div className="CardManagerFilter-options">
+            <div className="CardManagerFilter-openOptions" onClick={() => setIsOptionOpen(!isOptionOpen)}>
+              <Settings />
+            </div>
+            {
+              isOptionOpen &&
+              <ClickAwayListener onClickAway={() => setIsOptionOpen(false)}>
+                <div className="CardManagerFilter-optionsModale">
+                  <CardManagerOptions />
+                </div>
+              </ClickAwayListener>
             }
           </div>
         </div>
       </div>
-    </div>
+    </>
   )
 
 }

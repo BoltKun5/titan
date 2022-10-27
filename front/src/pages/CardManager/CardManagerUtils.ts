@@ -1,3 +1,4 @@
+import { CardRarityEnum } from './../../../../local-core/enums/card-rarity.enum';
 import { ICard } from "../../../../local-core/types/models/card.dto"
 
 export const initialRarityFilter = [
@@ -43,18 +44,11 @@ export const frontRarity: frontRarityType = {
   "Secret Rare": "Secrète",
   "Ultra Rare": "Ultra Rare",
   "None": "Promotionnelle",
-  "Amazing": "Incroyable",
+  "Amazing": "Magnifique",
 }
 
 type frontRarityType = {
-  Common: string,
-  Uncommon: string,
-  Rare: string,
-  Holo: string,
-  "Secret Rare": string,
-  "Ultra Rare": string,
-  None: string,
-  Amazing: string
+  [index: string]: string,
 }
 
 export const initialCardList = [

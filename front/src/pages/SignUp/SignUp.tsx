@@ -1,9 +1,11 @@
 import React, { useState } from "react";
 import Joi from "joi";
 import { Link, useNavigate } from "react-router-dom";
-import './SignUp.scss'
+import './style.scss'
 import { ISigninAuthResponse, ISignupAuthBody } from "../../../../local-core";
 import { api } from "../../axios";
+import { TextInputComponent } from "../../components/UI/TextInputComponent/TextInputComponent";
+import { ButtonComponent } from "../../components/UI/Button/ButtonComponent";
 
 export const SignUp: React.FC = () => {
   const [errorMessage, setErrorMessage] = useState("");
@@ -46,28 +48,16 @@ export const SignUp: React.FC = () => {
   };
 
   return <div className="SignUp-Page">
-    <form onSubmit={handleSubmit} className="SignUp-Form">
+    <form onSubmit={handleSubmit} className="SignUp-Form coloredCorner">
       <h2>Inscription</h2>
-      <div className="SignUp-textInputContainer">
-        <label>Nom de compte</label>
-        <input className="SignUp-textInput"
-          value={username}
-          onChange={e =>
-            setUsername(e.target.value)
-          } />
+      <div className="SignUp-inputs">
+        <TextInputComponent value={username} modifyValue={setUsername} label={"Nom de compte"} id={"username"} />
+        <TextInputComponent value={shownName} modifyValue={setShownName} label={"Pseudo affiché"} id={"shownname"} />
+        <TextInputComponent value={password} modifyValue={setPassword} type="password" label={"Mot de passe"} id={"password"} />
+        <ButtonComponent label={"S'inscrire"} />
       </div>
-      <div className="SignUp-textInputContainer">
-        <label>Pseudo affiché</label>
-        <input className="SignUp-textInput" value={shownName} onChange={e => setShownName(e.target.value)} />
-      </div>
-      <div className="SignUp-textInputContainer">
-        <label>Mot de passe</label>
-        <input className="SignUp-textInput" type={"password"} value={password} onChange={e => setPassword(e.target.value)} />
-      </div>
-
-      {(errorMessage !== "") && <div className="SignUp-errorMessage">{errorMessage}</div>}
+      <div className="Login-errorMessage" style={{ ...(errorMessage ? {} : { border: "none" }) }}>{errorMessage}</div>
       <span className="SignUp-toSignIn">Déjà inscrit ? <Link to="/">Connectez-vous</Link></span>
-      <button className="button" type="submit">S'inscrire</button>
     </form>
   </div>
 };

@@ -1,0 +1,33 @@
+@import "../../scss/variables.scss";
+
+.SingleCardOverlay {
+  width: 235px;
+  z-index: 101;
+  position: relative;
+  margin-top: 10px;
+  clip-path: clipPath(30px);
+  background-color: $primary-border;
+
+  &-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding-bottom: 5px;
+    margin-bottom: 6px;
+    z-index: 2;
+    position: relative;
+  }
+
+  &::before {
+    content: "";
+    z-index: 1;
+    position: absolute;
+    background-color: $primary-bg;
+    height: calc(100% - 2px);
+    width: calc(100% - 2px);
+    clip-path: clipPath(30px);
+    top: 1px;
+    left: 1px;
+  }
+}

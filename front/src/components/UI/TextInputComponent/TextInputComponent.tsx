@@ -1,0 +1,15 @@
+import { on } from "events";
+import React from "react";
+import { TextInputComponentType } from "../../../../../local-core";
+import './style.scss'
+
+export const TextInputComponent: React.FC<TextInputComponentType> = (
+  { value = "", modifyValue = () => { }, label = "", id = "", type = 'text', onKeyUpCallback = () => { }, onKeyDownCallback = () => { } }) => {
+
+  return (
+    <div className="TextInputComponent">
+      <label htmlFor={id}>{label}</label>
+      <input type={type} onChange={e => modifyValue(e.target.value)} id={id} onKeyDown={onKeyDownCallback} onKeyUp={onKeyUpCallback} />
+    </div>
+  )
+}

@@ -4,9 +4,9 @@ import { CardType } from "../../database/models/CardType";
 import { UserCardPossession } from "../../database/models/UserCardPossession";
 import { Op, Options } from "sequelize";
 
-export const getFilterConfig = (req, res, type, page = 0): FindOptions => {
+export const getFilterConfig = (req, res, type): FindOptions => {
   let mainOrder;
-  if (req.query?.order && page !== -1) {
+  if (req.query?.order && req.query?.page !== -1) {
     switch (req.query.order) {
       case "default":
         mainOrder = [[{ model: CardSet, as: "cardSet" }, 'releaseDate', 'desc'], ['localId', 'asc']];
@@ -32,7 +32,7 @@ export const getFilterConfig = (req, res, type, page = 0): FindOptions => {
     },
     ...(mainOrder ? { order: mainOrder } : {}),
     subQuery: false,
-    ...(page !== -1 ? { attributes: { exclude: ["cardSet"] } } : {}),
+    ...(req.query?.page !== -1 ? { attributes: { exclude: ["cardSet"] } } : {}),
     include: [
       {
         model: UserCardPossession,
@@ -73,11 +73,12 @@ export const getFilterConfig = (req, res, type, page = 0): FindOptions => {
         required: true,
         duplicating: false,
         attributes: {
-          exclude: ["cardSerieId", "isPlayableInExpanded", "isPlayableInStandard", "id", "releaseDate", "tcgOnline"],
+          exclude: ["isPlayableInExpanded", "isPlayableInStandard", "id", "releaseDate", "tcgOnline"],
         },
         as: "cardSet",
       },
     ],
-    ...(page === 0 ? { limit: 300 } : (page === -1 ? {} : { limit: 100 })),
+    ...(req.query?.page === 0 ? { limit: 200 } : (req.query?.page === -1 ? {} : { limit: 200 })),
+    ...(req.query?.page === 0 ? {} : (req.query?.page === -1 ? {} : { offset: (req.query?.page - 1) * 200 }))
   }
 }

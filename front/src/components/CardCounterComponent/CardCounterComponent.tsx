@@ -1,12 +1,11 @@
 import React, { useContext, useEffect, useState } from "react";
-import { ICard } from "../../../../local-core";
-import { CardCounterComponentPropsType } from "../../types";
+import { CardCounterComponentPropsType, ICard } from "../../../../local-core";
 import { loggedApi } from "../../axios";
 import CardManagerContext from "../../hook/contexts/CardManagerContext";
-import './CardCounterComponent.scss';
+import './style.scss';
 
 export const CardCounterComponent: React.FC<CardCounterComponentPropsType> = ({
-  card, label, type,
+  card, label, type, canBeReverse = true
 }) => {
   const { setCards, cards } = useContext(CardManagerContext);
   const [isDisabled, setIsDisabled] = useState<boolean>(false);
@@ -91,11 +90,11 @@ export const CardCounterComponent: React.FC<CardCounterComponentPropsType> = ({
     let reverseQuantity = card?.userCardPossessions[0]?.reverseQuantity ?? 0;
     const regex = new RegExp('^[0-9]+$');
     if (!regex.test(element.value)) {
-      element.style.backgroundColor = 'red';
+      element.style.color = 'rgb(122, 28, 28)';
       setIsDisabled(false)
       return
     }
-    element.style.backgroundColor = 'white';
+    element.style.color = 'rgb(201, 201, 201)';
     let oldValue;
 
     if (cardType === 'classic') {
@@ -121,7 +120,6 @@ export const CardCounterComponent: React.FC<CardCounterComponentPropsType> = ({
         classicQuantity: classicQuantity,
         reverseQuantity: reverseQuantity,
       });
-      setIsDisabled(false)
       triggerChangeNotification(Number(oldValue), Number(cardType === 'classic' ? classicQuantity : reverseQuantity))
       setCards(cards.map((localCard) => {
         if (card.id === localCard.id) {
@@ -131,6 +129,8 @@ export const CardCounterComponent: React.FC<CardCounterComponentPropsType> = ({
       }));
     } catch (e) {
       console.log(e)
+    } finally {
+      setIsDisabled(false)
     }
   }
 
@@ -146,21 +146,30 @@ export const CardCounterComponent: React.FC<CardCounterComponentPropsType> = ({
   }
 
   return (
-    <div className="CardCounter">
-      <div className="CardCounter-name">{label}</div>
-      <div className="CardCounter-buttons">
-        <button className="CardCounter-minus" disabled={isDisabled}
-          onClick={() => modifyQuantity(card, type, 'minus')}>-
-        </button>
-        <input className="CardCounter-input" disabled={isDisabled}
-          onBlur={(ev) => setQuantity(card, type, ev.currentTarget)} onClick={(ev) => ev.currentTarget.select()}
-          value={value} type="number" onChange={(ev) => changeHandler(ev.currentTarget)} />
-        <button className="CardCounter-plus" disabled={isDisabled}
-          onClick={() => modifyQuantity(card, type, 'plus')}>+
-        </button>
-        {((changeNotificationValue !== 0) && changeNotificationValue) &&
-          <div className={"CardCounter-diffNotif " + ((changeNotificationValue > 0) ? 'isPositive' : 'isNegative')}>{changeNotificationValue > 0 ? '+' : ''}{changeNotificationValue}</div>}
+    canBeReverse && type === "reverse" || type !== "reverse" ? (
+      <div className={"CardCounter"}>
+        <div className="CardCounter-name">{label}</div>
+        <div className="CardCounter-buttons">
+          <button className="CardCounter-minus" disabled={isDisabled}
+            onClick={() => modifyQuantity(card, type, 'minus')}>-
+          </button>
+          <div className="CardCounter-inputContainer">
+            <input className="CardCounter-input" disabled={isDisabled}
+              onBlur={(ev) => setQuantity(card, type, ev.currentTarget)} onClick={(ev) => ev.currentTarget.select()}
+              value={value} type="number" onChange={(ev) => changeHandler(ev.currentTarget)} />
+          </div>
+          <button className="CardCounter-plus" disabled={isDisabled}
+            onClick={() => modifyQuantity(card, type, 'plus')}>+
+          </button>
+          {((changeNotificationValue !== 0) && changeNotificationValue) &&
+            <div className={"CardCounter-diffNotif " + ((changeNotificationValue > 0) ? 'isPositive' : 'isNegative')}>{changeNotificationValue > 0 ? '+' : ''}{changeNotificationValue}</div>}
+        </div>
       </div>
-    </div>
+    ) :
+      <div className="CardCounter-unusable">
+        <div className="CardCounter-name">{label}</div>
+        <div className="CardCounter-unusableMessage">N'existe pas en reverse</div>
+      </div>
+
   )
 }

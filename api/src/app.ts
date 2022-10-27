@@ -12,7 +12,7 @@ export async function startServer(): Promise<void> {
   AppConfig.sequelize = await require('./loaders').default(app);
 
   const httpsServer = https.createServer({
-    key: fs.readFileSync("key.pem"),
+    key: fs.readFileSync("privkey.pem"),
     cert: fs.readFileSync("cert.pem")
   }, app)
 

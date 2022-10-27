@@ -1,5 +1,5 @@
 import React from "react";
-import { CardManagerContextType } from "../../../../local-core";
+import { CardManagerContextType } from '../../front-types/context';
 
 export default React.createContext<CardManagerContextType>({
   cardSetFilter: [],
@@ -37,4 +37,12 @@ export default React.createContext<CardManagerContextType>({
   openingModule: false,
   setOpeningModule: () => {
   },
+  series: [],
+  showOptionCards: false,
+  setShowOptionCards: () => {
+  },
+  page: 1,
+  setPage: () => { },
+  pagination: null,
+  setPagination: () => { }
 })

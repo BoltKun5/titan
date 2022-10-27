@@ -1,15 +1,18 @@
-import React from "react";
-import './CardModal.scss';
+import React, { useContext } from "react";
+import './style.scss';
 import { ClickAwayListener } from "@mui/material";
 import { CardRarityEnum, ICard } from "./../../../../local-core";
+import { frontRarity, getImageSource } from "../../pages/CardManager/CardManagerUtils";
+import CardManagerContext from "../../hook/contexts/CardManagerContext";
 
 export const CardModal: React.FC<{ card: ICard, closeModal: () => void }> = ({ card, closeModal }) => {
+  const { series } = useContext(CardManagerContext);
   return (
     <div className="CardModal">
       <ClickAwayListener onClickAway={() => closeModal()}>
-        <div className="CardModal-modale">
+        <div className="CardModal-modale coloredCorner">
           <div className="CardModal-image">
-            <img src={"src/assets/cards/" + card.cardSet.code + "/" + Number(card.localId) + ".jpg"} />
+            <img src={getImageSource(card)} />
           </div>
           <div className="CardModal-informations">
             <div className="CardModal-name">
@@ -20,8 +23,10 @@ export const CardModal: React.FC<{ card: ICard, closeModal: () => void }> = ({ c
               </div>
             </div>
             <div className="CardModal-setInfo">
+              <div><b>Série : </b>{series.find((serie) => serie.id === card.cardSet.cardSerieId)?.name}</div>
               <div><b>Set : </b>{card.cardSet.name}</div>
               <div><b>Numéro de carte : </b>{card.localId}</div>
+              <div><b>Rareté : </b>{frontRarity[CardRarityEnum[card.rarity]]}</div>
               <div><b>Id : </b>{card.id}</div>
 
             </div>

@@ -1,0 +1,309 @@
+@import "../../scss/variables.scss";
+
+.CardManagerFilter {
+  width: 100%;
+  background: #161827;
+  border-bottom: rgb(41, 41, 41) solid 1px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  flex: 0 1 auto;
+  padding: 15px 20px 0;
+  position: absolute;
+  z-index: 200;
+  top: 76px;
+  transition: 0.5s;
+
+  &-top {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    width: 100%;
+
+    &>* {
+      margin-left: 10px;
+      margin-right: 10px;
+    }
+  }
+
+  &-rarityFilter {
+    position: relative;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    border: 1px solid $primary;
+    height: 45px;
+    margin-bottom: 10px;
+    margin-top: 20px;
+
+    & label {
+      z-index: 1;
+      position: absolute;
+      left: -10px;
+      top: -25px;
+      color: $secondary;
+      background: $primary-radiant;
+      padding: 10px;
+      clip-path: clipPath(10px);
+      font-size: 15px;
+    }
+  }
+
+  &-rarityList {
+    display: flex;
+    width: auto;
+    justify-content: space-evenly;
+  }
+
+  &-rarityImg {
+    width: 100%;
+    height: 100%;
+  }
+
+  &-rarityContainer {
+    width: 28px;
+    margin: 5px;
+    height: 28px;
+    padding: 5px;
+    background: $white;
+    border-radius: 10000px;
+    cursor: pointer;
+
+    &.selected {
+      box-shadow: rgb(59 153 241) 0 0 15px inset;
+    }
+  }
+
+  &-openFilters,
+  &-openOptions {
+    cursor: pointer;
+    margin: auto 15px auto auto;
+    display: flex;
+    padding-left: 10px;
+
+    & svg {
+      color: rgb(59, 153, 241);
+      width: 50px;
+      height: 50px;
+    }
+
+    &:hover svg {
+      filter: brightness(1.1);
+    }
+  }
+
+  &-options {
+    position: relative;
+  }
+
+  &-optionsModale {
+    position: absolute;
+    right: 15px;
+    top: calc(100% + 40px)
+  }
+
+  &-activeFilters {
+    width: 100%;
+    display: flex;
+    border-top: rgb(41, 41, 41) 1px solid;
+
+    & span {
+      margin: 10px;
+      white-space: nowrap;
+      font-size: 20px;
+    }
+
+    &List {
+      display: flex;
+      color: $white;
+      overflow: hidden;
+      position: relative;
+      width: calc(100% - 60px);
+
+      &::after {
+        content: "";
+        position: absolute;
+        top: 0;
+        right: 0;
+        width: 95%;
+        height: 100%;
+        -webkit-box-shadow: inset -27px 0px 10px 0 #161827;
+        box-shadow: inset -27px 0px 10px 0 #161827;
+      }
+    }
+  }
+
+  &-selectInput {
+    position: relative;
+    height: fit-content;
+    margin: auto 0;
+
+    &OptionSelected {
+      color: black !important;
+      transition: 0.5s;
+
+      &:hover {
+        background-color: transparent !important;
+      }
+    }
+
+    &Options {
+      padding: 7px;
+      display: flex;
+      clip-path: clipPath(10px);
+      background-color: #161827;
+
+      &-container {
+        padding: 1px;
+        background-color: $primary;
+        clip-path: clipPath(10px);
+      }
+
+      & span {
+        width: 100px;
+        display: flex;
+        justify-content: center;
+        padding: 10px;
+        cursor: pointer;
+        margin: 0 5px;
+        clip-path: clipPath(10px);
+        color: $white;
+        z-index: 1;
+
+        &:hover {
+          background-color: rgba(255, 255, 255, 0.4);
+        }
+      }
+    }
+
+    & label {
+      z-index: 1;
+      position: absolute;
+      left: -5px;
+      top: -25px;
+      color: $secondary;
+      background: $primary-radiant;
+      padding: 10px;
+      clip-path: clipPath(10px);
+      font-size: 15px;
+    }
+  }
+
+  &-selectedElementFilter {
+    transition: 0.5s;
+    transform: translateX(5px);
+    z-index: 0;
+    width: 120px;
+    position: absolute;
+    height: 41px;
+    clip-path: clipPath(10px);
+    background-color: $white;
+  }
+
+  &-resetContainer {
+    margin: auto 0;
+  }
+
+  &.blured~.CardManager {
+    filter: blur(3px);
+  }
+
+  &-blurFilter {
+    width: 100vw;
+    height: 100vh;
+    position: absolute;
+    top: 0px;
+    left: 0;
+    z-index: 1;
+    background-color: #e7e7e73d;
+    transition: 0.5s;
+  }
+
+  &-activeFilter {
+    background: linear-gradient(to right, rgb(65, 136, 168), rgb(74, 74, 139));
+    clip-path: clipPath(10px);
+    margin: auto 5px;
+    padding: 7px 10px;
+    white-space: nowrap;
+  }
+
+  &-pagination {
+    border-right: 1px $white solid;
+    margin: 5px 0;
+    padding-right: 10px;
+    display: flex;
+    color: $white;
+
+    &InputContainer {
+      display: flex;
+      background-color: $primary-bg;
+      box-sizing: border-box;
+      border: 1px $primary solid;
+      margin: 3px 5px;
+      justify-content: center;
+      align-items: center;
+
+      text-align: center;
+      font-weight: 400;
+      font-size: 20px;
+
+      & span {
+        height: 100%;
+        align-items: flex-end;
+        text-align: end;
+        display: flex;
+        justify-content: end;
+        font-size: 14px;
+        margin: 0 2px 4px 0;
+      }
+    }
+
+    & input {
+
+      /* Chrome, Safari, Edge, Opera */
+      &::-webkit-outer-spin-button,
+      &::-webkit-inner-spin-button {
+        -webkit-appearance: none;
+      }
+
+      /* Firefox */
+      -moz-appearance: textfield;
+
+      width: 35px;
+      background-color: $primary-bg;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+
+      text-align: center;
+      font-weight: 400;
+      font-size: 20px;
+      color: $white;
+
+      border: none;
+      outline: none;
+    }
+
+    &Button,
+    &ButtonDisabled {
+      clip-path: clipPath(5px);
+      width: 34px;
+      background-color: $primary;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin: 3px;
+      cursor: pointer;
+    }
+
+    &ButtonDisabled {
+      background-color: $white;
+      pointer-events: none;
+    }
+
+    &:hover {}
+
+    & svg {
+      color: $primary-bg;
+    }
+  }
+}

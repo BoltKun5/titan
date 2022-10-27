@@ -1,0 +1,16 @@
+$primary: rgb(59, 153, 241);
+$secondary: rgb(16, 52, 66);
+$white: rgb(201, 201, 201);
+$primary-bg: #161827;
+$primary-border: rgb(41, 41, 41);
+
+@function clipPath($offset) {
+  @return polygon($offset 0%,
+    100% 0%,
+    100% calc(100% - $offset),
+    calc(100% - $offset) 100%,
+    0% 100%,
+    0% $offset);
+}
+
+$primary-radiant: linear-gradient(to left bottom, $primary, rgb(41, 138, 168))

@@ -1,3 +1,5 @@
+import { PaginationData } from './../../../local-core/types/pagination.type';
+import { ICardSerie } from './../../../local-core/types/models/card-serie.dto';
 import { UserRoleEnum } from '../../../local-core/enums/user-role.enum';
 import { ICard } from '../../../local-core/types/models/card.dto';
 import { CardSetFilterInterface } from "../../../local-core";
@@ -21,10 +23,17 @@ export type CardManagerContextType = {
   resetAllFilters: () => void,
   massInput: boolean,
   setMassInput: React.Dispatch<React.SetStateAction<boolean>>,
-  rarityFilter: any[],
+  rarityFilter: { rarity: string, value: boolean }[],
   setRarityFilter: React.Dispatch<React.SetStateAction<any[]>>,
   showStats: boolean,
   setShowStats: React.Dispatch<React.SetStateAction<boolean>>,
   openingModule: boolean,
-  setOpeningModule: React.Dispatch<React.SetStateAction<boolean>>
+  setOpeningModule: React.Dispatch<React.SetStateAction<boolean>>,
+  series: ICardSerie[],
+  showOptionCards: boolean,
+  setShowOptionCards: React.Dispatch<React.SetStateAction<boolean>>,
+  page: number,
+  setPage: React.Dispatch<React.SetStateAction<number>>,
+  pagination: PaginationData | null,
+  setPagination: React.Dispatch<React.SetStateAction<any>>,
 }

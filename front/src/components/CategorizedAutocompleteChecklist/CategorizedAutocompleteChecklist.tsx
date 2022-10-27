@@ -1,7 +1,10 @@
 import React, { useEffect, useState } from "react";
-import { ClickAwayListener, TextField } from "@mui/material";
-import './CategorizedAutocompleteChecklist.scss'
+import { ClickAwayListener, TextField, Tooltip } from "@mui/material";
+import './style.scss'
 import { CardSetFilterInterface } from "../../../../local-core";
+import { TextInputComponent } from "../UI/TextInputComponent/TextInputComponent";
+import ListIcon from '@mui/icons-material/List';
+import { SetListComponent } from "../SetListComponent/SetListComponent";
 
 type Props = {
   items: CardSetFilterInterface[],
@@ -12,6 +15,7 @@ type Props = {
 export const CategorizedAutocompleteChecklist: React.FC<Props> = ({ items, placeholder, onFilterChange }) => {
   const [searchTerm, setSearchTerm] = useState<string>("");
   const [isDropdownOpen, setIsDropdownOpen] = useState<boolean>(false);
+  const [isFastFilterOpen, setIsFastFilterOpen] = useState<boolean>(false);
   const [filteredItems, setFilteredItems] = useState<any[]>([]);
 
   useEffect(() => {
@@ -72,6 +76,9 @@ export const CategorizedAutocompleteChecklist: React.FC<Props> = ({ items, place
 
   const openDropdown = (event: any) => {
     if (!isDropdownOpen) {
+      if (isFastFilterOpen) {
+        setIsFastFilterOpen(false)
+      }
       setIsDropdownOpen(true);
     }
   }
@@ -91,39 +98,50 @@ export const CategorizedAutocompleteChecklist: React.FC<Props> = ({ items, place
     return "CategorizedAutocompleteChecklist-title"
   }
 
-  return <ClickAwayListener onClickAway={closeDropdown} mouseEvent={'onClick'}>
-    <div className="CategorizedAutocompleteChecklist">
-      <input
-        id={"CategorizedAutocompleteChecklist-textInput"}
-        className="CategorizedAutocompleteChecklist-textInput"
-        type="text"
-        onChange={(e) => setSearchTerm(e.target.value)}
-        value={searchTerm}
-        onClick={openDropdown}
-      />
-      <label htmlFor={'CategorizedAutocompleteChecklist-textInput'}
-        className={'CategorizedAutocompleteChecklist-textInput ' + (isDropdownOpen ? 'isOpened' : '')}>{placeholder}</label>
+  return <>
 
-      <div className={"CategorizedAutocompleteChecklist-dropdown " + (isDropdownOpen ? 'show' : '')}>
+    <ClickAwayListener onClickAway={closeDropdown} mouseEvent={'onClick'}>
+      <div className="CategorizedAutocompleteChecklist">
         {
-          filteredItems.map((item: CardSetFilterInterface, index: number) => {
-            if (item.title) {
-              return <div key={item.title + index.toString()}
-                className={getTitleClassList(item)}
-                onClick={(ev) => onFilterChange(ev)}>{item.title}</div>
-            } else {
-              return <div key={item.id + index.toString()}
-                onClick={(ev) => onFilterChange(ev)}>
-                <div id={item.id}
-                  className={"CategorizedAutocompleteChecklist-dropdownElement " + (item.status ? 'selected' : '')}>
-                  {item.name} ({item.code})
-                </div>
+          isFastFilterOpen && (
+            <ClickAwayListener onClickAway={() => setIsFastFilterOpen(false)} mouseEvent={'onClick'}>
+              <div>
+                <SetListComponent />
               </div>
-            }
-          })
+            </ClickAwayListener>
+          )
         }
+
+        <div className="CategorizedAutocompleteChecklist-searchBarContainer" onClick={openDropdown}>
+          <TextInputComponent value={searchTerm} modifyValue={setSearchTerm} label="Filtrer par set" />
+          <div className="CategorizedAutocompleteChecklist-fastFilterIcon">
+            <Tooltip title="Filtres rapides">
+              <ListIcon onClick={(event) => { setIsFastFilterOpen(!isFastFilterOpen); event.stopPropagation() }} />
+            </Tooltip>
+          </div>
+        </div>
+
+        <div className={"CategorizedAutocompleteChecklist-dropdown " + (isDropdownOpen ? 'show' : '')}>
+          {
+            filteredItems.map((item: CardSetFilterInterface, index: number) => {
+              if (item.title) {
+                return <div key={item.title + index.toString()}
+                  className={getTitleClassList(item)}
+                  onClick={(ev) => onFilterChange(ev)}>{item.title}</div>
+              } else {
+                return <div key={item.id + index.toString()}
+                  onClick={(ev) => onFilterChange(ev)}>
+                  <div id={item.id}
+                    className={"CategorizedAutocompleteChecklist-dropdownElement " + (item.status ? 'selected' : '')}>
+                    {item.name} ({item.code})
+                  </div>
+                </div>
+              }
+            })
+          }
+        </div>
       </div>
-    </div>
-  </ClickAwayListener>
+    </ClickAwayListener>
+  </>
 
 }
