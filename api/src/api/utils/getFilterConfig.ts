@@ -5,8 +5,9 @@ import { UserCardPossession } from "../../database/models/UserCardPossession";
 import { Op, Options } from "sequelize";
 
 export const getFilterConfig = (req, res, type): FindOptions => {
+  const page = Number(req.query?.page ?? 0)
   let mainOrder;
-  if (req.query?.order && req.query?.page !== -1) {
+  if (req.query?.order) {
     switch (req.query.order) {
       case "default":
         mainOrder = [[{ model: CardSet, as: "cardSet" }, 'releaseDate', 'desc'], ['localId', 'asc']];
@@ -32,7 +33,7 @@ export const getFilterConfig = (req, res, type): FindOptions => {
     },
     ...(mainOrder ? { order: mainOrder } : {}),
     subQuery: false,
-    ...(req.query?.page !== -1 ? { attributes: { exclude: ["cardSet"] } } : {}),
+    ...(page !== -1 ? { attributes: { exclude: ["cardSet"] } } : {}),
     include: [
       {
         model: UserCardPossession,
@@ -78,7 +79,7 @@ export const getFilterConfig = (req, res, type): FindOptions => {
         as: "cardSet",
       },
     ],
-    ...(req.query?.page === 0 ? { limit: 200 } : (req.query?.page === -1 ? {} : { limit: 200 })),
-    ...(req.query?.page === 0 ? {} : (req.query?.page === -1 ? {} : { offset: (req.query?.page - 1) * 200 }))
+    ...(page === 0 ? { limit: 200 } : (page === -1 ? {} : { limit: 200 })),
+    ...(page === 0 ? {} : (page === -1 ? {} : { offset: (page - 1) * 200 }))
   }
 }

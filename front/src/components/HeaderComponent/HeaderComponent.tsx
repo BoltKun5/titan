@@ -1,6 +1,6 @@
 import { ClickAwayListener } from "@mui/material";
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import './style.scss';
 
 export const HeaderComponent: React.FC<{}> = ({ }) => {
@@ -15,13 +15,27 @@ export const HeaderComponent: React.FC<{}> = ({ }) => {
     navigate('/')
   }
 
+  const location = useLocation();
+
+  const getButtonClassName = (path: string) => {
+    return "HeaderComponent-navButton" + (location.pathname === path ? " HeaderComponent-selectedButton" : "");
+  }
+
   return (
     <header className="HeaderComponent">
       <nav className="HeaderComponent-navButtons">
-        <div className="HeaderComponent-navButton HeaderComponent-mainButton">CARTES</div>
-        <div className="HeaderComponent-navButton">STATISTIQUES</div>
-        <div className="HeaderComponent-navButton">BOOSTER</div>
-        <div className="HeaderComponent-navButton">HISTORIQUE</div>
+        <Link to={'/cards'}>
+          <div className="HeaderComponent-navButton HeaderComponent-mainButton">CARTES</div>
+        </Link>
+        <Link to={'/stats'}>
+          <div className={getButtonClassName('/stats')}>STATISTIQUES</div>
+        </Link>
+        <Link to={'/opening'}>
+          <div className={getButtonClassName('/opening')}>BOOSTER</div>
+        </Link>
+        <Link to={'/historic'}>
+          <div className={getButtonClassName('/historic')}>HISTORIQUE</div>
+        </Link>
       </nav>
       <div className="HeaderComponent-misc">
         <div className="HeaderComponent-profile" onClick={() => setIsProfileDropdownOpen(true)}>

@@ -37,7 +37,6 @@ export default React.createContext<CardManagerContextType>({
   openingModule: false,
   setOpeningModule: () => {
   },
-  series: [],
   showOptionCards: false,
   setShowOptionCards: () => {
   },

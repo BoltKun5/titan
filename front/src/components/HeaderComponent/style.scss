@@ -9,6 +9,10 @@
   z-index: 1000;
   position: relative;
 
+  a {
+    text-decoration: none;
+  }
+
   &-navButtons {
     padding-top: 10px;
     display: flex;
@@ -31,7 +35,6 @@
         radial-gradient(circle at top right, rgba(var(--mc-r), var(--mc-g), var(--mc-b)) 0, rgba(var(--mc-r), var(--mc-g), var(--mc-b), 0) 7px);
       --w: 10px;
       --b: 1px;
-      padding: 15px 35px;
 
       position: relative;
       display: inline-flex;

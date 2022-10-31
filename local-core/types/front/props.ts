@@ -1,4 +1,3 @@
-import { canBeReverse } from './../../../api/src/utils/global.utils';
 import { ICardSerie, ICard } from "../../../local-core"
 
 export type SideBarComponentPropsType = {
@@ -61,5 +60,15 @@ export type TextInputComponentType = {
 export type ButtonComponentPropsType = {
   label: string,
   type?: "button" | "submit" | "reset" | undefined,
-  size?: 200 | 300
+  size?: number,
+  disabled?: boolean
+}
+
+export type SwipeCheckboxComponentType = {
+  label?: string,
+  disabled?: boolean,
+  callback: Function,
+  elements: { value: any, name: string }[],
+  value: any,
+  width: number
 }

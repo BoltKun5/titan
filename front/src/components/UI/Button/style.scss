@@ -8,13 +8,20 @@
     color: $white;
     background: $primary-radiant;
     padding: 15px 10px;
-    width: 200px;
+    width: 100%;
     clip-path: clipPath(15px);
     font-weight: bold;
     font-size: 20px;
     cursor: pointer;
     box-sizing: content-box;
     border: none;
+    z-index: 3;
+    position: relative;
+
+    &:disabled {
+      background: $white;
+      color: $primary-border;
+    }
   }
 
   &:hover::before {
@@ -26,9 +33,26 @@
     top: -5px;
     left: -5px;
     clip-path: clipPath(18px);
-    mask-composite: exclude;
-    -webkit-mask-composite: destination-out;
-    -webkit-mask: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" preserveAspectRatio="none"><polygon points="16 3, 199 3, 199 142, 184 198, 1 198, 1 56" fill="black"/></svg>') 0/100% 100%,
-      linear-gradient(white, white);
+    z-index: 1;
+  }
+
+  &:hover::after {
+    content: "";
+    width: calc(100% + 8px);
+    height: calc(100% + 8px);
+    background-color: $primary-bg;
+    position: absolute;
+    top: -4px;
+    left: -4px;
+    clip-path: clipPath(18px);
+    z-index: 2;
+  }
+
+  &.size300 {
+    & button {
+      width: 300px;
+    }
+
+    width: 300px;
   }
 }

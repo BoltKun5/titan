@@ -5,23 +5,16 @@ import './style.scss';
 import { SwitchInputComponent } from "../SwitchInputComponent/SwitchInputComponent";
 import { Link, useNavigate } from "react-router-dom";
 import { ICardSerie, ICardSet } from "../../../../local-core";
+import StoreContext from "../../hook/contexts/StoreContext";
 
 export const SetListComponent: React.FC = () => {
   const {
     cardSetFilter,
     setCardSetFilter,
     resetAllFilters,
-    collectionMode,
-    setCollectionMode,
-    separateReverse,
-    setSeparateReverse,
-    showUnowned,
-    setShowUnowned,
-    setMassInput,
-    setShowStats,
-    setOpeningModule,
-    series,
   } = useContext(CardManagerContext);
+
+  const { series } = useContext(StoreContext);
 
   const activateSetFilter = (setCode: string) => {
     resetAllFilters();

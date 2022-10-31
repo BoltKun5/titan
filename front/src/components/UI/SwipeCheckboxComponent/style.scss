@@ -1,0 +1,69 @@
+@import "../../../scss/variables.scss";
+
+.SwipeCheckboxComponent {
+  position: relative;
+  height: fit-content;
+  display: flex;
+
+  &-optionSelected {
+    color: black !important;
+    transition: 0.5s;
+
+    &:hover {
+      background-color: transparent !important;
+    }
+  }
+
+  &-container {
+    padding: 1px;
+    background-color: $primary;
+    clip-path: clipPath(10px);
+  }
+
+  &-elements {
+    padding: 7px;
+    display: flex;
+    clip-path: clipPath(10px);
+    background-color: #161827;
+
+
+
+    & span {
+      display: flex;
+      justify-content: center;
+      padding: 10px 0;
+      cursor: pointer;
+      margin: 0;
+      clip-path: clipPath(10px);
+      color: $white;
+      z-index: 1;
+
+      &:hover {
+        background-color: rgba(255, 255, 255, 0.4);
+      }
+    }
+  }
+
+  & label {
+    z-index: 1;
+    position: absolute;
+    left: -5px;
+    top: -20px;
+    color: $secondary;
+    background: $primary-radiant;
+    padding: 10px;
+    clip-path: clipPath(10px);
+    font-size: 15px;
+  }
+
+  &-activeElement {
+    transition: 0.5s;
+    transform: translateX(5px);
+    z-index: 0;
+    width: 80px;
+    position: absolute;
+    height: 41px;
+    clip-path: clipPath(10px);
+    background-color: $white;
+  }
+}

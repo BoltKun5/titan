@@ -1,5 +1,4 @@
-import React, { useCallback, useEffect, useState } from "react";
-import { loggedApi } from "../../axios";
+import React, { useCallback, useContext, useEffect, useState } from "react";
 import CardManagerContext from "../../hook/contexts/CardManagerContext";
 import { CardManagerFilterComponent } from "../../components/CardManagerFilterComponent/CardManagerFilterComponent";
 import { CardManagerCardListComponent } from "../../components/CardManagerCardListComponent/CardManagerCardListComponent";
@@ -10,13 +9,13 @@ import { CardSetFilterInterface, CardTypeEnum, CardRarityEnum, StatisticsDataTyp
 import { ICardSerie } from "../../../../local-core/types/models/card-serie.dto";
 import { ICardSet } from "../../../../local-core/types/models/card-set.dto";
 import { ICard } from "../../../../local-core/types/models/card.dto";
-import { HeaderComponent } from "../../components/HeaderComponent/HeaderComponent";
+import StoreContext from "../../hook/contexts/StoreContext";
 
 export const CardManager: React.FC = () => {
 
   // Données de la base
-  const [series, setSeries] = useState<ICardSerie[]>();
   const [cards, setCards] = useState<ICard[]>([]);
+  const { series } = useContext(StoreContext);
 
   // Filtres
   const [cardSetFilter, setCardSetFilter] = useState<CardSetFilterInterface[]>([]);
@@ -42,11 +41,6 @@ export const CardManager: React.FC = () => {
 
   const { isLoading, fetch } = useFetchData();
 
-  const fetchSeries = useCallback(async () => {
-    const response = await loggedApi.get(`/series/allSeries`);
-    setSeries(response.data.data);
-  }, []);
-
   useEffect(() => {
     if (series) {
       let setFilterList: CardSetFilterInterface[] = [];
@@ -63,10 +57,8 @@ export const CardManager: React.FC = () => {
         })
       })
       setCardSetFilter(setFilterList);
-      return;
     }
-    fetchSeries();
-  }, [series, fetchSeries]);
+  }, [series]);
 
   const fetchCards = useCallback(async () => {
     const setFilter = cardSetFilter.filter((setFilter) => setFilter.status);
@@ -176,7 +168,6 @@ export const CardManager: React.FC = () => {
     setShowStats,
     openingModule,
     setOpeningModule,
-    series,
     showOptionCards,
     setShowOptionCards,
     page,
@@ -187,7 +178,6 @@ export const CardManager: React.FC = () => {
 
   return (
     <CardManagerContext.Provider value={contextValue}>
-      <HeaderComponent />
       <CardManagerFilterComponent />
       <div className="CardManager">
         <div className="CardManager-mainContent">

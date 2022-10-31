@@ -29,11 +29,14 @@ export type CardManagerContextType = {
   setShowStats: React.Dispatch<React.SetStateAction<boolean>>,
   openingModule: boolean,
   setOpeningModule: React.Dispatch<React.SetStateAction<boolean>>,
-  series: ICardSerie[],
   showOptionCards: boolean,
   setShowOptionCards: React.Dispatch<React.SetStateAction<boolean>>,
   page: number,
   setPage: React.Dispatch<React.SetStateAction<number>>,
   pagination: PaginationData | null,
   setPagination: React.Dispatch<React.SetStateAction<any>>,
+}
+
+export type StoreType = {
+  series: ICardSerie[]
 }

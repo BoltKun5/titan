@@ -3,10 +3,10 @@ import './style.scss';
 import { ClickAwayListener } from "@mui/material";
 import { CardRarityEnum, ICard } from "./../../../../local-core";
 import { frontRarity, getImageSource } from "../../pages/CardManager/CardManagerUtils";
-import CardManagerContext from "../../hook/contexts/CardManagerContext";
+import StoreContext from "../../hook/contexts/StoreContext";
 
 export const CardModal: React.FC<{ card: ICard, closeModal: () => void }> = ({ card, closeModal }) => {
-  const { series } = useContext(CardManagerContext);
+  const { series } = useContext(StoreContext);
   return (
     <div className="CardModal">
       <ClickAwayListener onClickAway={() => closeModal()}>
