@@ -113,7 +113,7 @@ export const CategorizedAutocompleteChecklist: React.FC<Props> = ({ items, place
         }
 
         <div className="CategorizedAutocompleteChecklist-searchBarContainer" onClick={openDropdown}>
-          <TextInputComponent value={searchTerm} modifyValue={setSearchTerm} label="Filtrer par set" />
+          <TextInputComponent value={searchTerm} modifyValue={setSearchTerm} label="Filtrer par set" width={368} />
           <div className="CategorizedAutocompleteChecklist-fastFilterIcon">
             <Tooltip title="Filtres rapides">
               <ListIcon onClick={(event) => { setIsFastFilterOpen(!isFastFilterOpen); event.stopPropagation() }} />

@@ -4,12 +4,12 @@ import { TextInputComponentType } from "../../../../../local-core";
 import './style.scss'
 
 export const TextInputComponent: React.FC<TextInputComponentType> = (
-  { value = "", modifyValue = () => { }, label = "", id = "", type = 'text', onKeyUpCallback = () => { }, onKeyDownCallback = () => { } }) => {
+  { value = "", modifyValue = () => { }, label = "", id = "", type = 'text', onKeyUpCallback = () => { }, onKeyDownCallback = () => { }, width = 250 }) => {
 
   return (
     <div className="TextInputComponent">
       <label htmlFor={id}>{label}</label>
-      <input type={type} onChange={e => modifyValue(e.target.value)} id={id} onKeyDown={onKeyDownCallback} onKeyUp={onKeyUpCallback} />
+      <input type={type} onChange={e => modifyValue(e.target.value)} id={id} onKeyDown={onKeyDownCallback} onKeyUp={onKeyUpCallback} style={{ width }} />
     </div>
   )
 }

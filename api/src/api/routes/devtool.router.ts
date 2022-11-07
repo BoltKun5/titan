@@ -1,6 +1,11 @@
+import { CardSerie } from './../../database/models/CardSerie';
+import { canBeReverse } from './../../utils/global.utils';
 import { Request, Response, Router } from "express";
 import asyncHandler from "express-async-handler";
-import { Card } from "../../database";
+import { Card, CardSet } from "../../database";
+import { Sequelize } from 'sequelize-typescript';
+import { Op } from 'sequelize';
+import { when } from 'joi';
 
 const route = Router();
 
@@ -20,6 +25,48 @@ export const DevtoolRouter = (app: Router): Router => {
       console.log("card " + req.body.cardId + " : " + req.body.rarity)
       res.json(
         { msg: "ok" },
+      )
+    }),
+  );
+
+  route.get(
+    "/bugged",
+    asyncHandler(async (req: Request<any, any, any, any>, res: Response<any, any>) => {
+      const cards = await Card.findAll({
+        where: {
+          rarity: {
+            [Op.in]: [8, 7, 4, 2]
+          },
+          canBeReverse: false,
+        },
+        include: [
+          {
+            model: CardSet,
+            required: true,
+            duplicating: false,
+            attributes: {
+              exclude: ["isPlayableInExpanded", "isPlayableInStandard", "id", "releaseDate", "tcgOnline"],
+            },
+            as: "cardSet",
+            include: [
+              {
+                where: {
+                  code: ["xy", "swsh"]
+                },
+                model: CardSerie,
+                required: true,
+                duplicating: false,
+                as: "cardSerie",
+              }
+            ]
+          },
+        ]
+      })
+      // cards.forEach((card) => {
+      //   card.update({ canBeReverse: true })
+      // });
+      res.json(
+        { cards },
       )
     }),
   );

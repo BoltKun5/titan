@@ -1,7 +1,8 @@
 import React, { useContext } from "react";
-import CardManagerContext from "../../hook/contexts/CardManagerContext";
+
 import './style.scss';
 import { SwitchInputComponent } from "../SwitchInputComponent/SwitchInputComponent";
+import StoreContext from "../../hook/contexts/StoreContext";
 
 export const CardManagerOptions: React.FC = () => {
   const {
@@ -13,7 +14,7 @@ export const CardManagerOptions: React.FC = () => {
     setShowUnowned,
     showOptionCards,
     setShowOptionCards
-  } = useContext(CardManagerContext);
+  } = useContext(StoreContext);
 
   return (
     <>

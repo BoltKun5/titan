@@ -1,14 +1,10 @@
 @import "../../scss/variables.scss";
 
 .CategorizedAutocompleteChecklist {
-  width: 381px;
+  width: 400px;
   position: relative;
   display: flex;
   scrollbar-color: $primary rgb(41, 41, 41);
-
-  & input[type="text"] {
-    width: 350px;
-  }
 
   &-fastFilterIcon {
     position: absolute;
@@ -26,7 +22,7 @@
 
   &-dropdown {
     border: 1px solid rgb(41, 41, 41);
-    width: 382px;
+    width: 401px;
     display: none;
     position: absolute;
     overflow: hidden auto;

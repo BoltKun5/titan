@@ -24,11 +24,15 @@
   &-toSignIn {
     font-size: 15px;
     width: 290px;
+    margin-bottom: 10px;
+    display: flex;
+    justify-content: center;
 
     & a {
       text-decoration: none;
       font-weight: bold;
-      color: $primary
+      color: $primary;
+      margin-left: 5px;
     }
   }
 
@@ -44,6 +48,10 @@
 
   &-inputs {
     margin: 15px 0 10px;
+    justify-content: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
   }
 
 

@@ -20,9 +20,9 @@ export const SwipeCheckboxComponent: React.FC<SwipeCheckboxComponentType> = ({ l
       <div className="SwipeCheckboxComponent-container">
         <div className="SwipeCheckboxComponent-elements">
           {
-            elements.map((element) => {
+            elements.map((element, index) => {
               return (
-                <span style={{ width: width }} onClick={() => callback(element.value)} className={value === element.value ? "SwipeCheckboxComponent-optionSelected" : ""}>{element.name}</span>
+                <span key={("SwipeComponent" + label) + index} style={{ width: width }} onClick={() => callback(element.value)} className={value === element.value ? "SwipeCheckboxComponent-optionSelected" : ""}>{element.name}</span>
               )
             })
           }

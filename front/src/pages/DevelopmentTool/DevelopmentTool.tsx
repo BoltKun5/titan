@@ -1,14 +1,12 @@
-import React, { useCallback, useContext, useEffect, useReducer, useRef, useState } from "react";
-import './DevelopmentTool.scss'
+import React, { useCallback, useContext, useState } from "react";
+import './style.scss'
 import { useFetchData } from "../../hook/api/cards";
-import { CardRarityEnum, ICard } from "../../../../local-core";
-import { api } from "../../axios";
+import { ICard } from "../../../../local-core";
 import LoginContext from "../../hook/contexts/LoginContext";
+import { SingleCardComponent } from "../../components/SingleCardComponent/SingleCardComponent";
 
 export const DevelopmentTool: React.FC = () => {
   const [cards, setCards] = useState<ICard[]>([]);
-  const [currentCard, setCurrentCard] = useState<ICard | null>(null)
-  const [currentIndex, setCurrentIndex] = useState<number>(0);
   const { isLoading, fetch } = useFetchData();
   const [init, setInit] = useState(false)
 
@@ -50,68 +48,27 @@ export const DevelopmentTool: React.FC = () => {
 
 
   const fetchCards = useCallback(async () => {
-    const params = { rarity: [8], order: "default" };
-    const response: any = await fetch('/cardlist/cards', params);
-    setCards(response.data)
+    const response: any = await fetch('/devtool/bugged', {});
+    setCards(response.cards)
   }, [])
 
-  const getToNextCard = () => {
-    setCurrentIndex(currentIndex + 1)
-  }
-
-  useEffect(() => {
-    setCurrentCard(cards[currentIndex]);
-  }, [currentIndex, cards])
-
   if (!init) {
-    fetchCards()
-    console.log(cards)
-    setCurrentIndex(0)
+    fetchCards();
     setInit(true)
   }
-
-  const updateRarity = async (filter: any) => {
-    try {
-      await api.post("/devtool/rarity", {
-        rarity: CardRarityEnum[filter.rarity],
-        // @ts-ignore
-        cardId: currentCard.id
-      });
-      setCurrentIndex(currentIndex + 1)
-    } catch (e) {
-
-    }
-  }
-
 
   return currentUser?.role === 1 ? (
     <div>
       Accès refusé
     </div>
-  ) : currentCard === null || currentCard === undefined ? (
-    <div>
-
-    </div>
   ) : (
-    <div className="MassInput">
-      <div className="MassInput-modale">
-        <div className="MassInput-image">
-          <img src={"src/assets/cards/" + currentCard.cardSet.code + "/" + Number(currentCard.localId) + ".jpg"} />
-        </div>
-        <div className="MassInput-informations MassInput-overrideCounter" style={{ display: 'flex', flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'center' }}>
-          {
-            rarityFilter.map((filter) =>
-              <React.Fragment key={"rarity" + filter.rarity}>
-                <div className={"CardManagerFilter-rarityContainer "} style={{ width: 80, height: 80 }} onClick={() => (updateRarity(filter))} >
-                  <img className="CardManagerFilter-rarityImg" src={"./src/assets/icons/" + filter.rarity + ".png"} />
-                </div>
-              </React.Fragment>,
-            )
-          }
-          <button className="MassInput-button" onClick={() => getToNextCard()}>Carte suivante
-          </button>
-        </div>
-      </div>
+    <div className="Devtool">
+      {cards.map((card: any, index: number) =>
+        <React.Fragment key={"firstCard" + card.localId + "0" + index}>
+          <SingleCardComponent firstType={'classic'} card={card} index={index} />
+
+        </React.Fragment>,
+      )}
     </div>
   )
 };

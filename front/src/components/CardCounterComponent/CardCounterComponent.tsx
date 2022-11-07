@@ -1,13 +1,14 @@
 import React, { useContext, useEffect, useState } from "react";
 import { CardCounterComponentPropsType, ICard } from "../../../../local-core";
 import { loggedApi } from "../../axios";
-import CardManagerContext from "../../hook/contexts/CardManagerContext";
+
+import StoreContext from "../../hook/contexts/StoreContext";
 import './style.scss';
 
 export const CardCounterComponent: React.FC<CardCounterComponentPropsType> = ({
   card, label, type, canBeReverse = true
 }) => {
-  const { setCards, cards } = useContext(CardManagerContext);
+  const { setCards, cards } = useContext(StoreContext);
   const [isDisabled, setIsDisabled] = useState<boolean>(false);
   const [value, setValue] = useState<string>("");
   const [changeNotificationValue, setChangeNotificationValue] = useState<number | null>(null)

@@ -1,11 +1,12 @@
 import React, { useContext } from "react";
 import { SingleCardOverlayComponentPropsType } from "../../../../local-core";
-import CardManagerContext from "../../hook/contexts/CardManagerContext";
+
+import StoreContext from "../../hook/contexts/StoreContext";
 import { CardCounterComponent } from "../CardCounterComponent/CardCounterComponent";
 import './style.scss'
 
 export const SingleCardOverlayComponent: React.FC<SingleCardOverlayComponentPropsType> = ({ card, index, firstType }) => {
-  const { separateReverse } = useContext(CardManagerContext);
+  const { separateReverse } = useContext(StoreContext);
 
   return (
     <>

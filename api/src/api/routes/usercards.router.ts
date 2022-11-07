@@ -16,6 +16,7 @@ import { UserCardPossession } from "../../database/models/UserCardPossession";
 import { v4 } from "uuid";
 import { Card } from '../../database/models/Card';
 import { CardSet } from '../../database';
+import { Op } from 'sequelize';
 
 const route = Router();
 
@@ -158,6 +159,73 @@ export const UserCardsRouter = (app: Router): Router => {
     }),
   );
 
+  route.get(
+    "/boosters",
+    Auth,
+    asyncHandler(async (req: Request<any, any, IHistoricQuery>, res: Response<IResponse<any>, IResponseLocals>) => {
+
+      const result = await CardPossessionHistoric.findAll({
+        order: [['createdAt', 'DESC']],
+        include: [{
+          where: {
+            userId: req.query.userId
+          },
+          model: UserCardPossession,
+          required: true,
+          duplicating: false,
+          attributes: {
+            exclude: ["cardId", "classicQuantity", "createdAt", "reverseQuantity", "updatedAt", "userId"],
+          },
+          include: [{
+            model: Card,
+            duplicating: false,
+            as: 'card',
+            attributes: {
+              exclude: getCardAttributesExcludeArray(['localId', 'name'])
+            },
+            include: [{
+              model: CardSet,
+              duplicating: false,
+              as: 'cardSet',
+              attributes: {
+                exclude: ["cardCount", "cardSerieId", "isPlayableInExpanded", "isPlayableInStandard", "releaseDate", "tcgOnline"]
+              },
+            }]
+          }]
+        }],
+        where: {
+          boosterId: {
+            [Op.ne]: null
+          }
+        }
+      });
+
+      let filteredBoosters = [];
+
+      result.forEach((el) => {
+        let boosterElement: any = filteredBoosters.find((booster) => booster.id === el.boosterId);
+
+        if (!boosterElement) {
+          filteredBoosters.push({
+            createdAt: el.createdAt,
+            cardSet: el.cardPossession.card.cardSet,
+            id: el.boosterId,
+            cards: []
+          })
+          boosterElement = filteredBoosters.find((booster) => booster.id === el.boosterId);
+        }
+
+        boosterElement.cards.push({
+          id: el.cardPossession.card.id,
+          localId: el.cardPossession.card.localId,
+          name: el.cardPossession.card.name,
+          type: (el.oldClassicQuantity < el.newClassicQuantity) ? 'classic' : 'reverse'
+        });
+      });
+
+      res.json({ data: filteredBoosters });
+    }),
+  );
 
   return route;
 };

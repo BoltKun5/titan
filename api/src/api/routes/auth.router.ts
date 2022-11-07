@@ -7,6 +7,7 @@ import { token } from '../../utils/auth.utils';
 import createError from "http-errors";
 import { ErrorType, IResponse } from "abyss_crypt_core";
 import { ISigninAuthBody, ISigninAuthResponse, IResponseLocals, ISignupAuthBody, ISignupAuthResponse } from '../../../../local-core/interface';
+import express from 'src/loaders/express';
 
 const route = Router();
 
@@ -18,7 +19,7 @@ export const AuthRouter = (app: Router): Router => {
     asyncHandler(async (req: Request<any, any, ISigninAuthBody>, res: Response<IResponse<ISigninAuthResponse>, IResponseLocals>) => {
       req.body = AuthValidation.signinBody(req.body);
 
-
+      res.cookie('test', 'aazezaezae', { domain: "localhost:3000" });
       const { user, token } = await AuthService.login({ username: req.body.username, password: req.body.password })
 
       res.json({

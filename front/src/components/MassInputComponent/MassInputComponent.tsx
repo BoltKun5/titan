@@ -1,14 +1,14 @@
 import React, { createRef, useContext, useEffect, useLayoutEffect, useRef, useState } from "react";
-import CardManagerContext from "../../hook/contexts/CardManagerContext";
 import './style.scss';
 import { CardCounterComponent } from "../CardCounterComponent/CardCounterComponent";
 import { ClickAwayListener } from "@mui/material";
 import { ICard } from "../../../../local-core";
 import { ButtonComponent } from "../UI/Button/ButtonComponent";
 import { getImageSource } from "../../pages/CardManager/CardManagerUtils";
+import StoreContext from "../../hook/contexts/StoreContext";
 
 export const MassInputComponent: React.FC<{}> = () => {
-  const { cards, setMassInput, massInput } = useContext(CardManagerContext);
+  const { cards, setMassInput, massInput } = useContext(StoreContext);
   const [currentCard, setCurrentCard] = useState<ICard | null>(null)
   const [currentIndex, setCurrentIndex] = useState<number>(0);
   const [currentType, setCurrentType] = useState<"classic" | "reverse">("classic");

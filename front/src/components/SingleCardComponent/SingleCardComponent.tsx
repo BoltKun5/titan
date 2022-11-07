@@ -1,14 +1,14 @@
 import React, { createRef, SyntheticEvent, useCallback, useContext, useEffect, useRef, useState } from "react";
-import CardManagerContext from "../../hook/contexts/CardManagerContext";
+
 import { SingleCardOverlayComponent } from "../SingleCardOverlayComponent/SingleCardOverlayComponent";
 import './style.scss'
 import { CardModal } from "../CardModalComponent/CardModal";
 import { getImageSource } from "../../pages/CardManager/CardManagerUtils";
 import { ICard, IUserCardPossession, SingleCardComponentPropsType } from "../../../../local-core";
-import { boolean } from "joi";
+import StoreContext from "../../hook/contexts/StoreContext";
 
 export const SingleCardComponent: React.FC<SingleCardComponentPropsType> = ({ card, index, firstType }) => {
-  const { collectionMode, separateReverse } = useContext(CardManagerContext);
+  const { collectionMode, separateReverse } = useContext(StoreContext);
   const [cardModal, setCardModal] = useState<ICard | null>(null);
   const [isMissingImage, setIsMissingImage] = useState<boolean>(false);
 

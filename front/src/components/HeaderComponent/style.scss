@@ -159,6 +159,9 @@
 
   &-profileButtons {
     padding: 10px 30px;
+    border: 1px solid $primary-border;
+    border-top: 1px solid $primary-bg;
+    transform: translateY(-1px);
 
     &:hover {
       color: $primary;

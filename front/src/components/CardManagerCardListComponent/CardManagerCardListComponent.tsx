@@ -1,13 +1,14 @@
 import { Settings } from "@mui/icons-material";
 import React, { useContext } from "react";
-import CardManagerContext from "../../hook/contexts/CardManagerContext";
+
+import StoreContext from "../../hook/contexts/StoreContext";
 import { MassInputComponent } from "../MassInputComponent/MassInputComponent";
 import { SingleCardComponent } from "../SingleCardComponent/SingleCardComponent";
 import { ButtonComponent } from "../UI/Button/ButtonComponent";
 import './style.scss';
 
 export const CardManagerCardListComponent: React.FC = () => {
-  const { cards, collectionMode, separateReverse, showOptionCards, massInput, setMassInput } = useContext(CardManagerContext);
+  const { cards, collectionMode, separateReverse, showOptionCards, massInput, setMassInput } = useContext(StoreContext);
 
   const optionCards = [
     {
@@ -19,7 +20,7 @@ export const CardManagerCardListComponent: React.FC = () => {
     }
   ];
 
-  
+
 
   return (
     <div className="CardManagerCardList">

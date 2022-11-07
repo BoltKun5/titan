@@ -1,8 +1,11 @@
-$primary: rgb(59, 153, 241);
-$secondary: rgb(16, 52, 66);
-$white: rgb(201, 201, 201);
+$primary: #3b99f1;
+$secondary: #1D4C78;
+$white-bg: #363850;
+$white: #c9c9c9;
 $primary-bg: #161827;
-$primary-border: rgb(41, 41, 41);
+$primary-border: #292929;
+$red: #7a1c1c;
+$green: #096e06;
 
 @function clipPath($offset) {
   @return polygon($offset 0%,

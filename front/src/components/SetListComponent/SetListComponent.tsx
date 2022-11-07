@@ -1,9 +1,6 @@
 import React, { useContext } from "react";
 import { Tooltip } from "@mui/material";
-import CardManagerContext from "../../hook/contexts/CardManagerContext";
 import './style.scss';
-import { SwitchInputComponent } from "../SwitchInputComponent/SwitchInputComponent";
-import { Link, useNavigate } from "react-router-dom";
 import { ICardSerie, ICardSet } from "../../../../local-core";
 import StoreContext from "../../hook/contexts/StoreContext";
 
@@ -12,7 +9,7 @@ export const SetListComponent: React.FC = () => {
     cardSetFilter,
     setCardSetFilter,
     resetAllFilters,
-  } = useContext(CardManagerContext);
+  } = useContext(StoreContext);
 
   const { series } = useContext(StoreContext);
 

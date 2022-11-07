@@ -1,64 +1,28 @@
 import React, { useCallback, useContext, useEffect, useState } from "react";
-import CardManagerContext from "../../hook/contexts/CardManagerContext";
 import { CardManagerFilterComponent } from "../../components/CardManagerFilterComponent/CardManagerFilterComponent";
 import { CardManagerCardListComponent } from "../../components/CardManagerCardListComponent/CardManagerCardListComponent";
 import './style.scss'
 import { useFetchData } from "../../hook/api/cards";
-import { initialRarityFilter } from "./CardManagerUtils";
-import { CardSetFilterInterface, CardTypeEnum, CardRarityEnum, StatisticsDataType, PaginationData } from "../../../../local-core";
-import { ICardSerie } from "../../../../local-core/types/models/card-serie.dto";
-import { ICardSet } from "../../../../local-core/types/models/card-set.dto";
-import { ICard } from "../../../../local-core/types/models/card.dto";
+import { CardRarityEnum, PaginationData } from "../../../../local-core";
 import StoreContext from "../../hook/contexts/StoreContext";
 
 export const CardManager: React.FC = () => {
 
-  // Données de la base
-  const [cards, setCards] = useState<ICard[]>([]);
-  const { series } = useContext(StoreContext);
-
-  // Filtres
-  const [cardSetFilter, setCardSetFilter] = useState<CardSetFilterInterface[]>([]);
-  const [nameFilter, setNameFilter] = useState<string>("");
-  const [typeFilter, setTypeFilter] = useState<CardTypeEnum[]>([]);
-  const [rarityFilter, setRarityFilter] = useState<any[]>(initialRarityFilter);
-
-  // Tris
-  const [order, setOrder] = useState<string>("default");
-
-  // Autres
-  const [collectionMode, setCollectionMode] = useState<boolean>(false);
-  const [separateReverse, setSeparateReverse] = useState<boolean>(false);
-  const [showUnowned, setShowUnowned] = useState<boolean>(false);
-
-  const [massInput, setMassInput] = useState<boolean>(false);
-  const [showStats, setShowStats] = useState<boolean>(false);
-  const [firstUpdate, setFirstUpdate] = useState<boolean>(true);
-  const [openingModule, setOpeningModule] = useState<boolean>(false);
-  const [showOptionCards, setShowOptionCards] = useState(false);
-  const [page, setPage] = useState(1);
-  const [pagination, setPagination] = useState<PaginationData | null>(null);
-
   const { isLoading, fetch } = useFetchData();
 
-  useEffect(() => {
-    if (series) {
-      let setFilterList: CardSetFilterInterface[] = [];
-      series.forEach((serie: ICardSerie) => {
-        serie.cardSets.forEach((set: ICardSet) => {
-          setFilterList.push({
-            name: set.name,
-            id: set.id,
-            category: serie.name,
-            categoryCode: serie.code,
-            status: false,
-            code: set.code,
-          })
-        })
-      })
-      setCardSetFilter(setFilterList);
-    }
-  }, [series]);
+  const {
+    cardSetFilter,
+    nameFilter,
+    order,
+    rarityFilter,
+    page,
+    collectionMode,
+    showUnowned,
+    setCards,
+    setPagination,
+    series,
+    setPage
+  } = useContext(StoreContext);
 
   const fetchCards = useCallback(async () => {
     const setFilter = cardSetFilter.filter((setFilter) => setFilter.status);
@@ -84,8 +48,10 @@ export const CardManager: React.FC = () => {
     if (rarityFilter.filter((filter) => filter.value === true).length !== 0) {
       params.rarity = [];
       rarityFilter.forEach((filter) => {
-        if (filter.value)
+        if (filter.value) {
+          // @ts-ignore
           params.rarity.push(CardRarityEnum[filter.rarity])
+        }
       })
     }
 
@@ -100,20 +66,9 @@ export const CardManager: React.FC = () => {
     }
     setCards(response.data.cards);
     setPagination(response.data.pagination)
-
-    // if (collectionMode) {
-    //   response = await fetch('/cardlist/stats', params);
-    //   setStats(response.data);
-    // }
-
   }, [cardSetFilter, nameFilter, collectionMode, showUnowned, order, page])
 
   useEffect(() => {
-    if (firstUpdate) {
-      setFirstUpdate(false);
-      return;
-    }
-
     fetchCards();
   }, [cardSetFilter, nameFilter, collectionMode, showUnowned, order, rarityFilter, page])
 
@@ -121,63 +76,18 @@ export const CardManager: React.FC = () => {
     setPage(1)
   }, [cardSetFilter, nameFilter, collectionMode, showUnowned, rarityFilter])
 
-  const resetAllFilters = () => {
-    setCardSetFilter(cardSetFilter.map((element) => {
-      element.status = false;
-      return element
-    }));
-    const nameFilterElement = document.querySelector("#nameFilter");
-    if (nameFilterElement) {
-      // @ts-ignore
-      nameFilterElement.value = "";
-    }
-    setNameFilter("");
-    setRarityFilter(rarityFilter.map((filter) => {
-      filter.value = false
-      return filter
-    }))
-  }
+
 
   if (!series) {
     return <span>Loading</span>
   }
 
   const contextValue = {
-    cardSetFilter,
-    setCardSetFilter,
-    nameFilter,
-    setNameFilter,
-    order,
-    setOrder,
-    collectionMode,
-    setCollectionMode,
-    separateReverse,
-    setSeparateReverse,
-    showUnowned,
-    setShowUnowned,
-    cards,
-    setCards,
-    resetAllFilters,
-    massInput,
-    setMassInput,
-    typeFilter,
-    setTypeFilter,
-    rarityFilter,
-    setRarityFilter,
-    showStats,
-    setShowStats,
-    openingModule,
-    setOpeningModule,
-    showOptionCards,
-    setShowOptionCards,
-    page,
-    setPage,
-    pagination,
-    setPagination
+
   }
 
   return (
-    <CardManagerContext.Provider value={contextValue}>
+    <>
       <CardManagerFilterComponent />
       <div className="CardManager">
         <div className="CardManager-mainContent">
@@ -196,6 +106,6 @@ export const CardManager: React.FC = () => {
           }
         </div>
       </div>
-    </CardManagerContext.Provider>
+    </>
   )
 };

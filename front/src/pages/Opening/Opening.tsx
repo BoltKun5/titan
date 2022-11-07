@@ -1,6 +1,6 @@
 import React, { ChangeEvent, useContext, useEffect, useMemo, useState } from "react";
 import './style.scss';
-import CardManagerContext from "../../hook/contexts/CardManagerContext";
+
 import { ClickAwayListener, Tooltip } from "@mui/material";
 import { CardListElement, getImageSource, initialCardList } from "../../pages/CardManager/CardManagerUtils";
 import { api, loggedApi } from "../../axios";
@@ -196,10 +196,6 @@ export const Opening: React.FC = () => {
     }
   ]
 
-  console.log(cardList.filter((el) => el.card === null).length)
-
-
-
   return (
     <div className="OpeningPage">
       <div className="OpeningPage-description coloredCorner">
@@ -248,7 +244,7 @@ export const Opening: React.FC = () => {
                     <SwipeCheckboxComponent callback={updateCardAmount} elements={swipeCheckboxAmountElements} value={cardAmount} width={50} label={"Taille"} />
                   </div>
                   <div className={"OpeningPage-preselected"}>
-                    <div className="OpeningPage-preselectedImgContainer" style={{ borderColor: preselectedCard ? 'none' : '' }}>
+                    <div className={"OpeningPage-preselectedImgContainer " + ((preselectedCard && cardType === 'reverse') ? 'reverseShining' : '')} style={{ borderColor: preselectedCard ? 'none' : '' }}>
                       {preselectedCard &&
                         <img src={getImageSource(preselectedCard)} />}
                     </div>
@@ -280,7 +276,7 @@ export const Opening: React.FC = () => {
                   {
                     cardList.map((value, index) =>
                       <div onClick={() => onClickHandler(index, value)} key={'OpeningPage-boosterContentElement' + index}
-                        className={"OpeningPage-boosterContent-element " + (value.type === "reverse" ? "reverse" : "")}
+                        className={"OpeningPage-boosterContent-element " + (value.type === "reverse" ? "reverseShining" : "")}
                         style={{ border: currentIndex === index ? "rgb(59, 153, 241) 2px solid" : "" }}>
                         {value.card !== null &&
                           <img src={getImageSource(value.card)} />}

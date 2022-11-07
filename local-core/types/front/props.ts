@@ -54,7 +54,8 @@ export type TextInputComponentType = {
   id?: string,
   type?: string,
   onKeyUpCallback?: any,
-  onKeyDownCallback?: any
+  onKeyDownCallback?: any,
+  width?: number
 }
 
 export type ButtonComponentPropsType = {

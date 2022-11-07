@@ -1,13 +1,13 @@
-import {loggedApi} from "../axios";
-import {useContext} from "react";
-import CardManagerContext from "./contexts/CardManagerContext";
+import { loggedApi } from "../axios";
+import { useContext } from "react";
 import { ICard } from "../../../local-core";
+import StoreContext from "./contexts/StoreContext";
 
 export const init = (cards: any) => {
   return cards
 };
 
-const {cards, setCards} = useContext(CardManagerContext);
+const { cards, setCards } = useContext(StoreContext);
 
 export async function reducer(state: ICard[], data: { action: string, card: ICard, values: { type: "classic" | "reverse", quantity: string } }) {
   switch (data.action) {

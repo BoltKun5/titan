@@ -5,11 +5,15 @@ import { ICard } from '../../../local-core/types/models/card.dto';
 import { CardSetFilterInterface } from "../../../local-core";
 import React from 'react'
 
-export type CardManagerContextType = {
+export type StoreType = {
+  series: ICardSerie[],
   cardSetFilter: CardSetFilterInterface[],
   setCardSetFilter: React.Dispatch<React.SetStateAction<CardSetFilterInterface[]>>,
   nameFilter: string,
   setNameFilter: React.Dispatch<React.SetStateAction<string>>,
+  resetAllFilters: () => void,
+  rarityFilter: { rarity: string, value: boolean }[],
+  setRarityFilter: React.Dispatch<React.SetStateAction<any[]>>,
   order: string,
   setOrder: React.Dispatch<React.SetStateAction<string>>,
   collectionMode: boolean,
@@ -18,25 +22,14 @@ export type CardManagerContextType = {
   setSeparateReverse: React.Dispatch<React.SetStateAction<boolean>>,
   showUnowned: boolean,
   setShowUnowned: React.Dispatch<React.SetStateAction<boolean>>,
-  cards: ICard[],
-  setCards: React.Dispatch<React.SetStateAction<ICard[]>>,
-  resetAllFilters: () => void,
   massInput: boolean,
   setMassInput: React.Dispatch<React.SetStateAction<boolean>>,
-  rarityFilter: { rarity: string, value: boolean }[],
-  setRarityFilter: React.Dispatch<React.SetStateAction<any[]>>,
-  showStats: boolean,
-  setShowStats: React.Dispatch<React.SetStateAction<boolean>>,
-  openingModule: boolean,
-  setOpeningModule: React.Dispatch<React.SetStateAction<boolean>>,
+  cards: ICard[],
+  setCards: React.Dispatch<React.SetStateAction<ICard[]>>,
   showOptionCards: boolean,
   setShowOptionCards: React.Dispatch<React.SetStateAction<boolean>>,
   page: number,
   setPage: React.Dispatch<React.SetStateAction<number>>,
   pagination: PaginationData | null,
   setPagination: React.Dispatch<React.SetStateAction<any>>,
-}
-
-export type StoreType = {
-  series: ICardSerie[]
 }

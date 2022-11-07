@@ -1,3 +1,4 @@
+import { ICardSet } from './../../../../local-core/types/models/card-set.dto';
 import { CardRarityEnum } from './../../../../local-core/enums/card-rarity.enum';
 import { ICard } from "../../../../local-core/types/models/card.dto"
 
@@ -94,4 +95,10 @@ export const getImageSource = (card: ICard): string => {
   const isValid = !isNaN(Number(card.localId));
   if (isValid) return "src/assets/cards/" + card.cardSet.code + "/" + Number(card.localId) + ".jpg"
   return "src/assets/cards/" + card.cardSet.code + "/" + card.localId + ".jpg"
+}
+
+export const getImageFromSeparatedInfos = (card: { name: string, localId: string }, cardSet: ICardSet): string => {
+  const isValid = !isNaN(Number(card.localId));
+  if (isValid) return "src/assets/cards/" + cardSet.code + "/" + Number(card.localId) + ".jpg"
+  return "src/assets/cards/" + cardSet.code + "/" + card.localId + ".jpg"
 }

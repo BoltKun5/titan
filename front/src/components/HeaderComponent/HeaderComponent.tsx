@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import './style.scss';
 
-export const HeaderComponent: React.FC<{}> = ({ }) => {
+export const HeaderComponent: React.FC<{ forceRender: boolean, setForceRender: Function }> = ({ forceRender, setForceRender }) => {
 
   const [isProfileDropdownOpen, setIsProfileDropdownOpen] = useState(false);
 
@@ -12,7 +12,8 @@ export const HeaderComponent: React.FC<{}> = ({ }) => {
   const disconnect = () => {
     localStorage.removeItem('token');
     localStorage.removeItem('user');
-    navigate('/')
+    navigate('/');
+    setForceRender(!forceRender);
   }
 
   const location = useLocation();

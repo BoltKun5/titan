@@ -15,14 +15,14 @@
   transition: 0.5s;
 
   &-top {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-around;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(410px, 1fr));
     width: 100%;
 
     &>* {
       margin-left: 10px;
       margin-right: 10px;
+      margin: auto !important;
     }
   }
 
@@ -34,6 +34,7 @@
     height: 45px;
     margin-bottom: 10px;
     margin-top: 20px;
+    width: 400px;
 
     & label {
       z-index: 1;
@@ -201,6 +202,14 @@
 
   &-resetContainer {
     margin: auto 0;
+  }
+
+  &-fixedWidthContainer {
+    width: 400px;
+    display: flex;
+    justify-content: center;
+    height: 110px;
+    align-items: center;
   }
 
   &.blured~.CardManager {
