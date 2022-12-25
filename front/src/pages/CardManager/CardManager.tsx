@@ -1,13 +1,14 @@
 import React, { useCallback, useContext, useEffect, useState } from "react";
 import { CardManagerFilterComponent } from "../../components/CardManagerFilterComponent/CardManagerFilterComponent";
 import { CardManagerCardListComponent } from "../../components/CardManagerCardListComponent/CardManagerCardListComponent";
-import './style.scss'
-import { useFetchData } from "../../hook/api/cards";
-import { CardRarityEnum, PaginationData } from "../../../../local-core";
+import "./style.scss";
+import { CardRarityEnum } from "../../../../local-core";
 import StoreContext from "../../hook/contexts/StoreContext";
+import { useFetchData } from "../../hook/api/cards";
+import { Loader } from "../../components/UI/Loader/LoaderComponent";
+import { loggedApi } from "../../axios";
 
 export const CardManager: React.FC = () => {
-
   const { isLoading, fetch } = useFetchData();
 
   const {
@@ -21,18 +22,21 @@ export const CardManager: React.FC = () => {
     setCards,
     setPagination,
     series,
-    setPage
+    setPage,
+    tags,
+    setTags,
   } = useContext(StoreContext);
 
   const fetchCards = useCallback(async () => {
+    if (!cardSetFilter) return;
     const setFilter = cardSetFilter.filter((setFilter) => setFilter.status);
     const params: Record<string, any> = {};
 
     if (setFilter.length > 0) {
-      params.setFilter = []
+      params.setFilter = [];
       setFilter.forEach((setFilter) => {
         params.setFilter.push(setFilter.code);
-      })
+      });
     }
 
     if (nameFilter !== "") {
@@ -40,9 +44,9 @@ export const CardManager: React.FC = () => {
     }
 
     if (order === "" || order === null) {
-      params.order = "default"
+      params.order = "default";
     } else {
-      params.order = order
+      params.order = order;
     }
 
     if (rarityFilter.filter((filter) => filter.value === true).length !== 0) {
@@ -50,40 +54,53 @@ export const CardManager: React.FC = () => {
       rarityFilter.forEach((filter) => {
         if (filter.value) {
           // @ts-ignore
-          params.rarity.push(CardRarityEnum[filter.rarity])
+          params.rarity.push(CardRarityEnum[filter.rarity]);
         }
-      })
+      });
     }
 
     params.page = page;
 
     let response;
     if (!collectionMode) {
-      response = await fetch('/cardlist/cards', params);
+      response = await fetch("/cardlist/cards", params);
     } else {
-      params.unowned = (showUnowned ? 'show' : 'hide')
-      response = await fetch('/cardlist/collection', params);
+      params.unowned = showUnowned ? "show" : "hide";
+      response = await fetch("/cardlist/collection", params);
     }
     setCards(response.data.cards);
-    setPagination(response.data.pagination)
-  }, [cardSetFilter, nameFilter, collectionMode, showUnowned, order, page])
+    setPagination(response.data.pagination);
+  }, [cardSetFilter, nameFilter, collectionMode, showUnowned, order, page]);
 
   useEffect(() => {
     fetchCards();
-  }, [cardSetFilter, nameFilter, collectionMode, showUnowned, order, rarityFilter, page])
+  }, [
+    cardSetFilter,
+    nameFilter,
+    collectionMode,
+    showUnowned,
+    order,
+    rarityFilter,
+    page,
+  ]);
 
   useEffect(() => {
-    setPage(1)
-  }, [cardSetFilter, nameFilter, collectionMode, showUnowned, rarityFilter])
+    setPage(1);
+  }, [cardSetFilter, nameFilter, collectionMode, showUnowned, rarityFilter]);
 
+  const fetchTags = useCallback(async () => {
+    const response = await loggedApi.get(`/usercards/tags`);
+    setTags(response.data.data.tags);
+  }, []);
 
+  useEffect(() => {
+    if (!tags) {
+      fetchTags();
+    }
+  }, []);
 
   if (!series) {
-    return <span>Loading</span>
-  }
-
-  const contextValue = {
-
+    return <Loader />;
   }
 
   return (
@@ -91,21 +108,9 @@ export const CardManager: React.FC = () => {
       <CardManagerFilterComponent />
       <div className="CardManager">
         <div className="CardManager-mainContent">
-          {
-            isLoading ?
-              <div className="CardManager-loaderContainer">
-                <div className="CardManager-loader">
-                  <div className="CardManager-loaderElement" />
-                  <div className="CardManager-loaderElement" />
-                  <div className="CardManager-loaderElement" />
-                  <div className="CardManager-loaderElement" />
-                </div>
-              </div>
-              :
-              <CardManagerCardListComponent />
-          }
+          {isLoading ? <Loader /> : <CardManagerCardListComponent />}
         </div>
       </div>
     </>
-  )
+  );
 };

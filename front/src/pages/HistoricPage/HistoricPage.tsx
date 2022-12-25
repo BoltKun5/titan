@@ -1,10 +1,9 @@
 import dayjs from "dayjs";
 import React, { useCallback, useEffect, useReducer, useRef, useState } from "react";
-import { useFetchData } from "../../hook/api/cards";
 import { getImageFromSeparatedInfos, getImageSource } from "../CardManager/CardManagerUtils";
 import './style.scss'
 import EastIcon from '@mui/icons-material/East';
-import { ClickAwayListener } from "@mui/material";
+import { useFetchData } from "../../hook/api/cards";
 
 export const HistoricPage: React.FC = () => {
   const { isLoading, fetch } = useFetchData();

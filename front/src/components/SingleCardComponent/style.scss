@@ -12,16 +12,6 @@
   background-color: $primary-bg;
   border: 1px solid $primary-border;
 
-  &-notCollection {
-    height: 316px;
-    padding: 0 !important;
-    border: 0;
-
-    & .SingleCard-imgContainer::after {
-      box-shadow: none;
-    }
-  }
-
   &-possession {
     &-classic {
       top: 0;
@@ -52,28 +42,18 @@
 
   &-collectionBackground {
     position: absolute;
-    border: 2px solid $primary-bg;
     width: calc(100% - 36px);
     height: 309px;
     margin: 16px 16px;
     top: 0;
     left: 0;
-    // clip-path: clipPath(26px);
     pointer-events: none;
     z-index: 10;
   }
 
   &:not(.SingleCard-notCollection) &-imgContainer {
-    clip-path: polygon(5px 5px,
-        calc(100% - 5px) 5px,
-        calc(100% - 5px) calc(100% - 5px),
-        calc(100% - 5px) calc(100% - 5px),
-        5px calc(100% - 5px),
-        5px 5px);
-    ;
+    background-color: $primary-border;
   }
-
-
 
   &-data {
     position: absolute;
@@ -93,7 +73,6 @@
   }
 
   &-imgContainer {
-    border-radius: 9px;
     height: 316px;
     width: 230px;
     position: relative;
@@ -101,21 +80,42 @@
     background: #8c8c8c;
     z-index: 2;
 
+    &:hover {
+      cursor: pointer;
+
+      &::after {
+        content: "Voir plus";
+        display: flex;
+        font-weight: bolder;
+        font-size: 30px;
+        color: $white;
+        justify-content: center;
+        align-items: center;
+        background-color: rgba(0, 0, 0, 0.7);
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        left: 0;
+        top: 0
+      }
+    }
+
     &::after {
       width: 100%;
       height: 100%;
       position: absolute;
       content: "";
-      box-shadow: inset $primary-bg 0 0 5px 10px;
       z-index: 10;
       pointer-events: none;
       left: 0;
       top: 0;
     }
 
-    &:hover * {
-      filter: none !important;
-      cursor: pointer;
+    & img {
+      clip-path: polygon(2px 2px,
+          calc(100% - 2px) 2px,
+          calc(100% - 2px) calc(100% - 2px),
+          2px calc(100% - 2px));
     }
   }
 
@@ -124,21 +124,6 @@
     width: 100%;
     height: 100%;
     position: relative;
-  }
-}
 
-.CardQuantity {
-  &-notOwned {
-    img {
-      filter: brightness(0.3) grayscale(100%);
-    }
-  }
-
-  &-onlyReverse .SingleCard-possession-reverse {
-    filter: brightness(0.3) grayscale(100%);
-  }
-
-  &-onlyClassic .SingleCard-possession-classic {
-    filter: brightness(0.3) grayscale(100%);
   }
 }

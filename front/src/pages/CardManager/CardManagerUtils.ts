@@ -1,6 +1,6 @@
-import { ICardSet } from './../../../../local-core/types/models/card-set.dto';
-import { CardRarityEnum } from './../../../../local-core/enums/card-rarity.enum';
-import { ICard } from "../../../../local-core/types/models/card.dto"
+import { ICardSet } from "./../../../../local-core/types/models/card-set.dto";
+import { CardRarityEnum } from "./../../../../local-core/enums/card-rarity.enum";
+import { ICard } from "../../../../local-core/types/models/card.dto";
 
 export const initialRarityFilter = [
   {
@@ -35,22 +35,22 @@ export const initialRarityFilter = [
     rarity: "Amazing",
     value: false,
   },
-]
+];
 
 export const frontRarity: frontRarityType = {
-  "Common": "Commune",
-  "Uncommon": "Peu commune",
-  "Rare": "Rare",
-  "Holo": "Holographique",
+  Common: "Commune",
+  Uncommon: "Peu commune",
+  Rare: "Rare",
+  Holo: "Holographique",
   "Secret Rare": "Secrète",
   "Ultra Rare": "Ultra Rare",
-  "None": "Promotionnelle",
-  "Amazing": "Magnifique",
-}
+  None: "Promotionnelle",
+  Amazing: "Magnifique",
+};
 
 type frontRarityType = {
-  [index: string]: string,
-}
+  [index: string]: string;
+};
 
 export const initialCardList = [
   {
@@ -83,22 +83,41 @@ export const initialCardList = [
   {
     card: null,
   },
-]
+];
 
 export type CardListElement = {
-  card: ICard | null,
-  type?: "normal" | "reverse",
-  error?: string
-}
+  card: ICard | null;
+  type?: "normal" | "reverse";
+  error?: string;
+};
 
-export const getImageSource = (card: ICard): string => {
+export const getImageSource = (card: ICard, highQuality: boolean): string => {
   const isValid = !isNaN(Number(card.localId));
-  if (isValid) return "src/assets/cards/" + card.cardSet.code + "/" + Number(card.localId) + ".jpg"
-  return "src/assets/cards/" + card.cardSet.code + "/" + card.localId + ".jpg"
-}
+  if (isValid)
+    return (
+      "src/assets/cards/" +
+      card.cardSet.code +
+      "/" +
+      card.localId +
+      (highQuality ? "-high" : "") +
+      ".jpg"
+    );
+  return (
+    "src/assets/cards/" +
+    card.cardSet.code +
+    "/" +
+    card.localId +
+    (highQuality ? "-high" : "") +
+    ".jpg"
+  );
+};
 
-export const getImageFromSeparatedInfos = (card: { name: string, localId: string }, cardSet: ICardSet): string => {
+export const getImageFromSeparatedInfos = (
+  card: { name: string; localId: string },
+  cardSet: ICardSet
+): string => {
   const isValid = !isNaN(Number(card.localId));
-  if (isValid) return "src/assets/cards/" + cardSet.code + "/" + Number(card.localId) + ".jpg"
-  return "src/assets/cards/" + cardSet.code + "/" + card.localId + ".jpg"
-}
+  if (isValid)
+    return "src/assets/cards/" + cardSet.code + "/" + card.localId + ".jpg";
+  return "src/assets/cards/" + cardSet.code + "/" + card.localId + ".jpg";
+};

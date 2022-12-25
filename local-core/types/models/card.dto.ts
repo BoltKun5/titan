@@ -1,4 +1,5 @@
-import { CardRarityEnum } from './../../enums/card-rarity.enum';
+import { ICardAdditionalPrinting } from './card-additional-printing.dto';
+import { CardRarityEnum, CardRarityEnumFrench } from './../../enums/card-rarity.enum';
 import { HeldItemType } from './../card-item.type';
 import { ICardAbility } from './card-ability.dto';
 import { CardEnergyTypeEnum, CardCategoryEnum, CardEvolutionStageEnum, CardTrainerTypeEnum } from '../../enums';
@@ -13,7 +14,7 @@ import { IUserCardPossession } from './user-card-possession.dto';
 export type ICard = {
   id: string,
   name: string,
-  rarity: CardRarityEnum,
+  rarity: CardRarityEnum | CardRarityEnumFrench,
   category: CardCategoryEnum,
   setId: string,
   cardSet: ICardSet,
@@ -40,5 +41,6 @@ export type ICard = {
   level: string,
   item: HeldItemType,
   energyType: CardEnergyTypeEnum,
-  userCardPossessions: IUserCardPossession[]
+  userCardPossessions: IUserCardPossession[],
+  cardAdditionalPrinting: ICardAdditionalPrinting[]
 }

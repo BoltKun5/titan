@@ -1,6 +1,8 @@
 import { ClickAwayListener } from "@mui/material";
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
+import { UserRoleEnum } from "../../../../local-core";
+import StoreContext from "../../hook/contexts/StoreContext";
 import './style.scss';
 
 export const HeaderComponent: React.FC<{ forceRender: boolean, setForceRender: Function }> = ({ forceRender, setForceRender }) => {
@@ -15,6 +17,8 @@ export const HeaderComponent: React.FC<{ forceRender: boolean, setForceRender: F
     navigate('/');
     setForceRender(!forceRender);
   }
+
+  const { user } = useContext(StoreContext);
 
   const location = useLocation();
 
@@ -49,6 +53,9 @@ export const HeaderComponent: React.FC<{ forceRender: boolean, setForceRender: F
         isProfileDropdownOpen && (
           <ClickAwayListener onClickAway={() => setIsProfileDropdownOpen(false)}>
             <div className="HeaderComponent-profileOptions">
+              {user.role === UserRoleEnum['ADMIN'] && (
+                <Link to="/admin"><div className="HeaderComponent-profileButtons">Administration</div></Link>
+              )}
               <div className="HeaderComponent-profileButtons" onClick={() => disconnect()}>Se déconnecter</div>
             </div>
           </ClickAwayListener>

@@ -20,6 +20,10 @@ export class loggedApi {
   public static post = (url: string, data: any | undefined = undefined, config: AxiosRequestConfig | undefined = undefined): Promise<AxiosResponse<any, any>> => {
     return this.getAxiosInstance(localStorage.getItem("token")).post(url, data, config)
   }
+
+  public static delete = (url: string, config: AxiosRequestConfig<any> | undefined = undefined): Promise<AxiosResponse<any, any>> => {
+    return this.getAxiosInstance(localStorage.getItem("token")).delete(url, config)
+  }
 }
 
 export const api = axios.create({

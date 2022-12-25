@@ -1,17 +1,27 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from "react";
 import { Route, Routes } from "react-router-dom";
 import { Login } from "./pages/Login/Login";
 import { CardManager } from "./pages/CardManager/CardManager";
-import { DevelopmentTool } from "./pages/DevelopmentTool/DevelopmentTool";
-import { HistoricPage } from './pages/HistoricPage/HistoricPage';
-import { SignUp } from './pages/SignUp/SignUp';
-import { Opening } from './pages/Opening/Opening';
-import { HeaderComponent } from './components/HeaderComponent/HeaderComponent';
-import StoreContext from './hook/contexts/StoreContext';
-import { CardSetFilterInterface, CardTypeEnum, ICard, ICardSerie, ICardSet, PaginationData } from '../../local-core';
-import { api } from './axios';
-import { StatPage } from './pages/StatPage/StatPage';
-import { initialRarityFilter } from './pages/CardManager/CardManagerUtils';
+import { AdminPage } from "./pages/AdminPage/AdminPage";
+import { HistoricPage } from "./pages/HistoricPage/HistoricPage";
+import { SignUp } from "./pages/SignUp/SignUp";
+import { Opening } from "./pages/Opening/Opening";
+import { HeaderComponent } from "./components/HeaderComponent/HeaderComponent";
+import StoreContext from "./hook/contexts/StoreContext";
+import {
+  CardSetFilterInterface,
+  CardTypeEnum,
+  ICard,
+  ICardSerie,
+  ICardSet,
+  PaginationData,
+} from "../../local-core";
+import { api } from "./axios";
+import { StatPage } from "./pages/StatPage/StatPage";
+import { initialRarityFilter } from "./pages/CardManager/CardManagerUtils";
+import { INotificationElement } from "./local-core/interface";
+import { Loader } from "./components/UI/Loader/LoaderComponent";
+import { ITag } from "../../local-core/types/models/tag.dto";
 
 export const App: React.FC = () => {
   // Données de la base
@@ -21,9 +31,9 @@ export const App: React.FC = () => {
   const [order, setOrder] = useState<string>("default");
 
   // Autres
-  const [collectionMode, setCollectionMode] = useState<boolean>(false);
+  const [collectionMode, setCollectionMode] = useState<boolean>(true);
   const [separateReverse, setSeparateReverse] = useState<boolean>(false);
-  const [showUnowned, setShowUnowned] = useState<boolean>(false);
+  const [showUnowned, setShowUnowned] = useState<boolean>(true);
 
   const [showOptionCards, setShowOptionCards] = useState(false);
   const [page, setPage] = useState(1);
@@ -31,14 +41,23 @@ export const App: React.FC = () => {
   const [massInput, setMassInput] = useState(false);
 
   // Filtres
-  const [cardSetFilter, setCardSetFilter] = useState<CardSetFilterInterface[]>([]);
+  const [cardSetFilter, setCardSetFilter] = useState<
+    CardSetFilterInterface[] | null
+  >(null);
   const [nameFilter, setNameFilter] = useState<string>("");
   const [typeFilter, setTypeFilter] = useState<CardTypeEnum[]>([]);
   const [rarityFilter, setRarityFilter] = useState<any[]>(initialRarityFilter);
 
-  const [series, setSeries] = useState<ICardSerie[]>([]);
+  const [series, setSeries] = useState<ICardSerie[] | null>(null);
+  const [tags, setTags] = useState<ITag[] | null>(null);
 
   const [forceRender, setForceRender] = useState(false);
+
+  const [notifications, setNotifications] = useState<INotificationElement[]>(
+    []
+  );
+
+  const user = JSON.parse(localStorage.getItem("user") ?? "{}");
 
   const fetchSeries = useCallback(async () => {
     const response = await api.get(`/series/allSeries`);
@@ -46,27 +65,31 @@ export const App: React.FC = () => {
   }, []);
 
   const resetAllFilters = () => {
-    setCardSetFilter(cardSetFilter.map((element) => {
-      element.status = false;
-      return element
-    }));
+    if (!cardSetFilter) return;
+    setCardSetFilter(
+      cardSetFilter.map((element) => {
+        element.status = false;
+        return element;
+      })
+    );
     const nameFilterElement = document.querySelector("#nameFilter");
     if (nameFilterElement) {
       (nameFilterElement as HTMLInputElement).value = "";
     }
     setNameFilter("");
-    setRarityFilter(rarityFilter.map((filter) => {
-      filter.value = false
-      return filter
-    }))
-  }
+    setRarityFilter(
+      rarityFilter.map((filter) => {
+        filter.value = false;
+        return filter;
+      })
+    );
+  };
 
   useEffect(() => {
-    if (series.length > 0) {
-      return;
+    if (!series) {
+      fetchSeries();
     }
-    fetchSeries();
-  }, [series, fetchSeries]);
+  }, [series, fetchSeries, tags, setTags]);
 
   const store = {
     series,
@@ -94,8 +117,13 @@ export const App: React.FC = () => {
     pagination,
     setPagination,
     massInput,
-    setMassInput
-  }
+    setMassInput,
+    user,
+    notifications,
+    setNotifications,
+    tags,
+    setTags,
+  };
 
   useEffect(() => {
     if (series) {
@@ -109,39 +137,47 @@ export const App: React.FC = () => {
             categoryCode: serie.code,
             status: false,
             code: set.code,
-          })
-        })
-      })
+          });
+        });
+      });
       setCardSetFilter(setFilterList);
     }
   }, [series]);
 
   const showHeader = () => {
-    const hideHeaderPaths = ['/', '/signup', '/devtool'];
+    const hideHeaderPaths = ["/", "/signup", "/devtool"];
     return !hideHeaderPaths.includes(window.location.pathname);
-  }
+  };
 
-  return <>
-    {series.length > 0 && cardSetFilter.length > 0 ? (
-      <div className="main">
-        <div className="content">
-          <StoreContext.Provider value={store} >
-            {showHeader() && <HeaderComponent forceRender={forceRender} setForceRender={setForceRender} />}
-            <Routes>
-              <Route path="/" element={<Login />} />
-              <Route path="/cards" element={<CardManager />} />
-              <Route path="/opening" element={<Opening />} />
-              <Route path="/stats" element={<StatPage />} />
-              <Route path="/devtool" element={<DevelopmentTool />} />
-              <Route path="/historic" element={<HistoricPage />} />
-              <Route path="/signup" element={<SignUp />} />
-            </Routes>
-          </StoreContext.Provider>
+  return (
+    <>
+      {series && cardSetFilter ? (
+        <div className="main">
+          <div className="content">
+            <StoreContext.Provider value={store}>
+              {showHeader() && (
+                <HeaderComponent
+                  forceRender={forceRender}
+                  setForceRender={setForceRender}
+                />
+              )}
+              <Routes>
+                <Route path="/" element={<Login />} />
+                <Route path="/cards" element={<CardManager />} />
+                <Route path="/opening" element={<Opening />} />
+                <Route path="/stats" element={<StatPage />} />
+                <Route path="/admin" element={<AdminPage />} />
+                <Route path="/historic" element={<HistoricPage />} />
+                <Route path="/signup" element={<SignUp />} />
+              </Routes>
+            </StoreContext.Provider>
+          </div>
         </div>
-      </div>
-    ) : (
-      <div></div>
-    )
-    }
-  </>
-}
+      ) : (
+        <div>
+          <Loader />
+        </div>
+      )}
+    </>
+  );
+};

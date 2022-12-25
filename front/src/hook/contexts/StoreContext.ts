@@ -1,41 +1,40 @@
-import { StoreType } from './../../front-types/context';
+import { StoreType } from "../../local-core/context";
 import React from "react";
 
 export default React.createContext<StoreType>({
-  series: [],
-  cardSetFilter: [],
-  setCardSetFilter: () => {
-  },
+  series: null,
+  cardSetFilter: null,
+  setCardSetFilter: () => {},
   nameFilter: "",
-  setNameFilter: () => {
-  },
-  resetAllFilters: () => {
-  },
+  setNameFilter: () => {},
+  resetAllFilters: () => {},
   rarityFilter: [],
-  setRarityFilter: () => {
-  },
+  setRarityFilter: () => {},
   order: "",
-  setOrder: () => {
-  },
+  setOrder: () => {},
   collectionMode: false,
-  setCollectionMode: () => {
-  },
+  setCollectionMode: () => {},
   separateReverse: false,
-  setSeparateReverse: () => {
-  },
+  setSeparateReverse: () => {},
   showUnowned: false,
-  setShowUnowned: () => {
-  },
+  setShowUnowned: () => {},
   cards: [],
-  setCards: () => {
-  },
+  setCards: () => {},
   showOptionCards: false,
-  setShowOptionCards: () => {
-  },
+  setShowOptionCards: () => {},
   page: 1,
-  setPage: () => { },
+  setPage: () => {},
   pagination: null,
-  setPagination: () => { },
+  setPagination: () => {},
   massInput: false,
-  setMassInput: () => { }
-})
+  setMassInput: () => {},
+  user: {
+    id: "",
+    role: 0,
+    showName: "",
+  },
+  notifications: [],
+  setNotifications: () => {},
+  tags: null,
+  setTags: () => {},
+});

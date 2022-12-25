@@ -16,6 +16,6 @@
     "noEmit": true,
     "jsx": "react-jsx"
   },
-  "include": ["src", "src/front-types/context.ts"],
+  "include": ["src", "src/local-core/context.ts"],
   "references": [{ "path": "./tsconfig.node.json" }]
 }

@@ -4,10 +4,10 @@ import { ResponsiveContainer, BarChart, XAxis, Tooltip, Bar, YAxis } from "recha
 import { CardRarityEnum, StatisticsDataType } from "../../../../local-core";
 import StoreContext from "../../hook/contexts/StoreContext";
 import { StatCardComponent } from "../../components/StatCardComponent/StatCardComponent";
-import { useFetchData } from "../../hook/api/cards";
 import { CardManagerFilterComponent } from "../../components/CardManagerFilterComponent/CardManagerFilterComponent";
 import { SwipeCheckboxComponent } from "../../components/UI/SwipeCheckboxComponent/SwipeCheckboxComponent";
 import { useState, useContext, useCallback, useEffect } from 'react';
+import { useFetchData } from '../../hook/api/cards';
 
 export const StatPage: React.FC = () => {
 
@@ -44,7 +44,8 @@ export const StatPage: React.FC = () => {
     }
 
     let response;
-    params.unowned = 'show'
+    params.unowned = 'show';
+    params.stats = true;
     response = await fetch('/cardlist/stats', params);
     setStats((response as any).data);
   }, [cardSetFilter, nameFilter, collectionMode, showUnowned, order, page])

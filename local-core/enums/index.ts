@@ -7,4 +7,9 @@ export * from "./card-rarity.enum";
 export * from "./card-trainer-type.enum";
 export * from "./card-damage-modification-type.enum";
 export * from "./card-ability-type.enum";
-export * from './user-role.enum'
+export * from "./user-role.enum";
+export * from "./front.enum";
+export * from "./admin-config-type.enum";
+export * from "./card-variation.enum";
+export * from "./tag-type.enum";
+export * from "./card-additional-printing.enum";

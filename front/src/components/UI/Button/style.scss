@@ -6,9 +6,8 @@
 
   & button {
     color: $white;
-    background: $primary-radiant;
-    padding: 15px 10px;
     width: 100%;
+    height: 100%;
     clip-path: clipPath(15px);
     font-weight: bold;
     font-size: 20px;
@@ -17,18 +16,22 @@
     border: none;
     z-index: 3;
     position: relative;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 
     &:disabled {
       background: $white;
       color: $primary-border;
+      cursor: initial;
     }
   }
 
-  &:hover::before {
+  &:not(.disabled):hover::before {
     content: "";
     width: calc(100% + 10px);
     height: calc(100% + 10px);
-    background-color: $primary;
     position: absolute;
     top: -5px;
     left: -5px;
@@ -36,7 +39,7 @@
     z-index: 1;
   }
 
-  &:hover::after {
+  &:not(.disabled):hover::after {
     content: "";
     width: calc(100% + 8px);
     height: calc(100% + 8px);
@@ -48,11 +51,33 @@
     z-index: 2;
   }
 
-  &.size300 {
+  &.primary:not(.disabled) {
     & button {
-      width: 300px;
+      background: $primary;
     }
 
-    width: 300px;
+    &:not(.disabled):hover::before {
+      background-color: $primary;
+    }
+  }
+
+  &.green {
+    & button {
+      background: $green;
+    }
+
+    &:not(.disabled):hover::before {
+      background-color: $green;
+    }
+  }
+
+  &.red {
+    & button {
+      background: $red;
+    }
+
+    &:not(.disabled):hover::before {
+      background-color: $red;
+    }
   }
 }

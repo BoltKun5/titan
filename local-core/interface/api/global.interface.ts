@@ -1,4 +1,4 @@
-import { User } from "./../../../api/src/database";
+import { IUser } from "../../types";
 
 export interface IResponse<T> {
   data?: T;
@@ -6,7 +6,7 @@ export interface IResponse<T> {
 }
 
 export interface ICodeError {
-  code: string
+  code: string;
 }
 
 export interface IApiError {
@@ -17,7 +17,7 @@ export interface IApiError {
 }
 
 export interface IResponseLocals {
-  currentUser: User,
+  currentUser: IUser;
   responseBody?: IResponse<any>;
   controller: string;
   timer: {
@@ -26,4 +26,8 @@ export interface IResponseLocals {
     durationToFinish?: number;
     durationToClose?: number;
   };
+}
+
+export interface IResponseUnloggedLocals {
+  responseBody?: IResponse<any>;
 }
