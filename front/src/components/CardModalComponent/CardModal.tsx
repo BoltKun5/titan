@@ -33,7 +33,6 @@ export const CardModal: React.FC<{ card: ICard; closeModal: () => void }> = ({
 
   useEffect(() => {
     setLocalCardPossession([...card.userCardPossessions]);
-    card.userCardPossessions.map((e) => console.log(e.createdAt));
   }, []);
 
   const context = {
@@ -147,22 +146,6 @@ export const CardModal: React.FC<{ card: ICard; closeModal: () => void }> = ({
           })
         );
       }
-      card.userCardPossessions.map((e, index) =>
-        console.log(
-          "(" +
-            index +
-            ")" +
-            e.condition +
-            " - " +
-            e.grade +
-            " - " +
-            e.printingId +
-            " - " +
-            e.tags?.length +
-            " - " +
-            e.createdAt
-        )
-      );
     } catch (e) {
       console.log(e);
     }

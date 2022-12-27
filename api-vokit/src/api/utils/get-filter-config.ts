@@ -98,7 +98,8 @@ export const getFilterConfig = (query: IQuery, currentUser: IUser, type: string)
         as: 'userCardPossessions',
         required: query?.unowned ? query.unowned !== 'show' : false,
         duplicating: false,
-        order: [['createdAt', 'DESC']],
+        order: [['createdAt', 'ASC']],
+        separate: true,
         where: {
           ...(type === 'collection'
             ? {

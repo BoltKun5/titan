@@ -1,6 +1,6 @@
 import React, { useContext } from "react";
 
-import './style.scss';
+import "./style.scss";
 import { SwitchInputComponent } from "../SwitchInputComponent/SwitchInputComponent";
 import StoreContext from "../../hook/contexts/StoreContext";
 
@@ -13,7 +13,7 @@ export const CardManagerOptions: React.FC = () => {
     showUnowned,
     setShowUnowned,
     showOptionCards,
-    setShowOptionCards
+    setShowOptionCards,
   } = useContext(StoreContext);
 
   return (
@@ -21,36 +21,36 @@ export const CardManagerOptions: React.FC = () => {
       <div className="CardManagerOptions coloredCorner">
         <div className="CardManagerOptions-triangleContainer">
           <div className="CardManagerOptions-triangle" />
-        </div> <SwitchInputComponent
+        </div>
+        {/* <SwitchInputComponent
           value={collectionMode}
           isDisabled={false}
           modifyValue={setCollectionMode}
-          label={'Mode Collection'}
-          id={'collectionMode'}
-        />
-        <SwitchInputComponent
+          label={"Mode Collection"}
+          id={"collectionMode"}
+        /> */}
+        {/* <SwitchInputComponent
           value={separateReverse}
           isDisabled={!collectionMode}
           modifyValue={setSeparateReverse}
           label={'Séparer Reverse'}
           id={'separateReverse'}
-        />
-        <SwitchInputComponent
+        /> */}
+        {/* <SwitchInputComponent
           value={showUnowned}
           isDisabled={!collectionMode}
           modifyValue={setShowUnowned}
           label={'Afficher non possédées'}
           id={'showUnowned'}
-        />
+        /> */}
         <SwitchInputComponent
           value={showOptionCards}
           isDisabled={!collectionMode}
           modifyValue={setShowOptionCards}
-          label={'Afficher cartes outils'}
-          id={'showOptionCards'}
+          label={"Afficher cartes outils"}
+          id={"showOptionCards"}
         />
       </div>
     </>
-  )
-
-}
+  );
+};

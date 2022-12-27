@@ -91,7 +91,10 @@ export type CardListElement = {
   error?: string;
 };
 
-export const getImageSource = (card: ICard, highQuality: boolean): string => {
+export const getImageSource = (
+  card: ICard,
+  highQuality: boolean = false
+): string => {
   const isValid = !isNaN(Number(card.localId));
   if (isValid)
     return (

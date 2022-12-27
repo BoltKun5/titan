@@ -58,18 +58,10 @@
       margin-bottom: 10px;
 
       .ButtonComponent {
-        &:hover::before {
-          display: none;
-        }
 
         button {
-          width: 150px;
-          padding: 5px;
           font-size: 15px;
-          clip-path: clipPath(10px);
-          margin-top: 10px;
           background: $white;
-          color: $primary-bg;
         }
       }
     }
