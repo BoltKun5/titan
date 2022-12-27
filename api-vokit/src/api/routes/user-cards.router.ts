@@ -182,13 +182,13 @@ export const UserCardsRouter = (app: Router): Router => {
         }
       } catch (e) {
         console.log(e);
-        throw new Error('undefined');
+        throw new Error('UNDEFINED');
       }
     },
   );
 
   route.post(
-    '/createMultiplePossession',
+    '/multiple-possession',
     Auth,
     async (
       req: Request<
@@ -198,19 +198,20 @@ export const UserCardsRouter = (app: Router): Router => {
       >,
       res: Response<IResponse<ICreateMultiplePossessionResponse>, IResponseLocals>,
     ) => {
-      const boosterId = v4();
-      const results = [];
-      for (const card of req.body.cards) {
-        const result = (await UserCardPossession.create({
-          cardId: card.cardId,
-          userId: res.locals.currentUser.id,
-          boosterId: boosterId,
-          printingId: card.cardPrintingId,
-        })) as unknown as IUserCardPossession;
-        results.push(result);
-      }
+      try {
+        const boosterId = v4();
+        const data = req.body.cards.map((card) => {
+          card.boosterId = boosterId;
+          card.userId = res.locals.currentUser.id;
+          return card;
+        });
+        const results = await UserCardPossession.bulkCreate(data);
 
-      res.json({ data: { code: 'CARDS_UPDATED', result: results } });
+        res.json({ data: { result: results } });
+      } catch (e) {
+        throw new Error('UNDEFINED');
+        console.log(e);
+      }
     },
   );
 

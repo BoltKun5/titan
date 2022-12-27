@@ -14,7 +14,7 @@ import {
   initialCardList,
 } from "../../pages/CardManager/CardManagerUtils";
 import { api, loggedApi } from "../../axios";
-import { ICard } from "../../../../local-core";
+import { CardAdditionalPrintingTypeEnum, ICard } from "../../../../local-core";
 import StoreContext from "../../hook/contexts/StoreContext";
 import { ButtonComponent } from "../../components/UI/Button/ButtonComponent";
 import { SwipeCheckboxComponent } from "../../components/UI/SwipeCheckboxComponent/SwipeCheckboxComponent";
@@ -66,7 +66,7 @@ export const Opening: React.FC = () => {
       [series]
     );
     setSetList(_setList);
-  });
+  }, []);
 
   const handleChange = (ev: ChangeEvent<HTMLInputElement>) => {
     setCardSetSearch(ev.currentTarget.value);
@@ -177,10 +177,15 @@ export const Opening: React.FC = () => {
 
   const submit = () => {
     try {
-      loggedApi.post("usercards/incrementMany", {
+      loggedApi.post("usercards/multiple-possession", {
         cards: cardList.map((value) => ({
           cardId: value.card?.id,
-          type: value.type,
+          printingId:
+            value.type === "reverse"
+              ? value.card?.cardAdditionalPrinting?.find(
+                  (e) => e.type === CardAdditionalPrintingTypeEnum.REVERSE
+                )?.id
+              : null,
         })),
       });
     } catch (e) {}
@@ -388,7 +393,7 @@ export const Opening: React.FC = () => {
                   onClick={() => submit()}
                 >
                   <ButtonComponent
-                    label="Continuer"
+                    label="Valider"
                     disabled={
                       cardList.filter((el) => el.card === null).length !== 0
                     }

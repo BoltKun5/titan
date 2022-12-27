@@ -83,12 +83,13 @@ export interface ICreateMultiplePossessionBody {
   token: string;
   cards: {
     cardId: string;
-    cardPrintingId: string;
+    printingId: string;
+    userId?: string;
+    boosterId?: string;
   }[];
 }
 
 export interface ICreateMultiplePossessionResponse {
-  code: string;
   result: IUserCardPossession[];
 }
 
