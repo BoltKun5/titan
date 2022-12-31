@@ -38,9 +38,9 @@ export const HeaderComponent: React.FC<{ forceRender: boolean, setForceRender: F
         <Link to={'/opening'}>
           <div className={getButtonClassName('/opening')}>BOOSTER</div>
         </Link>
-        <Link to={'/historic'}>
+        {/* <Link to={'/historic'}>
           <div className={getButtonClassName('/historic')}>HISTORIQUE</div>
-        </Link>
+        </Link> */}
       </nav>
       <div className="HeaderComponent-misc">
         <div className="HeaderComponent-profile" onClick={() => setIsProfileDropdownOpen(true)}>
