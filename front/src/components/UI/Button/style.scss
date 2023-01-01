@@ -1,0 +1,83 @@
+@import "../../../scss/variables.scss";
+
+.ButtonComponent {
+  position: relative;
+  height: fit-content;
+
+  & button {
+    color: $white;
+    width: 100%;
+    height: 100%;
+    clip-path: clipPath(15px);
+    font-weight: bold;
+    font-size: 20px;
+    cursor: pointer;
+    box-sizing: content-box;
+    border: none;
+    z-index: 3;
+    position: relative;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    &:disabled {
+      background: $white;
+      color: $primary-border;
+      cursor: initial;
+    }
+  }
+
+  &:not(.disabled):hover::before {
+    content: "";
+    width: calc(100% + 10px);
+    height: calc(100% + 10px);
+    position: absolute;
+    top: -5px;
+    left: -5px;
+    clip-path: clipPath(18px);
+    z-index: 1;
+  }
+
+  &:not(.disabled):hover::after {
+    content: "";
+    width: calc(100% + 8px);
+    height: calc(100% + 8px);
+    background-color: $primary-bg;
+    position: absolute;
+    top: -4px;
+    left: -4px;
+    clip-path: clipPath(18px);
+    z-index: 2;
+  }
+
+  &.primary:not(.disabled) {
+    & button {
+      background: $primary;
+    }
+
+    &:not(.disabled):hover::before {
+      background-color: $primary;
+    }
+  }
+
+  &.green {
+    & button {
+      background: $green;
+    }
+
+    &:not(.disabled):hover::before {
+      background-color: $green;
+    }
+  }
+
+  &.red {
+    & button {
+      background: $red;
+    }
+
+    &:not(.disabled):hover::before {
+      background-color: $red;
+    }
+  }
+}

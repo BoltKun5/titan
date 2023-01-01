@@ -1,0 +1,58 @@
+@import "../../scss/variables.scss";
+
+.SignUp {
+  &-Page {
+    width: 100%;
+    height: 100%;
+    display: flex;
+  }
+
+  &-Form {
+    padding: 0 0 20px 0;
+    font-size: 30px;
+    width: 400px;
+    min-height: 600px;
+    justify-content: center;
+    align-items: center;
+    margin: auto;
+    display: flex;
+    flex-direction: column;
+    background-color: #181526;
+    color: #f1f5fe;
+  }
+
+  &-toSignIn {
+    font-size: 15px;
+    width: 290px;
+    margin-bottom: 10px;
+    display: flex;
+    justify-content: center;
+
+    & a {
+      text-decoration: none;
+      font-weight: bold;
+      color: $primary;
+      margin-left: 5px;
+    }
+  }
+
+  &-errorMessage {
+    font-size: 15px;
+    max-width: 250px;
+    max-height: 150px;
+    color: $white;
+    border: 1px solid $white;
+    padding: 10px;
+    margin: auto 0;
+  }
+
+  &-inputs {
+    margin: 15px 0 10px;
+    justify-content: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+
+}

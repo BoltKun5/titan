@@ -1,0 +1,21 @@
+$primary: #3b99f1;
+$secondary: #1D4C78;
+$tableHeader: #1e324f;
+$white-bg: #363850;
+$white: #c9c9c9;
+$primary-bg: #161827;
+$primary-border: #292929;
+$red: #7a1c1c;
+$green: #096e06;
+$dark: #0d0e16;
+
+@function clipPath($offset) {
+  @return polygon($offset 0%,
+    100% 0%,
+    100% calc(100% - $offset),
+    calc(100% - $offset) 100%,
+    0% 100%,
+    0% $offset);
+}
+
+$primary-radiant: radial-gradient(hsl(209, 61%, 50%), $primary)

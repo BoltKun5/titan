@@ -1,0 +1,118 @@
+@import "../../scss/variables.scss";
+
+.CategorizedAutocompleteChecklist {
+  width: 400px;
+  position: relative;
+  display: flex;
+  scrollbar-color: $primary rgb(41, 41, 41);
+
+  &-fastFilterIcon {
+    position: absolute;
+    top: 32px;
+    right: 10px;
+    cursor: pointer;
+
+    & svg {
+      width: 35px;
+      height: 35px;
+      color: $primary;
+    }
+  }
+
+
+  &-dropdown {
+    border: 1px solid rgb(41, 41, 41);
+    width: 401px;
+    display: none;
+    position: absolute;
+    overflow: hidden auto;
+    top: calc(100% - 20px);
+    left: 0;
+    flex-direction: column;
+    word-break: normal;
+    text-rendering: optimizeLegibility;
+    background-color: $white;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Open Sans", sans-serif;
+    box-shadow: 0 5px 5px -3px rgba(106, 191, 248, 0.2), 0 8px 10px 1px rgba(86, 255, 255, 0.14), 0 3px 14px 2px rgba(58, 189, 230, 0.12);
+    max-height: 400px;
+    z-index: 999;
+
+    &.show {
+      display: flex;
+    }
+
+    &Element {
+      display: flex;
+      align-items: center;
+      padding: 15px 0 15px 30px;
+      cursor: pointer;
+      background-color: #161827;
+      color: $white;
+
+      &:hover {
+        --mc-r: 59;
+        --mc-g: 153;
+        --mc-b: 241;
+        --c: radial-gradient(circle at bottom left, rgba(var(--mc-r), var(--mc-g), var(--mc-b), 1) 0%, rgba(var(--mc-r), var(--mc-g), var(--mc-b), 0) 7px),
+          radial-gradient(circle at bottom right, rgba(var(--mc-r), var(--mc-g), var(--mc-b)) 0, rgba(var(--mc-r), var(--mc-g), var(--mc-b), 0) 7px),
+          radial-gradient(circle at top left, rgba(var(--mc-r), var(--mc-g), var(--mc-b)) 0, rgba(var(--mc-r), var(--mc-g), var(--mc-b), 0) 7px),
+          radial-gradient(circle at top right, rgba(var(--mc-r), var(--mc-g), var(--mc-b)) 0, rgba(var(--mc-r), var(--mc-g), var(--mc-b), 0) 7px);
+        --w: 10px;
+        --b: 1px;
+
+        position: relative;
+
+
+        &:after {
+          content: "";
+          position: absolute;
+          z-index: 1;
+          inset: 0;
+          background: var(--c, red);
+          --_g: #0000 90deg, #000 0;
+          --_p: var(--w) var(--w) no-repeat;
+          --mask:
+            conic-gradient(from 90deg at top var(--b) left var(--b), var(--_g)) 0 0 / var(--_p),
+            conic-gradient(from 180deg at top var(--b) right var(--b), var(--_g)) 100% 0 / var(--_p),
+            conic-gradient(from 0deg at bottom var(--b) left var(--b), var(--_g)) 0 100% / var(--_p),
+            conic-gradient(from -90deg at bottom var(--b) right var(--b), var(--_g)) 100% 100% / var(--_p);
+          -webkit-mask: var(--mask);
+          mask: var(--mask);
+        }
+      }
+
+
+
+      &.selected {
+        color: rgb(59, 153, 241);
+        text-shadow: rgb(59 153 241) 0 0 20px;
+      }
+    }
+  }
+
+  &-title {
+    font-size: 1rem;
+    padding: 20px 15px;
+    font-weight: bold;
+    background: linear-gradient(to right, rgb(37, 61, 110), rgb(2, 36, 59));
+    color: $white;
+    cursor: pointer;
+
+    &:hover {
+      color: rgb(59, 153, 241);
+      text-shadow: rgb(59 153 241) 0 0 20px;
+    }
+
+    &.selected {
+      color: rgb(59, 153, 241);
+      text-shadow: rgb(59 153 241) 0 0 20px;
+
+      &:hover {
+        filter: brightness(1.1);
+      }
+    }
+  }
+}

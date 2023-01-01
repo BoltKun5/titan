@@ -2,8 +2,10 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import Joi from "joi";
 import { Link, useNavigate } from "react-router-dom";
-import './Login.scss'
+import './style.scss'
 import { HttpErrorCode, ISigninAuthBody, ISigninAuthResponse } from "../../../../local-core";
+import { TextInputComponent } from "../../components/UI/TextInputComponent/TextInputComponent";
+import { ButtonComponent } from "../../components/UI/Button/ButtonComponent";
 
 export const Login: React.FC = () => {
   const [errorMessage, setErrorMessage] = useState("");
@@ -13,6 +15,7 @@ export const Login: React.FC = () => {
 
   const handleSubmit = async (event: React.SyntheticEvent) => {
     event.preventDefault();
+    setErrorMessage("");
 
     const querySchema = Joi.object<ISigninAuthBody>({
       username: Joi.string().min(3).max(20).required(),
@@ -27,7 +30,7 @@ export const Login: React.FC = () => {
     }
 
     try {
-      const response: { data: { data: ISigninAuthResponse } } = await axios.post("http://localhost:10101/api/auth/signin", {
+      const response: { data: { data: ISigninAuthResponse } } = await axios.post("https://localhost:10101/api/auth/signin", {
         ...result.value,
       });
       localStorage.setItem('token', response.data.data.token);
@@ -56,23 +59,16 @@ export const Login: React.FC = () => {
   })
 
   return <div className="Login-Page">
-    <form onSubmit={handleSubmit} className="Login-Form">
+    <form onSubmit={handleSubmit} className="Login-Form coloredCorner">
       <h2>Connexion</h2>
-      <div className="Login-textInputContainer">
-        <label>Nom de compte</label>
-        <input className="Login-textInput"
-          value={username}
-          onChange={e =>
-            setUsername(e.target.value)
-          } />
+      <div className="Login-inputs">
+        <TextInputComponent value={username} modifyValue={setUsername} label={"Nom de compte"} id="username" />
+        <TextInputComponent value={password} modifyValue={setPassword} label={"Mot de passe"} id="password" type={"password"} />
       </div>
-      <div className="Login-textInputContainer">
-        <label>Mot de passe</label>
-        <input className="Login-textInput" type={"password"} value={password} onChange={e => setPassword(e.target.value)} />
-      </div>
-      {(errorMessage !== "") && <div className="Login-errorMessage">{errorMessage}</div>}
+      <ButtonComponent label="Se connecter" type="submit" />
+
+      <div className="Login-errorMessage" style={{ ...(errorMessage ? {} : { border: "none" }) }}>{errorMessage}</div>
       <span className="Login-toSignUp">Pas encore de compte ? <Link to="/signup">Inscrivez-vous</Link></span>
-      <button className="button" type="submit">Se connecter</button>
     </form>
   </div>
 };

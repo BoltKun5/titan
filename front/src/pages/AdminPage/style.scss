@@ -1,0 +1,53 @@
+@import "../../scss/variables.scss";
+
+.AdminPage {
+
+  &-401 {
+    width: 400px;
+    height: 120px;
+    background-color: $primary-bg;
+    color: $white;
+    font-size: 30px;
+    margin: auto;
+    margin-top: 150px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  &-container {
+    width: 100%;
+    height: calc(100% - 76px);
+    display: flex;
+  }
+
+  &-content {
+    width: calc(100% - 40px);
+    margin: auto;
+    height: calc(100% - 40px);
+    display: flex;
+    background-color: $primary-bg;
+  }
+
+  &-tabSelection {
+    width: 300px;
+    border-right: 1px solid $primary-border;
+    height: 100%;
+    background-color: $dark;
+  }
+
+  &-tab {
+    height: 80px;
+    font-size: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: $white;
+    border-bottom: 1px solid $primary-border;
+    cursor: pointer;
+  }
+
+  &-component {
+    flex: 1 1 auto
+  }
+}

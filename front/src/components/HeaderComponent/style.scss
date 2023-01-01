@@ -1,0 +1,172 @@
+@import "../../scss/variables.scss";
+
+.HeaderComponent {
+  background-color: #161827;
+  border-bottom: rgb(41, 41, 41) 1px solid;
+  display: flex;
+  height: 75px;
+  margin: 0;
+  z-index: 1000;
+  position: relative;
+
+  a {
+    text-decoration: none;
+  }
+
+  &-navButtons {
+    padding-top: 10px;
+    display: flex;
+  }
+
+  &-navButton {
+    color: $white;
+    font-size: 25px;
+    font-weight: bold;
+    padding: 16px 35px;
+    cursor: pointer;
+
+    &:hover:not(.HeaderComponent-mainButton) {
+      --mc-r: 59;
+      --mc-g: 153;
+      --mc-b: 241;
+      --c: radial-gradient(circle at bottom left, rgba(var(--mc-r), var(--mc-g), var(--mc-b), 1) 0%, rgba(var(--mc-r), var(--mc-g), var(--mc-b), 0) 7px),
+        radial-gradient(circle at bottom right, rgba(var(--mc-r), var(--mc-g), var(--mc-b)) 0, rgba(var(--mc-r), var(--mc-g), var(--mc-b), 0) 7px),
+        radial-gradient(circle at top left, rgba(var(--mc-r), var(--mc-g), var(--mc-b)) 0, rgba(var(--mc-r), var(--mc-g), var(--mc-b), 0) 7px),
+        radial-gradient(circle at top right, rgba(var(--mc-r), var(--mc-g), var(--mc-b)) 0, rgba(var(--mc-r), var(--mc-g), var(--mc-b), 0) 7px);
+      --w: 10px;
+      --b: 1px;
+
+      position: relative;
+      display: inline-flex;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+
+      &>* {
+        z-index: 1;
+      }
+
+      &:after {
+        content: "";
+        position: absolute;
+        z-index: 0;
+        inset: 0;
+        background: var(--c, red);
+        --_g: #0000 90deg, #000 0;
+        --_p: var(--w) var(--w) no-repeat;
+        --mask:
+          conic-gradient(from 90deg at top var(--b) left var(--b), var(--_g)) 0 0 / var(--_p),
+          conic-gradient(from 180deg at top var(--b) right var(--b), var(--_g)) 100% 0 / var(--_p),
+          conic-gradient(from 0deg at bottom var(--b) left var(--b), var(--_g)) 0 100% / var(--_p),
+          conic-gradient(from -90deg at bottom var(--b) right var(--b), var(--_g)) 100% 100% / var(--_p);
+        -webkit-mask: var(--mask);
+        mask: var(--mask);
+      }
+    }
+  }
+
+  &-mainButton {
+    color: $primary;
+    text-shadow: $primary 0 0 30px;
+
+    &:hover {
+      filter: brightness(1.1)
+    }
+  }
+
+  &-selectedButton:not(.HeaderComponent-mainButton) {
+    --mc-r: 59;
+    --mc-g: 153;
+    --mc-b: 241;
+    --c: radial-gradient(circle at bottom left, rgba(var(--mc-r), var(--mc-g), var(--mc-b), 1) 0%, rgba(var(--mc-r), var(--mc-g), var(--mc-b), 0) 7px),
+      radial-gradient(circle at bottom right, rgba(var(--mc-r), var(--mc-g), var(--mc-b)) 0, rgba(var(--mc-r), var(--mc-g), var(--mc-b), 0) 7px),
+      radial-gradient(circle at top left, rgba(var(--mc-r), var(--mc-g), var(--mc-b)) 0, rgba(var(--mc-r), var(--mc-g), var(--mc-b), 0) 7px),
+      radial-gradient(circle at top right, rgba(var(--mc-r), var(--mc-g), var(--mc-b)) 0, rgba(var(--mc-r), var(--mc-g), var(--mc-b), 0) 7px);
+    --w: 10px;
+    --b: 1px;
+
+    position: relative;
+    box-sizing: border-box;
+    display: inline-flex;
+    justify-content: center;
+    background-color: rgba(59, 153, 241, 0.1);
+    align-items: center;
+    text-align: center;
+
+    &>* {
+      z-index: 1;
+    }
+
+    &:before {
+      content: "";
+      position: absolute;
+      width: 100%;
+      background-color: $primary;
+      bottom: 0;
+      z-index: 1;
+      height: 1px;
+    }
+
+    &:after {
+      content: "";
+      position: absolute;
+      z-index: 0;
+      inset: 0;
+      background: var(--c, red);
+      --_g: #0000 90deg, #000 0;
+      --_p: var(--w) var(--w) no-repeat;
+      --mask:
+        conic-gradient(from 90deg at top var(--b) left var(--b), var(--_g)) 0 0 / var(--_p),
+        conic-gradient(from 180deg at top var(--b) right var(--b), var(--_g)) 100% 0 / var(--_p),
+        conic-gradient(from 0deg at bottom var(--b) left var(--b), var(--_g)) 0 100% / var(--_p),
+        conic-gradient(from -90deg at bottom var(--b) right var(--b), var(--_g)) 100% 100% / var(--_p);
+      -webkit-mask: var(--mask);
+      mask: var(--mask);
+    }
+  }
+
+  &-misc {
+    margin-left: auto;
+    margin-right: 25px;
+    display: flex;
+  }
+
+  &-profile {
+    display: flex;
+
+    &Picture {
+      width: 50px;
+      height: 50px;
+      cursor: pointer;
+
+      & img {
+        width: 100%;
+      }
+    }
+
+    margin: auto;
+    border-radius: 10000px;
+    border: 1px solid $primary;
+  }
+
+  &-profileOptions {
+    color: $white;
+    position: absolute !important;
+    background-color: #161827;
+    top: calc(100% + 1px);
+    right: 0;
+  }
+
+  &-profileButtons {
+    padding: 10px 30px;
+    border: 1px solid $primary-border;
+    border-top: 1px solid $primary-bg;
+    transform: translateY(-1px);
+
+    &:hover {
+      color: $primary;
+      cursor: pointer;
+    }
+  }
+
+}

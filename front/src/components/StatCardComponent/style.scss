@@ -1,0 +1,52 @@
+@import "../../scss/variables.scss";
+
+.StatCard {
+  width: 100%;
+  display: flex;
+  background: $white-bg;
+  border: 1px solid #2c2c2c;
+  margin: 10px 0;
+  color: $white;
+
+  &-informations {
+    flex: 1 0;
+    padding: 10px 0 10px 10px;
+  }
+
+  &-icon {
+    width: 50px;
+    height: 50;
+    margin: auto 10px;
+    border-radius: 100%;
+    display: flex;
+
+    & img {
+      width: 100%;
+      margin: auto;
+    }
+  }
+
+  &-label {
+    font-size: 18px;
+    font-weight: bold;
+  }
+
+  &-total {}
+
+  &-distinctQuantity {
+    font-size: 25px;
+    width: fit-content;
+    border-radius: 3px;
+    font-weight: bold;
+  }
+
+  &-separator {
+    font-weight: bold;
+    font-size: 25px;
+  }
+
+  &-possibleQuantity {
+    font-weight: bold;
+    font-size: 25px;
+  }
+}

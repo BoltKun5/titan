@@ -1,0 +1,31 @@
+@import "../../../scss/variables.scss";
+
+.TextInputComponent {
+  position: relative;
+
+  & input {
+    padding: 20px 15px;
+    background-color: transparent;
+    border: 1px solid $primary;
+    margin: 20px 0;
+    color: white;
+
+    &:focus-visible,
+    :active,
+    :focus {
+      outline: none;
+    }
+
+  }
+
+  & label {
+    position: absolute;
+    left: -5px;
+    top: -5px;
+    color: $secondary;
+    background: $primary-radiant;
+    padding: 10px;
+    clip-path: clipPath(10px);
+    font-size: 15px;
+  }
+}

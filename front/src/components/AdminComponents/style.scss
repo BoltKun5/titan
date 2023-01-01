@@ -1,0 +1,58 @@
+@import "../../scss/variables.scss";
+
+.DataImport {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  &-buttons {
+    width: 50%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 90%;
+
+    &>* {
+      margin: 10px;
+    }
+  }
+
+  &-setRenames {
+    margin-left: 20px;
+    max-width: 400px;
+    width: 50%;
+    height: 90%;
+    overflow: auto;
+    color: $white;
+    border: 1px solid $primary-border;
+    padding: 10px;
+  }
+
+  &-setRename {
+    display: flex;
+    align-items: center;
+    margin-bottom: 5px;
+    cursor: pointer;
+
+    &.selected {
+      background-color: $primary-border;
+    }
+
+    & span {
+      width: 50%;
+      border-bottom: 1px solid $primary-border;
+      padding: 1px 0;
+    }
+  }
+
+  &-renameEdition {
+    border: 1px solid $primary-border;
+    padding: 30px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+}
