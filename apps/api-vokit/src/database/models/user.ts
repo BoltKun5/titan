@@ -1,0 +1,73 @@
+import { Overwrite } from 'abyss_core';
+import {
+  DataType,
+  Column,
+  IsUUID,
+  PrimaryKey,
+  Table,
+  DefaultScope,
+  Scopes,
+  Default,
+  HasMany,
+  AllowNull,
+} from 'sequelize-typescript';
+import { v4 as uuidv4 } from 'uuid';
+import { IUser } from 'vokit_core';
+import { WithRequired } from '../../core';
+import { CustomModel } from '../custom/custom-model.model';
+import { Tag } from './tag';
+import { UserCardPossession } from './user-card-possession';
+
+export type ModelUser = Overwrite<
+  IUser,
+  {
+    cards: UserCardPossession[];
+    tags: Tag[];
+  }
+>;
+
+export type CreationModelUser = WithRequired<
+  Partial<IUser>,
+  'role' | 'shownName' | 'username' | 'password'
+>;
+
+@DefaultScope(() => ({}))
+@Scopes(() => ({}))
+@Table({ tableName: 'user', paranoid: false, timestamps: true })
+export class User extends CustomModel<IUser, CreationModelUser> implements ModelUser {
+  @IsUUID(4)
+  @PrimaryKey
+  @Default(() => uuidv4())
+  @Column
+  id: string;
+
+  @AllowNull(false)
+  @Column({
+    type: DataType.INTEGER,
+  })
+  role: number;
+
+  @AllowNull(false)
+  @Column({
+    type: DataType.STRING,
+  })
+  shownName: string;
+
+  @AllowNull(false)
+  @Column({
+    type: DataType.STRING,
+  })
+  username: string;
+
+  @AllowNull(false)
+  @Column({
+    type: DataType.STRING,
+  })
+  password: string;
+
+  @HasMany(() => UserCardPossession)
+  cards: UserCardPossession[];
+
+  @HasMany(() => Tag)
+  tags: Tag[];
+}

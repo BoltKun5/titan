@@ -1,9 +1,0 @@
-export default {
-  port: 10101,
-  stackTraceLimit: 10,
-  auth: {
-    secretToken:
-      'cWCEWlAkhhVeYJmBJNgKBkFWOONAynoWn52lLyxSLge5gSZBZVVjBSObiJ1NaJ37DzkEfMUc88IHDZGWlS9OuN29ZNG54CfVNSCbzrNBcR3v7yEsomyJ4u01M3dua0hRkbGZRgAJ1HPUwqBFcLFK80QDFcUWPAYlbmbBuP1g1ncOQBRckbeSTNSBTwcnCArlxshaMMIISYkqxyPjp6DLMRFbumWp4wUesEbzv0amGACvbtffNnu3tDAHFcwaBreKdjFOeqCLoUq62Y3KGkpRPiJnKDaYqVikIqbDFMYC3acdB9TXIwBZQXhcmiB1Amq8R9tZ3k0CzjRNcn3Bvmf9q4JGKDnbhiwfozy7pfoUfyE3weddXCQnOIl6QYdefcL1MtqoqWcpBOB3bOePDHk9h0fFYjcIXBHK6UUQo6YsMA6p0iUdM51Gnlob45jEI3gtQlKw3lTiFsixefa94Y5RlIx1ulfgcapoENcW5UGbzB4PxRdEcLrK5XpCiiNA61su',
-    expiration: '30d',
-  },
-};
