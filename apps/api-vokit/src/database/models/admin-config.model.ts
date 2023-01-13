@@ -9,9 +9,9 @@ import {
   Default,
 } from 'sequelize-typescript';
 import { v4 as uuidv4 } from 'uuid';
-import { Overwrite } from 'abyss_core';
-import { AdminConfigTypeEnum, IAdminConfig } from '../../../../local-core';
 import { CustomModel } from '../custom/custom-model.model';
+import { AdminConfigTypeEnum, IAdminConfig, Overwrite } from 'vokit_core';
+import { WithRequired } from '../../core';
 
 export type ModelAdminConfig = Overwrite<
   IAdminConfig,
@@ -20,10 +20,18 @@ export type ModelAdminConfig = Overwrite<
   }
 >;
 
+export type CreationModelAdminConfig = WithRequired<
+  Partial<IAdminConfig>,
+  'type' | 'label' | 'name' | 'value'
+>;
+
 @DefaultScope(() => ({}))
 @Scopes(() => ({}))
 @Table({ tableName: 'adminConfig', paranoid: false, timestamps: false })
-export class AdminConfig extends CustomModel<ModelAdminConfig> implements ModelAdminConfig {
+export class AdminConfig
+  extends CustomModel<IAdminConfig, CreationModelAdminConfig>
+  implements ModelAdminConfig
+{
   @IsUUID(4)
   @PrimaryKey
   @Default(() => uuidv4())

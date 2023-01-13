@@ -10,14 +10,14 @@ import {
   BelongsTo,
   ForeignKey,
 } from 'sequelize-typescript';
-import AbyssCore, { APIMethod, WithRequired } from 'abyss_core';
 import { v4 as uuidv4 } from 'uuid';
 import { LogConsole } from '..';
 import { CustomModel } from '../custom/custom-model.model';
-import { ILogEndpoint } from 'abyss_storage_core';
+import { ILogEndpoint, APIMethod, Overwrite } from 'vokit_core';
+import { BaseEntity, WithRequired } from '../../core';
 
-export type ModelLogEndpoint = AbyssCore.BaseEntity<
-  AbyssCore.Overwrite<
+export type ModelLogEndpoint = BaseEntity<
+  Overwrite<
     ILogEndpoint,
     {
       logConsole: LogConsole;

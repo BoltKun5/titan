@@ -1,14 +1,9 @@
-import { ICardSerie } from "./card-serie.model";
-import { CardCountType } from "../dto/card-count.type";
-import { ICard } from "./card.model";
+import { CardCountType, ICard, ICardSerie } from '..';
 
 export type ICardSet = {
   id: string;
   name: string;
-  cardCount: null;
-  tcgOnline: string;
-  isPlayableInStandard: boolean;
-  isPlayableInExpanded: boolean;
+  cardCount: CardCountType;
   cards: ICard[];
   releaseDate: Date;
   code: string;

@@ -12,13 +12,14 @@ import {
 } from 'sequelize-typescript';
 import { v4 as uuidv4 } from 'uuid';
 import { CustomModel } from '../custom/custom-model.model';
-import { Overwrite } from 'abyss_core';
 import { Card } from './card';
-import { ICardAdditionalPrinting } from '../../../../local-core/types/models/card-additional-printing.dto';
+import { WithRequired } from '../../core';
 import {
-  CardAdditionalPrintingCreatorEnum,
+  Overwrite,
   CardAdditionalPrintingTypeEnum,
-} from '../../../../local-core/enums';
+  CardAdditionalPrintingCreatorEnum,
+} from 'vokit_core';
+import { ICardAdditionalPrinting } from 'vokit_core/src/types/interface/models/card-additional-printing.model';
 
 export type ModelCardAdditionalPrinting = Overwrite<
   ICardAdditionalPrinting,
@@ -27,11 +28,16 @@ export type ModelCardAdditionalPrinting = Overwrite<
   }
 >;
 
+export type CreationModelCardAdditionalPrinting = WithRequired<
+  Partial<ICardAdditionalPrinting>,
+  'cardId' | 'type' | 'name' | 'creator'
+>;
+
 @DefaultScope(() => ({}))
 @Scopes(() => ({}))
 @Table({ tableName: 'cardAdditionalPrinting', paranoid: false, timestamps: false })
 export class CardAdditionalPrinting
-  extends CustomModel<ModelCardAdditionalPrinting>
+  extends CustomModel<ICardAdditionalPrinting, CreationModelCardAdditionalPrinting>
   implements ModelCardAdditionalPrinting
 {
   @IsUUID(4)

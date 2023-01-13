@@ -1,4 +1,3 @@
-import { Overwrite } from 'abyss_core';
 import {
   DataType,
   Column,
@@ -12,9 +11,10 @@ import {
   Unique,
 } from 'sequelize-typescript';
 import { v4 as uuidv4 } from 'uuid';
-import { ICardSerie } from '../../../../local-core/types';
 import { CustomModel } from '../custom/custom-model.model';
-import { CardSet } from './card-set';
+import { CardSet } from './card-set.model';
+import { WithRequired } from '../../core';
+import { ICardSerie, Overwrite } from 'vokit_core';
 
 export type ModelCardSerie = Overwrite<
   ICardSerie,
@@ -23,10 +23,15 @@ export type ModelCardSerie = Overwrite<
   }
 >;
 
+export type CreationModelCardSerie = WithRequired<Partial<ICardSerie>, 'name' | 'code'>;
+
 @DefaultScope(() => ({}))
 @Scopes(() => ({}))
 @Table({ tableName: 'cardSerie', paranoid: false, timestamps: false })
-export class CardSerie extends CustomModel<ModelCardSerie> implements ModelCardSerie {
+export class CardSerie
+  extends CustomModel<ICardSerie, CreationModelCardSerie>
+  implements ModelCardSerie
+{
   @IsUUID(4)
   @PrimaryKey
   @Default(() => uuidv4())

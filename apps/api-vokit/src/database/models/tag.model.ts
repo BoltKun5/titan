@@ -1,7 +1,6 @@
-import { CardTag } from './card-tag';
-import { UserCardPossession } from './user-card-possession';
-import { ITag as ITag } from '../../../../local-core/types/models/tag.dto';
-import { User } from './user';
+import { CardTag } from './card-tag.model';
+import { UserCardPossession } from './user-card-possession.model';
+import { User } from './user.model';
 import {
   DataType,
   Column,
@@ -17,8 +16,8 @@ import {
 } from 'sequelize-typescript';
 import { v4 as uuidv4 } from 'uuid';
 import { CustomModel } from '../custom/custom-model.model';
-import { Overwrite } from 'abyss_core';
-import { TagTypeEnum } from '../../../../local-core/enums';
+import { WithRequired } from '../../core';
+import { ITag, Overwrite, TagTypeEnum } from 'vokit_core';
 
 export type ModelTag = Overwrite<
   ITag,
@@ -28,10 +27,12 @@ export type ModelTag = Overwrite<
   }
 >;
 
+export type CreationModelTag = WithRequired<Partial<ITag>, 'type' | 'name' | 'userId'>;
+
 @DefaultScope(() => ({}))
 @Scopes(() => ({}))
 @Table({ tableName: 'tag', paranoid: false, timestamps: false })
-export class Tag extends CustomModel<ModelTag> implements ModelTag {
+export class Tag extends CustomModel<ITag, CreationModelTag> implements ModelTag {
   @IsUUID(4)
   @PrimaryKey
   @Default(() => uuidv4())

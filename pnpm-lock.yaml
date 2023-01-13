@@ -47,7 +47,7 @@ importers:
       eslint-plugin-node: ^11.1.0
       eslint-plugin-prettier: ^3.4.0
       eslint-plugin-promise: ^5.1.0
-      express: ^4.17.1
+      express: ^4.17.14
       express-async-errors: ^3.1.1
       express-http-context: ^1.2.4
       express-list-endpoints: ^6.0.0

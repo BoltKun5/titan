@@ -1,4 +1,3 @@
-import { Overwrite } from 'abyss_core';
 import {
   DataType,
   Column,
@@ -12,11 +11,11 @@ import {
   AllowNull,
 } from 'sequelize-typescript';
 import { v4 as uuidv4 } from 'uuid';
-import { IUser } from 'vokit_core';
+import { IUser, Overwrite } from 'vokit_core';
 import { WithRequired } from '../../core';
 import { CustomModel } from '../custom/custom-model.model';
-import { Tag } from './tag';
-import { UserCardPossession } from './user-card-possession';
+import { Tag } from './tag.model';
+import { UserCardPossession } from './user-card-possession.model';
 
 export type ModelUser = Overwrite<
   IUser,

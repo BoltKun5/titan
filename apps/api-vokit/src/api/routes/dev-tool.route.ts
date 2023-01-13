@@ -1,4 +1,4 @@
-import { CardSerie } from '../../database/models/card-serie';
+import { CardSerie } from '../../database/models/card-serie.model';
 import { Request, Response, Router } from 'express';
 import asyncHandler from 'express-async-handler';
 import { Card, CardSet } from '../../database';

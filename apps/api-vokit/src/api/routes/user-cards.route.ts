@@ -23,11 +23,11 @@ import { IResponseLocals } from '../../../../local-core';
 import { IResponse } from '../../../../local-core';
 import { Request, Response, Router } from 'express';
 import Auth from '../middlewares/auth';
-import { UserCardPossession } from '../../database/models/user-card-possession';
+import { UserCardPossession } from '../../database/models/user-card-possession.model';
 import { v4 } from 'uuid';
-import { CardAdditionalPrinting } from '../../database/models/card-additional-printing';
-import { Tag } from '../../database/models/tag';
-import { CardTag } from '../../database/models/card-tag';
+import { CardAdditionalPrinting } from '../../database/models/card-additional-printing.model';
+import { Tag } from '../../database/models/tag.model';
+import { CardTag } from '../../database/models/card-tag.model';
 
 const route = Router();
 

@@ -1,57 +1,72 @@
-import { CardAdditionalPrinting } from './card-additional-printing';
-import { CardDexId } from './card-dex-id';
-import { CardDamageModification } from './card-damage-modification';
-import { CardAttack } from './card-attack';
 import {
-  DataType,
-  Column,
-  IsUUID,
-  PrimaryKey,
-  Table,
   DefaultScope,
   Scopes,
+  Table,
+  IsUUID,
+  PrimaryKey,
   Default,
-  BelongsTo,
+  Column,
+  DataType,
   ForeignKey,
+  BelongsTo,
   HasMany,
 } from 'sequelize-typescript';
-import { v4 as uuidv4 } from 'uuid';
-import { CardSet } from './card-set';
-import { CardType } from './card-type';
-import { CardAttribute } from './card-attribute';
-import { UserCardPossession } from './user-card-possession';
-import { Overwrite } from 'abyss_core';
 import {
-  CardCategoryEnum,
-  CardEnergyTypeEnum,
-  CardEvolutionStageEnum,
-  CardRarityEnum,
-  CardTrainerTypeEnum,
-  HeldItemType,
+  Overwrite,
   ICard,
-} from '../../../../local-core';
-import { CardAbility } from './card-ability';
+  CardRarityEnum,
+  CardCategoryEnum,
+  CardEvolutionStageEnum,
+  CardTrainerTypeEnum,
+  CardEnergyTypeEnum,
+} from 'vokit_core';
+import { WithRequired } from '../../core';
 import { CustomModel } from '../custom/custom-model.model';
+import { CardAdditionalPrinting } from './card-additional-printing.model';
+import { CardSet } from './card-set.model';
+import { CardType } from './card-type.model';
+import { UserCardPossession } from './user-card-possession.model';
+import { v4 as uuidv4 } from 'uuid';
 
 export type ModelCard = Overwrite<
   ICard,
   {
     cardSet: CardSet;
     types: CardType[];
-    attacks: CardAttack[];
-    abilities: CardAbility[];
-    damageModifications: CardDamageModification[];
-    attributes: CardAttribute[];
-    dexIds: CardDexId[];
     userCardPossessions: UserCardPossession[];
     cardAdditionalPrinting: CardAdditionalPrinting[];
   }
 >;
 
+export type CreationModelCard = WithRequired<
+  Partial<ICard>,
+  | 'name'
+  | 'rarity'
+  | 'category'
+  | 'setId'
+  | 'cardSet'
+  | 'hp'
+  | 'evolveFrom'
+  | 'stage'
+  | 'types'
+  | 'effect'
+  | 'retreat'
+  | 'regulationMark'
+  | 'trainerType'
+  | 'canBeReverse'
+  | 'isHolo'
+  | 'localId'
+  | 'globalId'
+  | 'description'
+  | 'energyType'
+  | 'userCardPossessions'
+  | 'cardAdditionalPrinting'
+>;
+
 @DefaultScope(() => ({}))
 @Scopes(() => ({ stats: {} }))
 @Table({ tableName: 'card', paranoid: false, timestamps: false })
-export class Card extends CustomModel<ModelCard> implements ModelCard {
+export class Card extends CustomModel<ICard, CreationModelCard> implements ModelCard {
   @IsUUID(4)
   @PrimaryKey
   @Default(() => uuidv4())
@@ -99,19 +114,10 @@ export class Card extends CustomModel<ModelCard> implements ModelCard {
   @HasMany(() => CardType)
   types: CardType[];
 
-  @HasMany(() => CardAttack)
-  attacks: CardAttack[];
-
-  @HasMany(() => CardAbility)
-  abilities: CardAbility[];
-
   @Column({
     type: DataType.STRING(1047),
   })
   effect: string;
-
-  @HasMany(() => CardDamageModification)
-  damageModifications: CardDamageModification[];
 
   @Column({
     type: DataType.INTEGER,
@@ -131,25 +137,12 @@ export class Card extends CustomModel<ModelCard> implements ModelCard {
   @Column({
     type: DataType.BOOLEAN,
   })
-  canBeNormal: boolean;
-
-  @Column({
-    type: DataType.BOOLEAN,
-  })
   canBeReverse: boolean;
 
   @Column({
     type: DataType.BOOLEAN,
   })
   isHolo: boolean;
-
-  @Column({
-    type: DataType.BOOLEAN,
-  })
-  isFirstEdition: boolean;
-
-  @HasMany(() => CardAttribute)
-  attributes: CardAttribute[];
 
   @Column({
     type: DataType.STRING,
@@ -161,23 +154,10 @@ export class Card extends CustomModel<ModelCard> implements ModelCard {
   })
   globalId: string;
 
-  @HasMany(() => CardDexId)
-  dexIds: CardDexId[];
-
   @Column({
     type: DataType.STRING,
   })
   description: string;
-
-  @Column({
-    type: DataType.STRING,
-  })
-  level: string;
-
-  @Column({
-    type: DataType.JSON,
-  })
-  item: HeldItemType;
 
   @Column({
     type: DataType.INTEGER,

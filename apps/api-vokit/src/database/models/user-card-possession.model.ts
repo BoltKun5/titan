@@ -1,9 +1,4 @@
-import { CardTag } from './card-tag';
-import {
-  CardPossessionDeletionTypeEnum,
-  CardVariationConditionEnum,
-  CardVariationGradeCompanyEnum,
-} from '../../../../local-core/enums/card-variation.enum';
+import { CardTag } from './card-tag.model';
 import { Card } from './card';
 import {
   DataType,
@@ -20,11 +15,17 @@ import {
 } from 'sequelize-typescript';
 import { v4 as uuidv4 } from 'uuid';
 import { CustomModel } from '../custom/custom-model.model';
-import { User } from './user';
-import { IUserCardPossession } from '../../../../local-core/types';
-import { Overwrite } from 'abyss_core';
-import { CardAdditionalPrinting } from './card-additional-printing';
-import { Tag } from './tag';
+import { User } from './user.model';
+import { CardAdditionalPrinting } from './card-additional-printing.model';
+import { Tag } from './tag.model';
+import { WithRequired } from '../../core';
+import {
+  Overwrite,
+  IUserCardPossession,
+  CardVariationConditionEnum,
+  CardVariationGradeCompanyEnum,
+  CardPossessionDeletionTypeEnum,
+} from 'vokit_core';
 
 export type ModelUserCardPossession = Overwrite<
   IUserCardPossession,
@@ -36,11 +37,16 @@ export type ModelUserCardPossession = Overwrite<
   }
 >;
 
+export type CreationModelUserCardPossession = WithRequired<
+  Partial<IUserCardPossession>,
+  'userId' | 'cardId' | 'condition' | 'grade' | 'printingId' | 'note' | 'boosterId' | 'deletionType'
+>;
+
 @DefaultScope(() => ({}))
 @Scopes(() => ({}))
 @Table({ tableName: 'userCardPossession', paranoid: false, timestamps: true })
 export class UserCardPossession
-  extends CustomModel<ModelUserCardPossession>
+  extends CustomModel<IUserCardPossession, CreationModelUserCardPossession>
   implements ModelUserCardPossession
 {
   @IsUUID(4)

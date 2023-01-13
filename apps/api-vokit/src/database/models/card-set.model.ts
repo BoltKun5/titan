@@ -14,9 +14,9 @@ import {
 } from 'sequelize-typescript';
 import { v4 as uuidv4 } from 'uuid';
 import { CustomModel } from '../custom/custom-model.model';
-import { CardSerie } from './card-serie';
-import { Overwrite } from 'abyss_core';
-import { CardCountType, ICardSet } from '../../../../local-core';
+import { CardSerie } from './card-serie.model';
+import { CardCountType, ICardSet, Overwrite } from 'vokit_core';
+import { WithRequired } from '../../core';
 
 export type ModelCardSet = Overwrite<
   ICardSet,
@@ -26,10 +26,18 @@ export type ModelCardSet = Overwrite<
   }
 >;
 
+export type CreationModelAdminConfig = WithRequired<
+  Partial<ICardSet>,
+  'name' | 'cardCount' | 'cards' | 'releaseDate' | 'code' | 'cardSerieId'
+>;
+
 @DefaultScope(() => ({}))
 @Scopes(() => ({}))
 @Table({ tableName: 'cardSet', paranoid: false, timestamps: false })
-export class CardSet extends CustomModel<ModelCardSet> implements ModelCardSet {
+export class CardSet
+  extends CustomModel<ICardSet, CreationModelAdminConfig>
+  implements ModelCardSet
+{
   @IsUUID(4)
   @PrimaryKey
   @Default(() => uuidv4())
@@ -45,21 +53,6 @@ export class CardSet extends CustomModel<ModelCardSet> implements ModelCardSet {
     type: DataType.JSON,
   })
   cardCount: CardCountType;
-
-  @Column({
-    type: DataType.STRING,
-  })
-  tcgOnline: string;
-
-  @Column({
-    type: DataType.BOOLEAN,
-  })
-  isPlayableInStandard: boolean;
-
-  @Column({
-    type: DataType.BOOLEAN,
-  })
-  isPlayableInExpanded: boolean;
 
   @HasMany(() => Card)
   cards: Card[];

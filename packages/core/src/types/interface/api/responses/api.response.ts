@@ -1,5 +1,5 @@
-import { IUserCardPossession, ICardSet } from '../../../models';
-import { ITag } from '../../../models/tag.model';
+import { IUserCardPossession, ICardSet } from '../../models';
+import { ITag } from '../../models/tag.model';
 
 export interface ISignupAuthResponse {
   user: {

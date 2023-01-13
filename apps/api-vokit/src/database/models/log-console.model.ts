@@ -10,14 +10,14 @@ import {
   HasOne,
   AllowNull,
 } from 'sequelize-typescript';
-import AbyssCore, { LogLevel, WithRequired } from 'abyss_core';
 import { v4 as uuidv4 } from 'uuid';
 import { LogEndpoint } from '..';
 import { CustomModel } from '../custom/custom-model.model';
-import { ILogConsole, LogType } from 'abyss_storage_core';
+import { BaseEntity, WithRequired } from '../../core';
+import { Overwrite, ILogConsole, LogLevel, LogType } from 'vokit_core';
 
-export type ModelLogConsole = AbyssCore.BaseEntity<
-  AbyssCore.Overwrite<
+export type ModelLogConsole = BaseEntity<
+  Overwrite<
     ILogConsole,
     {
       logEndpoint: LogEndpoint;

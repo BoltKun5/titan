@@ -13,20 +13,25 @@ import {
 } from 'sequelize-typescript';
 import { v4 as uuidv4 } from 'uuid';
 import { CustomModel } from '../custom/custom-model.model';
-import { ICardDexId } from '../../../../local-core/types';
-import { Overwrite } from 'abyss_core';
+import { Overwrite, ICardType, CardTypeEnum } from 'vokit_core';
+import { WithRequired } from '../../core';
 
-export type ModelCardDexId = Overwrite<
-  ICardDexId,
+export type ModelCardType = Overwrite<
+  ICardType,
   {
-    cardEntity: Card;
+    card: Card;
   }
 >;
 
+export type CreationModelCardType = WithRequired<Partial<ICardType>, 'cardId' | 'type'>;
+
 @DefaultScope(() => ({}))
 @Scopes(() => ({}))
-@Table({ tableName: 'cardDexId', paranoid: false, timestamps: false })
-export class CardDexId extends CustomModel<ModelCardDexId> implements ModelCardDexId {
+@Table({ tableName: 'cardType', paranoid: false, timestamps: false })
+export class CardType
+  extends CustomModel<ICardType, CreationModelCardType>
+  implements ModelCardType
+{
   @IsUUID(4)
   @PrimaryKey
   @Default(() => uuidv4())
@@ -40,10 +45,10 @@ export class CardDexId extends CustomModel<ModelCardDexId> implements ModelCardD
   cardId: string;
 
   @BelongsTo(() => Card)
-  cardEntity: Card;
+  card: Card;
 
   @Column({
-    type: DataType.STRING,
+    type: DataType.INTEGER,
   })
-  dexId: string;
+  type: CardTypeEnum;
 }
