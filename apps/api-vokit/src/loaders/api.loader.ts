@@ -68,8 +68,8 @@ export default (): express.Application => {
 
   const httpsServer = https.createServer(
     {
-      key: readFileSync('__fixtures__/privkey.pem'),
-      cert: readFileSync('__fixtures__/cert.pem'),
+      key: readFileSync(__dirname + '/__fixtures__/privkey.pem'),
+      cert: readFileSync(__dirname + '/__fixtures__/cert.pem'),
     },
     app,
   );

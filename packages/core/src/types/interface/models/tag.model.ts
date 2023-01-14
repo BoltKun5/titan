@@ -1,6 +1,6 @@
-import { IUserCardPossession } from "./user-card-possession.model";
-import { IUser } from "./user.model";
-import { TagTypeEnum } from "../../src/enums/tag-type.enum";
+import { TagTypeEnum } from '../../../enums';
+import { IUserCardPossession } from './user-card-possession.model';
+import { IUser } from './user.model';
 
 export type ITag = {
   id: string;

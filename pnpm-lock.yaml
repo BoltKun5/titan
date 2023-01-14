@@ -164,6 +164,7 @@ importers:
       sass: ^1.52.3
       typescript: ^4.6.3
       vite: ^2.9.9
+      vokit_core: workspace:*
     dependencies:
       '@emotion/react': 11.10.5_kzbn2opkn2327fwg5yzwzya5o4
       '@emotion/styled': 11.10.5_qvatmowesywn4ye42qoh247szu
@@ -179,6 +180,7 @@ importers:
       react-router-dom: 6.6.1_biqbaboplfbrettd7655fr4n2y
       recharts: 2.2.0_biqbaboplfbrettd7655fr4n2y
       sass: 1.57.1
+      vokit_core: link:../../packages/core
     devDependencies:
       '@types/react': 18.0.26
       '@types/react-dom': 18.0.10

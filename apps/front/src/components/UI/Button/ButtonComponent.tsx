@@ -1,7 +1,6 @@
 import React from "react";
-import { ButtonComponentPropsType } from "../../../../../local-core";
 import "./style.scss";
-import { height } from "@mui/system";
+import { ButtonComponentPropsType } from "../../../local-core";
 
 export const ButtonComponent: React.FC<ButtonComponentPropsType> = ({
   label,

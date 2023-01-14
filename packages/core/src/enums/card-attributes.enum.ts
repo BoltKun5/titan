@@ -1,1 +1,4 @@
-export enum CardAttributeEnum { "V", "Fusion Strike" };
+export enum CardAttributeEnum {
+  'V',
+  'Fusion Strike',
+}

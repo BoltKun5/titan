@@ -1,10 +1,10 @@
 import React, { useCallback, useContext, useEffect, useState } from "react";
-import { IAdminConfig } from "../../../../local-core";
 import { loggedApi } from "../../axios";
 import { ButtonComponent } from "../UI/Button/ButtonComponent";
 import { Loader } from "../UI/Loader/LoaderComponent";
 import { TextInputComponent } from "../UI/TextInputComponent/TextInputComponent";
 import "./style.scss";
+import { IAdminConfig } from "vokit_core";
 
 export const DataImportComponent: React.FC = () => {
   const [setRename, setSetRename] = useState<IAdminConfig[] | null>(null);

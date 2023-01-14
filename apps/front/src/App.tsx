@@ -8,20 +8,20 @@ import { SignUp } from "./pages/SignUp/SignUp";
 import { Opening } from "./pages/Opening/Opening";
 import { HeaderComponent } from "./components/HeaderComponent/HeaderComponent";
 import StoreContext from "./hook/contexts/StoreContext";
-import {
-  CardSetFilterInterface,
-  CardTypeEnum,
-  ICard,
-  ICardSerie,
-  ICardSet,
-  PaginationData,
-} from "../../local-core";
+
 import { api } from "./axios";
 import { StatPage } from "./pages/StatPage/StatPage";
 import { initialRarityFilter } from "./pages/CardManager/CardManagerUtils";
-import { INotificationElement } from "./local-core/interface";
+import { ICardSetFilter, INotificationElement } from "./local-core/interface";
 import { Loader } from "./components/UI/Loader/LoaderComponent";
-import { ITag } from "../../local-core/types/models/tag.dto";
+import {
+  ICard,
+  PaginationData,
+  CardTypeEnum,
+  ICardSerie,
+  ITag,
+  ICardSet,
+} from "vokit_core";
 
 export const App: React.FC = () => {
   // Données de la base
@@ -41,9 +41,9 @@ export const App: React.FC = () => {
   const [massInput, setMassInput] = useState(false);
 
   // Filtres
-  const [cardSetFilter, setCardSetFilter] = useState<
-    CardSetFilterInterface[] | null
-  >(null);
+  const [cardSetFilter, setCardSetFilter] = useState<ICardSetFilter[] | null>(
+    null
+  );
   const [nameFilter, setNameFilter] = useState<string>("");
   const [typeFilter, setTypeFilter] = useState<CardTypeEnum[]>([]);
   const [rarityFilter, setRarityFilter] = useState<any[]>(initialRarityFilter);
@@ -127,7 +127,7 @@ export const App: React.FC = () => {
 
   useEffect(() => {
     if (series) {
-      let setFilterList: CardSetFilterInterface[] = [];
+      let setFilterList: ICardSetFilter[] = [];
       series.forEach((serie: ICardSerie) => {
         serie.cardSets.forEach((set: ICardSet) => {
           setFilterList.push({

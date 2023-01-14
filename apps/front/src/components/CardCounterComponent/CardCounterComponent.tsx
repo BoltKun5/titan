@@ -1,20 +1,20 @@
 import { AxiosResponse } from "axios";
 import { useSnackbar } from "notistack";
 import React, { useContext, useEffect, useState } from "react";
-import {
-  CardAdditionalPrintingTypeEnum,
-  CardCounterComponentPropsType,
-  ICard,
-  ICreatePossessionResponse,
-  IDeletePossessionResponse,
-  IResponse,
-  ISetQuantityResponse,
-  IUserCardPossession,
-} from "../../../../local-core";
 import { loggedApi } from "../../axios";
 
 import StoreContext from "../../hook/contexts/StoreContext";
 import "./style.scss";
+import {
+  ICard,
+  IResponse,
+  ICreatePossessionResponse,
+  CardAdditionalPrintingTypeEnum,
+  IUserCardPossession,
+  ISetQuantityResponse,
+  ISimpleDeletePossessionResponse,
+} from "vokit_core";
+import { CardCounterComponentPropsType } from "../../local-core";
 
 export const CardCounterComponent: React.FC<CardCounterComponentPropsType> = ({
   card,
@@ -80,7 +80,7 @@ export const CardCounterComponent: React.FC<CardCounterComponentPropsType> = ({
     try {
       setIsDisabled(true);
       const response: AxiosResponse<
-        IResponse<IDeletePossessionResponse>,
+        IResponse<ISimpleDeletePossessionResponse>,
         any
       > = await loggedApi.post(`/usercards/simpleDeletePossession`, {
         cardId: card.id,
@@ -210,7 +210,7 @@ export const CardCounterComponent: React.FC<CardCounterComponentPropsType> = ({
               (response.data.data?.result as string[])?.forEach(
                 (id: string) => {
                   const index = localCard.userCardPossessions
-                    .map((e) => e.id)
+                    .map((e: IUserCardPossession) => e.id)
                     .indexOf(id);
                   localCard.userCardPossessions.splice(index, 1);
                 }

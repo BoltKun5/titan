@@ -8,7 +8,6 @@ import { ClickAwayListener, Tooltip } from "@mui/material";
 import { CategorizedAutocompleteChecklist } from "../CategorizedAutocompleteChecklist/CategorizedAutocompleteChecklist";
 import "./style.scss";
 import { frontRarity } from "../../pages/CardManager/CardManagerUtils";
-import { CardSetFilterInterface } from "../../../../local-core";
 import FilterAltIcon from "@mui/icons-material/FilterAlt";
 import { TextInputComponent } from "../UI/TextInputComponent/TextInputComponent";
 import { ButtonComponent } from "../UI/Button/ButtonComponent";
@@ -21,6 +20,7 @@ import {
 import StoreContext from "../../hook/contexts/StoreContext";
 import { SwipeCheckboxComponent } from "../UI/SwipeCheckboxComponent/SwipeCheckboxComponent";
 import { Loader } from "../UI/Loader/LoaderComponent";
+import { ICardSetFilter } from "../../local-core";
 
 export const CardManagerFilterComponent: React.FC<{
   hidePagination?: boolean;
@@ -50,7 +50,7 @@ export const CardManagerFilterComponent: React.FC<{
     ) {
       const id = event.target.getAttribute("id");
       const newSetFilterList = cardSetFilter.map(
-        (setFilter: CardSetFilterInterface) => {
+        (setFilter: ICardSetFilter) => {
           if (setFilter.id === id) {
             setFilter.status = !setFilter.status;
           }
@@ -64,11 +64,11 @@ export const CardManagerFilterComponent: React.FC<{
       const name = event.target.innerText;
       const areAllActivated =
         cardSetFilter.filter(
-          (setFilter: CardSetFilterInterface) =>
+          (setFilter: ICardSetFilter) =>
             !setFilter.status && setFilter.category === name
         ).length === 0;
       setCardSetFilter(
-        cardSetFilter.map((setFilter: CardSetFilterInterface) => {
+        cardSetFilter.map((setFilter: ICardSetFilter) => {
           if (setFilter.category === name) {
             setFilter.status = !areAllActivated;
           }

@@ -1,16 +1,15 @@
-import { IUser } from './../../../../local-core/types/models/user.dto';
+import { ILocals } from './../../core/types/index';
 import jwt from 'jsonwebtoken';
 import { Request, Response, NextFunction } from 'express';
 import * as contentType from 'content-type';
-import { IResponseLocals } from './../../../../local-core';
-import { SessionToken } from 'abyss_core';
 import AppConfig from '../../modules/app-config.module';
 import { User } from '../../database';
 import { HttpResponseError } from '../../modules/http-response-error';
+import { SessionToken } from 'vokit_core';
 
 export default async (
   req: Request,
-  res: Response<any, IResponseLocals>,
+  res: Response<any, ILocals>,
   next: NextFunction,
 ): Promise<void> => {
   try {
@@ -40,7 +39,7 @@ export default async (
 
     if (!currentUser) throw HttpResponseError.createUnauthorized();
 
-    res.locals.currentUser = currentUser as unknown as IUser;
+    res.locals.currentUser = currentUser;
 
     next();
   } catch (error: any) {

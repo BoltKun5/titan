@@ -8,6 +8,7 @@ export enum HttpErrorCode {
   invaliduser = 'USER_NOT_FOUND',
   badpassword = 'INCORRECT_PASSWORD',
   badusername = 'UNKNOWN_USER',
+  badvalues = 'BAD_VALUES',
 }
 
 export enum ErrorType {

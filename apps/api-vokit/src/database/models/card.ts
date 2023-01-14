@@ -44,23 +44,15 @@ export type CreationModelCard = WithRequired<
   | 'rarity'
   | 'category'
   | 'setId'
-  | 'cardSet'
   | 'hp'
   | 'evolveFrom'
   | 'stage'
   | 'types'
-  | 'effect'
-  | 'retreat'
-  | 'regulationMark'
   | 'trainerType'
   | 'canBeReverse'
   | 'isHolo'
   | 'localId'
-  | 'globalId'
-  | 'description'
   | 'energyType'
-  | 'userCardPossessions'
-  | 'cardAdditionalPrinting'
 >;
 
 @DefaultScope(() => ({}))
@@ -115,21 +107,6 @@ export class Card extends CustomModel<ICard, CreationModelCard> implements Model
   types: CardType[];
 
   @Column({
-    type: DataType.STRING(1047),
-  })
-  effect: string;
-
-  @Column({
-    type: DataType.INTEGER,
-  })
-  retreat: number;
-
-  @Column({
-    type: DataType.STRING,
-  })
-  regulationMark: string;
-
-  @Column({
     type: DataType.INTEGER,
   })
   trainerType: CardTrainerTypeEnum;
@@ -148,16 +125,6 @@ export class Card extends CustomModel<ICard, CreationModelCard> implements Model
     type: DataType.STRING,
   })
   localId: string;
-
-  @Column({
-    type: DataType.STRING,
-  })
-  globalId: string;
-
-  @Column({
-    type: DataType.STRING,
-  })
-  description: string;
 
   @Column({
     type: DataType.INTEGER,

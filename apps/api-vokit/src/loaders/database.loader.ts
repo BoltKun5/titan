@@ -29,24 +29,7 @@ export default async (): Promise<Sequelize> => {
       });
       await connection.authenticate();
 
-      // await connection.sync({ alter: false, force: false });
-
-      // const createUserCardHistoric = (data: any, options: any = null) => {
-      //   const { dataValues, _previousDataValues } = data;
-      //   CardPossessionHistoric.create({
-      //     cardPossessionId: dataValues.id,
-      //     boosterId: options?.boosterId ?? null,
-      //     oldClassicQuantity: _previousDataValues.classicQuantity ?? 0,
-      //     newClassicQuantity: dataValues.classicQuantity ?? 0,
-      //     oldReverseQuantity: _previousDataValues.reverseQuantity ?? 0,
-      //     newReverseQuantity: dataValues.reverseQuantity ?? 0,
-      //   });
-      // };
-
-      // UserCardPossession.afterBulkCreate(createUserCardHistoric);
-      // UserCardPossession.afterBulkUpdate(createUserCardHistoric);
-      // UserCardPossession.afterCreate(createUserCardHistoric);
-      // UserCardPossession.afterUpdate(createUserCardHistoric);
+      await connection.sync({ alter: false, force: false });
 
       await Promise.all([
         connection.query('CREATE TABLE IF NOT EXISTS "SequelizeData" (name VARCHAR(255));'),
@@ -55,8 +38,8 @@ export default async (): Promise<Sequelize> => {
 
       AppConfig.sequelize = connection;
 
-      await customMigrations(connection);
-      await customSeeders(connection);
+      // await customMigrations(connection);
+      // await customSeeders(connection);
 
       AppConfig.process.sequelizeReady = true;
 

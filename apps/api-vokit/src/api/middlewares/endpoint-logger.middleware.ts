@@ -4,6 +4,7 @@ import LoggerModule from '../../modules/logger.module';
 import { get as httpContextGet } from 'express-http-context';
 import { uniq } from 'lodash';
 import { getDurationInMilliseconds } from '../../utils/duration.utils';
+import { APIMethod, IResponse, LogLevel, LogType } from 'vokit_core';
 
 export default async (
   req: Request,

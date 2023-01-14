@@ -1,6 +1,5 @@
 import { ICardSerie, ICard, IUserCardPossession } from "../../../../packages/core/src";
 
-// TODO: Ce qui est spécifique au front doit pas être ici
 
 export type SideBarComponentPropsType = {
   series: ICardSerie[];

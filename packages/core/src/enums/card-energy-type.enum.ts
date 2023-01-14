@@ -1,1 +1,4 @@
-export enum CardEnergyTypeEnum { "Normal", "Special" };
+export enum CardEnergyTypeEnum {
+  'Normal',
+  'Special',
+}

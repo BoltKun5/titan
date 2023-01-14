@@ -1,7 +1,6 @@
-import { on } from "events";
 import React from "react";
-import { TextInputComponentType } from "../../../../../local-core";
 import './style.scss'
+import { TextInputComponentType } from "../../../local-core";
 
 export const TextInputComponent: React.FC<TextInputComponentType> = (
   { value = null, modifyValue = () => { }, label = "", id = "", type = 'text', onKeyUpCallback = () => { }, onKeyDownCallback = () => { }, width = 250 }) => {

@@ -1,1 +1,4 @@
-export enum CardDamageModificationType { "weakness", "resistance" };
+export enum CardDamageModificationType {
+  'weakness',
+  'resistance',
+}

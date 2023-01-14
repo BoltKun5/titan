@@ -54,6 +54,20 @@ export class HttpResponseError {
     });
   }
 
+  public static createWrongValuesError(): createError.HttpError {
+    return createError(400, {
+      code: HttpErrorCode.badvalues,
+      message: 'submitted values are not valid',
+    });
+  }
+
+  public static createNotFoundError(): createError.HttpError {
+    return createError(404, {
+      code: HttpErrorCode.badvalues,
+      message: 'value not found',
+    });
+  }
+
   public static generateError(error: Error): createError.HttpError {
     if (error instanceof createError.HttpError) {
       return error;

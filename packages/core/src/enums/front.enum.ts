@@ -1,1 +1,4 @@
-export enum AdminPageTabEnum { "NONE", DATA_IMPORT }
+export enum AdminPageTabEnum {
+  'NONE',
+  DATA_IMPORT,
+}

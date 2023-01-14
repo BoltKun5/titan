@@ -1,5 +1,4 @@
 import React from "react";
-import { LoginContextType } from "../../../../local-core";
 
 export default React.createContext<LoginContextType>({
   currentUser: {

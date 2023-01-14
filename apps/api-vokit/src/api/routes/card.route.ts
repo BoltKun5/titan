@@ -1,28 +1,25 @@
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-import { CardRarityEnum, IResponseLocals, StatisticsDataType } from '../../../../local-core';
-import { IResponse } from '../../../../local-core';
 import { Request, Response, Router } from 'express';
 // import asyncHandler from 'express-async-handler';
 import { Card } from '../../database';
 import auth from '../middlewares/auth';
-import { getFilterConfig as getWhereConfigFromFilters } from '../utils/get-filter-config';
+import { getFilterConfig } from '../../utils/get-filter-config';
+import { IResponse } from 'vokit_core';
+import { ILocals } from '../../core';
 
 const route = Router();
 
 export const CardListRouter = (app: Router): Router => {
-  app.use('/cardlist', route);
-
-  //TODO: Typer les queries
+  app.use('/card', route);
 
   route.get(
     '/collection',
     auth,
-    async (req: Request<any, any, any>, res: Response<IResponse<any>, IResponseLocals>) => {
+    async (req: Request<any, any, any>, res: Response<IResponse<any>, ILocals>) => {
       const cards = await Card.findAll({
-        ...getWhereConfigFromFilters(req.query, res.locals.currentUser, 'collection'),
+        ...getFilterConfig(req.query, res.locals.currentUser, 'collection'),
       });
       const count = await Card.count({
-        ...getWhereConfigFromFilters(req.query, res.locals.currentUser, 'collection'),
+        ...getFilterConfig(req.query, res.locals.currentUser, 'collection'),
       });
 
       const page = Number(req.query?.page) ?? 0;
@@ -43,12 +40,10 @@ export const CardListRouter = (app: Router): Router => {
 
   route.get(
     '/cards',
-    async (req: Request<any, any, any>, res: Response<IResponse<any>, IResponseLocals>) => {
-      const cards = await Card.findAll(
-        getWhereConfigFromFilters(req.query, res.locals.currentUser, 'cards'),
-      );
+    async (req: Request<any, any, any>, res: Response<IResponse<any>, ILocals>) => {
+      const cards = await Card.findAll(getFilterConfig(req.query, res.locals.currentUser, 'cards'));
       const count = await Card.count({
-        ...getWhereConfigFromFilters(req.query, res.locals.currentUser, 'cards'),
+        ...getFilterConfig(req.query, res.locals.currentUser, 'cards'),
       });
 
       const page = Number(req.query?.page) ?? 0;
@@ -72,7 +67,7 @@ export const CardListRouter = (app: Router): Router => {
   //   auth,
   //   async (
   //     req: Request<any, any, void>,
-  //     res: Response<IResponse<StatisticsDataType>, IResponseLocals>,
+  //     res: Response<IResponse<StatisticsDataType>, ILocals>,
   //   ) => {
   //     // console.time('a');
   //     const cards = await Card.findAll({

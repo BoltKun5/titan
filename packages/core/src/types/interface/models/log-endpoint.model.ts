@@ -1,5 +1,5 @@
 import { ILogConsole } from '..';
-import { APIMethod } from '../../enum';
+import { APIMethod } from '../../../enums';
 
 export interface ILogEndpoint {
   id?: string;

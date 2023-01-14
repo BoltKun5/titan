@@ -1,25 +1,18 @@
-import React, {
-  ChangeEvent,
-  useContext,
-  useEffect,
-  useMemo,
-  useState,
-} from "react";
+import React, { ChangeEvent, useContext, useEffect, useState } from "react";
 import "./style.scss";
-
-import { ClickAwayListener, Tooltip } from "@mui/material";
 import {
   CardListElement,
   getImageSource,
   initialCardList,
 } from "../CardManager/CardManagerUtils";
 import { api, loggedApi } from "../../axios";
-import { CardAdditionalPrintingTypeEnum, ICard } from "../../../../local-core";
 import StoreContext from "../../hook/contexts/StoreContext";
 import { ButtonComponent } from "../../components/UI/Button/ButtonComponent";
 import { SwipeCheckboxComponent } from "../../components/UI/SwipeCheckboxComponent/SwipeCheckboxComponent";
 import { Done } from "@mui/icons-material";
 import { useFetchData } from "../../hook/api/cards";
+import { CardAdditionalPrintingTypeEnum, ICard, ICardSerie } from "vokit_core";
+import { ICardAdditionalPrinting } from "vokit_core/src/types/interface/models/card-additional-printing.model";
 
 export const Opening: React.FC = () => {
   const { series } = useContext(StoreContext);
@@ -54,7 +47,7 @@ export const Opening: React.FC = () => {
     series.map(
       (serie) => {
         _setList = _setList.concat(
-          serie.cardSets.map((_serie) => {
+          serie.cardSets.map((_serie: ICardSerie) => {
             return {
               name: _serie.name,
               id: _serie.id,
@@ -183,7 +176,8 @@ export const Opening: React.FC = () => {
           printingId:
             value.type === "reverse"
               ? value.card?.cardAdditionalPrinting?.find(
-                  (e) => e.type === CardAdditionalPrintingTypeEnum.REVERSE
+                  (e: ICardAdditionalPrinting) =>
+                    e.type === CardAdditionalPrintingTypeEnum.REVERSE
                 )?.id
               : null,
         })),

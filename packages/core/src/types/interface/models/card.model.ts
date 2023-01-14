@@ -22,15 +22,10 @@ export type ICard = {
   evolveFrom: string;
   stage: CardEvolutionStageEnum;
   types: ICardType[];
-  effect: string;
-  retreat: number;
-  regulationMark: string;
   trainerType: CardTrainerTypeEnum;
   canBeReverse: boolean;
   isHolo: boolean;
   localId: string;
-  globalId: string;
-  description: string;
   energyType: CardEnergyTypeEnum;
   userCardPossessions: IUserCardPossession[];
   cardAdditionalPrinting: ICardAdditionalPrinting[];

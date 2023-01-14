@@ -1,18 +1,19 @@
-import { IUserCardPossession } from "./../../../local-core/types/models/user-card-possession.dto";
-import { ITag } from "./../../../local-core/types/models/tag.dto";
-import { INotificationElement } from "./interface";
-import { PaginationData } from "../../../local-core/types/pagination.type";
-import { ICardSerie } from "../../../local-core/types/models/card-serie.dto";
-import { UserRoleEnum } from "../../../local-core/enums/user-role.enum";
-import { ICard } from "../../../local-core/types/models/card.dto";
-import { CardSetFilterInterface } from "../../../local-core";
 import React from "react";
+import {
+  ICardSerie,
+  ICard,
+  PaginationData,
+  UserRoleEnum,
+  ITag,
+  IUserCardPossession,
+} from "vokit_core";
+import { ICardSetFilter, INotificationElement } from "./interface";
 
 export type StoreType = {
   series: ICardSerie[] | null;
-  cardSetFilter: CardSetFilterInterface[] | null;
+  cardSetFilter: ICardSetFilter[] | null;
   setCardSetFilter: React.Dispatch<
-    React.SetStateAction<CardSetFilterInterface[] | null>
+    React.SetStateAction<ICardSetFilter[] | null>
   >;
   nameFilter: string;
   setNameFilter: React.Dispatch<React.SetStateAction<string>>;

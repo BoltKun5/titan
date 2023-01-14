@@ -1,8 +1,8 @@
 import React, { useContext } from "react";
 import './style.scss';
 
-import { StatCardComponentType } from "../../../../local-core";
 import StoreContext from "../../hook/contexts/StoreContext";
+import { StatCardComponentType } from "../../local-core";
 
 export const StatCardComponent: React.FC<StatCardComponentType> = ({ data }) => {
   const { showUnowned } = useContext(StoreContext);

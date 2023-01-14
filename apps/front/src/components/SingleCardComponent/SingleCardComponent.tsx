@@ -11,12 +11,9 @@ import { SingleCardOverlayComponent } from "../SingleCardOverlayComponent/Single
 import "./style.scss";
 import { CardModal } from "../CardModalComponent/CardModal";
 import { getImageSource } from "../../pages/CardManager/CardManagerUtils";
-import {
-  ICard,
-  IUserCardPossession,
-  SingleCardComponentPropsType,
-} from "../../../../local-core";
 import StoreContext from "../../hook/contexts/StoreContext";
+import { ICard } from "vokit_core";
+import { SingleCardComponentPropsType } from "../../local-core";
 
 export const SingleCardComponent: React.FC<SingleCardComponentPropsType> = ({
   card,

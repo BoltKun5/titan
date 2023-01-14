@@ -8,13 +8,13 @@ import {
   Bar,
   YAxis,
 } from "recharts";
-import { CardRarityEnum, StatisticsDataType } from "../../../../local-core";
 import StoreContext from "../../hook/contexts/StoreContext";
 import { StatCardComponent } from "../../components/StatCardComponent/StatCardComponent";
 import { CardManagerFilterComponent } from "../../components/CardManagerFilterComponent/CardManagerFilterComponent";
 import { SwipeCheckboxComponent } from "../../components/UI/SwipeCheckboxComponent/SwipeCheckboxComponent";
 import { useState, useContext, useCallback, useEffect } from "react";
 import { useFetchData } from "../../hook/api/cards";
+import { StatisticsDataType } from "vokit_core";
 
 export const StatPage: React.FC = () => {
   const [stats, setStats] = useState<StatisticsDataType | null>(null);
@@ -22,8 +22,6 @@ export const StatPage: React.FC = () => {
     nameFilter,
     rarityFilter,
     collectionMode,
-    setCards,
-    setPagination,
     cardSetFilter,
     showUnowned,
     order,
@@ -35,10 +33,10 @@ export const StatPage: React.FC = () => {
   );
 
   const fetchStats = useCallback(async () => {
-    const setFilter = cardSetFilter.filter((setFilter) => setFilter.status);
+    const setFilter = cardSetFilter?.filter((setFilter) => setFilter.status);
     const params: Record<string, any> = {};
 
-    if (setFilter.length > 0) {
+    if (setFilter && setFilter.length > 0) {
       params.setFilter = [];
       setFilter.forEach((setFilter) => {
         params.setFilter.push(setFilter.code);

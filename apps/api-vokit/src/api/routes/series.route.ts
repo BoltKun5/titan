@@ -1,9 +1,10 @@
-import { IResponseLocals } from './../../../../local-core';
-import { IResponse } from './../../../../local-core';
 import { Request, Response, Router } from 'express';
 import { Card, CardSerie, CardSet } from '../../database';
 import sequelize from 'sequelize';
 import auth from '../middlewares/auth';
+import { IResponse } from 'vokit_core';
+import { ILocals } from '../../core';
+import { HttpResponseError } from '../../modules/http-response-error';
 
 const route = Router();
 
@@ -14,7 +15,7 @@ export const SeriesRouter = (app: Router): Router => {
     '/allSeries',
     async (
       req: Request<any, any, void, { serieId: string }>,
-      res: Response<IResponse<any>, IResponseLocals>,
+      res: Response<IResponse<any>, ILocals>,
     ) => {
       const series = await CardSerie.findAll({
         include: [
@@ -35,13 +36,15 @@ export const SeriesRouter = (app: Router): Router => {
     '/set/:setId',
     async (
       req: Request<any, any, void, { serieId: string; setId: string }>,
-      res: Response<IResponse<any>, IResponseLocals>,
+      res: Response<IResponse<any>, ILocals>,
     ) => {
       const set = await CardSet.findOne({
         where: { code: req.params.setId },
       });
 
-      if (!set) return res.json({ error: { code: 'SET_NOT_FOUND' } });
+      if (!set) {
+        throw HttpResponseError.createNotFoundError();
+      }
 
       try {
         const cards = await Card.findAll({
@@ -64,13 +67,15 @@ export const SeriesRouter = (app: Router): Router => {
     auth,
     async (
       req: Request<any, any, void, { serieId: string }>,
-      res: Response<IResponse<any>, IResponseLocals>,
+      res: Response<IResponse<any>, ILocals>,
     ) => {
       const serie = await CardSerie.findOne({
         where: { code: req.params.serieId },
       });
       try {
-        if (!serie) return res.json({ error: { code: 'SERIE_NOT_FOUND' } });
+        if (!serie) {
+          throw HttpResponseError.createNotFoundError();
+        }
 
         const cardSets = await CardSet.findAll({
           where: {

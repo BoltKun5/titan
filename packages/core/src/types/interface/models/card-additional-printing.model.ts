@@ -1,8 +1,5 @@
-import {
-  CardAdditionalPrintingCreatorEnum,
-  CardAdditionalPrintingTypeEnum,
-} from "../../src/enums/card-additional-printing.enum";
-import { ICard } from "./card.model";
+import { CardAdditionalPrintingTypeEnum, CardAdditionalPrintingCreatorEnum } from '../../../enums';
+import { ICard } from './card.model';
 
 export type ICardAdditionalPrinting = {
   id: string;

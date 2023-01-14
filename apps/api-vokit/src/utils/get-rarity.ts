@@ -1,4 +1,4 @@
-import { CardRarityEnumFrench } from '../../../../local-core/enums/card-rarity.enum';
+import { CardRarityEnumFrench } from 'vokit_core';
 
 export const getRarity = (card: any): CardRarityEnumFrench => {
   const enumRarity = CardRarityEnumFrench[card.rarity as keyof typeof CardRarityEnumFrench];

@@ -1,5 +1,4 @@
 import React, {
-  createRef,
   useContext,
   useEffect,
   useLayoutEffect,
@@ -9,10 +8,10 @@ import React, {
 import "./style.scss";
 import { CardCounterComponent } from "../CardCounterComponent/CardCounterComponent";
 import { ClickAwayListener } from "@mui/material";
-import { ICard } from "../../../../local-core";
 import { ButtonComponent } from "../UI/Button/ButtonComponent";
 import { getImageSource } from "../../pages/CardManager/CardManagerUtils";
 import StoreContext from "../../hook/contexts/StoreContext";
+import { ICard } from "vokit_core";
 
 export const MassInputComponent: React.FC<{}> = () => {
   const { cards, setMassInput, massInput } = useContext(StoreContext);

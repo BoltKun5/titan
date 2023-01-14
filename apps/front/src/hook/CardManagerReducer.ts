@@ -1,37 +1,46 @@
 import { loggedApi } from "../axios";
 import { useContext } from "react";
-import { ICard } from "../../../local-core";
 import StoreContext from "./contexts/StoreContext";
+import { ICard } from "vokit_core";
 
 export const init = (cards: any) => {
-  return cards
+  return cards;
 };
 
 const { cards, setCards } = useContext(StoreContext);
 
-export async function reducer(state: ICard[], data: { action: string, card: ICard, values: { type: "classic" | "reverse", quantity: string } }) {
+export async function reducer(
+  state: ICard[],
+  data: {
+    action: string;
+    card: ICard;
+    values: { type: "classic" | "reverse"; quantity: string };
+  }
+) {
   switch (data.action) {
-    case 'increment':
-      state
+    case "increment":
+      state;
       return;
-    case 'decrement':
+    case "decrement":
       return;
-    case 'set':
-      let classicQuantity = data.card?.userCardPossessions[0]?.classicQuantity ?? 0;
-      let reverseQuantity = data.card?.userCardPossessions[0]?.reverseQuantity ?? 0;
-      const regex = new RegExp('^[0-9]+$');
+    case "set":
+      let classicQuantity =
+        data.card?.userCardPossessions[0]?.classicQuantity ?? 0;
+      let reverseQuantity =
+        data.card?.userCardPossessions[0]?.reverseQuantity ?? 0;
+      const regex = new RegExp("^[0-9]+$");
       if (!regex.test(String(data.values.quantity))) {
-        return
+        return;
       }
-      if (data.values.type === 'classic') {
+      if (data.values.type === "classic") {
         if (classicQuantity === Number(data.values.quantity)) {
-          return
+          return;
         }
         classicQuantity = Number(data.values.quantity);
       }
-      if (data.values.type === 'reverse') {
+      if (data.values.type === "reverse") {
         if (reverseQuantity === Number(data.values.quantity)) {
-          return
+          return;
         }
         reverseQuantity = Number(data.values.quantity);
       }
@@ -49,7 +58,7 @@ export async function reducer(state: ICard[], data: { action: string, card: ICar
           return localCard;
         });
       } catch (e) {
-        console.log(e)
+        console.log(e);
       }
       break;
     default:
@@ -57,26 +66,29 @@ export async function reducer(state: ICard[], data: { action: string, card: ICar
   }
 }
 
-
-export const setQuantity = async (card: any, cardType: string, element: EventTarget & HTMLInputElement) => {
+export const setQuantity = async (
+  card: any,
+  cardType: string,
+  element: EventTarget & HTMLInputElement
+) => {
   let classicQuantity = card?.userCardPossessions[0]?.classicQuantity ?? 0;
   let reverseQuantity = card?.userCardPossessions[0]?.reverseQuantity ?? 0;
-  const regex = new RegExp('^[0-9]+$');
+  const regex = new RegExp("^[0-9]+$");
   if (!regex.test(element.value)) {
-    element.style.backgroundColor = 'red';
-    return
+    element.style.backgroundColor = "red";
+    return;
   }
-  element.style.backgroundColor = 'white';
+  element.style.backgroundColor = "white";
 
-  if (cardType === 'classic') {
+  if (cardType === "classic") {
     if (classicQuantity === Number(element.value)) {
-      return
+      return;
     }
     classicQuantity = element.value;
   }
-  if (cardType === 'reverse') {
+  if (cardType === "reverse") {
     if (reverseQuantity === Number(element.value)) {
-      return
+      return;
     }
     reverseQuantity = element.value;
   }
@@ -87,13 +99,15 @@ export const setQuantity = async (card: any, cardType: string, element: EventTar
       classicQuantity: classicQuantity,
       reverseQuantity: reverseQuantity,
     });
-    setCards(cards.map((localCard) => {
-      if (card.id === localCard.id) {
-        localCard.userCardPossessions[0] = response.data.data.result;
-      }
-      return localCard;
-    }));
+    setCards(
+      cards.map((localCard) => {
+        if (card.id === localCard.id) {
+          localCard.userCardPossessions[0] = response.data.data.result;
+        }
+        return localCard;
+      })
+    );
   } catch (e) {
-    console.log(e)
+    console.log(e);
   }
-}
+};

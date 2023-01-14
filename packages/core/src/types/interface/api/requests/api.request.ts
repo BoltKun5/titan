@@ -43,7 +43,7 @@ export interface ICreateMultiplePossessionBody {
   cards: {
     cardId: string;
     printingId: string;
-    userId?: string;
+    userId: string;
     boosterId?: string;
   }[];
 }

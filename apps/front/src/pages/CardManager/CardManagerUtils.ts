@@ -1,6 +1,4 @@
-import { ICardSet } from "./../../../../local-core/types/models/card-set.dto";
-import { CardRarityEnum } from "./../../../../local-core/enums/card-rarity.enum";
-import { ICard } from "../../../../local-core/types/models/card.dto";
+import { ICard, ICardSet } from "vokit_core";
 
 export const initialRarityFilter = [
   {

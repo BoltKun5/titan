@@ -1,4 +1,4 @@
-import { LogLevel, LogType } from '../..';
+import { LogLevel, LogType } from '../../../enums';
 import { ILogEndpoint } from './log-endpoint.model';
 
 export interface ILogConsole {

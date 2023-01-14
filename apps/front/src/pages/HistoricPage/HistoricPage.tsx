@@ -1,5 +1,5 @@
 import dayjs from "dayjs";
-import React, { useCallback, useEffect, useReducer, useRef, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import { getImageFromSeparatedInfos, getImageSource } from "../CardManager/CardManagerUtils";
 import './style.scss'
 import EastIcon from '@mui/icons-material/East';

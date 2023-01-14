@@ -1,12 +1,12 @@
-import { ICardAdditionalPrinting } from "./card-additional-printing.model";
 import {
-  CardPossessionDeletionTypeEnum,
   CardVariationConditionEnum,
   CardVariationGradeCompanyEnum,
-} from "../../src/enums/card-variation.enum";
-import { ICard } from "./card.model";
-import { ITag } from "./tag.model";
-import { IUser } from "./user.model";
+  CardPossessionDeletionTypeEnum,
+} from '../../../enums';
+import { ICardAdditionalPrinting } from './card-additional-printing.model';
+import { ICard } from './card.model';
+import { ITag } from './tag.model';
+import { IUser } from './user.model';
 
 export type IUserCardPossession = {
   id: string;

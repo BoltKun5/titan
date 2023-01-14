@@ -1,4 +1,4 @@
-import { AdminConfigTypeEnum } from "../../enums";
+import { AdminConfigTypeEnum } from '../../../enums';
 
 export type IAdminConfig = {
   id: string;

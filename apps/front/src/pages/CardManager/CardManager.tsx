@@ -2,7 +2,6 @@ import React, { useCallback, useContext, useEffect, useState } from "react";
 import { CardManagerFilterComponent } from "../../components/CardManagerFilterComponent/CardManagerFilterComponent";
 import { CardManagerCardListComponent } from "../../components/CardManagerCardListComponent/CardManagerCardListComponent";
 import "./style.scss";
-import { CardRarityEnum } from "../../../../local-core";
 import StoreContext from "../../hook/contexts/StoreContext";
 import { useFetchData } from "../../hook/api/cards";
 import { Loader } from "../../components/UI/Loader/LoaderComponent";

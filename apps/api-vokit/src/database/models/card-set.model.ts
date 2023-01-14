@@ -26,18 +26,15 @@ export type ModelCardSet = Overwrite<
   }
 >;
 
-export type CreationModelAdminConfig = WithRequired<
+export type CreationModelCardSet = WithRequired<
   Partial<ICardSet>,
-  'name' | 'cardCount' | 'cards' | 'releaseDate' | 'code' | 'cardSerieId'
+  'name' | 'cardCount' | 'releaseDate' | 'code' | 'cardSerieId'
 >;
 
 @DefaultScope(() => ({}))
 @Scopes(() => ({}))
 @Table({ tableName: 'cardSet', paranoid: false, timestamps: false })
-export class CardSet
-  extends CustomModel<ICardSet, CreationModelAdminConfig>
-  implements ModelCardSet
-{
+export class CardSet extends CustomModel<ICardSet, CreationModelCardSet> implements ModelCardSet {
   @IsUUID(4)
   @PrimaryKey
   @Default(() => uuidv4())

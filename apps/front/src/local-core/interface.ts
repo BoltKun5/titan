@@ -5,7 +5,7 @@ export interface INotificationElement {
   message: string;
 }
 
-export interface CardSetFilterInterface {
+export interface ICardSetFilter {
   name: string;
   id: string;
   category: string;

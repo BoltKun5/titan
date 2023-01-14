@@ -1,1 +1,5 @@
-export enum CardCategoryEnum { "Energy" = 1, "Pokemon", "Trainer" };
+export enum CardCategoryEnum {
+  'Energy' = 1,
+  'Pokemon',
+  'Trainer',
+}

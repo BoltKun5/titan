@@ -1,12 +1,9 @@
-import { CardRarityEnum } from './../../../../local-core/enums/card-rarity.enum';
 import { FindOptions, Order } from 'sequelize/types';
-import { CardSet } from '../../database';
-import { CardType } from '../../database/models/card-type';
-import { UserCardPossession } from '../../database/models/user-card-possession';
 import { Op } from 'sequelize';
-import { CardAdditionalPrinting } from '../../database/models/card-additional-printing';
-import { IUser } from '../../../../local-core/types';
-import { Tag } from '../../database/models/tag';
+import { CardRarityEnum, IUser } from 'vokit_core';
+import { CardSet, CardType, UserCardPossession } from '../database';
+import { CardAdditionalPrinting } from '../database/models/card-additional-printing.model';
+import { Tag } from '../database/models/tag.model';
 
 interface IQuery {
   order?: 'default' | 'name' | 'type';

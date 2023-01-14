@@ -2,14 +2,6 @@ import React, { useContext, useEffect, useState } from "react";
 import "./style.scss";
 import { ClickAwayListener, Tooltip } from "@mui/material";
 import {
-  CardRarityEnum,
-  ICard,
-  ICreatePossessionResponse,
-  IResponse,
-  IUpdatePossessionResponse,
-  IUserCardPossession,
-} from "./../../../../local-core";
-import {
   frontRarity,
   getImageSource,
 } from "../../pages/CardManager/CardManagerUtils";
@@ -20,6 +12,14 @@ import CardModalContext from "../../hook/contexts/CardModalContext";
 import { ButtonComponent } from "../UI/Button/ButtonComponent";
 import { AxiosResponse } from "axios";
 import { loggedApi } from "../../axios";
+import {
+  ICard,
+  IUserCardPossession,
+  IResponse,
+  ICreatePossessionResponse,
+  IUpdatePossessionResponse,
+  CardRarityEnum,
+} from "vokit_core";
 
 export const CardModal: React.FC<{ card: ICard; closeModal: () => void }> = ({
   card,

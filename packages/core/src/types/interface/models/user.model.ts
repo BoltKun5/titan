@@ -1,5 +1,5 @@
-import { ITag } from "./tag.model";
-import { IUserCardPossession } from "./user-card-possession.model";
+import { ITag } from './tag.model';
+import { IUserCardPossession } from './user-card-possession.model';
 
 export type IUser = {
   id: string;

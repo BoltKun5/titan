@@ -1,26 +1,4 @@
-import { IUserCardPossession } from './../../../../local-core/types/models/user-card-possession.dto';
-import {
-  ICreateTagBody,
-  ICreateTagResponse,
-  ISetQuantityBody,
-  ISetQuantityResponse,
-  ISimpleDeletePossessionBody,
-  ISimpleDeletePossessionResponse,
-  IUserTagsBody,
-  IUserTagsResponse,
-} from './../../../../local-core/interface/api/api.interface';
-import {
-  ICreatePossessionBody,
-  ICreatePossessionResponse,
-  ICreateMultiplePossessionBody,
-  ICreateMultiplePossessionResponse,
-  IUpdatePossessionBody,
-  IUpdatePossessionResponse,
-  IDeletePossessionResponse,
-  IDeletePossessionBody,
-} from '../../../../local-core';
-import { IResponseLocals } from '../../../../local-core';
-import { IResponse } from '../../../../local-core';
+import { ILocals } from './../../core/types/index';
 import { Request, Response, Router } from 'express';
 import Auth from '../middlewares/auth';
 import { UserCardPossession } from '../../database/models/user-card-possession.model';
@@ -28,6 +6,26 @@ import { v4 } from 'uuid';
 import { CardAdditionalPrinting } from '../../database/models/card-additional-printing.model';
 import { Tag } from '../../database/models/tag.model';
 import { CardTag } from '../../database/models/card-tag.model';
+import {
+  ICreateMultiplePossessionBody,
+  ICreateMultiplePossessionResponse,
+  ICreatePossessionBody,
+  ICreatePossessionResponse,
+  ICreateTagBody,
+  ICreateTagResponse,
+  IDeletePossessionBody,
+  IDeletePossessionResponse,
+  IResponse,
+  ISetQuantityBody,
+  ISetQuantityResponse,
+  ISimpleDeletePossessionBody,
+  ISimpleDeletePossessionResponse,
+  IUpdatePossessionBody,
+  IUpdatePossessionResponse,
+  IUserCardPossession,
+  IUserTagsBody,
+  IUserTagsResponse,
+} from 'vokit_core';
 
 const route = Router();
 
@@ -39,7 +37,7 @@ export const UserCardsRouter = (app: Router): Router => {
     Auth,
     async (
       req: Request<any, any, IUpdatePossessionBody>,
-      res: Response<IResponse<IUpdatePossessionResponse>, IResponseLocals>,
+      res: Response<IResponse<IUpdatePossessionResponse>, ILocals>,
     ) => {
       try {
         await UserCardPossession.bulkCreate(req.body.possessions as UserCardPossession[], {
@@ -86,7 +84,7 @@ export const UserCardsRouter = (app: Router): Router => {
         IResponse<ICreatePossessionResponse>,
         ICreatePossessionBody
       >,
-      res: Response<IResponse<ICreatePossessionResponse>, IResponseLocals>,
+      res: Response<IResponse<ICreatePossessionResponse>, ILocals>,
     ) => {
       let possession = (await UserCardPossession.create({
         cardId: req.body.cardId,
@@ -117,7 +115,7 @@ export const UserCardsRouter = (app: Router): Router => {
         IResponse<ISimpleDeletePossessionResponse>,
         ISimpleDeletePossessionBody
       >,
-      res: Response<IResponse<ISimpleDeletePossessionResponse>, IResponseLocals>,
+      res: Response<IResponse<ISimpleDeletePossessionResponse>, ILocals>,
     ) => {
       const result = await UserCardPossession.findAll({
         where: {
@@ -159,7 +157,7 @@ export const UserCardsRouter = (app: Router): Router => {
         IResponse<IDeletePossessionResponse>,
         IDeletePossessionBody
       >,
-      res: Response<IResponse<IDeletePossessionResponse>, IResponseLocals>,
+      res: Response<IResponse<IDeletePossessionResponse>, ILocals>,
     ) => {
       try {
         // TODO: mettre le cascade du onDelete quand ça fonctionnera (sequelize 7 on espère)
@@ -196,7 +194,7 @@ export const UserCardsRouter = (app: Router): Router => {
         IResponse<ICreateMultiplePossessionResponse>,
         ICreateMultiplePossessionBody
       >,
-      res: Response<IResponse<ICreateMultiplePossessionResponse>, IResponseLocals>,
+      res: Response<IResponse<ICreateMultiplePossessionResponse>, ILocals>,
     ) => {
       try {
         const boosterId = v4();
@@ -220,7 +218,7 @@ export const UserCardsRouter = (app: Router): Router => {
     Auth,
     async (
       req: Request<Record<string, never>, IResponse<ISetQuantityResponse>, ISetQuantityBody>,
-      res: Response<IResponse<ISetQuantityResponse>, IResponseLocals>,
+      res: Response<IResponse<ISetQuantityResponse>, ILocals>,
     ) => {
       const result = await UserCardPossession.findAll({
         where: {
@@ -281,7 +279,7 @@ export const UserCardsRouter = (app: Router): Router => {
     Auth,
     async (
       req: Request<any, any, IUserTagsBody>,
-      res: Response<IResponse<IUserTagsResponse>, IResponseLocals>,
+      res: Response<IResponse<IUserTagsResponse>, ILocals>,
     ) => {
       const result = await Tag.findAll({
         where: {
@@ -297,7 +295,7 @@ export const UserCardsRouter = (app: Router): Router => {
     Auth,
     async (
       req: Request<any, any, ICreateTagBody>,
-      res: Response<IResponse<ICreateTagResponse>, IResponseLocals>,
+      res: Response<IResponse<ICreateTagResponse>, ILocals>,
     ) => {
       await Tag.create({
         userId: res.locals.currentUser.id,
@@ -318,7 +316,7 @@ export const UserCardsRouter = (app: Router): Router => {
   //   Auth,
   //   async (
   //     req: Request<any, any, IHistoricQuery>,
-  //     res: Response<IResponse<IHistoricResponse>, IResponseLocals>,
+  //     res: Response<IResponse<IHistoricResponse>, ILocals>,
   //   ) => {
   //     const result = await CardPossessionHistoric.findAll({
   //       order: [['createdAt', 'DESC']],
@@ -379,7 +377,7 @@ export const UserCardsRouter = (app: Router): Router => {
   //   Auth,
   //   async (
   //     req: Request<any, any, IHistoricQuery>,
-  //     res: Response<IResponse<any>, IResponseLocals>,
+  //     res: Response<IResponse<any>, ILocals>,
   //   ) => {
   //     const result = await CardPossessionHistoric.findAll({
   //       order: [['createdAt', 'DESC']],

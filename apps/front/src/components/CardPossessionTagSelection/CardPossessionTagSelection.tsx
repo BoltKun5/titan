@@ -1,16 +1,11 @@
 import React, { useCallback, useContext, useEffect, useState } from "react";
 import { ClickAwayListener, TextField, Tooltip } from "@mui/material";
 import "./style.scss";
-import {
-  CardSetFilterInterface,
-  IUserCardPossession,
-} from "../../../../local-core";
-import { ITag } from "../../../../local-core/types/models/tag.dto";
 import StoreContext from "../../hook/contexts/StoreContext";
-import AddIcon from "@mui/icons-material/Add";
 import { Add } from "@mui/icons-material";
 import { loggedApi } from "../../axios";
 import CardModalContext from "../../hook/contexts/CardModalContext";
+import { IUserCardPossession, ITag } from "vokit_core";
 
 type Props = {
   cardPossession: IUserCardPossession;
@@ -35,7 +30,7 @@ export const CardPossessionTagSelection: React.FC<Props> = ({
   }, [searchTerm, tags]);
 
   const getLabelListLength = useCallback(() => {
-    const tagList = localCardPossession?.find(
+    const tagList: ITag[] = localCardPossession?.find(
       (poss) => poss.id === cardPossession.id
     )?.tags;
     const idList = tagList?.map((subTag) => subTag.id);
@@ -153,7 +148,9 @@ export const CardPossessionTagSelection: React.FC<Props> = ({
                         "CardPossessionTagSelection-dropdownElement " +
                         (localCardPossession
                           ?.find((poss) => poss.id === cardPossession.id)
-                          ?.tags?.findIndex((tag) => tag.id === item.id) !== -1
+                          ?.tags?.findIndex(
+                            (tag: ITag) => tag.id === item.id
+                          ) !== -1
                           ? "selected"
                           : "")
                       }

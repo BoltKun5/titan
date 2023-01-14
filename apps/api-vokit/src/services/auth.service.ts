@@ -2,7 +2,7 @@ import { HttpResponseError } from '../modules/http-response-error';
 import jws from 'jsonwebtoken';
 import { User } from '../../src/database';
 import AppConfig from '../modules/app-config.module';
-import { UserService } from './user.service';
+import UserService from './user.service';
 import bcrypt from 'bcryptjs';
 import { SessionTokenPayload } from 'vokit_core';
 import { Service } from '../core';
