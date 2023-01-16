@@ -50,7 +50,7 @@ export default (): express.Application => {
 
   const endpoints = listEndpoints(app);
   const numberOfRoutes = endpoints.reduce((acc, endpoint) => acc + endpoint.methods.length, 0);
-  LoggerModule.info(`${numberOfRoutes} Routes loaded !`, {
+  LoggerModule.log(`${numberOfRoutes} Routes loaded !`, {
     type: LogType.API,
   });
 

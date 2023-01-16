@@ -6,6 +6,7 @@ import {
   UserRoleEnum,
   ITag,
   IUserCardPossession,
+  IUser,
 } from "vokit_core";
 import { ICardSetFilter, INotificationElement } from "./interface";
 
@@ -38,11 +39,7 @@ export type StoreType = {
   setPage: React.Dispatch<React.SetStateAction<number>>;
   pagination: PaginationData | null;
   setPagination: React.Dispatch<React.SetStateAction<any>>;
-  user: {
-    id: string;
-    role: UserRoleEnum;
-    showName: string;
-  };
+  user: Partial<IUser>;
   notifications: INotificationElement[];
   setNotifications: React.Dispatch<
     React.SetStateAction<INotificationElement[]>

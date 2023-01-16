@@ -1,15 +1,4 @@
-import { IUserCardPossession } from '../../..';
-
-export interface ISigninAuthBody {
-  password: string;
-  username: string;
-}
-
-export interface ISignupAuthBody {
-  password: string;
-  username: string;
-  shownName: string;
-}
+import { IUserCardPossession } from '../../models';
 
 export interface ICreatePossessionBody {
   token: string;
@@ -55,26 +44,7 @@ export interface ISetQuantityBody {
   quantity: number;
 }
 
-export interface IIncrementManyUserCardsBody {
-  token: string;
-  cards: [
-    {
-      cardId: string;
-      type: 'normal' | 'reverse';
-    },
-  ];
-}
-
 export interface IHistoricQuery {
   token: string;
   userId: string;
-}
-
-export interface IUserTagsBody {
-  token: string;
-}
-
-export interface ICreateTagBody {
-  token: string;
-  name: string;
 }

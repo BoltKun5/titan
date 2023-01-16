@@ -97,7 +97,7 @@ export const Opening: React.FC = () => {
 
   useEffect(() => {
     if (cardSet === null) return;
-    fetch("cardlist/cards", {
+    fetch("card/list", {
       setFilter: cardSet?.code ?? "",
       order: "default",
       page: -1,

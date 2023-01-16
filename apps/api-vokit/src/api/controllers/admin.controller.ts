@@ -1,7 +1,7 @@
+import { IResponse } from './../../../../../packages/core/src/types/interface/api/type-message/response';
 import { IDeleteSetRenameAdminQuery } from './../../../../../packages/core/src/types/interface/api/requests/admin.request';
 import {
   AdminConfigTypeEnum,
-  IDataImportAdminResponse,
   IDeleteSetRenameAdminResponse,
   IGetSetRenameAdminResponse,
   IPostSetRenameAdminBody,
@@ -18,8 +18,8 @@ class AdminController implements Controller {
   private static readonly logger = new LoggerModel(AdminController.name);
 
   async forceImportData(
-    req: Request<Record<string, never>, IDataImportAdminResponse, void>,
-    res: Response<IDataImportAdminResponse, ILocals>,
+    req: Request<Record<string, never>, Record<string, never>, void>,
+    res: Response<Record<string, never>, ILocals>,
   ): Promise<void> {
     await importDataService.forceImport();
 
@@ -27,8 +27,8 @@ class AdminController implements Controller {
   }
 
   async importTestData(
-    req: Request<Record<string, never>, IDataImportAdminResponse, void>,
-    res: Response<IDataImportAdminResponse, ILocals>,
+    req: Request<Record<string, never>, Record<string, never>, void>,
+    res: Response<Record<string, never>, ILocals>,
   ): Promise<void> {
     await importDataService.importTestData();
 
@@ -36,19 +36,23 @@ class AdminController implements Controller {
   }
 
   async getSetRename(
-    req: Request<Record<string, never>, IGetSetRenameAdminResponse, void>,
-    res: Response<IGetSetRenameAdminResponse, ILocals>,
+    req: Request<Record<string, never>, IResponse<IGetSetRenameAdminResponse>, void>,
+    res: Response<IResponse<IGetSetRenameAdminResponse>, ILocals>,
   ): Promise<void> {
     const renames = await adminConfigService.getSetRename();
 
     res.json({
-      data: renames,
+      data: { renames },
     });
   }
 
   async postSetRename(
-    req: Request<Record<string, never>, IPostSetRenameAdminResponse, IPostSetRenameAdminBody>,
-    res: Response<IPostSetRenameAdminResponse, ILocals>,
+    req: Request<
+      Record<string, never>,
+      IResponse<IPostSetRenameAdminResponse>,
+      IPostSetRenameAdminBody
+    >,
+    res: Response<IResponse<IPostSetRenameAdminResponse>, ILocals>,
   ): Promise<void> {
     req.body = AdminValidation.postSetRenameBody(req.body);
 
@@ -60,24 +64,28 @@ class AdminController implements Controller {
     });
 
     res.json({
-      data: existing,
+      data: { rename: existing },
     });
   }
 
   async deleteSetRename(
     req: Request<
       Record<string, never>,
-      IDeleteSetRenameAdminResponse,
+      IResponse<IDeleteSetRenameAdminResponse>,
       void,
       IDeleteSetRenameAdminQuery
     >,
-    res: Response<IDeleteSetRenameAdminResponse, ILocals>,
+    res: Response<IResponse<IDeleteSetRenameAdminResponse>, ILocals>,
   ): Promise<void> {
     req.query = AdminValidation.deleteSetRenameQuery(req.query);
 
-    await adminConfigService.deleteSetRename(req.query.id ?? '');
+    const deletedId = await adminConfigService.deleteSetRename(req.query.id ?? '');
 
-    res.status(200);
+    res.json({
+      data: {
+        deletedId,
+      },
+    });
   }
 }
 

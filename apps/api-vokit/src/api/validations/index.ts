@@ -1,4 +1,6 @@
 export * from './auth.validation';
+export * from './admin.validation';
+export * from './possession.validation';
 
 import Joi from 'joi';
 

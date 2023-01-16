@@ -9,7 +9,7 @@ import { Opening } from "./pages/Opening/Opening";
 import { HeaderComponent } from "./components/HeaderComponent/HeaderComponent";
 import StoreContext from "./hook/contexts/StoreContext";
 
-import { api } from "./axios";
+import { api, loggedApi } from "./axios";
 import { StatPage } from "./pages/StatPage/StatPage";
 import { initialRarityFilter } from "./pages/CardManager/CardManagerUtils";
 import { ICardSetFilter, INotificationElement } from "./local-core/interface";
@@ -21,6 +21,7 @@ import {
   ICardSerie,
   ITag,
   ICardSet,
+  IUser,
 } from "vokit_core";
 
 export const App: React.FC = () => {
@@ -56,11 +57,19 @@ export const App: React.FC = () => {
   const [notifications, setNotifications] = useState<INotificationElement[]>(
     []
   );
+  const [user, setUser] = useState<Partial<IUser>>({
+    id: "",
+    role: 0,
+    shownName: "",
+  });
 
-  const user = JSON.parse(localStorage.getItem("user") ?? "{}");
+  const fetchUser = useCallback(async () => {
+    const response = await loggedApi.get(`/user/me`);
+    setUser(response.data.user);
+  }, []);
 
   const fetchSeries = useCallback(async () => {
-    const response = await api.get(`/series/allSeries`);
+    const response = await api.get(`/series/all-series`);
     setSeries(response.data.data);
   }, []);
 
@@ -84,6 +93,10 @@ export const App: React.FC = () => {
       })
     );
   };
+
+  useEffect(() => {
+    fetchUser();
+  }, []);
 
   useEffect(() => {
     if (!series) {

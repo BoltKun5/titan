@@ -6,6 +6,7 @@ import StoreContext from "../../hook/contexts/StoreContext";
 import { useFetchData } from "../../hook/api/cards";
 import { Loader } from "../../components/UI/Loader/LoaderComponent";
 import { loggedApi } from "../../axios";
+import { CardRarityEnum } from "vokit_core";
 
 export const CardManager: React.FC = () => {
   const { isLoading, fetch } = useFetchData();
@@ -60,15 +61,11 @@ export const CardManager: React.FC = () => {
 
     params.page = page;
 
-    let response;
-    if (!collectionMode) {
-      response = await fetch("/cardlist/cards", params);
-    } else {
-      params.unowned = showUnowned ? "show" : "hide";
-      response = await fetch("/cardlist/collection", params);
-    }
-    setCards(response.data.cards);
-    setPagination(response.data.pagination);
+    params.unowned = showUnowned ? "show" : "hide";
+    const response = await fetch("/card/list", params);
+
+    setCards(response.cards);
+    setPagination(response.pagination);
   }, [cardSetFilter, nameFilter, collectionMode, showUnowned, order, page]);
 
   useEffect(() => {
@@ -88,7 +85,7 @@ export const CardManager: React.FC = () => {
   }, [cardSetFilter, nameFilter, collectionMode, showUnowned, rarityFilter]);
 
   const fetchTags = useCallback(async () => {
-    const response = await loggedApi.get(`/usercards/tags`);
+    const response = await loggedApi.get(`/tag`);
     setTags(response.data.data.tags);
   }, []);
 

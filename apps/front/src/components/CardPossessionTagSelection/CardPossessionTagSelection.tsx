@@ -62,7 +62,7 @@ export const CardPossessionTagSelection: React.FC<Props> = ({
 
   const createNewTag = async () => {
     try {
-      const result = await loggedApi.post("/usercards/tags", {
+      const result = await loggedApi.post("/tag", {
         name: searchTerm,
       });
       setTags(result.data.data.tags);

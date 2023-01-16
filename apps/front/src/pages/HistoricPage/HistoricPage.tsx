@@ -18,10 +18,10 @@ export const HistoricPage: React.FC = () => {
       userId: JSON.parse(localStorage.getItem("user") ?? '{}').id
     }
 
-    const response = await fetch('/usercards/historic', params);
+    const response = await fetch('/possession/historic', params);
     setHistoricList(response.data.result);
 
-    const response2 = await fetch('/usercards/boosters', params);
+    const response2 = await fetch('/possession/boosters', params);
     setBoosterHistoric(response2.data);
   }, []);
 

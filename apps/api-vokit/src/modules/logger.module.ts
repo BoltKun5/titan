@@ -32,6 +32,8 @@ interface ParamsAPI {
   requestBody?: Record<string, unknown>;
   responseBody?: Record<string, unknown>;
   isAdmin?: boolean;
+  shouldDisableConsole?: boolean;
+  shouldDisableWebhook?: boolean;
 }
 
 type ParamsLog = {
@@ -80,9 +82,9 @@ export default class LoggerModule {
           winston.format.printf((info) => {
             const message = `${chalk.grey(dateFormatted())} | ${
               INFO_LEVEL[info.level.toUpperCase() as keyof typeof INFO_LEVEL]
-            } | ${process.pid}${info.context ? ` | ${info.context}` : ''} | ${
-              info.message || info.content || info.error.stack
-            } `;
+            } | ${process.pid}${info.requestId ? ` | ${info.requestId}` : ''}${
+              info.context ? ` | ${info.context}` : ''
+            } | ${info.message || info.content || info.error.stack} `;
 
             return message;
           }),
@@ -146,7 +148,7 @@ export default class LoggerModule {
               message += ` | ${chalk.yellow(data.durationInMs, 'ms')} | `;
             else message += ` | ${chalk.red(data.durationInMs, 'ms')} | `;
 
-            message += `${data.requestIps.join(' ')} | `;
+            message += `${(data.requestIps || []).join(' ')} | `;
 
             if (data.httpResultCode < 200 || data.httpResultCode > 399)
               message += `${JSON.stringify(data.responseBody)}`;
@@ -170,7 +172,7 @@ export default class LoggerModule {
     message: string,
     options: Partial<ParamsLog> = {},
   ): Promise<LogConsole | void> {
-    const { context = 'No Context', requestId = 'No Request Id', type = LogType.OTHER } = options;
+    const { context, requestId, type = LogType.OTHER } = options;
     LoggerModule.logConsole.log('debug', {
       requestId,
       context,
@@ -193,7 +195,7 @@ export default class LoggerModule {
     errorOrMessage: Error | string,
     options: Partial<ParamsError> = {},
   ): Promise<LogConsole | void> {
-    const { context = 'No Context', requestId = 'No Request Id', type = LogType.OTHER } = options;
+    const { context, requestId, type = LogType.OTHER } = options;
 
     const error = errorOrMessage instanceof Error ? errorOrMessage : new Error(errorOrMessage);
 
@@ -207,10 +209,10 @@ export default class LoggerModule {
             author: {
               name: 'AbyssStorage - Error',
             },
-            title: `[${options.context}] ${LogType[type]} - ${error.name}`,
+            title: `[${context || 'No Context'}] ${LogType[type]} - ${error.name}`,
             description: `${error.message} ${error.stack}`,
             footer: {
-              text: `${dateFormatted()} - ${process.pid} - ${requestId}`,
+              text: `${dateFormatted()} - ${process.pid} - ${requestId || 'No Request id'}`,
             },
           },
         ],
@@ -240,17 +242,18 @@ export default class LoggerModule {
     message: string,
     options: Partial<ParamsInfo> = {},
   ): Promise<LogConsole | void> {
-    const {
-      context = 'No Context',
-      requestId = 'No Request Id',
-      type = LogType.OTHER,
-      shouldLogIntoDiscord = true,
-    } = options;
+    const { context, requestId, type = LogType.OTHER, shouldLogIntoDiscord = true } = options;
 
     LoggerModule.logConsole.log('info', { message, context, requestId, type, date: new Date() });
 
     if (shouldLogIntoDiscord) {
-      nonBlockingPromise(LoggerModule.infoDiscord(message, { context, requestId, type }));
+      nonBlockingPromise(
+        LoggerModule.infoDiscord(message, {
+          context: context || 'No Context',
+          requestId: requestId || 'No Request Id',
+          type,
+        }),
+      );
     }
 
     if (AppConfig.process.sequelizeReady) {
@@ -303,12 +306,7 @@ export default class LoggerModule {
     message: string,
     options: Partial<ParamsWarn> = {},
   ): Promise<LogConsole | void> {
-    const {
-      context = 'No Context',
-      requestId = 'No Request Id',
-      type = LogType.OTHER,
-      shouldLogIntoDiscord = true,
-    } = options;
+    const { context, requestId, type = LogType.OTHER, shouldLogIntoDiscord = true } = options;
 
     LoggerModule.logConsole.log('warn', {
       message,
@@ -319,7 +317,13 @@ export default class LoggerModule {
     });
 
     if (shouldLogIntoDiscord) {
-      nonBlockingPromise(LoggerModule.warnDiscord(message, { context, requestId, type }));
+      nonBlockingPromise(
+        LoggerModule.warnDiscord(message, {
+          context: context || 'No Context',
+          requestId: requestId || 'No Request Id',
+          type,
+        }),
+      );
     }
 
     if (AppConfig.process.sequelizeReady) {
@@ -352,7 +356,7 @@ export default class LoggerModule {
             name: 'AbyssStorage - Warn',
           },
           title: `[${options.context}] ${LogType[options.type]}`,
-          description: `${chunk(message, MAX_EMBED_DESCRIPTION_LENGTH)[0]}`,
+          description: `${chunk(message, MAX_EMBED_DESCRIPTION_LENGTH)[0].join('')}`,
           footer: {
             text: `${dateFormatted()} - ${process.pid} - ${options.requestId}`,
           },
@@ -372,31 +376,35 @@ export default class LoggerModule {
     level: LogLevel,
     params: ParamsAPI,
   ): Promise<LogConsole | void> {
-    LoggerModule.logEndpoint.log(LogLevel[level].toLocaleLowerCase(), {
-      ...params,
-      date: new Date(),
-    });
+    if (!params.shouldDisableConsole) {
+      LoggerModule.logEndpoint.log(LogLevel[level].toLocaleLowerCase(), {
+        ...params,
+        date: new Date(),
+      });
+    }
 
-    nonBlockingPromise(
-      DiscordWebhook.createApiMessage(
-        generateDiscordApiLogMessageContent({
-          name: 'AbyssStorage',
-          authenticatedUserOrMethod: params.isAdmin
-            ? 'Authenticated By Admin Token'
-            : params.user?.shownName || 'Not Authenticated',
-          controller: params.controller,
-          endpoint: params.endpoint,
-          requestId: params.requestId,
-          processId: process.pid.toString(),
-          httpResultCode: params.httpResultCode,
-          method: params.method,
-          requestIps: params.requestIps,
-          durationInMs: params.durationInMs,
-          requestStartDate: params.requestStartDate,
-          responseBody: params.responseBody,
-        }),
-      ),
-    );
+    if (!params.shouldDisableWebhook) {
+      nonBlockingPromise(
+        DiscordWebhook.createApiMessage(
+          generateDiscordApiLogMessageContent({
+            name: 'AbyssStorage',
+            authenticatedUserOrMethod: params.isAdmin
+              ? 'Authenticated By Admin Token'
+              : params.user?.shownName || 'Not Authenticated',
+            controller: params.controller,
+            endpoint: params.endpoint,
+            requestId: params.requestId,
+            processId: process.pid.toString(),
+            httpResultCode: params.httpResultCode,
+            method: params.method,
+            requestIps: params.requestIps,
+            durationInMs: params.durationInMs,
+            requestStartDate: params.requestStartDate,
+            responseBody: params.responseBody,
+          }),
+        ),
+      );
+    }
 
     if (AppConfig.process.sequelizeReady) {
       const logConsole = await logConsoleService.create(

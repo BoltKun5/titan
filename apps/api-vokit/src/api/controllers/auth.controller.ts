@@ -40,7 +40,7 @@ class AuthController implements Controller {
   }
 
   async signUp(
-    req: Request<any, any, ISignupAuthBody>,
+    req: Request<Record<string, never>, IResponse<ISignupAuthResponse>, ISignupAuthBody>,
     res: Response<IResponse<ISignupAuthResponse>, IResponseUnloggedLocals>,
   ): Promise<void> {
     req.body = AuthValidation.signupBody(req.body);

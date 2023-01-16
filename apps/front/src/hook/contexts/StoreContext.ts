@@ -31,7 +31,7 @@ export default React.createContext<StoreType>({
   user: {
     id: "",
     role: 0,
-    showName: "",
+    shownName: "",
   },
   notifications: [],
   setNotifications: () => {},

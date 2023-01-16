@@ -19,7 +19,7 @@ export const DataImportComponent: React.FC = () => {
     setRenameName("");
     setRenameValue("");
     setSelectedId(null);
-    const response = await loggedApi.get("admin/dataImportSetRename");
+    const response = await loggedApi.get("admin/data-set-rename");
     setSetRename((response as any).data.data);
   }, []);
 
@@ -59,7 +59,7 @@ export const DataImportComponent: React.FC = () => {
 
   const submit = async () => {
     try {
-      await loggedApi.post("admin/dataImportSetRename", {
+      await loggedApi.post("admin/data-set-rename", {
         value: renameValue,
         name: renameName,
         ...(selectedId ? { id: selectedId } : {}),
@@ -79,7 +79,7 @@ export const DataImportComponent: React.FC = () => {
 
   const destroy = async () => {
     try {
-      await loggedApi.delete("admin/dataImportSetRename?id=" + selectedId);
+      await loggedApi.delete("admin/data-set-rename?id=" + selectedId);
       fetchRenames();
     } catch (e) {
       console.log(e);

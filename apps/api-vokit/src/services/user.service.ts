@@ -1,5 +1,5 @@
 import bcrypt from 'bcryptjs';
-import { WhereOptions } from 'sequelize';
+import { FindOptions, WhereOptions } from 'sequelize';
 import { BasePaginate, IUser, QueryPaginate } from 'vokit_core';
 import { User } from '../../src/database';
 import { EntityService, Paginator } from '../core';
@@ -22,8 +22,12 @@ type ParamsPaginate = {
 export class UserService extends EntityService<User, IUser> {
   private readonly paginator = new Paginator(User);
 
-  public async getUser(params: ParamsGetUser, include?: IncludeOptionsWithModel[]): Promise<User> {
-    return this._fetch(User, { model: params.user }, include);
+  public async getUser(
+    params: ParamsGetUser,
+    include?: IncludeOptionsWithModel[],
+    options?: FindOptions,
+  ): Promise<User> {
+    return this._fetch(User, { model: params.user }, include, options);
   }
 
   public async paginate(params: ParamsPaginate): Promise<BasePaginate<User>> {

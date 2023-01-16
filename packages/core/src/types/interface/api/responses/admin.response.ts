@@ -5,11 +5,11 @@ export interface IDataImportAdminResponse {
 }
 
 export interface IGetSetRenameAdminResponse {
-  data: IAdminConfig[];
+  renames: IAdminConfig[];
 }
 
 export interface IPostSetRenameAdminResponse {
-  data: IAdminConfig;
+  rename: IAdminConfig;
 }
 
 export interface IDeleteSetRenameAdminResponse {

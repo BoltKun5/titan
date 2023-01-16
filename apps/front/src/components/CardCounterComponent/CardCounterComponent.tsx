@@ -45,7 +45,7 @@ export const CardCounterComponent: React.FC<CardCounterComponentPropsType> = ({
       const response: AxiosResponse<
         IResponse<ICreatePossessionResponse>,
         any
-      > = await loggedApi.post(`/usercards/createPossession`, {
+      > = await loggedApi.post(`/possession/create`, {
         cardId: card.id,
         ...(cardType === "reverse"
           ? {
@@ -80,9 +80,8 @@ export const CardCounterComponent: React.FC<CardCounterComponentPropsType> = ({
     try {
       setIsDisabled(true);
       const response: AxiosResponse<
-        IResponse<ISimpleDeletePossessionResponse>,
-        any
-      > = await loggedApi.post(`/usercards/simpleDeletePossession`, {
+        IResponse<ISimpleDeletePossessionResponse>
+      > = await loggedApi.post(`/possession/simple-delete`, {
         cardId: card.id,
         ...(cardType === "reverse"
           ? {
@@ -93,10 +92,6 @@ export const CardCounterComponent: React.FC<CardCounterComponentPropsType> = ({
           : {}),
       });
       setIsDisabled(false);
-      if (response.data.data?.code === "NO_EMPTY_POSSESSION") {
-        enqueueSnackbar("Impossible de supprimer suffisament d'éléments.");
-        return;
-      }
       setCards(
         cards.map((localCard) => {
           if (card.id === localCard.id) {
@@ -114,7 +109,8 @@ export const CardCounterComponent: React.FC<CardCounterComponentPropsType> = ({
         })
       );
       triggerChangeNotification(1, 0);
-    } catch (e) {
+    } catch (e: any) {
+      console.log(e.code);
       console.log(e);
     }
   };
@@ -170,7 +166,7 @@ export const CardCounterComponent: React.FC<CardCounterComponentPropsType> = ({
       const response: AxiosResponse<
         IResponse<ISetQuantityResponse>,
         any
-      > = await loggedApi.post(`/usercards/setQuantity`, {
+      > = await loggedApi.post(`/possession/set-quantity`, {
         cardId: card.id,
         cardPrintingId:
           cardType === "classic"

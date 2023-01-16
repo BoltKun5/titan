@@ -3,4 +3,5 @@ export enum APIMethod {
   POST = 2,
   DELETE = 3,
   PUT = 4,
+  PATCH = 5,
 }

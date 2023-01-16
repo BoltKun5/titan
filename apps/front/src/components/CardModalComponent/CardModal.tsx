@@ -45,7 +45,7 @@ export const CardModal: React.FC<{ card: ICard; closeModal: () => void }> = ({
       const response: AxiosResponse<
         IResponse<ICreatePossessionResponse>,
         any
-      > = await loggedApi.post(`/usercards/createPossession`, {
+      > = await loggedApi.post(`/possession/create`, {
         cardId: card.id,
       });
       setCards(
@@ -107,7 +107,7 @@ export const CardModal: React.FC<{ card: ICard; closeModal: () => void }> = ({
       const response: AxiosResponse<
         IResponse<IUpdatePossessionResponse>,
         any
-      > = await loggedApi.post(`/usercards/update`, {
+      > = await loggedApi.post(`/possession/update`, {
         cardId: card.id,
         possessions,
         ...(createList.length > 0 ? { createdTags: createList } : {}),
@@ -153,7 +153,7 @@ export const CardModal: React.FC<{ card: ICard; closeModal: () => void }> = ({
 
   const deletePossession = async (id: string) => {
     try {
-      await loggedApi.post(`/usercards/forceDeletePossession`, {
+      await loggedApi.post(`/possession/force-delete`, {
         possessionId: id,
       });
       const cleanCardPossession = [...localCardPossession];

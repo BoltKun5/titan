@@ -9,6 +9,7 @@ export enum HttpErrorCode {
   badpassword = 'INCORRECT_PASSWORD',
   badusername = 'UNKNOWN_USER',
   badvalues = 'BAD_VALUES',
+  undeletablepossessions = 'UNDELETABLE_POSSESSIONS',
 }
 
 export enum ErrorType {

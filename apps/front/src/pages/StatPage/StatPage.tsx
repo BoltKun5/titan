@@ -62,7 +62,7 @@ export const StatPage: React.FC = () => {
     let response;
     params.unowned = "show";
     params.stats = true;
-    response = await fetch("/cardlist/stats", params);
+    response = await fetch("/card/stats", params);
     setStats((response as any).data);
   }, [cardSetFilter, nameFilter, collectionMode, showUnowned, order, page]);
 

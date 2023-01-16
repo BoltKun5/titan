@@ -5,3 +5,4 @@ front/src/assets/setLogos/*
 .idea
 api-vokit/img
 **/node_modules/
+logs

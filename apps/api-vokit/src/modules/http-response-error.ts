@@ -33,6 +33,13 @@ export class HttpResponseError {
     });
   }
 
+  public static createNotEnoughDeletablePossession(): createError.HttpError {
+    return createError(404, {
+      code: HttpErrorCode.undeletablepossessions,
+      message: 'not enough deletable possessions could be found',
+    });
+  }
+
   public static createSignInValidationError(): createError.HttpError {
     return createError(400, {
       code: HttpErrorCode.signinvalidation,
