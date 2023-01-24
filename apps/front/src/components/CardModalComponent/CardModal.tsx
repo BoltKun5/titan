@@ -109,7 +109,19 @@ export const CardModal: React.FC<{ card: ICard; closeModal: () => void }> = ({
         any
       > = await loggedApi.post(`/possession/update`, {
         cardId: card.id,
-        possessions,
+        possessions: possessions.map((possession) => {
+          let _possession: any = {};
+          _possession.boosterId = possession.boosterId;
+          _possession.condition = possession.condition;
+          _possession.deletionType = possession.deletionType;
+          _possession.language = possession.language;
+          _possession.grade = possession.grade;
+          _possession.note = possession.note;
+          _possession.printingId = possession.printingId;
+          _possession.id = possession.id;
+
+          return _possession;
+        }),
         ...(createList.length > 0 ? { createdTags: createList } : {}),
         ...(deleteList.length > 0 ? { deletedTags: deleteList } : {}),
       });
@@ -302,12 +314,7 @@ export const CardModal: React.FC<{ card: ICard; closeModal: () => void }> = ({
                     Les modifications non enregistrées seront perdues.
                   </span>
                   <div onClick={handleCloseModal}>
-                    <ButtonComponent
-                      size={90}
-                      label={"Quitter"}
-                      color={"green"}
-                      height={40}
-                    />
+                    <ButtonComponent size={90} label={"Quitter"} height={40} />
                   </div>
                 </div>
               </ClickAwayListener>

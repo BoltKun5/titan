@@ -24,7 +24,11 @@ export class UserCardPossessionService extends EntityService<
     options: IUpdatePossessionBody,
     user: IUser,
   ): Promise<UserCardPossession[]> {
-    await UserCardPossession.bulkCreate(options.possessions, {
+    const values = options.possessions.map((option) => {
+      option.userId = user.id;
+      return option;
+    });
+    await UserCardPossession.bulkCreate(values, {
       updateOnDuplicate: ['condition', 'grade', 'printingId'],
     });
 
@@ -137,9 +141,14 @@ export class UserCardPossessionService extends EntityService<
   ): Promise<UserCardPossession[]> {
     const boosterId = v4();
     const data = options.cards.map((card) => {
-      card.boosterId = boosterId;
-      card.userId = user.id;
-      return card;
+      const _card: { boosterId: string; userId: string; cardId: string; printingId: string } = {
+        ...card,
+        boosterId: '',
+        userId: '',
+      };
+      _card.boosterId = boosterId;
+      _card.userId = user.id;
+      return _card;
     });
     return UserCardPossession.bulkCreate(data);
   }

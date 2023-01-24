@@ -23,7 +23,7 @@ export const StatPage: React.FC = () => {
     rarityFilter,
     collectionMode,
     cardSetFilter,
-    showUnowned,
+    possessionFilter,
     order,
     page,
   } = useContext(StoreContext);
@@ -64,7 +64,7 @@ export const StatPage: React.FC = () => {
     params.stats = true;
     response = await fetch("/card/stats", params);
     setStats((response as any).data);
-  }, [cardSetFilter, nameFilter, collectionMode, showUnowned, order, page]);
+  }, [cardSetFilter, nameFilter, collectionMode, possessionFilter, order, page]);
 
   useEffect(() => {
     fetchStats();

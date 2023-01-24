@@ -29,12 +29,17 @@ export const CardPossessionTagSelection: React.FC<Props> = ({
     updateFilteredItems();
   }, [searchTerm, tags]);
 
-  const getLabelListLength = useCallback(() => {
-    const tagList: ITag[] = localCardPossession?.find(
-      (poss) => poss.id === cardPossession.id
-    )?.tags;
+  const getLabelList = useCallback(() => {
+    const tagList: ITag[] =
+      localCardPossession?.find((poss) => poss.id === cardPossession.id)
+        ?.tags ?? [];
     const idList = tagList?.map((subTag) => subTag.id);
-    return tags?.filter((tag) => idList?.includes(tag.id)).length;
+    return tags?.filter((tag) => idList?.includes(tag.id))?.length ?? 0 > 0
+      ? tags
+          ?.filter((tag) => idList?.includes(tag.id))
+          .map((e) => e.name)
+          .join(", ")
+      : "Rechercher ou créer";
   }, [tags, localCardPossession]);
 
   const updateFilteredItems = () => {
@@ -96,11 +101,7 @@ export const CardPossessionTagSelection: React.FC<Props> = ({
               <input
                 type={"text"}
                 value={searchTerm}
-                placeholder={
-                  getLabelListLength() +
-                  " label" +
-                  (getLabelListLength() ?? 0 > 1 ? "s" : "")
-                }
+                placeholder={getLabelList()}
                 onChange={(ev) => setSearchTerm(ev.target.value.toUpperCase())}
               ></input>
             </div>

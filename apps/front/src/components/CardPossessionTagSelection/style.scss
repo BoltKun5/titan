@@ -4,6 +4,7 @@
   position: relative;
   display: flex;
   scrollbar-color: $primary rgb(41, 41, 41);
+  height: 32px;
   width: 100%;
 
   &-searchBarContainer {
@@ -19,6 +20,7 @@
     box-sizing: border-box;
     font-size: 18px;
     width: 100%;
+    height: 32px;
 
     &:focus,
     &:visited,
@@ -147,6 +149,9 @@
     right: 3px;
     top: 3px;
     cursor: pointer;
+    background: linear-gradient(to right, rgba(0, 0, 0, 0) 0, $primary-bg 20%);
+    padding-left: 5px;
+    border-radius: 0 0 100px 0;
 
     &:hover {
       svg {

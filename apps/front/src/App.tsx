@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from "react";
-import { Route, Routes } from "react-router-dom";
+import { Route, Routes, useNavigate } from "react-router-dom";
 import { Login } from "./pages/Login/Login";
 import { CardManager } from "./pages/CardManager/CardManager";
 import { AdminPage } from "./pages/AdminPage/AdminPage";
@@ -34,7 +34,9 @@ export const App: React.FC = () => {
   // Autres
   const [collectionMode, setCollectionMode] = useState<boolean>(true);
   const [separateReverse, setSeparateReverse] = useState<boolean>(false);
-  const [showUnowned, setShowUnowned] = useState<boolean>(true);
+  const [possessionFilter, setPossessionFilter] = useState<
+    "owned" | "unowned" | null
+  >(null);
 
   const [showOptionCards, setShowOptionCards] = useState(false);
   const [page, setPage] = useState(1);
@@ -63,9 +65,17 @@ export const App: React.FC = () => {
     shownName: "",
   });
 
+  const navigate = useNavigate();
+
   const fetchUser = useCallback(async () => {
-    const response = await loggedApi.get(`/user/me`);
-    setUser(response.data.user);
+    try {
+      const response = await loggedApi.get(`/user/me`);
+      setUser(response.data.user);
+    } catch (e) {
+      localStorage.removeItem("token");
+      localStorage.removeItem("user");
+      navigate("/");
+    }
   }, []);
 
   const fetchSeries = useCallback(async () => {
@@ -119,8 +129,8 @@ export const App: React.FC = () => {
     setCollectionMode,
     separateReverse,
     setSeparateReverse,
-    showUnowned,
-    setShowUnowned,
+    possessionFilter,
+    setPossessionFilter,
     cards,
     setCards,
     showOptionCards,
@@ -142,7 +152,7 @@ export const App: React.FC = () => {
     if (series) {
       let setFilterList: ICardSetFilter[] = [];
       series.forEach((serie: ICardSerie) => {
-        serie.cardSets.forEach((set: ICardSet) => {
+        serie.cardSets?.forEach((set: ICardSet) => {
           setFilterList.push({
             name: set.name,
             id: set.id,

@@ -27,8 +27,10 @@ export type StoreType = {
   setCollectionMode: React.Dispatch<React.SetStateAction<boolean>>;
   separateReverse: boolean;
   setSeparateReverse: React.Dispatch<React.SetStateAction<boolean>>;
-  showUnowned: boolean;
-  setShowUnowned: React.Dispatch<React.SetStateAction<boolean>>;
+  possessionFilter: "owned" | "unowned" | null;
+  setPossessionFilter: React.Dispatch<
+    React.SetStateAction<"owned" | "unowned" | null>
+  >;
   massInput: boolean;
   setMassInput: React.Dispatch<React.SetStateAction<boolean>>;
   cards: ICard[];

@@ -74,7 +74,7 @@ export const customSeeders = async (sequelize: Sequelize, down?: boolean): Promi
       }
     }
 
-    await LoggerModule.info('Seeders synchronized');
+    await LoggerModule.log('Seeders synchronized');
   } catch (error: any) {
     await LoggerModule.error(new Error(`>>>LOG:error SEEDERS ${error}`));
     throw error;
@@ -106,7 +106,7 @@ export const customMigrations = async (sequelize: Sequelize, down?: boolean): Pr
       }
     }
 
-    await LoggerModule.info('Migrations synchronized');
+    await LoggerModule.log('Migrations synchronized');
   } catch (error: any) {
     await LoggerModule.error(new Error(`>>>LOG:error MIGRATIONS ${error}`));
     throw error;

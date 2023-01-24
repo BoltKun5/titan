@@ -42,7 +42,7 @@ export class LoggerModel {
   }
 
   public async info(message: string, options?: ParamsInfo): Promise<void> {
-    LoggerModule.info(message, {
+    LoggerModule.log(message, {
       context: this.name,
       requestId: this.getCurrentRequestId() || undefined,
       shouldLogIntoDiscord: true,

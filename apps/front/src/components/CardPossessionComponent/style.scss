@@ -154,7 +154,7 @@
   }
 }
 
-@media (max-width: 1400px) {
+@media (max-width: 1550px) {
   .CardPossession {
     &-container {
       flex-wrap: wrap;
@@ -165,34 +165,44 @@
 
       &:nth-child(1),
       &:nth-child(2),
-      &:nth-child(3) {
-        width: 25%;
-      }
-
+      &:nth-child(5),
+      &:nth-child(3),
       &:nth-child(4) {
-        width: 52%;
-        margin: auto 10px 20px 10px;
+        width: 25%;
       }
     }
 
     &-buttons {
       width: 25%;
       margin: 0px 10px 0 10px;
+      justify-content: center;
     }
   }
 }
 
 @media (max-width: 800px) {
   .CardPossession {
+    &-container {
+      padding-top: 15px;
+      height: 200px;
+    }
+
     &-selectContainer {
-      &:nth-child(4) {
-        margin: auto 10px 20px 10px;
+
+      &:nth-child(1),
+      &:nth-child(2),
+      &:nth-child(3),
+      &:nth-child(4),
+      &:nth-child(5) {
+        width: 45%;
       }
+
     }
 
     &-buttons {
-      width: auto;
+      width: 45%;
       margin: 0px 10px 0 10px;
+      justify-content: center;
     }
   }
 }
@@ -200,16 +210,16 @@
 @media (max-width: 600px) {
   .CardPossession {
     &-selectContainer {
-      width: 40% !important;
+      width: 90% !important;
 
-      &:nth-child(4) {
+      &:nth-child(5) {
         margin: auto 10px 9px 10px;
         z-index: 10;
       }
     }
 
     &-container {
-      height: 240px;
+      height: 370px;
     }
 
   }

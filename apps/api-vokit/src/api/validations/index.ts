@@ -1,6 +1,7 @@
 export * from './auth.validation';
 export * from './admin.validation';
 export * from './possession.validation';
+export * from './card.validation';
 
 import Joi from 'joi';
 

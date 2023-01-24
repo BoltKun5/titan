@@ -2,14 +2,17 @@ import { ICardListResponse, ICardQuery, IStatsResponse, StatisticsDataType } fro
 import { Controller, LoggerModel, ILocals } from '../../core';
 import { Request, Response } from 'express';
 import cardService from '../../services/card.service';
+import CardValidation from '../validations/card.validation';
 
 class CardController implements Controller {
   private static readonly logger = new LoggerModel(CardController.name);
 
-  async cardList(
+  async getCardList(
     req: Request<Record<string, never>, ICardListResponse, void, ICardQuery>,
     res: Response<ICardListResponse, ILocals>,
   ): Promise<void> {
+    req.query = CardValidation.cardQuery(req.query);
+
     const cards = await cardService.getCards({ ...req.query }, res.locals.currentUser);
     const count = await cardService.getCount({ ...req.query }, res.locals.currentUser);
 
@@ -26,7 +29,7 @@ class CardController implements Controller {
     });
   }
 
-  async stats(
+  async getStats(
     req: Request<Record<string, never>, IStatsResponse, void, ICardQuery>,
     res: Response<IStatsResponse, ILocals>,
   ): Promise<void> {

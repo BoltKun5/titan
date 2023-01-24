@@ -1,4 +1,4 @@
-export enum CardVariationConditionEnum {
+export enum CardPossessionConditionEnum {
   'Mint',
   'Near mint',
   'Excellent',
@@ -28,7 +28,7 @@ export enum CardVariationConditionEnum {
   'Gradée : 10+',
 }
 
-export enum CardVariationGradeCompanyEnum {
+export enum CardPossessionGradeCompanyEnum {
   'PCA',
   'PSA',
 }
@@ -36,4 +36,13 @@ export enum CardVariationGradeCompanyEnum {
 export enum CardPossessionDeletionTypeEnum {
   'NONE',
   'SOLD',
+}
+
+export enum CardPossessionLanguageEnum {
+  'Français',
+  'Allemand',
+  'Anglais',
+  'Espagnol',
+  'Italien',
+  'Portugais',
 }

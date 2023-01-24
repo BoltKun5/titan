@@ -11,7 +11,7 @@ export default async (): Promise<Sequelize> => {
   expressLoader();
   LoggerModule.log('Express loaded', { type: LogType.SYSTEM_STARTUP });
 
-  LoggerModule.info('All Dependency Injector loaded', { type: LogType.SYSTEM_STARTUP });
+  LoggerModule.log('All Dependency Injector loaded', { type: LogType.SYSTEM_STARTUP });
 
   return postgressConnection;
 };

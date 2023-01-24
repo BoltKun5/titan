@@ -7,7 +7,7 @@ import routes from '../api';
 import { ILocals } from '../core';
 import AppConfig from '../modules/app-config.module';
 import LoggerModule from '../modules/logger.module';
-import { middleware as httpContextMiddleware } from 'express-http-context';
+import { middleware as httpContextMiddleware, get as httpContextGet } from 'express-http-context';
 import endpointLoggerMiddleware from '../api/middlewares/endpoint-logger.middleware';
 import generalSetupMiddleware from '../api/middlewares/general-setup.middleware';
 import listEndpoints from 'express-list-endpoints';
@@ -23,9 +23,6 @@ export default (): express.Application => {
   app.use(httpContextMiddleware);
 
   app.disable('x-powered-by');
-
-  app.use(generalSetupMiddleware);
-  app.use(endpointLoggerMiddleware);
 
   app.use(cors());
   app.use((req: Request, res: Response<any, ILocals>, next: NextFunction) => {
@@ -46,6 +43,9 @@ export default (): express.Application => {
   // eslint-disable-next-line @typescript-eslint/no-var-requires
   app.use(require('compression')());
 
+  app.use(generalSetupMiddleware);
+  app.use(endpointLoggerMiddleware);
+
   app.use(AppConfig.config.api.prefix, routes());
 
   const endpoints = listEndpoints(app);
@@ -61,7 +61,7 @@ export default (): express.Application => {
       res: Response<unknown, ILocals>,
       _next: NextFunction,
     ) => {
-      LoggerModule.error(error, { type: LogType.API });
+      LoggerModule.error(error, { type: LogType.API, requestId: httpContextGet('reqId') });
       HttpResponseError.sendError(error, req, res);
     },
   );
@@ -76,14 +76,14 @@ export default (): express.Application => {
 
   httpsServer
     .listen(AppConfig.config.app.port, () => {
-      LoggerModule.info(`Server listening on port: ${AppConfig.config.app.port}`, {
+      LoggerModule.log(`Server listening on port: ${AppConfig.config.app.port}`, {
         type: LogType.SYSTEM_STARTUP,
       });
       LoggerModule.log(
         `
-        ###############################################
-        🛡️      Server listening on port: ${AppConfig.config.app.port}      🛡️
-        ###############################################`,
+      ###############################################
+      🛡️      Server listening on port: ${AppConfig.config.app.port}      🛡️
+      ###############################################`,
         { type: LogType.SYSTEM_STARTUP },
       );
     })

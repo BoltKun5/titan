@@ -5,30 +5,33 @@ import { ButtonComponent } from "../UI/Button/ButtonComponent";
 import { Comment, Delete, Save } from "@mui/icons-material";
 import { ClickAwayListener } from "@mui/material";
 import {
-  CardVariationConditionEnum,
-  CardVariationGradeCompanyEnum,
+  CardPossessionLanguageEnum,
+  CardPossessionConditionEnum,
+  CardPossessionGradeCompanyEnum,
   ITag,
+  IUserCardPossession,
 } from "vokit_core";
 import { CardPossessionComponentPropsType } from "../../local-core";
 
 export const CardPossessionComponent: React.FC<CardPossessionComponentPropsType> =
   ({ card, possession, update, delete: destroy, canSave, save, index }) => {
-    const cardCondition = CardVariationConditionEnum;
-    const gradeCompany = CardVariationGradeCompanyEnum;
+    const cardCondition = CardPossessionConditionEnum;
+    const gradeCompany = CardPossessionGradeCompanyEnum;
+    const languages = CardPossessionLanguageEnum;
 
     const [isNoteOpened, setIsNoteOpened] = useState(false);
     const [handleDelete, setHandleDelete] = useState(false);
 
     const handleUpdate = (
-      type: "condition" | "grade" | "printingId",
+      type: "condition" | "grade" | "printingId" | "language",
       newValue: any
     ) => {
-      let localPossession = { ...possession };
+      let localPossession: IUserCardPossession = { ...possession };
       if (newValue === "") newValue = null;
-      else if (type === "condition" || type === "grade")
+      else if (type === "condition" || type === "grade" || type === "language")
         newValue = Number(newValue);
-
       localPossession[type] = newValue;
+      const a = localPossession[type];
       update(localPossession);
     };
 
@@ -85,6 +88,21 @@ export const CardPossessionComponent: React.FC<CardPossessionComponentPropsType>
                   {print.name}
                 </option>
               ))}
+            </select>
+          </div>
+          <div className="CardPossession-selectContainer">
+            <label>Langue</label>
+            <select
+              value={possession?.language ?? undefined}
+              onChange={(ev) => handleUpdate("language", ev.target.value)}
+            >
+              {Object.entries(languages)
+                .filter((condition) => !isNaN(Number(condition[0])))
+                .map((condition, index) => (
+                  <option key={"grade" + index} value={Number(condition[0])}>
+                    {condition[1]}
+                  </option>
+                ))}
             </select>
           </div>
           <div className="CardPossession-selectContainer">

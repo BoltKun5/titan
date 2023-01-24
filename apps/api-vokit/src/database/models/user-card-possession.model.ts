@@ -22,9 +22,10 @@ import { WithRequired } from '../../core';
 import {
   Overwrite,
   IUserCardPossession,
-  CardVariationConditionEnum,
-  CardVariationGradeCompanyEnum,
+  CardPossessionConditionEnum,
+  CardPossessionGradeCompanyEnum,
   CardPossessionDeletionTypeEnum,
+  CardPossessionLanguageEnum,
 } from 'vokit_core';
 
 export type ModelUserCardPossession = Overwrite<
@@ -76,12 +77,12 @@ export class UserCardPossession
   @Column({
     type: DataType.INTEGER,
   })
-  condition: CardVariationConditionEnum;
+  condition: CardPossessionConditionEnum;
 
   @Column({
     type: DataType.INTEGER,
   })
-  grade: CardVariationGradeCompanyEnum;
+  grade: CardPossessionGradeCompanyEnum;
 
   @ForeignKey(() => CardAdditionalPrinting)
   @Column({
@@ -99,6 +100,11 @@ export class UserCardPossession
     type: DataType.STRING,
   })
   note: string;
+
+  @Column({
+    type: DataType.INTEGER,
+  })
+  language: CardPossessionLanguageEnum | null;
 
   @Column({
     type: DataType.STRING,

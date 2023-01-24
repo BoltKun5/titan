@@ -5,7 +5,7 @@ export interface ICardQuery {
   namefilter?: string;
   rarity?: CardRarityEnum;
   page?: number;
-  stats?: string;
-  unowned?: 'show' | 'hide';
-  setFilter?: string;
+  stats?: boolean;
+  possession?: 'owned' | 'unowned';
+  setFilter?: string[];
 }

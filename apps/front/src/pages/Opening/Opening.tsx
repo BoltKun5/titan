@@ -47,13 +47,13 @@ export const Opening: React.FC = () => {
     series.map(
       (serie) => {
         _setList = _setList.concat(
-          serie.cardSets.map((_serie: ICardSerie) => {
+          serie.cardSets?.map((_serie: ICardSerie) => {
             return {
               name: _serie.name,
               id: _serie.id,
               code: _serie.code,
             };
-          })
+          }) ?? []
         );
       },
       [series]
@@ -98,11 +98,11 @@ export const Opening: React.FC = () => {
   useEffect(() => {
     if (cardSet === null) return;
     fetch("card/list", {
-      setFilter: cardSet?.code ?? "",
+      setFilter: [cardSet?.code ?? ""],
       order: "default",
       page: -1,
     }).then((response) => {
-      setPossibleCards(response.data.cards);
+      setPossibleCards(response.cards);
     });
   }, [cardSet]);
 
@@ -170,7 +170,7 @@ export const Opening: React.FC = () => {
 
   const submit = () => {
     try {
-      loggedApi.post("usercards/multiple-possession", {
+      loggedApi.post("possession/multiple-create", {
         cards: cardList.map((value) => ({
           cardId: value.card?.id,
           printingId:

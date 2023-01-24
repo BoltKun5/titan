@@ -5,7 +5,7 @@ import StoreContext from "../../hook/contexts/StoreContext";
 import { StatCardComponentType } from "../../local-core";
 
 export const StatCardComponent: React.FC<StatCardComponentType> = ({ data }) => {
-  const { showUnowned } = useContext(StoreContext);
+  const { possessionFilter } = useContext(StoreContext);
   return (
     <div className="StatCard">
       {

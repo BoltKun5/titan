@@ -55,7 +55,14 @@ export const HeaderComponent: React.FC<{
           onClick={() => setIsProfileDropdownOpen(true)}
         >
           <div className="HeaderComponent-profilePicture">
-            <img src={"src/assets/default_profile_picture.png"} />
+            <img
+              src={"src/assets/logo_small.png"}
+              style={{
+                filter: isProfileDropdownOpen
+                  ? "brightness(1)"
+                  : "brightness(0.7)",
+              }}
+            />
           </div>
         </div>
       </div>

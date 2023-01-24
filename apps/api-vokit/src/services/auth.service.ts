@@ -25,7 +25,7 @@ type ResultLogin = {
 
 class AuthService extends Service {
   public async signup({ username, password, shownName }: ParamsSignup): Promise<User> {
-    this.logger.info(`New user **${username}** registered`);
+    this.logger.log(`New user **${username}** registered`);
 
     return UserService.create({
       username,

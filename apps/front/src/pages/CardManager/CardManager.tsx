@@ -18,7 +18,7 @@ export const CardManager: React.FC = () => {
     rarityFilter,
     page,
     collectionMode,
-    showUnowned,
+    possessionFilter,
     setCards,
     setPagination,
     series,
@@ -61,12 +61,22 @@ export const CardManager: React.FC = () => {
 
     params.page = page;
 
-    params.unowned = showUnowned ? "show" : "hide";
+    if (possessionFilter) {
+      params.possession = possessionFilter;
+    }
+
     const response = await fetch("/card/list", params);
 
     setCards(response.cards);
     setPagination(response.pagination);
-  }, [cardSetFilter, nameFilter, collectionMode, showUnowned, order, page]);
+  }, [
+    cardSetFilter,
+    nameFilter,
+    collectionMode,
+    possessionFilter,
+    order,
+    page,
+  ]);
 
   useEffect(() => {
     fetchCards();
@@ -74,7 +84,7 @@ export const CardManager: React.FC = () => {
     cardSetFilter,
     nameFilter,
     collectionMode,
-    showUnowned,
+    possessionFilter,
     order,
     rarityFilter,
     page,
@@ -82,7 +92,13 @@ export const CardManager: React.FC = () => {
 
   useEffect(() => {
     setPage(1);
-  }, [cardSetFilter, nameFilter, collectionMode, showUnowned, rarityFilter]);
+  }, [
+    cardSetFilter,
+    nameFilter,
+    collectionMode,
+    possessionFilter,
+    rarityFilter,
+  ]);
 
   const fetchTags = useCallback(async () => {
     const response = await loggedApi.get(`/tag`);

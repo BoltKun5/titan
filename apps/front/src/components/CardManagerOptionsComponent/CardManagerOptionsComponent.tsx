@@ -10,8 +10,6 @@ export const CardManagerOptions: React.FC = () => {
     setCollectionMode,
     separateReverse,
     setSeparateReverse,
-    showUnowned,
-    setShowUnowned,
     showOptionCards,
     setShowOptionCards,
   } = useContext(StoreContext);
@@ -35,13 +33,6 @@ export const CardManagerOptions: React.FC = () => {
           modifyValue={setSeparateReverse}
           label={'Séparer Reverse'}
           id={'separateReverse'}
-        /> */}
-        {/* <SwitchInputComponent
-          value={showUnowned}
-          isDisabled={!collectionMode}
-          modifyValue={setShowUnowned}
-          label={'Afficher non possédées'}
-          id={'showUnowned'}
         /> */}
         <SwitchInputComponent
           value={showOptionCards}

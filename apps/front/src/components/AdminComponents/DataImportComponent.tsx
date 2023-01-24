@@ -4,7 +4,12 @@ import { ButtonComponent } from "../UI/Button/ButtonComponent";
 import { Loader } from "../UI/Loader/LoaderComponent";
 import { TextInputComponent } from "../UI/TextInputComponent/TextInputComponent";
 import "./style.scss";
-import { IAdminConfig } from "vokit_core";
+import {
+  IAdminConfig,
+  IGetSetRenameAdminResponse,
+  IResponse,
+} from "vokit_core";
+import { AxiosResponse } from "axios";
 
 export const DataImportComponent: React.FC = () => {
   const [setRename, setSetRename] = useState<IAdminConfig[] | null>(null);
@@ -19,8 +24,9 @@ export const DataImportComponent: React.FC = () => {
     setRenameName("");
     setRenameValue("");
     setSelectedId(null);
-    const response = await loggedApi.get("admin/data-set-rename");
-    setSetRename((response as any).data.data);
+    const response: AxiosResponse<IResponse<IGetSetRenameAdminResponse>> =
+      await loggedApi.get("admin/data-set-rename");
+    setSetRename(response.data.data.renames);
   }, []);
 
   useEffect(() => {

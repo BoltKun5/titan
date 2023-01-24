@@ -6,7 +6,7 @@
   display: flex;
   height: 75px;
   margin: 0;
-  z-index: 1000;
+  z-index: 10000;
   position: relative;
 
   a {
@@ -141,12 +141,14 @@
 
       & img {
         width: 100%;
+
+        &:hover {
+          filter: brightness(1) !important
+        }
       }
     }
 
     margin: auto;
-    border-radius: 10000px;
-    border: 1px solid $primary;
   }
 
   &-profileOptions {
@@ -155,6 +157,7 @@
     background-color: #161827;
     top: calc(100% + 1px);
     right: 0;
+    z-index: 10000;
   }
 
   &-profileButtons {

@@ -244,7 +244,9 @@ export class ImportDataService extends Service {
           });
         }
 
-        const sets = serieData.sets.filter((set: any) => set.id === 'swsh12');
+        const sets = serieData.sets.filter(
+          (set: any) => set.id === 'swsh12' || set.id === 'swsh11',
+        );
 
         for (const set of sets as Array<any>) {
           const setData: any = (await axios.get(`https://api.tcgdex.net/v2/fr/sets/${set.id}`))

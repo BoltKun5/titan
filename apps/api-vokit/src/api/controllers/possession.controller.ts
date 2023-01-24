@@ -19,6 +19,7 @@ import {
   IUpdatePossessionResponse,
 } from 'vokit_core';
 import userCardPossessionService from '../../services/user-card-possession.service';
+import PossessionValidation from '../validations/possession.validation';
 
 class PossessionController implements Controller {
   private static readonly logger = new LoggerModel(PossessionController.name);
@@ -31,6 +32,7 @@ class PossessionController implements Controller {
     >,
     res: Response<IResponse<IUpdatePossessionResponse>, ILocals>,
   ): Promise<void> {
+    req.body = PossessionValidation.update(req.body);
     const newPossessions = await userCardPossessionService.updatePossession(
       { ...req.body },
       res.locals.currentUser,
@@ -47,6 +49,7 @@ class PossessionController implements Controller {
     >,
     res: Response<IResponse<ICreatePossessionResponse>, ILocals>,
   ): Promise<void> {
+    req.body = PossessionValidation.create(req.body);
     const newPossession = await userCardPossessionService.createPossession(
       { ...req.body },
       res.locals.currentUser,
@@ -63,6 +66,7 @@ class PossessionController implements Controller {
     >,
     res: Response<IResponse<ISimpleDeletePossessionResponse>, ILocals>,
   ): Promise<void> {
+    req.body = PossessionValidation.simpleDelete(req.body);
     const deletedId = await userCardPossessionService.simpleDelete(
       { ...req.body },
       res.locals.currentUser,
@@ -83,6 +87,7 @@ class PossessionController implements Controller {
     >,
     res: Response<IResponse<IDeletePossessionResponse>, ILocals>,
   ): Promise<void> {
+    req.body = PossessionValidation.forceDelete(req.body);
     const deletedId = await userCardPossessionService.forceDelete(
       { ...req.body },
       res.locals.currentUser,
@@ -102,6 +107,7 @@ class PossessionController implements Controller {
     >,
     res: Response<IResponse<ICreateMultiplePossessionResponse>, ILocals>,
   ): Promise<void> {
+    req.body = PossessionValidation.multipleCreate(req.body);
     const results = await userCardPossessionService.createWithBoosterId(
       { ...req.body },
       res.locals.currentUser,
@@ -114,6 +120,7 @@ class PossessionController implements Controller {
     req: Request<Record<string, never>, IResponse<ISetQuantityResponse>, ISetQuantityBody>,
     res: Response<IResponse<ISetQuantityResponse>, ILocals>,
   ): Promise<void> {
+    req.body = PossessionValidation.setQuantity(req.body);
     const data = await userCardPossessionService.setQuantity(
       { ...req.body },
       res.locals.currentUser,

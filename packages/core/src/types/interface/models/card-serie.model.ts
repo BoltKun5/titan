@@ -4,5 +4,5 @@ export type ICardSerie = {
   id: string;
   name: string;
   code: string;
-  cardSets: ICardSet[];
+  cardSets?: ICardSet[];
 };

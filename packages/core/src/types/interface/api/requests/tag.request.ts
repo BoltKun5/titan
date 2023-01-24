@@ -3,6 +3,5 @@ export interface IUserTagsBody {
 }
 
 export interface ICreateTagBody {
-  token: string;
   name: string;
 }

@@ -7,9 +7,9 @@ const route = Router();
 export const CardListRouter = (app: Router): Router => {
   app.use('/card', route);
 
-  route.get('/list', auth, cardController.cardList);
+  route.get('/list', auth, cardController.getCardList);
 
-  route.get('/stats', auth, cardController.stats);
+  route.get('/stats', auth, cardController.getStats);
 
   return route;
 };

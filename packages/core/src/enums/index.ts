@@ -19,3 +19,4 @@ export * from './admin-config-type.enum';
 export * from './card-variation.enum';
 export * from './tag-type.enum';
 export * from './card-additional-printing.enum';
+export * from './card-variation.enum';

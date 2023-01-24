@@ -27,23 +27,22 @@ export default async (
       ips.push(...(req.socket.remoteAddress ? [req.socket.remoteAddress] : []));
       ips.push(...(req.ip ? [req.ip] : []));
 
-      if (res.statusCode !== 204)
-        await LoggerModule.logApiRequest(LogLevel.INFO, {
-          requestId: httpContextGet('reqId'),
-          requestStartDate: res.locals.timer.start,
-          controller: res.locals.controller,
-          method: APIMethod[req.method.toUpperCase() as keyof typeof APIMethod],
-          endpoint: req.route?.path ?? req.path,
-          requestIps: uniq(ips),
-          httpResultCode: res.statusCode,
-          durationInMs: res.locals.timer.durationToClose,
-          requestParams: req.params,
-          requestQuery: req.query,
-          requestBody: req.body,
-          responseBody: res.locals.responseBody as unknown as Record<string, unknown>,
-          user: res.locals.currentUser || null,
-          isAdmin: res.locals.isAdmin,
-        });
+      await LoggerModule.logApiRequest(LogLevel.INFO, {
+        requestId: httpContextGet('reqId'),
+        requestStartDate: res.locals.timer.start,
+        controller: res.locals.controller,
+        method: APIMethod[req.method.toUpperCase() as keyof typeof APIMethod],
+        endpoint: req.route?.path ?? req.path,
+        requestIps: uniq(ips),
+        httpResultCode: res.statusCode,
+        durationInMs: res.locals.timer.durationToClose,
+        requestParams: req.params,
+        requestQuery: req.query,
+        requestBody: req.body,
+        responseBody: res.locals.responseBody as unknown as Record<string, unknown>,
+        user: res.locals.currentUser || null,
+        isAdmin: res.locals.isAdmin,
+      });
     } catch (error: any) {
       LoggerModule.error(error, { type: LogType.API });
     }

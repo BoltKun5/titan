@@ -10,6 +10,8 @@ import { Tag } from '../database/models/tag.model';
 export class CardService extends EntityService<Card, ICard> {
   private readonly paginator = new Paginator(User);
 
+  private resultPerPage = 200;
+
   public async getCards(params: ICardQuery, user: IUser): Promise<ICard[]> {
     return await Card.findAll(this.getOptions(params, user));
   }
@@ -97,7 +99,7 @@ export class CardService extends EntityService<Card, ICard> {
         {
           model: UserCardPossession,
           as: 'userCardPossessions',
-          required: params?.unowned ? params.unowned !== 'show' : false,
+          required: params?.possession === 'owned' ?? false,
           duplicating: false,
           order: [['createdAt', 'ASC']],
           separate: true,
@@ -149,8 +151,12 @@ export class CardService extends EntityService<Card, ICard> {
           as: 'cardSet',
         },
       ],
-      ...(page === 0 ? { limit: 200 } : page === -1 ? {} : { limit: 200 }),
-      ...(page === 0 ? {} : page === -1 ? {} : { offset: (page - 1) * 200 }),
+      ...(page === 0
+        ? { limit: this.resultPerPage }
+        : page === -1
+        ? {}
+        : { limit: this.resultPerPage }),
+      ...(page === 0 ? {} : page === -1 ? {} : { offset: (page - 1) * this.resultPerPage }),
     };
   }
 }
