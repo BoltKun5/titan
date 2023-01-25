@@ -59,7 +59,7 @@ export const SetListComponent: React.FC = () => {
             >
               <div className="SetList-serieName">{serieElement.name}</div>
               <div className="SetList-setList">
-                {serieElement.cardSets.map((set: ICardSet) => (
+                {(serieElement.cardSets ?? []).map((set: ICardSet) => (
                   <div
                     className={getSetClassname(set)}
                     key={set.code}

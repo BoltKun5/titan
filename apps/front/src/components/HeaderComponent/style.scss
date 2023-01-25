@@ -51,7 +51,7 @@
         position: absolute;
         z-index: 0;
         inset: 0;
-        background: var(--c, red);
+        background: var(--c, rgb(56, 56, 56));
         --_g: #0000 90deg, #000 0;
         --_p: var(--w) var(--w) no-repeat;
         --mask:
@@ -86,7 +86,6 @@
     --b: 1px;
 
     position: relative;
-    box-sizing: border-box;
     display: inline-flex;
     justify-content: center;
     background-color: rgba(59, 153, 241, 0.1);
@@ -172,4 +171,65 @@
     }
   }
 
+  &-burgerIcon {
+    display: none;
+    width: 76px;
+    height: 76px;
+    align-items: center;
+    justify-content: center;
+    color: $white;
+
+    & svg {
+      cursor: pointer;
+    }
+  }
+}
+
+@media (max-width: 950px) {
+  .HeaderComponent {
+    &-modale {
+      flex-direction: column;
+      overflow-y: scroll;
+      align-items: center;
+    }
+
+    &-navButtons {
+      position: absolute;
+      height: calc(100vh - 77px);
+      top: 75px;
+      width: 300px;
+      border: 1px solid $primary-border;
+      padding: 0;
+      flex-direction: column;
+      background-color: $primary-bg;
+      align-items: center;
+      transform: translateX(-302px);
+      transition: 0.1s;
+
+      &.isOpen {
+        transform: translateX(-2px);
+      }
+    }
+
+    &-navButton {
+      width: 250px;
+      padding: 15px 15px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+
+      &:hover {
+        padding: 15px 15px;
+
+      }
+    }
+
+    &-possessions {
+      padding-bottom: 30px
+    }
+
+    &-burgerIcon {
+      display: flex;
+    }
+  }
 }

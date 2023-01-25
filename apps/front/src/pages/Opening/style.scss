@@ -4,7 +4,6 @@
   height: calc(100% - 76px);
   display: flex;
   flex-direction: column;
-  overflow: hidden;
 
 
   &-description {
@@ -165,9 +164,15 @@
     margin: 10px auto;
   }
 
-  &-boosterContent {
+  &-boosterCards {
+    display: flex;
+    flex: 1 1 auto;
+    overflow-x: auto;
+  }
 
-    height: 100px;
+  &-boosterContent {
+    width: calc(100% - 20px);
+    height: 120px;
     margin-left: 20px;
     background: $primary-bg;
     display: flex;
@@ -242,11 +247,13 @@
 
     &Others {
       flex: 1 1 auto;
+      overflow: hidden;
     }
 
     &-element {
-      height: 86px;
+      height: 85px;
       width: 62px;
+      min-width: 62px;
       box-sizing: border-box;
       border: 1px dashed $white;
       margin: 3px;
@@ -335,8 +342,7 @@
   }
 
   &-nextButton2 {
-    margin-left: auto;
-    margin-right: 10px;
+    padding: 10px;
   }
 
   &-end {
@@ -383,5 +389,130 @@
 
   100% {
     box-shadow: $primary 0 0 10px 0px;
+  }
+}
+
+@media (max-width: 955px) {
+
+  .step2,
+  .step3 {
+    .OpeningPage {
+      &-swippingContent.swipping2 {
+        flex-direction: column;
+        align-items: center;
+        overflow: auto;
+        height: auto;
+        width: 100%;
+      }
+
+      &-description {
+        position: absolute !important;
+        left: 20px;
+        display: none;
+      }
+
+      &-boosterCards {
+        width: 100%;
+        align-items: center;
+        flex: none;
+        padding: 5px;
+        box-sizing: border-box;
+      }
+
+      &-possibleCards {
+        justify-content: center;
+
+        &Container {
+          margin: 20px auto 10px;
+          padding: 1px 0;
+          max-height: 300px;
+        }
+      }
+
+      &-boosterContent {
+        margin: auto;
+        margin-top: 20px;
+        width: 100%;
+        padding: 0 !important;
+        overflow: hidden;
+        flex-wrap: wrap;
+        height: auto;
+
+        &Input {
+          margin-top: 20px;
+
+        }
+
+        &Others {
+          width: calc(100% - 20px);
+          height: fit-content;
+          flex: none;
+        }
+
+        &-features {
+          min-height: 600px;
+        }
+      }
+
+      &swippingArea {
+        overflow: auto;
+      }
+
+      &-nextButton2 {
+        padding: 15px;
+      }
+    }
+  }
+
+  .step3 {
+    .OpeningPage {
+      &-swippingArea {
+        margin-top: 20px;
+      }
+
+      &-addedCards {
+        flex: 1 1 auto;
+        flex-wrap: wrap;
+        overflow-y: auto;
+      }
+
+      &-addedCard {
+        min-width: 100px;
+      }
+
+      &-end {
+        &-buttonContainer {
+          justify-content: center;
+          flex-wrap: wrap;
+          margin: 0;
+          width: 100%;
+          margin-bottom: 10px;
+
+          &>div {
+            margin: 3px;
+
+            & * {
+              width: 320px !important;
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+@media (max-width: 380px) {
+  .step3 button {
+    font-size: 17px;
+  }
+
+  .step3 .ButtonComponent {
+    width: 300px !important;
+    justify-content: center;
+    display: flex;
+
+    & button {
+      width: 300px !important;
+    }
   }
 }

@@ -21,6 +21,7 @@ import StoreContext from "../../hook/contexts/StoreContext";
 import { SwipeCheckboxComponent } from "../UI/SwipeCheckboxComponent/SwipeCheckboxComponent";
 import { Loader } from "../UI/Loader/LoaderComponent";
 import { ICardSetFilter } from "../../local-core";
+import useWindowDimensions from "../../hook/utils/useWindowDimensions";
 
 export const CardManagerFilterComponent: React.FC<{
   hidePagination?: boolean;
@@ -40,6 +41,8 @@ export const CardManagerFilterComponent: React.FC<{
 
   const [isFilterPanelOpen, setIsFilterPanelOpen] = useState(false);
   const [isOptionOpen, setIsOptionOpen] = useState(false);
+
+  const { width } = useWindowDimensions();
 
   const updateSetFilters = (event: any) => {
     if (!cardSetFilter) return;
@@ -94,14 +97,6 @@ export const CardManagerFilterComponent: React.FC<{
     nameInputTimer = setTimeout(() => {
       setNameFilter(event.target.value);
     }, 300);
-  };
-
-  const getSelectedElementBgStyle = () => {
-    let offset;
-    if (order === "default") offset = 5;
-    if (order === "name") offset = 135;
-    if (order === "type") offset = 265;
-    return { transform: `translateX(${offset}px)` };
   };
 
   const getActiveFiltersList = () => {
@@ -198,7 +193,7 @@ export const CardManagerFilterComponent: React.FC<{
         <div className="CardManagerFilter-top">
           <div className="CardManagerFilter-fixedWidthContainer">
             <TextInputComponent
-              width={368}
+              width={width > 450 ? 368 : 310}
               label={"Nom"}
               id={"nameFilter"}
               onKeyUpCallback={startCountdown}
@@ -226,7 +221,7 @@ export const CardManagerFilterComponent: React.FC<{
                     },
                   ]}
                   value={order}
-                  width={127}
+                  width={width > 450 ? 127 : 108}
                 />
               </div>
             </div>
@@ -236,6 +231,7 @@ export const CardManagerFilterComponent: React.FC<{
               items={cardSetFilter}
               placeholder={"Filtrer par sets"}
               onFilterChange={updateSetFilters}
+              width={width > 450 ? 368 : 310}
             />
           </div>
           <div className="CardManagerFilter-fixedWidthContainer">

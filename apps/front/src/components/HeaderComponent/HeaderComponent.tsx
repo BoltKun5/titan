@@ -1,15 +1,17 @@
-import { ClickAwayListener } from "@mui/material";
 import React, { useContext, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import StoreContext from "../../hook/contexts/StoreContext";
 import "./style.scss";
 import { UserRoleEnum } from "vokit_core";
+import { Close, Menu } from "@mui/icons-material";
+import { ClickAwayListener } from "@mui/material";
 
 export const HeaderComponent: React.FC<{
   forceRender: boolean;
   setForceRender: Function;
 }> = ({ forceRender, setForceRender }) => {
   const [isProfileDropdownOpen, setIsProfileDropdownOpen] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   const navigate = useNavigate();
 
@@ -33,17 +35,38 @@ export const HeaderComponent: React.FC<{
 
   return (
     <header className="HeaderComponent">
-      <nav className="HeaderComponent-navButtons">
-        <Link to={"/cards"}>
+      <div className="HeaderComponent-burgerIcon">
+        {isMobileMenuOpen ? (
+          <Close
+            style={{ width: 40, height: 40 }}
+            onClick={() => {
+              setIsMobileMenuOpen(false);
+            }}
+          />
+        ) : (
+          <Menu
+            style={{ width: 40, height: 40 }}
+            onClick={() => {
+              setIsMobileMenuOpen(true);
+            }}
+          />
+        )}
+      </div>
+      <nav
+        className={
+          "HeaderComponent-navButtons " + (isMobileMenuOpen ? "isOpen" : "")
+        }
+      >
+        <Link to={"/cards"} onClick={() => setIsMobileMenuOpen(false)}>
           <div className="HeaderComponent-navButton HeaderComponent-mainButton">
             CARTES
           </div>
         </Link>
-        <Link to={"/stats"}>
+        <Link to={"/stats"} onClick={() => setIsMobileMenuOpen(false)}>
           <div className={getButtonClassName("/stats")}>STATISTIQUES</div>
         </Link>
-        <Link to={"/opening"}>
-          <div className={getButtonClassName("/opening")}>BOOSTER</div>
+        <Link to={"/opening"} onClick={() => setIsMobileMenuOpen(false)}>
+          <div className={getButtonClassName("/opening")}>OUVERTURE</div>
         </Link>
         {/* <Link to={'/historic'}>
           <div className={getButtonClassName('/historic')}>HISTORIQUE</div>

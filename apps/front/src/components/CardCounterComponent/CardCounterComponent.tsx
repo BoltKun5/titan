@@ -110,8 +110,13 @@ export const CardCounterComponent: React.FC<CardCounterComponentPropsType> = ({
       );
       triggerChangeNotification(1, 0);
     } catch (e: any) {
-      console.log(e.code);
-      console.log(e);
+      console.log(e.response.data.error.code);
+      if (e.response.data.error.code === "UNDELETABLE_POSSESSIONS") {
+        enqueueSnackbar(
+          "Vos cartes ont des informations sauvegardées. Pour les supprimer, ouvrez le gestionnaire de la carte."
+        );
+        setIsDisabled(false);
+      }
     }
   };
 
@@ -192,7 +197,6 @@ export const CardCounterComponent: React.FC<CardCounterComponentPropsType> = ({
         );
         return;
       }
-
       if (
         response.data.data?.code === "CARDS_DELETED" ||
         response.data.data?.code === "NOT_ENOUGH_DELETABLE"

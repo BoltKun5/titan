@@ -30,7 +30,6 @@ export const Opening: React.FC = () => {
   const [isWrongId, setIsWrongId] = useState<boolean>(false);
   const [cardType, setCardType] = useState<"normal" | "reverse">("normal");
   const [possibleCards, setPossibleCards] = useState<ICard[]>([]);
-  const [isConfirmationOpen, setIsConfirmationOpen] = useState<boolean>(false);
   const [setList, setSetList] = useState<LocalCardSet[]>([]);
 
   const { fetch } = useFetchData();
@@ -40,6 +39,8 @@ export const Opening: React.FC = () => {
     id: string;
     code: string;
   };
+
+  console.log(cardList.length);
 
   useEffect(() => {
     if (!series) return;
@@ -225,7 +226,7 @@ export const Opening: React.FC = () => {
   ];
 
   return (
-    <div className="OpeningPage">
+    <div className={"OpeningPage " + "step" + step}>
       <div className="OpeningPage-description coloredCorner">
         <h1>Ouvrir un booster</h1>
         <span>
@@ -342,36 +343,40 @@ export const Opening: React.FC = () => {
             </div>
             <div className="OpeningPage-boosterContentOthers">
               <div className="OpeningPage-boosterContent coloredCorner">
-                {cardList.map((value, index) => (
-                  <div
-                    onClick={() => onClickHandler(index, value)}
-                    key={"OpeningPage-boosterContentElement" + index}
-                    className={
-                      "OpeningPage-boosterContent-element " +
-                      (value.type === "reverse" ? "reverseShining" : "")
-                    }
-                    style={{
-                      border:
-                        currentIndex === index
-                          ? "rgb(59, 153, 241) 2px solid"
-                          : "",
-                    }}
-                  >
-                    {value.card !== null && (
-                      <img src={getImageSource(value.card)} />
-                    )}
-                  </div>
-                ))}
+                <div className="OpeningPage-boosterCards">
+                  {cardList.map((value, index) => (
+                    <div
+                      onClick={() => onClickHandler(index, value)}
+                      key={"OpeningPage-boosterContentElement" + index}
+                      className={
+                        "OpeningPage-boosterContent-element " +
+                        (value.type === "reverse" ? "reverseShining" : "")
+                      }
+                      style={{
+                        border:
+                          currentIndex === index
+                            ? "rgb(59, 153, 241) 2px solid"
+                            : "",
+                      }}
+                    >
+                      {value.card !== null && (
+                        <img src={getImageSource(value.card)} />
+                      )}
+                    </div>
+                  ))}
+                </div>
 
                 <div
                   className="OpeningPage-nextButton2"
                   onClick={() => {
-                    setStep(1);
                     setPreselectedCard(null);
                     setIsPrevalidated(false);
+                    setCurrentIndex(0);
+                    updateCardAmount(9);
                     setCardList(initialCardList);
                     setIsWrongId(false);
                     setCardLocalId("");
+                    setStep(1);
                   }}
                 >
                   <ButtonComponent label="Retour" size={150} height={40} />
@@ -381,8 +386,8 @@ export const Opening: React.FC = () => {
                   className="OpeningPage-nextButton2"
                   style={
                     cardList.filter((el) => el.card === null).length !== 0
-                      ? { pointerEvents: "none", marginLeft: 10 }
-                      : { marginLeft: 10 }
+                      ? { pointerEvents: "none" }
+                      : {}
                   }
                   onClick={() => submit()}
                 >

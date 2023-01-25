@@ -10,12 +10,14 @@ type Props = {
   items: ICardSetFilter[];
   placeholder: string;
   onFilterChange: React.MouseEventHandler<HTMLElement>;
+  width?: number;
 };
 
 export const CategorizedAutocompleteChecklist: React.FC<Props> = ({
   items,
   placeholder,
   onFilterChange,
+  width = 368,
 }) => {
   const [searchTerm, setSearchTerm] = useState<string>("");
   const [isDropdownOpen, setIsDropdownOpen] = useState<boolean>(false);
@@ -132,7 +134,7 @@ export const CategorizedAutocompleteChecklist: React.FC<Props> = ({
               value={searchTerm}
               modifyValue={setSearchTerm}
               label="Filtrer par set"
-              width={368}
+              width={width}
             />
             <div className="CategorizedAutocompleteChecklist-fastFilterIcon">
               <Tooltip title="Filtres rapides">
@@ -151,6 +153,7 @@ export const CategorizedAutocompleteChecklist: React.FC<Props> = ({
               "CategorizedAutocompleteChecklist-dropdown " +
               (isDropdownOpen ? "show" : "")
             }
+            style={{ width: width + 33 }}
           >
             {filteredItems.map((item: ICardSetFilter, index: number) => {
               if (item.title) {

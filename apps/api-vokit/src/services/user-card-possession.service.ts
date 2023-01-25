@@ -105,9 +105,14 @@ export class UserCardPossessionService extends EntityService<
     for (const possession of result) {
       if (possession.condition === null && possession.grade === null && possession.note === null) {
         deletedId = possession.id;
-        await possession.destroy();
+        // await possession.destroy();
+        console.log(possession);
         break;
       }
+    }
+
+    if (!deletedId) {
+      throw HttpResponseError.createNotEnoughDeletablePossession();
     }
 
     return deletedId;

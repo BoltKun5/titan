@@ -98,7 +98,7 @@ export default class PossessionValidation {
     const querySchema = Joi.object<ICreateMultiplePossessionBody>({
       cards: Joi.array().items({
         cardId: Joi.string(),
-        printingId: Joi.string(),
+        printingId: Joi.string().allow(null),
       }),
     }).options({ presence: 'required' });
 
@@ -111,7 +111,7 @@ export default class PossessionValidation {
   static setQuantity(data: ISetQuantityBody): ISetQuantityBody {
     const querySchema = Joi.object<ISetQuantityBody>({
       cardId: Joi.string(),
-      cardPrintingId: Joi.string(),
+      cardPrintingId: Joi.string().allow(null),
       quantity: Joi.number(),
     }).options({ presence: 'required' });
 

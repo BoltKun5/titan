@@ -96,6 +96,7 @@ export const CardPossessionComponent: React.FC<CardPossessionComponentPropsType>
               value={possession?.language ?? undefined}
               onChange={(ev) => handleUpdate("language", ev.target.value)}
             >
+              <option value={""}>-</option>
               {Object.entries(languages)
                 .filter((condition) => !isNaN(Number(condition[0])))
                 .map((condition, index) => (

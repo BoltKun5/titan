@@ -315,3 +315,24 @@
     }
   }
 }
+
+@media (max-width: 450px) {
+  .CardManagerFilter {
+    &-top {
+      justify-content: center;
+    }
+
+    &-fixedWidthContainer {
+      width: 330px;
+    }
+
+    &-rarityFilter {
+      width: 340px;
+    }
+
+    &-rarityContainer {
+      width: 22px;
+      height: 22px;
+    }
+  }
+}
