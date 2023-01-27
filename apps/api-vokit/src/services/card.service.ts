@@ -1,5 +1,5 @@
 import { ICardQuery } from './../../../../packages/core/src/types/interface/api/requests/card.request';
-import { Order, FindOptions } from 'sequelize/types';
+import { FindOptions } from 'sequelize/types';
 import { Op } from 'sequelize';
 import { ICard, IUser } from 'vokit_core';
 import { Card, CardSet, CardType, User, UserCardPossession } from '../database';
@@ -21,11 +21,30 @@ export class CardService extends EntityService<Card, ICard> {
   }
 
   public getOptions(params: ICardQuery, user: IUser): FindOptions {
-    const page = Number(params?.page ?? 0);
-    let mainOrder;
+    return {
+      where: {
+        name: {
+          [Op.iLike]: `%${params?.namefilter ?? ''}%`,
+        },
+        ...(params?.rarity && {
+          rarity: {
+            [Op.in]: params.rarity,
+          },
+        }),
+      },
+      ...this.getOrder(params.order),
+      ...this.getCardAttributeList(params),
+      include: [...this.getIncludeArray(params, user)],
+      ...this.getPagination(params),
+      subQuery: false,
+    };
+  }
 
-    if (params?.order) {
-      switch (params.order) {
+  public getOrder(order: 'default' | 'name' | 'type' | undefined): any {
+    let mainOrder;
+    if (!order) return {};
+    if (order) {
+      switch (order) {
         case 'default':
           mainOrder = [
             [{ model: CardSet, as: 'cardSet' }, 'releaseDate', 'desc'],
@@ -39,57 +58,37 @@ export class CardService extends EntityService<Card, ICard> {
           mainOrder = [[{ model: CardType, as: 'types' }, 'type', 'asc']];
       }
     }
+    return { order: mainOrder };
+  }
 
-    return {
-      where: {
-        name: {
-          [Op.iLike]: `%${params?.namefilter ?? ''}%`,
-        },
-        ...(params?.rarity && {
-          rarity: {
-            [Op.in]: params.rarity,
-          },
-        }),
-      },
-      ...(mainOrder ? { order: mainOrder as Order } : {}),
-      subQuery: false,
-      ...(page !== -1
-        ? { attributes: { exclude: ['cardSet'] } }
-        : {
-            attributes: {
-              ...(params?.stats
-                ? {
-                    exclude: [
-                      'category',
-                      'canBeNormal',
-                      'description',
-                      'effect',
-                      'energyType',
-                      'evolveFrom',
-                      'globalId',
-                      'hp',
-                      'id',
-                      'isFirstEdition',
-                      'isHolo',
-                      'item',
-                      'level',
-                      'localId',
-                      'name',
-                      'regulationMark',
-                      'retreat',
-                      'setId',
-                      'stage',
-                      'types',
-                      'stage',
-                      'trainerType',
-                    ],
-                  }
-                : {
-                    exclude: [],
-                  }),
-            },
-          }),
-      include: [
+  public getCardAttributeList(params: ICardQuery): any {
+    let attributeList;
+    const page = Number(params?.page ?? 0);
+    if (page !== -1) {
+      attributeList = { attributes: { exclude: ['cardSet'] } };
+    } else {
+      attributeList = {};
+    }
+    return attributeList;
+  }
+
+  public getPagination(params: ICardQuery): any {
+    const pagination: any = {};
+    const page = Number(params?.page ?? 0);
+    if (page !== -1) {
+      pagination.limit = this.resultPerPage;
+    }
+    if (page > 0) {
+      pagination.offset = (page - 1) * this.resultPerPage;
+    }
+
+    return pagination;
+  }
+
+  public getIncludeArray(params: ICardQuery, user: IUser): any[] {
+    let array: any[] = [];
+    if (!params.stats) {
+      array = [
         {
           model: CardAdditionalPrinting,
           as: 'cardAdditionalPrinting',
@@ -121,43 +120,22 @@ export class CardService extends EntityService<Card, ICard> {
             },
           ],
         },
-        ...(params?.stats
-          ? []
-          : [
-              {
-                model: CardType,
-                as: 'types',
-              },
-            ]),
+        {
+          model: CardType,
+          as: 'types',
+        },
         {
           where: { ...(params?.setFilter ? { code: params.setFilter } : {}) },
           model: CardSet,
           required: true,
           duplicating: false,
           attributes: {
-            exclude: params?.stats
-              ? [
-                  'cardCount',
-                  'cardSerieId',
-                  'name',
-                  'isPlayableInExpanded',
-                  'isPlayableInStandard',
-                  'id',
-                  'releaseDate',
-                  'tcgOnline',
-                ]
-              : ['isPlayableInExpanded', 'isPlayableInStandard', 'id', 'releaseDate', 'tcgOnline'],
+            exclude: ['cardCount', 'isPlayableInStandard', 'id', 'releaseDate', 'tcgOnline'],
           },
-          as: 'cardSet',
         },
-      ],
-      ...(page === 0
-        ? { limit: this.resultPerPage }
-        : page === -1
-        ? {}
-        : { limit: this.resultPerPage }),
-      ...(page === 0 ? {} : page === -1 ? {} : { offset: (page - 1) * this.resultPerPage }),
-    };
+      ];
+    }
+    return array;
   }
 }
 

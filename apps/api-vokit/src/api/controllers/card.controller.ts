@@ -1,8 +1,20 @@
-import { ICardListResponse, ICardQuery, IStatsResponse, StatisticsDataType } from 'vokit_core';
+import { CardAdditionalPrintingTypeEnum } from './../../../../../packages/core/src/enums/card-additional-printing.enum';
+import { CardAdditionalPrinting } from './../../database/models/card-additional-printing.model';
+import { UserCardPossession } from './../../database/models/user-card-possession.model';
+import { Card } from './../../database/models/card';
+import {
+  CardRarityEnum,
+  ICardListResponse,
+  ICardQuery,
+  IResponse,
+  IStatsResponse,
+  StatisticsDataType,
+} from 'vokit_core';
 import { Controller, LoggerModel, ILocals } from '../../core';
 import { Request, Response } from 'express';
 import cardService from '../../services/card.service';
 import CardValidation from '../validations/card.validation';
+import sequelize from 'sequelize';
 
 class CardController implements Controller {
   private static readonly logger = new LoggerModel(CardController.name);
@@ -31,134 +43,207 @@ class CardController implements Controller {
 
   async getStats(
     req: Request<Record<string, never>, IStatsResponse, void, ICardQuery>,
-    res: Response<IStatsResponse, ILocals>,
+    res: Response<IResponse<IStatsResponse>, ILocals>,
   ): Promise<void> {
     // console.time('a');
     // const cards = await cardService.getCards({ ...req.query }, res.locals.currentUser);
     // console.timeEnd('a');
 
-    const stats: StatisticsDataType = {
-      distinctPossible: 0,
-      distinctOwned: 0,
-      distinctNormal: 0,
-      distinctNormalPossible: 0,
-      distinctReverse: 0,
-      distinctReversePossible: 0,
+    try {
+      const rarityCount: any = await Card.count({
+        attributes: ['rarity'],
+        group: ['rarity'],
+      });
 
-      totalOwned: 0,
-      totalNormal: 0,
-      totalReverse: 0,
+      const totalRarityCount: any = await UserCardPossession.count({
+        attributes: ['card.rarity'],
+        group: ['card.rarity'],
+        include: [
+          {
+            model: Card,
+            as: 'card',
+          },
+        ],
+      });
 
-      countByRarity: {
-        Common: {
-          totalOwned: 0,
-          distinctOwned: 0,
-          distinctPossible: 0,
+      const distinctRarityCount: any = await UserCardPossession.count({
+        attributes: ['card.rarity'],
+        group: ['card.rarity'],
+        distinct: true,
+        col: 'cardId',
+        include: [
+          {
+            model: Card,
+            as: 'card',
+            attributes: [],
+          },
+        ],
+      });
+
+      const distinctPossible = await Card.count(
+        cardService.getOptions(req.query, res.locals.currentUser),
+      );
+
+      const distinctOwned = (
+        await UserCardPossession.count({
+          group: ['cardId'],
+        })
+      ).length;
+
+      const distinctNormal = (
+        await UserCardPossession.count({
+          where: {
+            printingId: null,
+          },
+          group: ['cardId'],
+        })
+      ).length;
+
+      const distinctNormalPossible = await Card.count({
+        ...cardService.getOptions(req.query, res.locals.currentUser),
+      });
+
+      const distinctReverse = (
+        await UserCardPossession.count({
+          include: [
+            {
+              model: CardAdditionalPrinting,
+              as: 'printing',
+              required: true,
+              where: {
+                type: CardAdditionalPrintingTypeEnum.REVERSE,
+              },
+            },
+          ],
+          group: ['UserCardPossession.cardId'],
+        })
+      ).length;
+
+      const distinctReversePossible = await Card.count({
+        ...cardService.getOptions(req.query, res.locals.currentUser),
+        include: [
+          {
+            model: CardAdditionalPrinting,
+            as: 'cardAdditionalPrinting',
+            required: true,
+            where: {
+              type: CardAdditionalPrintingTypeEnum.REVERSE,
+            },
+          },
+        ],
+      });
+
+      const totalOwned = await UserCardPossession.count();
+
+      const totalNormal = await UserCardPossession.count({
+        where: {
+          printingId: null,
         },
-        Uncommon: {
-          totalOwned: 0,
-          distinctOwned: 0,
-          distinctPossible: 0,
+      });
+
+      const totalReverse = await UserCardPossession.count({
+        include: [
+          {
+            model: CardAdditionalPrinting,
+            as: 'printing',
+            required: true,
+            where: {
+              type: CardAdditionalPrintingTypeEnum.REVERSE,
+            },
+          },
+        ],
+      });
+
+      const stats: StatisticsDataType = {
+        distinctPossible,
+        distinctOwned,
+        distinctNormal,
+        distinctNormalPossible,
+        distinctReverse,
+        distinctReversePossible,
+
+        totalOwned,
+        totalNormal,
+        totalReverse,
+
+        countByRarity: {
+          Common: {
+            totalOwned:
+              totalRarityCount.find((e: any) => e.rarity === CardRarityEnum.Common)?.count ?? 0,
+            distinctOwned:
+              distinctRarityCount.find((e: any) => e.rarity === CardRarityEnum.Common)?.count ?? 0,
+            distinctPossible:
+              rarityCount.find((e: any) => e.rarity === CardRarityEnum.Common)?.count ?? 0,
+          },
+          Uncommon: {
+            totalOwned:
+              totalRarityCount.find((e: any) => e.rarity === CardRarityEnum.Uncommon)?.count ?? 0,
+            distinctOwned:
+              distinctRarityCount.find((e: any) => e.rarity === CardRarityEnum.Uncommon)?.count ??
+              0,
+            distinctPossible:
+              rarityCount.find((e: any) => e.rarity === CardRarityEnum.Uncommon)?.count ?? 0,
+          },
+          Rare: {
+            totalOwned:
+              totalRarityCount.find((e: any) => e.rarity === CardRarityEnum.Rare)?.count ?? 0,
+            distinctOwned:
+              distinctRarityCount.find((e: any) => e.rarity === CardRarityEnum.Rare)?.count ?? 0,
+            distinctPossible:
+              rarityCount.find((e: any) => e.rarity === CardRarityEnum.Rare)?.count ?? 0,
+          },
+          Holo: {
+            totalOwned:
+              totalRarityCount.find((e: any) => e.rarity === CardRarityEnum.Holo)?.count ?? 0,
+            distinctOwned:
+              distinctRarityCount.find((e: any) => e.rarity === CardRarityEnum.Holo)?.count ?? 0,
+            distinctPossible:
+              rarityCount.find((e: any) => e.rarity === CardRarityEnum.Holo)?.count ?? 0,
+          },
+          'Ultra Rare': {
+            totalOwned:
+              totalRarityCount.find((e: any) => e.rarity === CardRarityEnum['Ultra Rare'])?.count ??
+              0,
+            distinctOwned:
+              distinctRarityCount.find((e: any) => e.rarity === CardRarityEnum['Ultra Rare'])
+                ?.count ?? 0,
+            distinctPossible:
+              rarityCount.find((e: any) => e.rarity === CardRarityEnum['Ultra Rare'])?.count ?? 0,
+          },
+          'Secret Rare': {
+            totalOwned:
+              totalRarityCount.find((e: any) => e.rarity === CardRarityEnum['Secret Rare'])
+                ?.count ?? 0,
+            distinctOwned:
+              distinctRarityCount.find((e: any) => e.rarity === CardRarityEnum['Secret Rare'])
+                ?.count ?? 0,
+            distinctPossible:
+              rarityCount.find((e: any) => e.rarity === CardRarityEnum['Secret Rare'])?.count ?? 0,
+          },
+          None: {
+            totalOwned:
+              totalRarityCount.find((e: any) => e.rarity === CardRarityEnum.None)?.count ?? 0,
+            distinctOwned:
+              distinctRarityCount.find((e: any) => e.rarity === CardRarityEnum.None)?.count ?? 0,
+            distinctPossible:
+              rarityCount.find((e: any) => e.rarity === CardRarityEnum.None)?.count ?? 0,
+          },
+          Amazing: {
+            totalOwned:
+              totalRarityCount.find((e: any) => e.rarity === CardRarityEnum.Amazing)?.count ?? 0,
+            distinctOwned:
+              distinctRarityCount.find((e: any) => e.rarity === CardRarityEnum.Amazing)?.count ?? 0,
+            distinctPossible:
+              rarityCount.find((e: any) => e.rarity === CardRarityEnum.Amazing)?.count ?? 0,
+          },
         },
-        Rare: {
-          totalOwned: 0,
-          distinctOwned: 0,
-          distinctPossible: 0,
-        },
-        Holo: {
-          totalOwned: 0,
-          distinctOwned: 0,
-          distinctPossible: 0,
-        },
-        'Ultra Rare': {
-          totalOwned: 0,
-          distinctOwned: 0,
-          distinctPossible: 0,
-        },
-        'Secret Rare': {
-          totalOwned: 0,
-          distinctOwned: 0,
-          distinctPossible: 0,
-        },
-        None: {
-          totalOwned: 0,
-          distinctOwned: 0,
-          distinctPossible: 0,
-        },
-        Amazing: {
-          totalOwned: 0,
-          distinctOwned: 0,
-          distinctPossible: 0,
-        },
-      },
-      countBySet: {},
-    };
+        countBySet: {},
+      };
 
-    // cards.forEach((card) => {
-    //   if (!stats.countBySet[card.cardSet.code]) {
-    //     stats.countBySet[card.cardSet.code] = {
-    //       totalNormal: 0,
-    //       totalReverse: 0,
-    //       totalOwned: 0,
-    //       distinctNormal: 0,
-    //       distinctReverse: 0,
-    //       distinctPossibleNormal: 0,
-    //       distinctPossibleReverse: 0,
-    //       distinctOwned: 0,
-    //       distinctPossible: 0,
-    //     };
-    //   }
-
-    //   if (card?.userCardPossessions?.[0]) {
-    //     stats.totalReverse += card.userCardPossessions[0].reverseQuantity;
-    //     stats.totalNormal += card.userCardPossessions[0].classicQuantity;
-    //     stats.distinctNormal += card.userCardPossessions[0].classicQuantity > 0 ? 1 : 0;
-    //     stats.distinctReverse += card.userCardPossessions[0].reverseQuantity > 0 ? 1 : 0;
-
-    //     stats.countBySet[card.cardSet.code].totalNormal +=
-    //       card.userCardPossessions[0].classicQuantity;
-    //     stats.countBySet[card.cardSet.code].totalReverse +=
-    //       card.userCardPossessions[0].reverseQuantity;
-
-    //     stats.countBySet[card.cardSet.code].distinctNormal +=
-    //       card.userCardPossessions[0].classicQuantity > 0 ? 1 : 0;
-    //     stats.countBySet[card.cardSet.code].distinctReverse +=
-    //       card.userCardPossessions[0].reverseQuantity > 0 ? 1 : 0;
-
-    //     stats.countBySet[card.cardSet.code].distinctOwned +=
-    //       card.userCardPossessions[0].classicQuantity > 0 ? 1 : 0;
-    //     stats.countBySet[card.cardSet.code].distinctOwned +=
-    //       card.userCardPossessions[0].reverseQuantity > 0 ? 1 : 0;
-    //     stats.countByRarity[CardRarityEnum[card.rarity]].distinctOwned +=
-    //       card.userCardPossessions[0].reverseQuantity > 0 ||
-    //       card.userCardPossessions[0].classicQuantity > 0
-    //         ? 1
-    //         : 0;
-    //     stats.countByRarity[CardRarityEnum[card.rarity]].totalOwned +=
-    //       card.userCardPossessions[0].classicQuantity +
-    //       card.userCardPossessions[0].reverseQuantity;
-    //   }
-
-    //   stats.distinctNormalPossible++;
-    //   stats.distinctReversePossible += card.canBeReverse ? 1 : 0;
-
-    //   stats.countBySet[card.cardSet.code].distinctPossibleNormal++;
-    //   stats.countBySet[card.cardSet.code].distinctPossibleReverse += card.canBeReverse ? 1 : 0;
-
-    //   stats.countByRarity[CardRarityEnum[card.rarity]].distinctPossible++;
-    // });
-
-    // stats.totalOwned = stats.totalReverse + stats.totalNormal;
-    // stats.distinctOwned = stats.distinctReverse + stats.distinctNormal;
-    // stats.distinctPossible = stats.distinctReversePossible + stats.distinctNormalPossible;
-
-    // for (const [key, value] of Object.entries(stats.countBySet)) {
-    //   stats.countBySet[key].distinctPossible =
-    //     value.distinctPossibleNormal + value.distinctPossibleReverse;
-    //   stats.countBySet[key].totalOwned = value.totalNormal + value.totalReverse;
-    // }
-
-    res.json({ stats });
+      res.json({ data: { stats } });
+    } catch (e: any) {
+      console.log(e);
+    }
   }
 }
 

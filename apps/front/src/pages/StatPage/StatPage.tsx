@@ -63,8 +63,15 @@ export const StatPage: React.FC = () => {
     params.unowned = "show";
     params.stats = true;
     response = await fetch("/card/stats", params);
-    setStats((response as any).data);
-  }, [cardSetFilter, nameFilter, collectionMode, possessionFilter, order, page]);
+    setStats((response as any).data.stats);
+  }, [
+    cardSetFilter,
+    nameFilter,
+    collectionMode,
+    possessionFilter,
+    order,
+    page,
+  ]);
 
   useEffect(() => {
     fetchStats();
@@ -82,14 +89,14 @@ export const StatPage: React.FC = () => {
       localChartData.push({
         Reverse: value.totalReverse,
         Normal: value.totalNormal,
-        name: cardSetFilter.find((filter) => filter.code === key)?.name,
+        name: cardSetFilter?.find((filter) => filter.code === key)?.name,
       });
 
     if (value.distinctReverse !== 0 || value.distinctNormal !== 0)
       localChartDistinctData.push({
         Reverse: value.distinctReverse,
         Normal: value.distinctNormal,
-        name: cardSetFilter.find((filter) => filter.code === key)?.name,
+        name: cardSetFilter?.find((filter) => filter.code === key)?.name,
       });
 
     if (value.distinctOwned !== 0 && value.distinctPossible !== 0) {
@@ -98,10 +105,12 @@ export const StatPage: React.FC = () => {
           value: value.distinctOwned,
           max: value.distinctPossible,
         },
-        name: cardSetFilter.find((filter) => filter.code === key)?.name,
+        name: cardSetFilter?.find((filter) => filter.code === key)?.name,
       });
     }
   }
+
+  console.log("a");
 
   return (
     <>
@@ -260,7 +269,6 @@ export const StatPage: React.FC = () => {
                 <StatCardComponent
                   key={"statCard" + rarity}
                   data={{
-                    // @ts-ignore
                     label: frontRarity[rarity] + "s",
                     distinctQuantity: rarityValues.distinctOwned,
                     ownedQuantity: rarityValues.totalOwned,
