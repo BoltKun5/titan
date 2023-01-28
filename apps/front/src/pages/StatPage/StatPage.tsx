@@ -14,7 +14,8 @@ import { CardManagerFilterComponent } from "../../components/CardManagerFilterCo
 import { SwipeCheckboxComponent } from "../../components/UI/SwipeCheckboxComponent/SwipeCheckboxComponent";
 import { useState, useContext, useCallback, useEffect } from "react";
 import { useFetchData } from "../../hook/api/cards";
-import { StatisticsDataType } from "vokit_core";
+import { CardRarityEnum, StatisticsDataType } from "vokit_core";
+import useWindowDimensions from "../../hook/utils/useWindowDimensions";
 
 export const StatPage: React.FC = () => {
   const [stats, setStats] = useState<StatisticsDataType | null>(null);
@@ -27,6 +28,7 @@ export const StatPage: React.FC = () => {
     order,
     page,
   } = useContext(StoreContext);
+  const { width } = useWindowDimensions();
   const { isLoading, fetch } = useFetchData();
   const [chartMode, setChartMode] = useState<"distinct" | "total" | string>(
     "total"
@@ -53,8 +55,9 @@ export const StatPage: React.FC = () => {
       params.rarity = [];
       rarityFilter.forEach((filter) => {
         if (filter.value) {
-          // @ts-ignore
-          params.rarity.push(CardRarityEnum[filter.rarity]);
+          params.rarity.push(
+            CardRarityEnum[filter.rarity as keyof typeof CardRarityEnum]
+          );
         }
       });
     }
@@ -75,7 +78,14 @@ export const StatPage: React.FC = () => {
 
   useEffect(() => {
     fetchStats();
-  }, [cardSetFilter, nameFilter, rarityFilter, page]);
+  }, [
+    cardSetFilter,
+    nameFilter,
+    collectionMode,
+    possessionFilter,
+    order,
+    rarityFilter,
+  ]);
 
   const data = stats;
   if (!data) return <></>;
@@ -110,8 +120,6 @@ export const StatPage: React.FC = () => {
     }
   }
 
-  console.log("a");
-
   return (
     <>
       <CardManagerFilterComponent hidePagination={true} />
@@ -133,7 +141,7 @@ export const StatPage: React.FC = () => {
                     },
                   ]}
                   value={chartMode}
-                  width={200}
+                  width={width > 500 ? 200 : 135}
                 />
               </div>
               <div className="StatPage-chart">
@@ -144,12 +152,12 @@ export const StatPage: React.FC = () => {
                       ? localChartData.length
                       : localChartDistinctData.length) *
                       50 +
-                    20
+                    30
                   }
                 >
                   <BarChart
                     layout={"vertical"}
-                    width={500}
+                    width={200}
                     height={300}
                     data={
                       chartMode === "total"
@@ -158,7 +166,14 @@ export const StatPage: React.FC = () => {
                     }
                   >
                     <XAxis type="number" />
-                    <YAxis type="category" dataKey="name" width={150} />
+                    <YAxis
+                      type="category"
+                      dataKey="name"
+                      style={{
+                        fontSize: "12px",
+                      }}
+                      width={width > 500 ? 150 : 90}
+                    />
                     <Tooltip
                       contentStyle={{
                         backgroundColor: "#161827",

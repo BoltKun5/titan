@@ -212,7 +212,8 @@
     align-items: center;
   }
 
-  &.blured~.CardManager {
+  &.blured~.CardManager,
+  &.blured~.StatPage {
     filter: blur(3px);
   }
 

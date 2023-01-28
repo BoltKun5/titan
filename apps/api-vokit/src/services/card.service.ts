@@ -1,5 +1,5 @@
 import { ICardQuery } from './../../../../packages/core/src/types/interface/api/requests/card.request';
-import { FindOptions } from 'sequelize/types';
+import { FindOptions, Includeable, IncludeOptions } from 'sequelize/types';
 import { Op } from 'sequelize';
 import { ICard, IUser } from 'vokit_core';
 import { Card, CardSet, CardType, User, UserCardPossession } from '../database';
@@ -20,7 +20,7 @@ export class CardService extends EntityService<Card, ICard> {
     return await Card.count(this.getOptions(params, user));
   }
 
-  public getOptions(params: ICardQuery, user: IUser): FindOptions {
+  public getOptions(params: ICardQuery, user: IUser): FindOptions | IncludeOptions {
     return {
       where: {
         name: {
@@ -34,7 +34,7 @@ export class CardService extends EntityService<Card, ICard> {
       },
       ...this.getOrder(params.order),
       ...this.getCardAttributeList(params),
-      include: [...this.getIncludeArray(params, user)],
+      include: [...this.getIncludeArray(params, user)] as Includeable[] | undefined,
       ...this.getPagination(params),
       subQuery: false,
     };

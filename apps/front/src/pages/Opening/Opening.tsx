@@ -40,8 +40,6 @@ export const Opening: React.FC = () => {
     code: string;
   };
 
-  console.log(cardList.length);
-
   useEffect(() => {
     if (!series) return;
     let _setList: LocalCardSet[] = [];

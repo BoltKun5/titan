@@ -1,3 +1,5 @@
+import { IncludeOptions } from 'sequelize/types';
+import { CardSet } from './../../database/models/card-set.model';
 import { CardAdditionalPrintingTypeEnum } from './../../../../../packages/core/src/enums/card-additional-printing.enum';
 import { CardAdditionalPrinting } from './../../database/models/card-additional-printing.model';
 import { UserCardPossession } from './../../database/models/user-card-possession.model';
@@ -14,7 +16,6 @@ import { Controller, LoggerModel, ILocals } from '../../core';
 import { Request, Response } from 'express';
 import cardService from '../../services/card.service';
 import CardValidation from '../validations/card.validation';
-import sequelize from 'sequelize';
 
 class CardController implements Controller {
   private static readonly logger = new LoggerModel(CardController.name);
@@ -49,10 +50,16 @@ class CardController implements Controller {
     // const cards = await cardService.getCards({ ...req.query }, res.locals.currentUser);
     // console.timeEnd('a');
 
+    const filterOptions: IncludeOptions = cardService.getOptions(
+      req.query,
+      res.locals.currentUser,
+    ) as IncludeOptions;
+
     try {
       const rarityCount: any = await Card.count({
         attributes: ['rarity'],
         group: ['rarity'],
+        ...cardService.getOptions(req.query, res.locals.currentUser),
       });
 
       const totalRarityCount: any = await UserCardPossession.count({
@@ -62,6 +69,8 @@ class CardController implements Controller {
           {
             model: Card,
             as: 'card',
+            required: true,
+            ...filterOptions,
           },
         ],
       });
@@ -75,18 +84,36 @@ class CardController implements Controller {
           {
             model: Card,
             as: 'card',
-            attributes: [],
+            required: true,
+            ...filterOptions,
           },
         ],
       });
 
-      const distinctPossible = await Card.count(
-        cardService.getOptions(req.query, res.locals.currentUser),
-      );
+      const totalSetCount: any = await UserCardPossession.count({
+        attributes: ['card.setId'],
+        group: ['card.setId'],
+        include: [
+          {
+            model: Card,
+            as: 'card',
+            required: true,
+            ...filterOptions,
+          },
+        ],
+      });
 
       const distinctOwned = (
         await UserCardPossession.count({
           group: ['cardId'],
+          include: [
+            {
+              model: Card,
+              as: 'card',
+              required: true,
+              ...filterOptions,
+            },
+          ],
         })
       ).length;
 
@@ -96,6 +123,14 @@ class CardController implements Controller {
             printingId: null,
           },
           group: ['cardId'],
+          include: [
+            {
+              model: Card,
+              as: 'card',
+              required: true,
+              ...filterOptions,
+            },
+          ],
         })
       ).length;
 
@@ -113,6 +148,12 @@ class CardController implements Controller {
               where: {
                 type: CardAdditionalPrintingTypeEnum.REVERSE,
               },
+            },
+            {
+              model: Card,
+              as: 'card',
+              required: true,
+              ...filterOptions,
             },
           ],
           group: ['UserCardPossession.cardId'],
@@ -133,12 +174,29 @@ class CardController implements Controller {
         ],
       });
 
-      const totalOwned = await UserCardPossession.count();
+      const totalOwned = await UserCardPossession.count({
+        include: [
+          {
+            model: Card,
+            as: 'card',
+            required: true,
+            ...filterOptions,
+          },
+        ],
+      });
 
       const totalNormal = await UserCardPossession.count({
         where: {
           printingId: null,
         },
+        include: [
+          {
+            model: Card,
+            as: 'card',
+            required: true,
+            ...filterOptions,
+          },
+        ],
       });
 
       const totalReverse = await UserCardPossession.count({
@@ -151,11 +209,153 @@ class CardController implements Controller {
               type: CardAdditionalPrintingTypeEnum.REVERSE,
             },
           },
+          {
+            model: Card,
+            as: 'card',
+            required: true,
+            ...filterOptions,
+          },
         ],
       });
 
+      const countByRarity: any = {
+        Common: 1,
+        Uncommon: 2,
+        Rare: 3,
+        Holo: 4,
+        'Ultra Rare': 5,
+        'Secret Rare': 6,
+        Amazing: 7,
+        None: 8,
+      };
+
+      const distinctCountBySet: any = await Card.count({
+        ...cardService.getOptions(req.query, res.locals.currentUser),
+        include: [
+          {
+            model: CardAdditionalPrinting,
+            as: 'cardAdditionalPrinting',
+          },
+        ],
+        group: ['cardAdditionalPrinting.type', 'Card.setId'],
+      });
+
+      Object.values(CardRarityEnum)
+        .sort((a, b) => countByRarity[a] - countByRarity[b])
+        .map((el: any) => {
+          if (typeof el !== 'number') {
+            countByRarity[el] = {
+              totalOwned:
+                totalRarityCount.find((e: any) => e.rarity === CardRarityEnum[el])?.count ?? 0,
+              distinctOwned:
+                distinctRarityCount.find((e: any) => e.rarity === CardRarityEnum[el])?.count ?? 0,
+              distinctPossible:
+                rarityCount.find((e: any) => e.rarity === CardRarityEnum[el])?.count ?? 0,
+            };
+          }
+        });
+
+      const totalCountBySet = await UserCardPossession.count({
+        attributes: ['card.setId'],
+        group: ['card.setId', 'printing.type'],
+        include: [
+          {
+            model: Card,
+            as: 'card',
+            required: true,
+            ...filterOptions,
+          },
+          {
+            model: CardAdditionalPrinting,
+            as: 'printing',
+          },
+        ],
+      });
+
+      const distinctOwnedCountBySet = await UserCardPossession.count({
+        attributes: ['card.setId'],
+        group: ['card.setId', 'printing.type'],
+        distinct: true,
+        col: 'cardId',
+        include: [
+          {
+            model: Card,
+            as: 'card',
+            required: true,
+            ...filterOptions,
+          },
+          {
+            model: CardAdditionalPrinting,
+            as: 'printing',
+          },
+        ],
+      });
+
+      const countBySet: any = {};
+
+      await Promise.all(
+        totalSetCount.map(
+          (el: { setId: string; count: number }) =>
+            new Promise(async (resolve) => {
+              const set = await CardSet.findOne({ where: { id: el.setId } });
+              if (!set) return;
+              countBySet[set.code] = {
+                totalNormal:
+                  totalCountBySet.find((e: any) => e.setId === el.setId && e.type === null)
+                    ?.count ?? 0,
+
+                totalReverse:
+                  totalCountBySet.find(
+                    (e: any) =>
+                      e.setId === el.setId && e.type === CardAdditionalPrintingTypeEnum.REVERSE,
+                  )?.count ?? 0,
+
+                totalOwned: totalSetCount.find((e: any) => e.setId === el.setId)?.count ?? 0,
+
+                distinctNormal:
+                  distinctOwnedCountBySet.find((e: any) => e.setId === el.setId && e.type === null)
+                    ?.count ?? 0,
+
+                distinctReverse:
+                  distinctOwnedCountBySet.find(
+                    (e: any) =>
+                      e.setId === el.setId && e.type === CardAdditionalPrintingTypeEnum.REVERSE,
+                  )?.count ?? 0,
+
+                distinctPossibleNormal: distinctCountBySet
+                  .filter((e: any) => e.setId === el.setId)
+                  .reduce((part: any, a: any) => part + a.count, 0),
+
+                distinctPossibleReverse:
+                  distinctCountBySet.find(
+                    (e: any) =>
+                      e.setId === el.setId && e.type === CardAdditionalPrintingTypeEnum.REVERSE,
+                  )?.count ?? 0,
+
+                distinctOwned:
+                  (distinctOwnedCountBySet.find((e: any) => e.setId === el.setId && e.type === null)
+                    ?.count ?? 0) +
+                  (distinctOwnedCountBySet.find(
+                    (e: any) =>
+                      e.setId === el.setId && e.type === CardAdditionalPrintingTypeEnum.REVERSE,
+                  )?.count ?? 0),
+
+                distinctPossible:
+                  (distinctCountBySet.find(
+                    (e: any) =>
+                      e.setId === el.setId && e.type === CardAdditionalPrintingTypeEnum.REVERSE,
+                  )?.count ?? 0) +
+                  distinctCountBySet
+                    .filter((e: any) => e.setId === el.setId)
+                    .reduce((part: any, a: any) => part + a.count, 0),
+              };
+              resolve(null);
+            }),
+        ),
+      ).catch((e) => console.log(e));
+
       const stats: StatisticsDataType = {
-        distinctPossible,
+        distinctPossible: distinctNormalPossible + distinctReversePossible,
         distinctOwned,
         distinctNormal,
         distinctNormalPossible,
@@ -166,78 +366,8 @@ class CardController implements Controller {
         totalNormal,
         totalReverse,
 
-        countByRarity: {
-          Common: {
-            totalOwned:
-              totalRarityCount.find((e: any) => e.rarity === CardRarityEnum.Common)?.count ?? 0,
-            distinctOwned:
-              distinctRarityCount.find((e: any) => e.rarity === CardRarityEnum.Common)?.count ?? 0,
-            distinctPossible:
-              rarityCount.find((e: any) => e.rarity === CardRarityEnum.Common)?.count ?? 0,
-          },
-          Uncommon: {
-            totalOwned:
-              totalRarityCount.find((e: any) => e.rarity === CardRarityEnum.Uncommon)?.count ?? 0,
-            distinctOwned:
-              distinctRarityCount.find((e: any) => e.rarity === CardRarityEnum.Uncommon)?.count ??
-              0,
-            distinctPossible:
-              rarityCount.find((e: any) => e.rarity === CardRarityEnum.Uncommon)?.count ?? 0,
-          },
-          Rare: {
-            totalOwned:
-              totalRarityCount.find((e: any) => e.rarity === CardRarityEnum.Rare)?.count ?? 0,
-            distinctOwned:
-              distinctRarityCount.find((e: any) => e.rarity === CardRarityEnum.Rare)?.count ?? 0,
-            distinctPossible:
-              rarityCount.find((e: any) => e.rarity === CardRarityEnum.Rare)?.count ?? 0,
-          },
-          Holo: {
-            totalOwned:
-              totalRarityCount.find((e: any) => e.rarity === CardRarityEnum.Holo)?.count ?? 0,
-            distinctOwned:
-              distinctRarityCount.find((e: any) => e.rarity === CardRarityEnum.Holo)?.count ?? 0,
-            distinctPossible:
-              rarityCount.find((e: any) => e.rarity === CardRarityEnum.Holo)?.count ?? 0,
-          },
-          'Ultra Rare': {
-            totalOwned:
-              totalRarityCount.find((e: any) => e.rarity === CardRarityEnum['Ultra Rare'])?.count ??
-              0,
-            distinctOwned:
-              distinctRarityCount.find((e: any) => e.rarity === CardRarityEnum['Ultra Rare'])
-                ?.count ?? 0,
-            distinctPossible:
-              rarityCount.find((e: any) => e.rarity === CardRarityEnum['Ultra Rare'])?.count ?? 0,
-          },
-          'Secret Rare': {
-            totalOwned:
-              totalRarityCount.find((e: any) => e.rarity === CardRarityEnum['Secret Rare'])
-                ?.count ?? 0,
-            distinctOwned:
-              distinctRarityCount.find((e: any) => e.rarity === CardRarityEnum['Secret Rare'])
-                ?.count ?? 0,
-            distinctPossible:
-              rarityCount.find((e: any) => e.rarity === CardRarityEnum['Secret Rare'])?.count ?? 0,
-          },
-          None: {
-            totalOwned:
-              totalRarityCount.find((e: any) => e.rarity === CardRarityEnum.None)?.count ?? 0,
-            distinctOwned:
-              distinctRarityCount.find((e: any) => e.rarity === CardRarityEnum.None)?.count ?? 0,
-            distinctPossible:
-              rarityCount.find((e: any) => e.rarity === CardRarityEnum.None)?.count ?? 0,
-          },
-          Amazing: {
-            totalOwned:
-              totalRarityCount.find((e: any) => e.rarity === CardRarityEnum.Amazing)?.count ?? 0,
-            distinctOwned:
-              distinctRarityCount.find((e: any) => e.rarity === CardRarityEnum.Amazing)?.count ?? 0,
-            distinctPossible:
-              rarityCount.find((e: any) => e.rarity === CardRarityEnum.Amazing)?.count ?? 0,
-          },
-        },
-        countBySet: {},
+        countByRarity,
+        countBySet,
       };
 
       res.json({ data: { stats } });
