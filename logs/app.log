@@ -5690,3 +5690,148 @@
 {"content":"Abyss authentication configured","date":"2023-01-28T23:27:30.323Z","level":"debug","type":100}
 {"content":"Server listening on port: 10101","date":"2023-01-28T23:27:30.330Z","level":"debug","type":4}
 {"content":"\n      ###############################################\n      \ud83d\udee1️      Server listening on port: 10101      \ud83d\udee1️\n      ###############################################","date":"2023-01-28T23:27:30.331Z","level":"debug","type":4}
+{"content":"DB loaded and connected!","date":"2023-01-28T23:38:55.071Z","level":"debug","type":4}
+{"content":"21 Routes loaded !","date":"2023-01-28T23:38:55.096Z","level":"debug","type":1}
+{"content":"Express loaded","date":"2023-01-28T23:38:55.103Z","level":"debug","type":4}
+{"content":"All Dependency Injector loaded","date":"2023-01-28T23:38:55.104Z","level":"debug","type":4}
+{"content":"Abyss authentication configured","date":"2023-01-28T23:38:55.106Z","level":"debug","type":100}
+{"content":"Server listening on port: 10101","date":"2023-01-28T23:38:55.114Z","level":"debug","type":4}
+{"content":"\n      ###############################################\n      \ud83d\udee1️      Server listening on port: 10101      \ud83d\udee1️\n      ###############################################","date":"2023-01-28T23:38:55.115Z","level":"debug","type":4}
+{"content":"DB loaded and connected!","date":"2023-01-29T10:50:58.508Z","level":"debug","type":4}
+{"content":"21 Routes loaded !","date":"2023-01-29T10:50:58.767Z","level":"debug","type":1}
+{"content":"Express loaded","date":"2023-01-29T10:50:58.791Z","level":"debug","type":4}
+{"content":"All Dependency Injector loaded","date":"2023-01-29T10:50:58.791Z","level":"debug","type":4}
+{"content":"Abyss authentication configured","date":"2023-01-29T10:50:58.793Z","level":"debug","type":100}
+{"content":"Server listening on port: 10101","date":"2023-01-29T10:50:58.800Z","level":"debug","type":4}
+{"content":"\n      ###############################################\n      \ud83d\udee1️      Server listening on port: 10101      \ud83d\udee1️\n      ###############################################","date":"2023-01-29T10:50:58.801Z","level":"debug","type":4}
+{"date":"2023-01-29T12:33:43.659Z","error":{"code":"MODULE_NOT_FOUND","requireStack":["D:\\Fichiers\\Documents\\GIT\\vokit\\apps\\api-vokit\\src\\api\\middlewares\\auth.ts","D:\\Fichiers\\Documents\\GIT\\vokit\\apps\\api-vokit\\src\\api\\routes\\possession.route.ts","D:\\Fichiers\\Documents\\GIT\\vokit\\apps\\api-vokit\\src\\api\\routes\\index.ts","D:\\Fichiers\\Documents\\GIT\\vokit\\apps\\api-vokit\\src\\api\\index.ts","D:\\Fichiers\\Documents\\GIT\\vokit\\apps\\api-vokit\\src\\loaders\\api.loader.ts","D:\\Fichiers\\Documents\\GIT\\vokit\\apps\\api-vokit\\src\\loaders\\index.ts","D:\\Fichiers\\Documents\\GIT\\vokit\\apps\\api-vokit\\src\\app.ts","D:\\Fichiers\\Documents\\GIT\\vokit\\apps\\api-vokit\\src\\server.ts"]},"level":"error","type":4}
+{"date":"2023-01-29T12:38:47.724Z","error":{"code":"MODULE_NOT_FOUND","requireStack":["D:\\Fichiers\\Documents\\GIT\\vokit\\apps\\api-vokit\\src\\api\\middlewares\\auth.ts","D:\\Fichiers\\Documents\\GIT\\vokit\\apps\\api-vokit\\src\\api\\routes\\possession.route.ts","D:\\Fichiers\\Documents\\GIT\\vokit\\apps\\api-vokit\\src\\api\\routes\\index.ts","D:\\Fichiers\\Documents\\GIT\\vokit\\apps\\api-vokit\\src\\api\\index.ts","D:\\Fichiers\\Documents\\GIT\\vokit\\apps\\api-vokit\\src\\loaders\\api.loader.ts","D:\\Fichiers\\Documents\\GIT\\vokit\\apps\\api-vokit\\src\\loaders\\index.ts","D:\\Fichiers\\Documents\\GIT\\vokit\\apps\\api-vokit\\src\\app.ts","D:\\Fichiers\\Documents\\GIT\\vokit\\apps\\api-vokit\\src\\server.ts"]},"level":"error","type":4}
+{"date":"2023-01-29T12:40:59.676Z","error":{"code":"MODULE_NOT_FOUND","requireStack":["D:\\Fichiers\\Documents\\GIT\\vokit\\apps\\api-vokit\\src\\api\\middlewares\\auth.ts","D:\\Fichiers\\Documents\\GIT\\vokit\\apps\\api-vokit\\src\\api\\routes\\possession.route.ts","D:\\Fichiers\\Documents\\GIT\\vokit\\apps\\api-vokit\\src\\api\\routes\\index.ts","D:\\Fichiers\\Documents\\GIT\\vokit\\apps\\api-vokit\\src\\api\\index.ts","D:\\Fichiers\\Documents\\GIT\\vokit\\apps\\api-vokit\\src\\loaders\\api.loader.ts","D:\\Fichiers\\Documents\\GIT\\vokit\\apps\\api-vokit\\src\\loaders\\index.ts","D:\\Fichiers\\Documents\\GIT\\vokit\\apps\\api-vokit\\src\\app.ts","D:\\Fichiers\\Documents\\GIT\\vokit\\apps\\api-vokit\\src\\server.ts"]},"level":"error","type":4}
+{"date":"2023-01-29T12:42:03.761Z","error":{"code":"MODULE_NOT_FOUND","requireStack":["D:\\Fichiers\\Documents\\GIT\\vokit\\apps\\api-vokit\\src\\api\\middlewares\\auth.ts","D:\\Fichiers\\Documents\\GIT\\vokit\\apps\\api-vokit\\src\\api\\routes\\possession.route.ts","D:\\Fichiers\\Documents\\GIT\\vokit\\apps\\api-vokit\\src\\api\\routes\\index.ts","D:\\Fichiers\\Documents\\GIT\\vokit\\apps\\api-vokit\\src\\api\\index.ts","D:\\Fichiers\\Documents\\GIT\\vokit\\apps\\api-vokit\\src\\loaders\\api.loader.ts","D:\\Fichiers\\Documents\\GIT\\vokit\\apps\\api-vokit\\src\\loaders\\index.ts","D:\\Fichiers\\Documents\\GIT\\vokit\\apps\\api-vokit\\src\\app.ts","D:\\Fichiers\\Documents\\GIT\\vokit\\apps\\api-vokit\\src\\server.ts"]},"level":"error","type":4}
+{"date":"2023-01-29T12:42:25.140Z","error":{"code":"MODULE_NOT_FOUND","requireStack":["D:\\Fichiers\\Documents\\GIT\\vokit\\apps\\api-vokit\\src\\api\\middlewares\\auth.ts","D:\\Fichiers\\Documents\\GIT\\vokit\\apps\\api-vokit\\src\\api\\routes\\possession.route.ts","D:\\Fichiers\\Documents\\GIT\\vokit\\apps\\api-vokit\\src\\api\\routes\\index.ts","D:\\Fichiers\\Documents\\GIT\\vokit\\apps\\api-vokit\\src\\api\\index.ts","D:\\Fichiers\\Documents\\GIT\\vokit\\apps\\api-vokit\\src\\loaders\\api.loader.ts","D:\\Fichiers\\Documents\\GIT\\vokit\\apps\\api-vokit\\src\\loaders\\index.ts","D:\\Fichiers\\Documents\\GIT\\vokit\\apps\\api-vokit\\src\\app.ts","D:\\Fichiers\\Documents\\GIT\\vokit\\apps\\api-vokit\\src\\server.ts"]},"level":"error","type":4}
+{"date":"2023-01-29T12:42:45.536Z","error":{"code":"MODULE_NOT_FOUND","requireStack":["D:\\Fichiers\\Documents\\GIT\\vokit\\apps\\api-vokit\\src\\api\\middlewares\\auth.ts","D:\\Fichiers\\Documents\\GIT\\vokit\\apps\\api-vokit\\src\\api\\routes\\possession.route.ts","D:\\Fichiers\\Documents\\GIT\\vokit\\apps\\api-vokit\\src\\api\\routes\\index.ts","D:\\Fichiers\\Documents\\GIT\\vokit\\apps\\api-vokit\\src\\api\\index.ts","D:\\Fichiers\\Documents\\GIT\\vokit\\apps\\api-vokit\\src\\loaders\\api.loader.ts","D:\\Fichiers\\Documents\\GIT\\vokit\\apps\\api-vokit\\src\\loaders\\index.ts","D:\\Fichiers\\Documents\\GIT\\vokit\\apps\\api-vokit\\src\\app.ts","D:\\Fichiers\\Documents\\GIT\\vokit\\apps\\api-vokit\\src\\server.ts"]},"level":"error","type":4}
+{"date":"2023-01-29T12:43:05.731Z","error":{"code":"MODULE_NOT_FOUND","requireStack":["D:\\Fichiers\\Documents\\GIT\\vokit\\apps\\api-vokit\\src\\api\\middlewares\\auth.ts","D:\\Fichiers\\Documents\\GIT\\vokit\\apps\\api-vokit\\src\\api\\routes\\possession.route.ts","D:\\Fichiers\\Documents\\GIT\\vokit\\apps\\api-vokit\\src\\api\\routes\\index.ts","D:\\Fichiers\\Documents\\GIT\\vokit\\apps\\api-vokit\\src\\api\\index.ts","D:\\Fichiers\\Documents\\GIT\\vokit\\apps\\api-vokit\\src\\loaders\\api.loader.ts","D:\\Fichiers\\Documents\\GIT\\vokit\\apps\\api-vokit\\src\\loaders\\index.ts","D:\\Fichiers\\Documents\\GIT\\vokit\\apps\\api-vokit\\src\\app.ts","D:\\Fichiers\\Documents\\GIT\\vokit\\apps\\api-vokit\\src\\server.ts"]},"level":"error","type":4}
+{"content":"DB loaded and connected!","date":"2023-01-29T12:47:00.042Z","level":"debug","type":4}
+{"content":"21 Routes loaded !","date":"2023-01-29T12:47:00.067Z","level":"debug","type":1}
+{"content":"Express loaded","date":"2023-01-29T12:47:00.075Z","level":"debug","type":4}
+{"content":"All Dependency Injector loaded","date":"2023-01-29T12:47:00.075Z","level":"debug","type":4}
+{"content":"Abyss authentication configured","date":"2023-01-29T12:47:00.078Z","level":"debug","type":100}
+{"content":"Server listening on port: 10101","date":"2023-01-29T12:47:00.085Z","level":"debug","type":4}
+{"content":"\n      ###############################################\n      \ud83d\udee1️      Server listening on port: 10101      \ud83d\udee1️\n      ###############################################","date":"2023-01-29T12:47:00.086Z","level":"debug","type":4}
+{"date":"2023-01-29T12:47:17.356Z","error":{"code":"BAD_VALUES","message":"submitted values are not valid"},"level":"error","requestId":"9d6b4505-717e-4575-8924-27df49d0f6af","type":1}
+{"date":"2023-01-29T12:47:38.874Z","error":{},"level":"error","type":4}
+{"content":"DB loaded and connected!","date":"2023-01-29T12:48:27.868Z","level":"debug","type":4}
+{"content":"21 Routes loaded !","date":"2023-01-29T12:48:27.891Z","level":"debug","type":1}
+{"content":"Express loaded","date":"2023-01-29T12:48:27.898Z","level":"debug","type":4}
+{"content":"All Dependency Injector loaded","date":"2023-01-29T12:48:27.898Z","level":"debug","type":4}
+{"content":"Abyss authentication configured","date":"2023-01-29T12:48:27.900Z","level":"debug","type":100}
+{"content":"Server listening on port: 10101","date":"2023-01-29T12:48:27.908Z","level":"debug","type":4}
+{"content":"\n      ###############################################\n      \ud83d\udee1️      Server listening on port: 10101      \ud83d\udee1️\n      ###############################################","date":"2023-01-29T12:48:27.908Z","level":"debug","type":4}
+{"content":"DB loaded and connected!","date":"2023-01-29T12:48:31.718Z","level":"debug","type":4}
+{"content":"21 Routes loaded !","date":"2023-01-29T12:48:31.742Z","level":"debug","type":1}
+{"content":"Express loaded","date":"2023-01-29T12:48:31.749Z","level":"debug","type":4}
+{"content":"All Dependency Injector loaded","date":"2023-01-29T12:48:31.749Z","level":"debug","type":4}
+{"content":"Abyss authentication configured","date":"2023-01-29T12:48:31.751Z","level":"debug","type":100}
+{"content":"Server listening on port: 10101","date":"2023-01-29T12:48:31.759Z","level":"debug","type":4}
+{"content":"\n      ###############################################\n      \ud83d\udee1️      Server listening on port: 10101      \ud83d\udee1️\n      ###############################################","date":"2023-01-29T12:48:31.760Z","level":"debug","type":4}
+{"date":"2023-01-29T12:54:47.620Z","error":{"code":"BAD_VALUES","message":"submitted values are not valid"},"level":"error","requestId":"4ae41c33-3698-4ebe-b66c-adaa781c2f02","type":1}
+{"date":"2023-01-29T12:55:01.804Z","error":{"code":"BAD_VALUES","message":"submitted values are not valid"},"level":"error","requestId":"e71355ee-7cd2-40eb-a4ed-1c5e36c5c0aa","type":1}
+{"date":"2023-01-29T12:55:06.940Z","error":{"code":"BAD_VALUES","message":"submitted values are not valid"},"level":"error","requestId":"fa7adb7a-d403-40a1-bca7-c5514ff8915f","type":1}
+{"date":"2023-01-29T12:55:09.989Z","error":{"code":"BAD_VALUES","message":"submitted values are not valid"},"level":"error","requestId":"747d7090-e39e-4426-a6f8-15989f080ab0","type":1}
+{"date":"2023-01-29T12:55:48.396Z","error":{"code":"BAD_VALUES","message":"submitted values are not valid"},"level":"error","requestId":"7f455eb5-74b8-4c64-95be-f616ec19ea30","type":1}
+{"date":"2023-01-29T12:55:48.519Z","error":{"code":"BAD_VALUES","message":"submitted values are not valid"},"level":"error","requestId":"cc2d61ff-1eb5-4330-a19c-21825b732651","type":1}
+{"date":"2023-01-29T12:55:48.535Z","error":{"code":"BAD_VALUES","message":"submitted values are not valid"},"level":"error","requestId":"3c29e415-d34a-4df0-83fc-b3994a0a4ea4","type":1}
+{"date":"2023-01-29T12:56:22.854Z","error":{},"level":"error","requestId":"6448b030-6f34-4dc0-95c8-4682fb2681e6","type":1}
+{"date":"2023-01-29T12:56:27.106Z","error":{},"level":"error","requestId":"ed5e1819-3070-4d3f-8e91-829cec47c14c","type":1}
+{"content":"DB loaded and connected!","date":"2023-01-29T12:56:48.198Z","level":"debug","type":4}
+{"content":"21 Routes loaded !","date":"2023-01-29T12:56:48.223Z","level":"debug","type":1}
+{"content":"Express loaded","date":"2023-01-29T12:56:48.231Z","level":"debug","type":4}
+{"content":"All Dependency Injector loaded","date":"2023-01-29T12:56:48.231Z","level":"debug","type":4}
+{"content":"Abyss authentication configured","date":"2023-01-29T12:56:48.233Z","level":"debug","type":100}
+{"content":"Server listening on port: 10101","date":"2023-01-29T12:56:48.241Z","level":"debug","type":4}
+{"content":"\n      ###############################################\n      \ud83d\udee1️      Server listening on port: 10101      \ud83d\udee1️\n      ###############################################","date":"2023-01-29T12:56:48.241Z","level":"debug","type":4}
+{"date":"2023-01-29T12:56:50.802Z","error":{},"level":"error","requestId":"9c1c8210-c64c-4592-92ce-bf32f9a26d0d","type":1}
+{"date":"2023-01-29T12:57:08.240Z","error":{"code":"BAD_VALUES","message":"submitted values are not valid"},"level":"error","requestId":"43cd6b72-ff70-4301-82c4-1f399d48347e","type":1}
+{"date":"2023-01-29T12:57:08.391Z","error":{"code":"BAD_VALUES","message":"submitted values are not valid"},"level":"error","requestId":"fa73d774-53a7-4083-aca5-76272713b3b1","type":1}
+{"date":"2023-01-29T12:57:08.472Z","error":{"code":"BAD_VALUES","message":"submitted values are not valid"},"level":"error","requestId":"e08a81a1-cb34-4544-9955-e9e1a0fffe4b","type":1}
+{"date":"2023-01-29T12:57:11.346Z","error":{"code":"BAD_VALUES","message":"submitted values are not valid"},"level":"error","requestId":"f27a0ddc-a7dc-4cc6-a5e7-09f1ef129059","type":1}
+{"date":"2023-01-29T12:57:22.404Z","error":{"code":"BAD_VALUES","message":"submitted values are not valid"},"level":"error","requestId":"202a55af-b9b6-48ea-82bc-8cc5b5abc364","type":1}
+{"date":"2023-01-29T12:57:22.437Z","error":{"code":"BAD_VALUES","message":"submitted values are not valid"},"level":"error","requestId":"2dc89434-466d-423d-8e83-88c8d12f7549","type":1}
+{"date":"2023-01-29T12:57:22.502Z","error":{"code":"BAD_VALUES","message":"submitted values are not valid"},"level":"error","requestId":"41210138-0885-4d8c-86e9-e4722a644a96","type":1}
+{"date":"2023-01-29T12:57:39.460Z","error":{"code":"BAD_VALUES","message":"submitted values are not valid"},"level":"error","requestId":"1c9ed8e5-380b-40af-bbd5-965ff0dae230","type":1}
+{"date":"2023-01-29T12:57:39.479Z","error":{"code":"BAD_VALUES","message":"submitted values are not valid"},"level":"error","requestId":"3bb3d1cc-ed43-41ef-a2ca-ecd58b38da9a","type":1}
+{"date":"2023-01-29T13:02:49.644Z","error":{"code":"BAD_VALUES","message":"submitted values are not valid"},"level":"error","requestId":"15259792-6ab1-4177-ab0d-bf862c7fc579","type":1}
+{"date":"2023-01-29T13:02:49.753Z","error":{"code":"BAD_VALUES","message":"submitted values are not valid"},"level":"error","requestId":"e6d35d8f-884f-47d8-871e-385b606dd4d0","type":1}
+{"date":"2023-01-29T13:02:49.773Z","error":{"code":"BAD_VALUES","message":"submitted values are not valid"},"level":"error","requestId":"7107be1b-4215-42f9-a816-acd795a28c4b","type":1}
+{"date":"2023-01-29T13:03:00.457Z","error":{"code":"BAD_VALUES","message":"submitted values are not valid"},"level":"error","requestId":"ddafaab1-862c-482b-ac58-77e134f2d8c6","type":1}
+{"date":"2023-01-29T13:04:01.687Z","error":{"code":"BAD_VALUES","message":"submitted values are not valid"},"level":"error","requestId":"20afdd81-2ff6-421b-8eca-e427683f3455","type":1}
+{"date":"2023-01-29T13:04:01.765Z","error":{"code":"BAD_VALUES","message":"submitted values are not valid"},"level":"error","requestId":"9f751423-17e3-4351-93f8-55ac9fa7d83c","type":1}
+{"date":"2023-01-29T13:04:01.779Z","error":{"code":"BAD_VALUES","message":"submitted values are not valid"},"level":"error","requestId":"04c95f28-317b-4883-be1f-30aebfb3ed32","type":1}
+{"date":"2023-01-29T13:04:10.417Z","error":{"code":"BAD_VALUES","message":"submitted values are not valid"},"level":"error","requestId":"63ac29fd-b830-47d3-9ef8-4f525a37fdb2","type":1}
+{"date":"2023-01-29T13:04:10.549Z","error":{"code":"BAD_VALUES","message":"submitted values are not valid"},"level":"error","requestId":"fa1c1f0a-ae94-4f30-b69c-34b97fdf1db3","type":1}
+{"date":"2023-01-29T13:04:10.563Z","error":{"code":"BAD_VALUES","message":"submitted values are not valid"},"level":"error","requestId":"17bd0a3f-59a1-4bd6-9f41-e396e518af82","type":1}
+{"date":"2023-01-29T13:04:26.767Z","error":{"code":"BAD_VALUES","message":"submitted values are not valid"},"level":"error","requestId":"1dfe418f-31c4-4365-bb55-1e42df12acf3","type":1}
+{"date":"2023-01-29T13:04:26.902Z","error":{"code":"BAD_VALUES","message":"submitted values are not valid"},"level":"error","requestId":"80a879ef-e7aa-4f9f-a271-0220e20f2976","type":1}
+{"date":"2023-01-29T13:04:26.916Z","error":{"code":"BAD_VALUES","message":"submitted values are not valid"},"level":"error","requestId":"0e029f4e-0d75-44a4-8a94-82ba96798e32","type":1}
+{"date":"2023-01-29T13:04:27.445Z","error":{"code":"BAD_VALUES","message":"submitted values are not valid"},"level":"error","requestId":"bc5560c2-fda9-418b-924b-382987c0b085","type":1}
+{"date":"2023-01-29T13:04:27.549Z","error":{"code":"BAD_VALUES","message":"submitted values are not valid"},"level":"error","requestId":"2f214f1c-53cf-4d07-8e81-623e3d86b8c2","type":1}
+{"date":"2023-01-29T13:04:27.563Z","error":{"code":"BAD_VALUES","message":"submitted values are not valid"},"level":"error","requestId":"8b1355bd-83bf-4a03-beb0-83341e3d979b","type":1}
+{"date":"2023-01-29T13:04:28.611Z","error":{"code":"BAD_VALUES","message":"submitted values are not valid"},"level":"error","requestId":"123485e0-6e63-4460-bbe6-6687cfa07e08","type":1}
+{"date":"2023-01-29T13:04:28.699Z","error":{"code":"BAD_VALUES","message":"submitted values are not valid"},"level":"error","requestId":"006b9bdd-94a8-4d9d-a028-a0e5d896c9d9","type":1}
+{"date":"2023-01-29T13:04:28.717Z","error":{"code":"BAD_VALUES","message":"submitted values are not valid"},"level":"error","requestId":"f6ff7cc7-40ca-445f-b148-3f6d3346b797","type":1}
+{"date":"2023-01-29T13:06:41.784Z","error":{"code":"BAD_VALUES","message":"submitted values are not valid"},"level":"error","requestId":"039f6120-2c8b-4f3e-964e-c7ee01f3aff9","type":1}
+{"date":"2023-01-29T13:06:41.909Z","error":{"code":"BAD_VALUES","message":"submitted values are not valid"},"level":"error","requestId":"c2c6fa19-b816-4846-8f17-d072f670f9a5","type":1}
+{"date":"2023-01-29T13:06:41.928Z","error":{"code":"BAD_VALUES","message":"submitted values are not valid"},"level":"error","requestId":"9d2ae3f7-1a97-41e6-9b77-5b8d47a7e1d7","type":1}
+{"date":"2023-01-29T13:06:43.060Z","error":{"code":"BAD_VALUES","message":"submitted values are not valid"},"level":"error","requestId":"6ec3f045-6a6b-47da-bcc6-e0b87ab8e043","type":1}
+{"date":"2023-01-29T13:06:43.173Z","error":{"code":"BAD_VALUES","message":"submitted values are not valid"},"level":"error","requestId":"d5895c8e-f645-46ac-8828-dfc540ba622b","type":1}
+{"date":"2023-01-29T13:06:43.190Z","error":{"code":"BAD_VALUES","message":"submitted values are not valid"},"level":"error","requestId":"bb618a6f-641f-4445-87f4-6c803071ffdc","type":1}
+{"date":"2023-01-29T13:06:52.425Z","error":{"code":"BAD_VALUES","message":"submitted values are not valid"},"level":"error","requestId":"b7a1905c-b8a8-4e1d-a7ba-8f323c4f740e","type":1}
+{"date":"2023-01-29T13:06:52.589Z","error":{"code":"BAD_VALUES","message":"submitted values are not valid"},"level":"error","requestId":"e4b75c14-70ac-4eb6-819e-09dd548216b5","type":1}
+{"date":"2023-01-29T13:06:52.602Z","error":{"code":"BAD_VALUES","message":"submitted values are not valid"},"level":"error","requestId":"ab1a1af6-b13a-495e-8a36-a1a38819eae7","type":1}
+{"date":"2023-01-29T13:06:55.326Z","error":{"code":"BAD_VALUES","message":"submitted values are not valid"},"level":"error","requestId":"c64eb19a-7cdd-43d0-a156-081da7246cc2","type":1}
+{"date":"2023-01-29T13:06:55.436Z","error":{"code":"BAD_VALUES","message":"submitted values are not valid"},"level":"error","requestId":"4b214360-edbd-467f-a65f-a414c2da381e","type":1}
+{"date":"2023-01-29T13:06:55.452Z","error":{"code":"BAD_VALUES","message":"submitted values are not valid"},"level":"error","requestId":"78cf2ca3-ae3b-4cf8-b781-3a92a374d6af","type":1}
+{"date":"2023-01-29T13:07:31.427Z","error":{"code":"BAD_VALUES","message":"submitted values are not valid"},"level":"error","requestId":"0fd5a935-ddf3-422d-8ad7-f17776b75a09","type":1}
+{"date":"2023-01-29T13:07:31.581Z","error":{"code":"BAD_VALUES","message":"submitted values are not valid"},"level":"error","requestId":"9e3ab4bd-4b2c-4069-b9da-f793554e0101","type":1}
+{"date":"2023-01-29T13:07:31.603Z","error":{"code":"BAD_VALUES","message":"submitted values are not valid"},"level":"error","requestId":"efb01406-c959-4167-974d-25cbec43d4a1","type":1}
+{"date":"2023-01-29T13:07:38.153Z","error":{"code":"BAD_VALUES","message":"submitted values are not valid"},"level":"error","requestId":"d5fbb6df-4987-483e-8381-a06cb8c0e252","type":1}
+{"date":"2023-01-29T13:07:38.261Z","error":{"code":"BAD_VALUES","message":"submitted values are not valid"},"level":"error","requestId":"eb5b7999-6318-4a55-9376-f08175f6aa29","type":1}
+{"date":"2023-01-29T13:07:38.274Z","error":{"code":"BAD_VALUES","message":"submitted values are not valid"},"level":"error","requestId":"099ee190-f0e5-4b1d-afa9-d3e34d9cb4b7","type":1}
+{"date":"2023-01-29T13:09:20.076Z","error":{"code":"BAD_VALUES","message":"submitted values are not valid"},"level":"error","requestId":"bd9a26ee-04fe-402c-8856-44b8109a6fba","type":1}
+{"date":"2023-01-29T13:10:12.599Z","error":{"code":"BAD_VALUES","message":"submitted values are not valid"},"level":"error","requestId":"6d83cf66-c83b-4dcf-84bb-178906f8e0f0","type":1}
+{"date":"2023-01-29T13:10:33.089Z","error":{"code":"BAD_VALUES","message":"submitted values are not valid"},"level":"error","requestId":"bfb38834-bc86-478e-89a0-890f37a122f2","type":1}
+{"date":"2023-01-29T13:10:33.931Z","error":{"code":"BAD_VALUES","message":"submitted values are not valid"},"level":"error","requestId":"633195e3-7b90-406b-8af1-8258b933a73f","type":1}
+{"date":"2023-01-29T13:10:59.237Z","error":{"code":"BAD_VALUES","message":"submitted values are not valid"},"level":"error","requestId":"ea9f5755-2a8a-4662-adf1-87d4cfd48d9c","type":1}
+{"date":"2023-01-29T13:11:59.719Z","error":{"code":"BAD_VALUES","message":"submitted values are not valid"},"level":"error","requestId":"4c3bf456-d9b3-466f-b6d8-3475cba32535","type":1}
+{"date":"2023-01-29T13:11:59.809Z","error":{"code":"BAD_VALUES","message":"submitted values are not valid"},"level":"error","requestId":"12f4a628-6827-4955-a350-d51b4b979467","type":1}
+{"date":"2023-01-29T13:11:59.848Z","error":{"code":"BAD_VALUES","message":"submitted values are not valid"},"level":"error","requestId":"8d5078e5-8a50-4dba-b276-b2e77ca37967","type":1}
+{"date":"2023-01-29T13:12:00.512Z","error":{"code":"BAD_VALUES","message":"submitted values are not valid"},"level":"error","requestId":"b77da198-cbce-4bea-8d3c-aeaa2c9795df","type":1}
+{"date":"2023-01-29T13:12:00.589Z","error":{"code":"BAD_VALUES","message":"submitted values are not valid"},"level":"error","requestId":"1eeb359d-118b-466f-9878-e62a9721d0a8","type":1}
+{"date":"2023-01-29T13:12:00.603Z","error":{"code":"BAD_VALUES","message":"submitted values are not valid"},"level":"error","requestId":"1da2456a-2510-40cb-a6db-6361cc400c3a","type":1}
+{"date":"2023-01-29T13:12:20.845Z","error":{"code":"BAD_VALUES","message":"submitted values are not valid"},"level":"error","requestId":"11ec21d8-c102-4dde-83fb-8d3576b688a2","type":1}
+{"date":"2023-01-29T13:12:20.938Z","error":{"code":"BAD_VALUES","message":"submitted values are not valid"},"level":"error","requestId":"494b29da-f2d9-455a-b94f-9ee289ac8864","type":1}
+{"date":"2023-01-29T13:12:20.970Z","error":{"code":"BAD_VALUES","message":"submitted values are not valid"},"level":"error","requestId":"e58a51c9-2e06-4026-84e0-1c27f02376f6","type":1}
+{"date":"2023-01-29T13:12:32.410Z","error":{"code":"BAD_VALUES","message":"submitted values are not valid"},"level":"error","requestId":"a7f9afdd-9be7-4e2f-92bc-bcc01d3c2829","type":1}
+{"date":"2023-01-29T13:12:32.425Z","error":{"code":"BAD_VALUES","message":"submitted values are not valid"},"level":"error","requestId":"ac63ee0d-6378-4a30-9936-46790cc8a52c","type":1}
+{"date":"2023-01-29T13:22:09.148Z","error":{"code":"BAD_VALUES","message":"submitted values are not valid"},"level":"error","requestId":"fc08068b-c98f-4e84-aeca-4cc9ce647381","type":1}
+{"date":"2023-01-29T13:22:09.222Z","error":{"code":"BAD_VALUES","message":"submitted values are not valid"},"level":"error","requestId":"7f36c0d4-68ab-415e-aead-52d4c4435f58","type":1}
+{"date":"2023-01-29T13:22:09.244Z","error":{"code":"BAD_VALUES","message":"submitted values are not valid"},"level":"error","requestId":"a67e9952-635f-43e8-92a0-8cd679ef9f33","type":1}
+{"date":"2023-01-29T13:22:10.310Z","error":{"code":"BAD_VALUES","message":"submitted values are not valid"},"level":"error","requestId":"438649ca-53d8-410c-9824-80b236e300a6","type":1}
+{"date":"2023-01-29T13:22:10.348Z","error":{"code":"BAD_VALUES","message":"submitted values are not valid"},"level":"error","requestId":"4000af8c-d63d-4f63-abdd-d5d6f74c801a","type":1}
+{"date":"2023-01-29T13:22:10.361Z","error":{"code":"BAD_VALUES","message":"submitted values are not valid"},"level":"error","requestId":"f32b715a-0c8f-43fd-a54d-4ab76c66390c","type":1}
+{"date":"2023-01-29T13:22:22.202Z","error":{"code":"BAD_VALUES","message":"submitted values are not valid"},"level":"error","requestId":"f5d24749-01cc-43cd-8e76-cd661148b06e","type":1}
+{"date":"2023-01-29T13:22:22.238Z","error":{"code":"BAD_VALUES","message":"submitted values are not valid"},"level":"error","requestId":"828cb927-0b98-419a-b9fa-7c2d4035d9bf","type":1}
+{"date":"2023-01-29T13:22:22.257Z","error":{"code":"BAD_VALUES","message":"submitted values are not valid"},"level":"error","requestId":"52c620ae-e29c-468a-bf96-34c3c52144a9","type":1}
+{"date":"2023-01-29T13:22:24.032Z","error":{"code":"BAD_VALUES","message":"submitted values are not valid"},"level":"error","requestId":"3ffb7693-e0ab-48dc-9b9f-df66b9849054","type":1}
+{"date":"2023-01-29T13:24:56.106Z","error":{"code":"BAD_VALUES","message":"submitted values are not valid"},"level":"error","requestId":"2141fb22-9d66-4638-95a3-d66ca1e56da2","type":1}
+{"date":"2023-01-29T13:24:56.162Z","error":{"code":"BAD_VALUES","message":"submitted values are not valid"},"level":"error","requestId":"70aad4a6-6e00-42d1-8c92-1aad38b89eee","type":1}
+{"date":"2023-01-29T13:24:56.174Z","error":{"code":"BAD_VALUES","message":"submitted values are not valid"},"level":"error","requestId":"dcb1bccf-1d5f-44dd-a812-6a537ee2b7cc","type":1}
+{"date":"2023-01-29T13:25:06.990Z","error":{"code":"BAD_VALUES","message":"submitted values are not valid"},"level":"error","requestId":"37b31c6d-87cc-4893-8c93-377352cb8df8","type":1}
+{"content":"DB loaded and connected!","date":"2023-01-29T13:27:35.083Z","level":"debug","type":4}
+{"content":"21 Routes loaded !","date":"2023-01-29T13:27:35.113Z","level":"debug","type":1}
+{"content":"Express loaded","date":"2023-01-29T13:27:35.122Z","level":"debug","type":4}
+{"content":"All Dependency Injector loaded","date":"2023-01-29T13:27:35.123Z","level":"debug","type":4}
+{"content":"Abyss authentication configured","date":"2023-01-29T13:27:35.125Z","level":"debug","type":100}
+{"content":"Server listening on port: 10101","date":"2023-01-29T13:27:35.133Z","level":"debug","type":4}
+{"content":"\n      ###############################################\n      \ud83d\udee1️      Server listening on port: 10101      \ud83d\udee1️\n      ###############################################","date":"2023-01-29T13:27:35.134Z","level":"debug","type":4}
+{"date":"2023-01-29T13:27:37.704Z","error":{"code":"BAD_VALUES","message":"submitted values are not valid"},"level":"error","requestId":"fdb94375-d61e-4306-9d70-1f2c5ef77318","type":1}

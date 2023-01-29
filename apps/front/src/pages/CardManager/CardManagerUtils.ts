@@ -1,4 +1,8 @@
-import { ICard, ICardSet } from "vokit_core";
+import {
+  ICardSetFilter,
+  ICardRarityFilter,
+} from "./../../local-core/interface";
+import { CardRarityEnum, ICard, ICardSet } from "vokit_core";
 
 export const initialRarityFilter = [
   {
@@ -121,4 +125,59 @@ export const getImageFromSeparatedInfos = (
   if (isValid)
     return "src/assets/cards/" + cardSet.code + "/" + card.localId + ".jpg";
   return "src/assets/cards/" + cardSet.code + "/" + card.localId + ".jpg";
+};
+
+export const getFilterQuery = (
+  isStats: boolean = false,
+  cardSetFilter: ICardSetFilter[],
+  nameFilter: string,
+  page: number,
+  rarityFilter: ICardRarityFilter[],
+  possessionFilter: "owned" | "unowned" | null,
+  order: string = ""
+) => {
+  const setFilter = cardSetFilter.filter((setFilter) => setFilter.status);
+  const params: Record<string, any> = {};
+
+  if (setFilter && setFilter.length > 0) {
+    params.setFilter = [];
+    setFilter.forEach((setFilter) => {
+      params.setFilter.push(setFilter.code);
+    });
+  }
+
+  if (nameFilter !== "") {
+    params.namefilter = nameFilter;
+  }
+
+  if (!isStats) {
+    if (order === "" || order === null) {
+      params.order = "default";
+    } else {
+      params.order = order;
+    }
+  }
+
+  if (!isStats) {
+    params.page = page;
+  }
+
+  if (possessionFilter) {
+    params.possession = possessionFilter;
+  }
+
+  if (rarityFilter.filter((filter) => filter.value === true).length !== 0) {
+    params.rarity = [];
+    rarityFilter.forEach((filter) => {
+      if (filter.value) {
+        params.rarity.push(
+          CardRarityEnum[filter.rarity as keyof typeof CardRarityEnum]
+        );
+      }
+    });
+  }
+
+  params.stats = true;
+
+  return params;
 };

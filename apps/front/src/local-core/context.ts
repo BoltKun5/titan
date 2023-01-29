@@ -8,7 +8,11 @@ import {
   IUserCardPossession,
   IUser,
 } from "vokit_core";
-import { ICardSetFilter, INotificationElement } from "./interface";
+import {
+  ICardRarityFilter,
+  ICardSetFilter,
+  INotificationElement,
+} from "./interface";
 
 export type StoreType = {
   series: ICardSerie[] | null;
@@ -19,7 +23,7 @@ export type StoreType = {
   nameFilter: string;
   setNameFilter: React.Dispatch<React.SetStateAction<string>>;
   resetAllFilters: () => void;
-  rarityFilter: { rarity: string; value: boolean }[];
+  rarityFilter: ICardRarityFilter[];
   setRarityFilter: React.Dispatch<React.SetStateAction<any[]>>;
   order: string;
   setOrder: React.Dispatch<React.SetStateAction<string>>;

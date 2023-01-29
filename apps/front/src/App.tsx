@@ -12,7 +12,11 @@ import StoreContext from "./hook/contexts/StoreContext";
 import { api, loggedApi } from "./axios";
 import { StatPage } from "./pages/StatPage/StatPage";
 import { initialRarityFilter } from "./pages/CardManager/CardManagerUtils";
-import { ICardSetFilter, INotificationElement } from "./local-core/interface";
+import {
+  ICardRarityFilter,
+  ICardSetFilter,
+  INotificationElement,
+} from "./local-core/interface";
 import { Loader } from "./components/UI/Loader/LoaderComponent";
 import {
   ICard,
@@ -48,8 +52,8 @@ export const App: React.FC = () => {
     null
   );
   const [nameFilter, setNameFilter] = useState<string>("");
-  const [typeFilter, setTypeFilter] = useState<CardTypeEnum[]>([]);
-  const [rarityFilter, setRarityFilter] = useState<any[]>(initialRarityFilter);
+  const [rarityFilter, setRarityFilter] =
+    useState<ICardRarityFilter[]>(initialRarityFilter);
 
   const [series, setSeries] = useState<ICardSerie[] | null>(null);
   const [tags, setTags] = useState<ITag[] | null>(null);

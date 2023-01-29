@@ -14,3 +14,8 @@ export interface ICardSetFilter {
   title?: string;
   code?: string;
 }
+
+export interface ICardRarityFilter {
+  rarity: string;
+  value: boolean;
+}

@@ -7,6 +7,7 @@ import { useFetchData } from "../../hook/api/cards";
 import { Loader } from "../../components/UI/Loader/LoaderComponent";
 import { loggedApi } from "../../axios";
 import { CardRarityEnum } from "vokit_core";
+import { getFilterQuery } from "./CardManagerUtils";
 
 export const CardManager: React.FC = () => {
   const { isLoading, fetch } = useFetchData();
@@ -29,44 +30,16 @@ export const CardManager: React.FC = () => {
 
   const fetchCards = useCallback(async () => {
     if (!cardSetFilter) return;
-    const setFilter = cardSetFilter.filter((setFilter) => setFilter.status);
-    const params: Record<string, any> = {};
-
-    if (setFilter.length > 0) {
-      params.setFilter = [];
-      setFilter.forEach((setFilter) => {
-        params.setFilter.push(setFilter.code);
-      });
-    }
-
-    if (nameFilter !== "") {
-      params.namefilter = nameFilter;
-    }
-
-    if (order === "" || order === null) {
-      params.order = "default";
-    } else {
-      params.order = order;
-    }
-
-    if (rarityFilter.filter((filter) => filter.value === true).length !== 0) {
-      params.rarity = [];
-      rarityFilter.forEach((filter) => {
-        if (filter.value) {
-          // @ts-ignore
-          params.rarity.push(CardRarityEnum[filter.rarity]);
-        }
-      });
-    }
-
-    params.page = page;
-
-    if (possessionFilter) {
-      params.possession = possessionFilter;
-    }
-
+    const params = getFilterQuery(
+      false,
+      cardSetFilter,
+      nameFilter,
+      page,
+      rarityFilter,
+      possessionFilter,
+      order
+    );
     const response = await fetch("/card/list", params);
-
     setCards(response.cards);
     setPagination(response.pagination);
   }, [

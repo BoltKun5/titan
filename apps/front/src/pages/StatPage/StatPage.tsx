@@ -1,5 +1,5 @@
 import "./style.scss";
-import { frontRarity } from "../CardManager/CardManagerUtils";
+import { frontRarity, getFilterQuery } from "../CardManager/CardManagerUtils";
 import {
   ResponsiveContainer,
   BarChart,
@@ -35,37 +35,16 @@ export const StatPage: React.FC = () => {
   );
 
   const fetchStats = useCallback(async () => {
-    const setFilter = cardSetFilter?.filter((setFilter) => setFilter.status);
-    const params: Record<string, any> = {};
-
-    if (setFilter && setFilter.length > 0) {
-      params.setFilter = [];
-      setFilter.forEach((setFilter) => {
-        params.setFilter.push(setFilter.code);
-      });
-    }
-
-    if (nameFilter !== "") {
-      params.namefilter = nameFilter;
-    }
-
-    params.page = -1;
-
-    if (rarityFilter.filter((filter) => filter.value === true).length !== 0) {
-      params.rarity = [];
-      rarityFilter.forEach((filter) => {
-        if (filter.value) {
-          params.rarity.push(
-            CardRarityEnum[filter.rarity as keyof typeof CardRarityEnum]
-          );
-        }
-      });
-    }
-
-    let response;
-    params.unowned = "show";
-    params.stats = true;
-    response = await fetch("/card/stats", params);
+    if (!cardSetFilter) return;
+    const params = getFilterQuery(
+      true,
+      cardSetFilter,
+      nameFilter,
+      page,
+      rarityFilter,
+      possessionFilter
+    );
+    const response = await fetch("/card/stats", params);
     setStats((response as any).data.stats);
   }, [
     cardSetFilter,

@@ -41,30 +41,30 @@ export const SingleCardComponent: React.FC<SingleCardComponentPropsType> = ({
 
   const [parent, setParent] = useState<HTMLElement | null | undefined>(null);
 
-  const isElementInViewport = useCallback(() => {
-    let windowHeight = parent?.clientHeight;
-    let rect = elementRef.current?.getBoundingClientRect();
-    if (show) return true;
-    if (!rect || !windowHeight) return false;
+  // const isElementInViewport = useCallback(() => {
+  //   let windowHeight = parent?.clientHeight;
+  //   let rect = elementRef.current?.getBoundingClientRect();
+  //   if (show) return true;
+  //   if (!rect || !windowHeight) return false;
 
-    const requiredNullTop = rect?.top - 126 + rect.height;
-    const requiredNullBottom = rect?.bottom - 126 - windowHeight - rect.height;
+  //   const requiredNullTop = rect?.top - 126 + rect.height;
+  //   const requiredNullBottom = rect?.bottom - 126 - windowHeight - rect.height;
 
-    return requiredNullTop > 0 && requiredNullBottom < 0;
-  }, [parent, elementRef]);
+  //   return requiredNullTop > 0 && requiredNullBottom < 0;
+  // }, [parent, elementRef]);
 
-  const scrollEventHandler = () => {
-    setShow(isElementInViewport());
-  };
+  // const scrollEventHandler = () => {
+  //   setShow(isElementInViewport());
+  // };
 
-  useEffect(() => {
-    setParent(elementRef.current?.parentElement?.parentElement);
-    setShow(isElementInViewport);
-    if (!show) parent?.addEventListener("scroll", scrollEventHandler);
-    return () => {
-      parent?.removeEventListener("scroll", scrollEventHandler);
-    };
-  });
+  // useEffect(() => {
+  //   setParent(elementRef.current?.parentElement?.parentElement);
+  //   setShow(isElementInViewport);
+  //   if (!show) parent?.addEventListener("scroll", scrollEventHandler);
+  //   return () => {
+  //     parent?.removeEventListener("scroll", scrollEventHandler);
+  //   };
+  // });
 
   return (
     <>
@@ -80,7 +80,7 @@ export const SingleCardComponent: React.FC<SingleCardComponentPropsType> = ({
         }}
         ref={elementRef}
       >
-        {show && (
+        {1 && (
           <>
             <div
               className="SingleCard-imgContainer"
