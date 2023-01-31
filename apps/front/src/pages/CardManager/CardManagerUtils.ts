@@ -177,7 +177,7 @@ export const getFilterQuery = (
     });
   }
 
-  params.stats = true;
+  if (isStats) params.stats = true;
 
   return params;
 };

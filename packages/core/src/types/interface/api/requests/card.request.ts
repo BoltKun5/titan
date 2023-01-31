@@ -6,6 +6,6 @@ export interface ICardQuery {
   rarity?: CardRarityEnum;
   page?: number;
   stats?: boolean;
-  possession?: 'owned' | 'unowned';
+  possession?: 'partial_owned' | 'partial_unowned' | 'multiple_owned' | 'unowned' | 'fully_owned';
   setFilter?: string[];
 }

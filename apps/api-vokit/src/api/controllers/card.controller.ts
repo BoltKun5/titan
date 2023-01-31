@@ -37,10 +37,17 @@ class CardController implements Controller {
     req.query.page = -1;
 
     // console.time('a');
-    const stats = await cardService.getStats({ ...req.query }, res.locals.currentUser);
+    try {
+      const stats = await cardService.getStats({ ...req.query }, res.locals.currentUser);
+      if (!stats) {
+        res.status(400);
+        return;
+      }
+      res.json({ data: { stats } });
+    } catch (e: any) {
+      console.log(e.message);
+    }
     // console.timeEnd('a');
-
-    res.json({ data: { stats } });
   }
 }
 

@@ -31,9 +31,22 @@ export type StoreType = {
   setCollectionMode: React.Dispatch<React.SetStateAction<boolean>>;
   separateReverse: boolean;
   setSeparateReverse: React.Dispatch<React.SetStateAction<boolean>>;
-  possessionFilter: "owned" | "unowned" | null;
+  possessionFilter:
+    | "partial_owned"
+    | "partial_unowned"
+    | "fully_owned"
+    | "multiple_owned"
+    | "unowned"
+    | null;
   setPossessionFilter: React.Dispatch<
-    React.SetStateAction<"owned" | "unowned" | null>
+    React.SetStateAction<
+      | "partial_owned"
+      | "partial_unowned"
+      | "fully_owned"
+      | "multiple_owned"
+      | "unowned"
+      | null
+    >
   >;
   massInput: boolean;
   setMassInput: React.Dispatch<React.SetStateAction<boolean>>;

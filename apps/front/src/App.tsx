@@ -39,7 +39,12 @@ export const App: React.FC = () => {
   const [collectionMode, setCollectionMode] = useState<boolean>(true);
   const [separateReverse, setSeparateReverse] = useState<boolean>(false);
   const [possessionFilter, setPossessionFilter] = useState<
-    "owned" | "unowned" | null
+    | "partial_owned"
+    | "partial_unowned"
+    | "fully_owned"
+    | "multiple_owned"
+    | "unowned"
+    | null
   >(null);
 
   const [showOptionCards, setShowOptionCards] = useState(false);

@@ -13,7 +13,9 @@ export default class CardValidation {
         .optional(),
       page: Joi.number().optional(),
       stats: Joi.boolean().optional(),
-      possession: Joi.string().valid('owned', 'unowned').optional(),
+      possession: Joi.string()
+        .valid('partial_owned', 'partial_unowned', 'fully_owned', 'unowned', 'multiple_owned')
+        .optional(),
       setFilter: Joi.array().items(Joi.string()).optional(),
     }).options({ presence: 'required' });
 

@@ -189,6 +189,54 @@
     }
   }
 
+  &-htmlSelectInput {
+
+    height: 60px;
+    width: 100%;
+    position: relative;
+
+    &-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 100%;
+      height: 100%;
+      background-color: $primary;
+      clip-path: clipPath(10px);
+    }
+
+    & select {
+      clip-path: clipPath(10px);
+      background-color: $primary-bg;
+      padding: 3px 10px;
+      color: $white;
+      border: none;
+      box-sizing: border-box;
+      font-size: 18px;
+      width: calc(100% - 2px);
+      height: calc(100% - 2px);
+
+      &:focus,
+      &:visited,
+      &:focus-visible {
+        border: none;
+        outline: none;
+      }
+    }
+
+    & label {
+      z-index: 1;
+      position: absolute;
+      left: -5px;
+      top: -25px;
+      color: $secondary;
+      background: $primary-radiant;
+      padding: 10px;
+      clip-path: clipPath(10px);
+      font-size: 15px;
+    }
+  }
+
   &-selectedElementFilter {
     transition: 0.5s;
     transform: translateX(5px);
@@ -315,6 +363,7 @@
       color: $primary-bg;
     }
   }
+
 }
 
 @media (max-width: 450px) {
@@ -334,6 +383,12 @@
     &-rarityContainer {
       width: 22px;
       height: 22px;
+    }
+
+    & .customOverride {
+      & .SwipeCheckboxComponent-activeElement {
+        height: 56px;
+      }
     }
   }
 }

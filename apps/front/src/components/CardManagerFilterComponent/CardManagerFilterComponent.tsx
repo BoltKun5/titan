@@ -36,6 +36,8 @@ export const CardManagerFilterComponent: React.FC<{
     rarityFilter,
     cardSetFilter,
     nameFilter,
+    possessionFilter,
+    setPossessionFilter,
     setRarityFilter,
   } = useContext(StoreContext);
 
@@ -263,6 +265,37 @@ export const CardManagerFilterComponent: React.FC<{
               </div>
             </div>
           </div>
+          <div className="CardManagerFilter-fixedWidthContainer">
+            <div className="CardManagerFilter-htmlSelectInput">
+              <label>Possession</label>
+              <div className="CardManagerFilter-htmlSelectInput-container">
+                <select
+                  value={possessionFilter ?? "null"}
+                  onChange={(ev) =>
+                    setPossessionFilter(
+                      ev.target.value !== "null"
+                        ? (ev.target.value as any)
+                        : null
+                    )
+                  }
+                >
+                  <option value={"null"}>Toutes</option>
+                  <option value={"partial_owned"}>1+ version possédée</option>
+                  <option value={"partial_unowned"}>
+                    1+ version non possédée
+                  </option>
+                  <option value={"fully_owned"}>
+                    Toutes versions possédées
+                  </option>
+                  <option value={"multiple_owned"}>
+                    Exemplaires multiples
+                  </option>
+                  <option value={"unowned"}>Aucune version possédée</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
           <div className="CardManagerFilter-fixedWidthContainer">
             <div
               className="CardManagerFilter-resetContainer"
