@@ -7190,3 +7190,18 @@
 {"content":"Abyss authentication configured","date":"2023-01-31T12:34:07.750Z","level":"debug","type":100}
 {"content":"Server listening on port: 10101","date":"2023-01-31T12:34:07.760Z","level":"debug","type":4}
 {"content":"\n      ###############################################\n      \ud83d\udee1️      Server listening on port: 10101      \ud83d\udee1️\n      ###############################################","date":"2023-01-31T12:34:07.761Z","level":"debug","type":4}
+{"content":"DB loaded and connected!","date":"2023-01-31T12:36:35.192Z","level":"debug","type":4}
+{"content":"21 Routes loaded !","date":"2023-01-31T12:36:35.218Z","level":"debug","type":1}
+{"content":"Express loaded","date":"2023-01-31T12:36:35.227Z","level":"debug","type":4}
+{"content":"All Dependency Injector loaded","date":"2023-01-31T12:36:35.227Z","level":"debug","type":4}
+{"content":"Abyss authentication configured","date":"2023-01-31T12:36:35.230Z","level":"debug","type":100}
+{"content":"Server listening on port: 10101","date":"2023-01-31T12:36:35.240Z","level":"debug","type":4}
+{"content":"\n      ###############################################\n      \ud83d\udee1️      Server listening on port: 10101      \ud83d\udee1️\n      ###############################################","date":"2023-01-31T12:36:35.241Z","level":"debug","type":4}
+{"content":"DB loaded and connected!","date":"2023-02-01T09:10:57.474Z","level":"debug","type":4}
+{"content":"21 Routes loaded !","date":"2023-02-01T09:10:57.669Z","level":"debug","type":1}
+{"content":"Express loaded","date":"2023-02-01T09:10:57.691Z","level":"debug","type":4}
+{"content":"All Dependency Injector loaded","date":"2023-02-01T09:10:57.692Z","level":"debug","type":4}
+{"content":"Abyss authentication configured","date":"2023-02-01T09:10:57.693Z","level":"debug","type":100}
+{"content":"Server listening on port: 10101","date":"2023-02-01T09:10:57.701Z","level":"debug","type":4}
+{"content":"\n      ###############################################\n      \ud83d\udee1️      Server listening on port: 10101      \ud83d\udee1️\n      ###############################################","date":"2023-02-01T09:10:57.702Z","level":"debug","type":4}
+{"date":"2023-02-01T11:40:36.287Z","error":{},"level":"error","type":4}

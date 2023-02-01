@@ -8,7 +8,7 @@
 
   &-fastFilterIcon {
     position: absolute;
-    top: 32px;
+    top: 13px;
     right: 10px;
     cursor: pointer;
 
@@ -19,13 +19,27 @@
     }
   }
 
+  & .TextInputComponent {
+    & input {
+      margin: auto;
+    }
+
+    & label {
+      top: -25px
+    }
+  }
+
+  &-searchBarContainer {
+    height: 60px;
+  }
+
 
   &-dropdown {
     border: 1px solid rgb(41, 41, 41);
     display: none;
-    position: absolute;
+    position: fixed;
     overflow: hidden auto;
-    top: calc(100% - 20px);
+    top: 100%;
     left: 0;
     flex-direction: column;
     word-break: normal;

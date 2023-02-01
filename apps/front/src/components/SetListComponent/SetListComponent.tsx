@@ -48,9 +48,6 @@ export const SetListComponent: React.FC = () => {
   return (
     <>
       <div className="SetList coloredCorner">
-        <div className="SetList-triangleContainer">
-          <div className="SetList-triangle" />
-        </div>
         <div className="SetList-container">
           {series?.map((serieElement) => (
             <div

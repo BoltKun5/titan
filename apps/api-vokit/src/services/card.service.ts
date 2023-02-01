@@ -289,20 +289,6 @@ export class CardService extends EntityService<Card, ICard> {
         ],
       });
 
-      const distinctOwned = (
-        await UserCardPossession.count({
-          group: ['cardId'],
-          include: [
-            {
-              model: Card,
-              as: 'card',
-              required: true,
-              ...filterOptions,
-            },
-          ],
-        })
-      ).length;
-
       const distinctNormal = (
         await UserCardPossession.count({
           where: {
@@ -542,7 +528,7 @@ export class CardService extends EntityService<Card, ICard> {
 
       return {
         distinctPossible: distinctNormalPossible + distinctReversePossible,
-        distinctOwned,
+        distinctOwned: distinctNormal + distinctReverse,
         distinctNormal,
         distinctNormalPossible,
         distinctReverse,

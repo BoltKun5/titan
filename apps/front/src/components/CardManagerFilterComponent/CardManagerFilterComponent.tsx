@@ -189,7 +189,7 @@ export const CardManagerFilterComponent: React.FC<{
       <div
         className={"CardManagerFilter" + (isFilterPanelOpen ? " blured" : "")}
         style={{
-          transform: isFilterPanelOpen ? "" : "translateY(calc(-100% + 51px))",
+          transform: isFilterPanelOpen ? "" : "translateY(calc(-100% + 55px))",
         }}
       >
         <div className="CardManagerFilter-top">

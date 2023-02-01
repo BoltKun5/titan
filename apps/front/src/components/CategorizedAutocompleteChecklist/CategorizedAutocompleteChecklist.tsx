@@ -1,5 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { ClickAwayListener, TextField, Tooltip } from "@mui/material";
+import {
+  ClickAwayListener,
+  Modal,
+  Popover,
+  Popper,
+  TextField,
+  Tooltip,
+} from "@mui/material";
 import "./style.scss";
 import { TextInputComponent } from "../UI/TextInputComponent/TextInputComponent";
 import ListIcon from "@mui/icons-material/List";
@@ -21,8 +28,11 @@ export const CategorizedAutocompleteChecklist: React.FC<Props> = ({
 }) => {
   const [searchTerm, setSearchTerm] = useState<string>("");
   const [isDropdownOpen, setIsDropdownOpen] = useState<boolean>(false);
-  const [isFastFilterOpen, setIsFastFilterOpen] = useState<boolean>(false);
   const [filteredItems, setFilteredItems] = useState<any[]>([]);
+  const [anchorEl, setAnchorEl] = React.useState<
+    null | (HTMLElement | null | undefined)
+  >(null);
+  const isFastFilterOpen = Boolean(anchorEl);
 
   useEffect(() => {
     updateFilteredItems(items);
@@ -86,13 +96,14 @@ export const CategorizedAutocompleteChecklist: React.FC<Props> = ({
   const openDropdown = (event: any) => {
     if (!isDropdownOpen) {
       if (isFastFilterOpen) {
-        setIsFastFilterOpen(false);
+        setAnchorEl(null);
       }
       setIsDropdownOpen(true);
     }
+    event.stopPropagation();
   };
 
-  const closeDropdown = () => {
+  const closeDropdown = (ev: any) => {
     if (isDropdownOpen) {
       setIsDropdownOpen(false);
       setSearchTerm("");
@@ -111,82 +122,114 @@ export const CategorizedAutocompleteChecklist: React.FC<Props> = ({
     return "CategorizedAutocompleteChecklist-title";
   };
 
+  const getFixedPositionStyle = (): { top: string; left: string } => {
+    const v = document
+      .querySelector(".CategorizedAutocompleteChecklist")
+      ?.getBoundingClientRect();
+
+    if (!v) return { top: "", left: "" };
+
+    return { top: `${v.y + v.height}px`, left: `${v.x}px` };
+  };
+
   return (
     <>
       <ClickAwayListener onClickAway={closeDropdown} mouseEvent={"onClick"}>
-        <div className="CategorizedAutocompleteChecklist">
-          {isFastFilterOpen && (
+        <>
+          <div className="CategorizedAutocompleteChecklist">
+            <div
+              className="CategorizedAutocompleteChecklist-searchBarContainer"
+              onClick={openDropdown}
+            >
+              <TextInputComponent
+                value={searchTerm}
+                modifyValue={setSearchTerm}
+                label="Filtrer par set"
+                width={width}
+              />
+              <div className="CategorizedAutocompleteChecklist-fastFilterIcon">
+                <Tooltip title="Filtres rapides">
+                  <ListIcon
+                    onClick={(event) => {
+                      setAnchorEl(
+                        anchorEl
+                          ? null
+                          : event.currentTarget.parentElement?.parentElement
+                      );
+                      event.stopPropagation();
+                    }}
+                  />
+                </Tooltip>
+              </div>
+            </div>
             <ClickAwayListener
-              onClickAway={() => setIsFastFilterOpen(false)}
+              onClickAway={closeDropdown}
+              mouseEvent={"onClick"}
+            >
+              <div
+                className={
+                  "CategorizedAutocompleteChecklist-dropdown " +
+                  (isDropdownOpen ? "show" : "")
+                }
+                style={{ width: width + 33, ...getFixedPositionStyle() }}
+              >
+                <>
+                  {filteredItems.map((item: ICardSetFilter, index: number) => {
+                    if (item.title) {
+                      return (
+                        <div
+                          key={item.title + index.toString()}
+                          className={getTitleClassList(item)}
+                          onClick={(ev) => onFilterChange(ev)}
+                        >
+                          {item.title}
+                        </div>
+                      );
+                    } else {
+                      return (
+                        <div
+                          key={item.id + index.toString()}
+                          onClick={(ev) => onFilterChange(ev)}
+                        >
+                          <div
+                            id={item.id}
+                            className={
+                              "CategorizedAutocompleteChecklist-dropdownElement " +
+                              (item.status ? "selected" : "")
+                            }
+                          >
+                            {item.name} ({item.code})
+                          </div>
+                        </div>
+                      );
+                    }
+                  })}
+                </>
+              </div>
+            </ClickAwayListener>
+          </div>
+          <Popover
+            anchorOrigin={{
+              vertical: "bottom",
+              horizontal: "right",
+            }}
+            transformOrigin={{
+              vertical: "top",
+              horizontal: "right",
+            }}
+            open={isFastFilterOpen}
+            anchorEl={anchorEl}
+          >
+            <ClickAwayListener
+              onClickAway={() => setAnchorEl(null)}
               mouseEvent={"onClick"}
             >
               <div>
                 <SetListComponent />
               </div>
             </ClickAwayListener>
-          )}
-
-          <div
-            className="CategorizedAutocompleteChecklist-searchBarContainer"
-            onClick={openDropdown}
-          >
-            <TextInputComponent
-              value={searchTerm}
-              modifyValue={setSearchTerm}
-              label="Filtrer par set"
-              width={width}
-            />
-            <div className="CategorizedAutocompleteChecklist-fastFilterIcon">
-              <Tooltip title="Filtres rapides">
-                <ListIcon
-                  onClick={(event) => {
-                    setIsFastFilterOpen(!isFastFilterOpen);
-                    event.stopPropagation();
-                  }}
-                />
-              </Tooltip>
-            </div>
-          </div>
-
-          <div
-            className={
-              "CategorizedAutocompleteChecklist-dropdown " +
-              (isDropdownOpen ? "show" : "")
-            }
-            style={{ width: width + 33 }}
-          >
-            {filteredItems.map((item: ICardSetFilter, index: number) => {
-              if (item.title) {
-                return (
-                  <div
-                    key={item.title + index.toString()}
-                    className={getTitleClassList(item)}
-                    onClick={(ev) => onFilterChange(ev)}
-                  >
-                    {item.title}
-                  </div>
-                );
-              } else {
-                return (
-                  <div
-                    key={item.id + index.toString()}
-                    onClick={(ev) => onFilterChange(ev)}
-                  >
-                    <div
-                      id={item.id}
-                      className={
-                        "CategorizedAutocompleteChecklist-dropdownElement " +
-                        (item.status ? "selected" : "")
-                      }
-                    >
-                      {item.name} ({item.code})
-                    </div>
-                  </div>
-                );
-              }
-            })}
-          </div>
-        </div>
+          </Popover>
+        </>
       </ClickAwayListener>
     </>
   );

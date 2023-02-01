@@ -8,7 +8,6 @@
   display: flex;
   flex-direction: column;
   flex: 0 1 auto;
-  padding: 15px 20px 0;
   position: absolute;
   z-index: 200;
   top: 76px;
@@ -18,6 +17,9 @@
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(410px, 1fr));
     width: 100%;
+    max-height: calc(100vh - 300px);
+    overflow: hidden auto;
+    padding-top: 10px;
 
     &>* {
       margin-left: 10px;
@@ -106,6 +108,8 @@
     width: 100%;
     display: flex;
     border-top: rgb(41, 41, 41) 1px solid;
+    box-sizing: border-box;
+    padding: 3px 5px 3px;
 
     & span {
       margin: 10px;
