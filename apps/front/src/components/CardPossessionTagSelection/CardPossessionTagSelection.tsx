@@ -6,6 +6,7 @@ import { Add } from "@mui/icons-material";
 import { loggedApi } from "../../axios";
 import CardModalContext from "../../hook/contexts/CardModalContext";
 import { IUserCardPossession, ITag } from "vokit_core";
+import { isUnloggedPage } from "../../general.utils";
 
 type Props = {
   cardPossession: IUserCardPossession;
@@ -39,6 +40,8 @@ export const CardPossessionTagSelection: React.FC<Props> = ({
           ?.filter((tag) => idList?.includes(tag.id))
           .map((e) => e.name)
           .join(", ")
+      : isUnloggedPage()
+      ? "Aucun label"
       : "Rechercher ou créer";
   }, [tags, localCardPossession]);
 
@@ -115,7 +118,7 @@ export const CardPossessionTagSelection: React.FC<Props> = ({
               }
               onClick={() => createNewTag()}
             >
-              <Add />
+              {!isUnloggedPage() && <Add />}
             </div>
           </Tooltip>
 

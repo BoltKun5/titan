@@ -138,3 +138,32 @@
     }
   }
 }
+
+
+@media (max-width: 1100px) {
+  .CardManagerCardList-grid {
+    grid-template-columns: repeat(auto-fit, minmax(215px, 1fr));
+  }
+
+  .CardManagerCardList-optionCardContent {
+    width: 210px;
+  }
+
+  .CardManagerCardList-optionCard {
+    height: 455px;
+  }
+
+  .CardManagerCardList-optionCardOpened .CardManagerCardList-optionCardLogo {
+    width: 190px;
+    height: 350px;
+  }
+
+  .CardManagerCardList-optionCardName {
+    font-size: 13px;
+    margin-bottom: 0 !important;
+  }
+
+  .CardManagerCardList-optionCardDesc {
+    font-size: 13px;
+  }
+}

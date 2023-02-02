@@ -11,7 +11,7 @@ import StoreContext from "./hook/contexts/StoreContext";
 
 import { api, loggedApi } from "./axios";
 import { StatPage } from "./pages/StatPage/StatPage";
-import { initialRarityFilter } from "./pages/CardManager/CardManagerUtils";
+import { initialRarityFilter, isUnloggedPage } from "./general.utils";
 import {
   ICardRarityFilter,
   ICardSetFilter,
@@ -78,12 +78,15 @@ export const App: React.FC = () => {
 
   const fetchUser = useCallback(async () => {
     try {
+      if (!localStorage.getItem("token")) throw null;
       const response = await loggedApi.get(`/user/me`);
       setUser(response.data.user);
     } catch (e) {
-      localStorage.removeItem("token");
-      localStorage.removeItem("user");
-      navigate("/");
+      if (!isUnloggedPage()) {
+        localStorage.removeItem("token");
+        localStorage.removeItem("user");
+        navigate("/");
+      }
     }
   }, []);
 
@@ -151,6 +154,7 @@ export const App: React.FC = () => {
     massInput,
     setMassInput,
     user,
+    setUser,
     notifications,
     setNotifications,
     tags,
@@ -201,6 +205,7 @@ export const App: React.FC = () => {
                 <Route path="/admin" element={<AdminPage />} />
                 <Route path="/historic" element={<HistoricPage />} />
                 <Route path="/signup" element={<SignUp />} />
+                <Route path="/collection/:id" element={<CardManager />} />
               </Routes>
             </StoreContext.Provider>
           </div>

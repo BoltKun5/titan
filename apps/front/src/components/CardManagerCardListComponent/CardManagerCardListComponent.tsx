@@ -6,6 +6,7 @@ import { MassInputComponent } from "../MassInputComponent/MassInputComponent";
 import { SingleCardComponent } from "../SingleCardComponent/SingleCardComponent";
 import { ButtonComponent } from "../UI/Button/ButtonComponent";
 import "./style.scss";
+import useWindowDimensions from "../../hook/utils/useWindowDimensions";
 
 export const CardManagerCardListComponent: React.FC = () => {
   const {
@@ -20,12 +21,14 @@ export const CardManagerCardListComponent: React.FC = () => {
   const optionCards = [
     {
       name: "Entrer toutes les valeurs",
-      desc: "Ceci est une description succinte de cet outil.",
+      desc: "Entrez rapidement les quantités pour toutes vos cartes en appuyant sur Entrer pour passer à la valeur suivante ou en utilisant les boutons disponibles.",
       function: setMassInput,
       value: massInput,
       component: <MassInputComponent />,
     },
   ];
+
+  const { width } = useWindowDimensions();
 
   return (
     <div className="CardManagerCardList">
@@ -55,7 +58,11 @@ export const CardManagerCardListComponent: React.FC = () => {
                     className="CardManagerCardList-optionCardClose"
                     onClick={() => optionCard.function(false)}
                   >
-                    <ButtonComponent label="Fermer" size={125} height={40} />
+                    <ButtonComponent
+                      label="Fermer"
+                      size={width > 1100 ? 125 : 90}
+                      height={width > 1100 ? 40 : 25}
+                    />
                   </div>
                 ) : (
                   <div className="CardManagerCardList-optionCardDesc">

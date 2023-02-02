@@ -17,6 +17,7 @@ export default class CardValidation {
         .valid('partial_owned', 'partial_unowned', 'fully_owned', 'unowned', 'multiple_owned')
         .optional(),
       setFilter: Joi.array().items(Joi.string()).optional(),
+      userId: Joi.string().optional(),
     }).options({ presence: 'required' });
 
     const result = querySchema.validate(data);

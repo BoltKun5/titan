@@ -45,7 +45,7 @@ export type CreationModelUserCardPossession = WithRequired<
 
 @DefaultScope(() => ({}))
 @Scopes(() => ({}))
-@Table({ tableName: 'userCardPossession', paranoid: false, timestamps: true })
+@Table({ tableName: 'userCardPossession', paranoid: true, timestamps: true })
 export class UserCardPossession
   extends CustomModel<IUserCardPossession, CreationModelUserCardPossession>
   implements ModelUserCardPossession

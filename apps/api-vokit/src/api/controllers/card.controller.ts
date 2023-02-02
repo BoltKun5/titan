@@ -1,3 +1,5 @@
+import { HttpResponseError } from './../../modules/http-response-error';
+import { User } from './../../database/models/user.model';
 import { ICardListResponse, ICardQuery, IResponse, IStatsResponse } from 'vokit_core';
 import { Controller, LoggerModel, ILocals } from '../../core';
 import { Request, Response } from 'express';
@@ -9,22 +11,40 @@ class CardController implements Controller {
 
   async getCardList(
     req: Request<Record<string, never>, ICardListResponse, void, ICardQuery>,
-    res: Response<ICardListResponse, ILocals>,
+    res: Response<IResponse<ICardListResponse>, ILocals>,
   ): Promise<void> {
     req.query = CardValidation.cardQuery(req.query);
 
-    const cards = await cardService.getCards({ ...req.query }, res.locals.currentUser);
-    const count = await cardService.getCount({ ...req.query }, res.locals.currentUser);
+    let user;
+    if (req.query?.userId) {
+      user = await User.findOne({
+        where: {
+          id: req.query.userId,
+        },
+      });
+      if (!user) {
+        throw HttpResponseError.createNotFoundError();
+      }
+    } else {
+      user = res.locals.currentUser;
+    }
+
+    if (!user) throw HttpResponseError.createNotFoundError();
+
+    const cards = await cardService.getCards({ ...req.query }, user);
+    const count = await cardService.getCount({ ...req.query }, user);
 
     const page = Number(req.query?.page) ?? 0;
 
     res.json({
-      cards,
-      pagination: {
-        total: count,
-        page,
-        totalPages: Math.ceil(count / 200),
-        resultPerPage: 200,
+      data: {
+        cards,
+        pagination: {
+          total: count,
+          page,
+          totalPages: Math.ceil(count / 200),
+          resultPerPage: 200,
+        },
       },
     });
   }

@@ -5,12 +5,15 @@ import "./style.scss";
 import StoreContext from "../../hook/contexts/StoreContext";
 import { useFetchData } from "../../hook/api/cards";
 import { Loader } from "../../components/UI/Loader/LoaderComponent";
-import { loggedApi } from "../../axios";
-import { CardRarityEnum } from "vokit_core";
-import { getFilterQuery } from "./CardManagerUtils";
+import {
+  getFilterQuery,
+  isUnloggedPage,
+  isUserConnected,
+} from "../../general.utils";
+import { useParams } from "react-router-dom";
 
 export const CardManager: React.FC = () => {
-  const { isLoading, fetch } = useFetchData();
+  const { isLoading, fetch } = useFetchData(isUnloggedPage());
 
   const {
     cardSetFilter,
@@ -28,6 +31,11 @@ export const CardManager: React.FC = () => {
     setTags,
   } = useContext(StoreContext);
 
+  let id: string | undefined = useParams().id;
+  if (!isUnloggedPage()) {
+    id = undefined;
+  }
+
   const fetchCards = useCallback(async () => {
     if (!cardSetFilter) return;
     const params = getFilterQuery(
@@ -37,11 +45,12 @@ export const CardManager: React.FC = () => {
       page,
       rarityFilter,
       possessionFilter,
-      order
+      order,
+      id ?? null
     );
     const response = await fetch("/card/list", params);
-    setCards(response.cards);
-    setPagination(response.pagination);
+    setCards(response.data.cards);
+    setPagination(response.data.pagination);
   }, [
     cardSetFilter,
     nameFilter,
@@ -61,6 +70,7 @@ export const CardManager: React.FC = () => {
     order,
     rarityFilter,
     page,
+    id,
   ]);
 
   useEffect(() => {
@@ -74,8 +84,10 @@ export const CardManager: React.FC = () => {
   ]);
 
   const fetchTags = useCallback(async () => {
-    const response = await loggedApi.get(`/tag`);
-    setTags(response.data.data.tags);
+    const response = await fetch(`/tag`, {
+      ...(id ? { userId: id } : {}),
+    });
+    setTags(response.data.tags);
   }, []);
 
   useEffect(() => {

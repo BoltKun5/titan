@@ -33,6 +33,7 @@ export default React.createContext<StoreType>({
     role: 0,
     shownName: "",
   },
+  setUser: () => {},
   notifications: [],
   setNotifications: () => {},
   tags: null,

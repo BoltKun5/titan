@@ -1,8 +1,7 @@
-import {
-  ICardSetFilter,
-  ICardRarityFilter,
-} from "./../../local-core/interface";
+import { useContext } from "react";
+import { ICardSetFilter, ICardRarityFilter } from "./local-core/interface";
 import { CardRarityEnum, ICard, ICardSet } from "vokit_core";
+import StoreContext from "./hook/contexts/StoreContext";
 
 export const initialRarityFilter = [
   {
@@ -100,7 +99,7 @@ export const getImageSource = (
   const isValid = !isNaN(Number(card.localId));
   if (isValid)
     return (
-      "src/assets/cards/" +
+      "/src/assets/cards/" +
       card.cardSet.code +
       "/" +
       card.localId +
@@ -108,7 +107,7 @@ export const getImageSource = (
       ".jpg"
     );
   return (
-    "src/assets/cards/" +
+    "/src/assets/cards/" +
     card.cardSet.code +
     "/" +
     card.localId +
@@ -123,8 +122,8 @@ export const getImageFromSeparatedInfos = (
 ): string => {
   const isValid = !isNaN(Number(card.localId));
   if (isValid)
-    return "src/assets/cards/" + cardSet.code + "/" + card.localId + ".jpg";
-  return "src/assets/cards/" + cardSet.code + "/" + card.localId + ".jpg";
+    return "/src/assets/cards/" + cardSet.code + "/" + card.localId + ".jpg";
+  return "/src/assets/cards/" + cardSet.code + "/" + card.localId + ".jpg";
 };
 
 export const getFilterQuery = (
@@ -133,8 +132,15 @@ export const getFilterQuery = (
   nameFilter: string,
   page: number,
   rarityFilter: ICardRarityFilter[],
-  possessionFilter: "owned" | "unowned" | null,
-  order: string = ""
+  possessionFilter:
+    | "partial_owned"
+    | "partial_unowned"
+    | "fully_owned"
+    | "multiple_owned"
+    | "unowned"
+    | null,
+  order: string = "",
+  forcedId: string | null = null
 ) => {
   const setFilter = cardSetFilter.filter((setFilter) => setFilter.status);
   const params: Record<string, any> = {};
@@ -179,5 +185,17 @@ export const getFilterQuery = (
 
   if (isStats) params.stats = true;
 
+  if (forcedId) params.userId = forcedId;
+
   return params;
+};
+
+export const isUserConnected = () => {
+  const { user } = useContext(StoreContext);
+  return user.id !== "";
+};
+
+export const isUnloggedPage = () => {
+  const unloggedPaged = ["collection"];
+  return unloggedPaged.includes(window.location.pathname.split("/")[1]);
 };

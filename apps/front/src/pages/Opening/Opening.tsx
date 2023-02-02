@@ -4,15 +4,16 @@ import {
   CardListElement,
   getImageSource,
   initialCardList,
-} from "../CardManager/CardManagerUtils";
+} from "../../general.utils";
 import { api, loggedApi } from "../../axios";
 import StoreContext from "../../hook/contexts/StoreContext";
 import { ButtonComponent } from "../../components/UI/Button/ButtonComponent";
 import { SwipeCheckboxComponent } from "../../components/UI/SwipeCheckboxComponent/SwipeCheckboxComponent";
-import { Done } from "@mui/icons-material";
+import { Close, Done } from "@mui/icons-material";
 import { useFetchData } from "../../hook/api/cards";
 import { CardAdditionalPrintingTypeEnum, ICard, ICardSerie } from "vokit_core";
 import { ICardAdditionalPrinting } from "vokit_core/src/types/interface/models/card-additional-printing.model";
+import useWindowDimensions from "../../hook/utils/useWindowDimensions";
 
 export const Opening: React.FC = () => {
   const { series } = useContext(StoreContext);
@@ -31,6 +32,9 @@ export const Opening: React.FC = () => {
   const [cardType, setCardType] = useState<"normal" | "reverse">("normal");
   const [possibleCards, setPossibleCards] = useState<ICard[]>([]);
   const [setList, setSetList] = useState<LocalCardSet[]>([]);
+  const [isDescMobileOpen, setIsDescMobileOpen] = useState(false);
+
+  const { width } = useWindowDimensions();
 
   const { fetch } = useFetchData();
 
@@ -101,7 +105,7 @@ export const Opening: React.FC = () => {
       order: "default",
       page: -1,
     }).then((response) => {
-      setPossibleCards(response.cards);
+      setPossibleCards(response.data.cards);
     });
   }, [cardSet]);
 
@@ -225,15 +229,36 @@ export const Opening: React.FC = () => {
 
   return (
     <div className={"OpeningPage " + "step" + step}>
-      <div className="OpeningPage-description coloredCorner">
-        <h1>Ouvrir un booster</h1>
-        <span>
-          Paragraphe de description de l'outil. Lorem ipsum, dolor sit amet
-          consectetur adipisicing elit. Provident mollitia incidunt asperiores
-          omnis quos quod, et odio obcaecati. Eos veniam molestiae nam neque
-          quis repellendus provident voluptas temporibus possimus officiis.
-        </span>
-      </div>
+      {width < 955 && (
+        <div className="OpeningPage-mobileDescButton">
+          <div onClick={() => setIsDescMobileOpen(true)}>
+            <ButtonComponent label={"Description"} />
+          </div>
+        </div>
+      )}
+      {(width > 955 || isDescMobileOpen) && (
+        <div className="OpeningPage-description coloredCorner">
+          {width < 955 && (
+            <div
+              className="OpeningPage-closeDesc"
+              onClick={() => setIsDescMobileOpen(false)}
+            >
+              <Close />
+            </div>
+          )}
+          <h1>Ouvrir un booster</h1>
+          <span>
+            Ajoutez rapidement des cartes à votre collection en indiquant le
+            contenu de vos boosters. À l'avenir, cela vous permettra également
+            de faire des statistiques sur vos boosters. Entrez l'ID de vos
+            cartes une par une (exemple : TG31 ou 012) puis appuyer une fois sur
+            Entrer pour afficher la carte en question et une nouvelle fois pour
+            valider à la prochaine. Vous pouvez aussi faire un clique gauche sur
+            la bonne carte dans la liste pour l'ajouter, ou un clique droit pour
+            l'ajouter en version reverse (rester appuyer sur téléphone).
+          </span>
+        </div>
+      )}
       <div className="OpeningPage-swippingArea">
         {step === 1 && (
           <div className="OpeningPage-swippingContent coloredCorner">
@@ -245,6 +270,7 @@ export const Opening: React.FC = () => {
                     className="OpeningPage-setChoiceInput"
                     type={"text"}
                     value={cardSetSearch}
+                    placeholder="Nom de set"
                     onChange={(ev) => handleChange(ev)}
                   />
                 </div>
@@ -311,6 +337,7 @@ export const Opening: React.FC = () => {
                   <input
                     type={"text"}
                     value={cardLocalId}
+                    placeholder="ID de carte"
                     onChange={(ev) => {
                       setCardLocalId(ev.currentTarget.value);
                       setIsPrevalidated(false);
@@ -468,7 +495,7 @@ export const Opening: React.FC = () => {
                   <div
                     className={
                       "OpeningPage-addedCard " +
-                      (value.type === "reverse" ? "reverse" : "")
+                      (value.type === "reverse" ? "reverseShining" : "")
                     }
                   >
                     <img src={getImageSource(value.card as ICard)} />

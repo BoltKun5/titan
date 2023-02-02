@@ -4,7 +4,7 @@
   width: calc(100% - 2px);
   height: calc(100% - 2px);
   background: rgba(0, 0, 0, 0.7);
-  z-index: 100000;
+  z-index: 1;
   display: flex;
   margin-top: 1px;
   clip-path: clipPath(30px);
@@ -69,6 +69,47 @@
 
       &-buttons {
         justify-content: center;
+      }
+    }
+  }
+}
+
+@media (max-width: 1100px) {
+  .MassInput {
+    &-name {
+      margin: 0;
+    }
+
+    &-image {
+      width: 100px;
+    }
+
+    &-override {
+      .CardCounter {
+
+        &-name {
+          margin: 0;
+          font-size: 15px;
+        }
+
+        &-plus,
+        &-minus {
+          width: 35px;
+          height: 35px;
+        }
+
+
+        &-input,
+        &-input:active,
+        &-input:focus {
+          width: 70px;
+          font-weight: bold;
+          font-size: 20px;
+        }
+
+        &-buttons {
+          justify-content: center;
+        }
       }
     }
   }

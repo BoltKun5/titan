@@ -10,10 +10,10 @@ import React, {
 import { SingleCardOverlayComponent } from "../SingleCardOverlayComponent/SingleCardOverlayComponent";
 import "./style.scss";
 import { CardModal } from "../CardModalComponent/CardModal";
-import { getImageSource } from "../../pages/CardManager/CardManagerUtils";
 import StoreContext from "../../hook/contexts/StoreContext";
 import { ICard } from "vokit_core";
 import { SingleCardComponentPropsType } from "../../local-core";
+import { getImageSource } from "../../general.utils";
 
 export const SingleCardComponent: React.FC<SingleCardComponentPropsType> = ({
   card,
@@ -31,7 +31,7 @@ export const SingleCardComponent: React.FC<SingleCardComponentPropsType> = ({
   const handleMissingImage = (
     error: SyntheticEvent<HTMLImageElement, Event>
   ) => {
-    error.currentTarget.src = "src/assets/default_card_img.png";
+    error.currentTarget.src = "/src/assets/default_card_img.png";
     setIsMissingImage(true);
   };
 

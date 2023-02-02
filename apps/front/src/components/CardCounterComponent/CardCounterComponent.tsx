@@ -15,6 +15,7 @@ import {
   ISimpleDeletePossessionResponse,
 } from "vokit_core";
 import { CardCounterComponentPropsType } from "../../local-core";
+import { isUnloggedPage } from "../../general.utils";
 
 export const CardCounterComponent: React.FC<CardCounterComponentPropsType> = ({
   card,
@@ -113,7 +114,7 @@ export const CardCounterComponent: React.FC<CardCounterComponentPropsType> = ({
       console.log(e.response.data.error.code);
       if (e.response.data.error.code === "UNDELETABLE_POSSESSIONS") {
         enqueueSnackbar(
-          "Vos cartes ont des informations sauvegardées. Pour les supprimer, ouvrez le gestionnaire de la carte."
+          "Toutes vos cartes ont des informations sauvegardées. Pour les supprimer, ouvrez le gestionnaire de la carte."
         );
         setIsDisabled(false);
       }
@@ -250,13 +251,15 @@ export const CardCounterComponent: React.FC<CardCounterComponentPropsType> = ({
     <div className={"CardCounter"}>
       <div className="CardCounter-name">{label}</div>
       <div className="CardCounter-buttons">
-        <button
-          className="CardCounter-minus"
-          disabled={isDisabled}
-          onClick={() => deletePossession(card, type)}
-        >
-          -
-        </button>
+        {!isUnloggedPage() && (
+          <button
+            className="CardCounter-minus"
+            disabled={isDisabled}
+            onClick={() => deletePossession(card, type)}
+          >
+            -
+          </button>
+        )}
         <div className="CardCounter-inputContainer">
           <input
             className="CardCounter-input"
@@ -268,13 +271,15 @@ export const CardCounterComponent: React.FC<CardCounterComponentPropsType> = ({
             onChange={(ev) => changeHandler(ev.currentTarget)}
           />
         </div>
-        <button
-          className="CardCounter-plus"
-          disabled={isDisabled}
-          onClick={() => createPossession(card, type)}
-        >
-          +
-        </button>
+        {!isUnloggedPage() && (
+          <button
+            className="CardCounter-plus"
+            disabled={isDisabled}
+            onClick={() => createPossession(card, type)}
+          >
+            +
+          </button>
+        )}
         {changeNotificationValue !== 0 && changeNotificationValue && (
           <div
             className={

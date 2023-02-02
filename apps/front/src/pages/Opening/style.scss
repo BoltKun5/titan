@@ -16,7 +16,12 @@
     align-items: center;
     flex: 0 0 auto;
 
-    & h1,
+    & h1 {
+      width: 300px;
+      margin-right: auto;
+      margin-left: 20px;
+    }
+
     & span {
       width: calc(100% - 40px);
     }
@@ -184,6 +189,7 @@
       display: flex;
       height: 100%;
       width: fit-content;
+      min-height: 600px;
     }
 
     &-features {
@@ -315,11 +321,10 @@
     background-color: $primary-bg;
 
     &Container {
-      height: calc(100% - 120px);
+      height: 500px;
       margin-top: 20px;
       overflow-y: auto;
       margin-left: 20px;
-      padding-bottom: 4px;
     }
   }
 
@@ -375,9 +380,49 @@
   &-addedCard {
     width: calc(10% - 10px);
     margin: auto;
+    aspect-ratio: 116/160;
 
     & img {
       width: 100%;
+    }
+  }
+
+  &-mobileDescButton {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 20px 0;
+  }
+
+  &-closeDesc {
+    position: absolute;
+    right: 10px;
+    top: 10px;
+    cursor: pointer;
+  }
+
+  &.step2 {
+    overflow: auto;
+
+    .OpeningPage-swippingArea {
+      min-height: auto;
+      overflow: initial;
+      margin-bottom: 10px;
+    }
+  }
+
+  &-swippingContent.swipping2 {
+    overflow: auto;
+    height: auto;
+  }
+
+  &.step3 {
+    overflow: auto;
+
+    .OpeningPage-swippingArea {
+      min-height: auto;
+      overflow: initial;
     }
   }
 }
@@ -400,15 +445,17 @@
       &-swippingContent.swipping2 {
         flex-direction: column;
         align-items: center;
-        overflow: auto;
-        height: auto;
         width: 100%;
       }
 
       &-description {
         position: absolute !important;
-        left: 20px;
-        display: none;
+        left: 0px;
+        // display: none;
+        z-index: 10;
+        top: 56px;
+        width: 100%;
+        height: calc(100vh - 76px);
       }
 
       &-boosterCards {
@@ -425,7 +472,7 @@
         &Container {
           margin: 20px auto 10px;
           padding: 1px 0;
-          max-height: 300px;
+          max-height: 35vh;
         }
       }
 
@@ -439,8 +486,7 @@
         height: auto;
 
         &Input {
-          margin-top: 20px;
-
+          height: 600px;
         }
 
         &Others {
@@ -496,6 +542,39 @@
             }
           }
         }
+      }
+    }
+  }
+
+  .step2 {
+    overflow: auto;
+
+    & .OpeningPage-swippingArea {
+      flex: none
+    }
+  }
+
+  .OpeningPage {
+    &-set {
+      width: 220px;
+      font-size: 13px;
+    }
+
+    &-setList {
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      margin-top: 5px;
+    }
+
+    &-description {
+      font-size: 13px;
+    }
+
+    &-flex {
+      flex-wrap: wrap;
+
+      & span {
+        margin-left: 20px;
+        margin-top: 10px;
       }
     }
   }

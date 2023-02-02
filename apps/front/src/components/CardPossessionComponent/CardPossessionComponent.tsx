@@ -12,6 +12,7 @@ import {
   IUserCardPossession,
 } from "vokit_core";
 import { CardPossessionComponentPropsType } from "../../local-core";
+import { isUnloggedPage } from "../../general.utils";
 
 export const CardPossessionComponent: React.FC<CardPossessionComponentPropsType> =
   ({ card, possession, update, delete: destroy, canSave, save, index }) => {
@@ -46,6 +47,15 @@ export const CardPossessionComponent: React.FC<CardPossessionComponentPropsType>
             <select
               value={possession?.condition ?? undefined}
               onChange={(ev) => handleUpdate("condition", ev.target.value)}
+              style={
+                isUnloggedPage()
+                  ? {
+                      MozAppearance: "none",
+                      WebkitAppearance: "none",
+                      pointerEvents: "none",
+                    }
+                  : {}
+              }
             >
               <option value={""}>-</option>
               {Object.entries(cardCondition)
@@ -65,6 +75,15 @@ export const CardPossessionComponent: React.FC<CardPossessionComponentPropsType>
             <select
               value={possession?.grade ?? undefined}
               onChange={(ev) => handleUpdate("grade", ev.target.value)}
+              style={
+                isUnloggedPage()
+                  ? {
+                      MozAppearance: "none",
+                      WebkitAppearance: "none",
+                      pointerEvents: "none",
+                    }
+                  : {}
+              }
             >
               <option value={""}>-</option>
               {Object.entries(gradeCompany)
@@ -81,6 +100,15 @@ export const CardPossessionComponent: React.FC<CardPossessionComponentPropsType>
             <select
               value={possession?.printingId ?? undefined}
               onChange={(ev) => handleUpdate("printingId", ev.target.value)}
+              style={
+                isUnloggedPage()
+                  ? {
+                      MozAppearance: "none",
+                      WebkitAppearance: "none",
+                      pointerEvents: "none",
+                    }
+                  : {}
+              }
             >
               <option value={""}>Classique</option>
               {card.cardAdditionalPrinting.map((print, index) => (
@@ -95,6 +123,15 @@ export const CardPossessionComponent: React.FC<CardPossessionComponentPropsType>
             <select
               value={possession?.language ?? undefined}
               onChange={(ev) => handleUpdate("language", ev.target.value)}
+              style={
+                isUnloggedPage()
+                  ? {
+                      MozAppearance: "none",
+                      WebkitAppearance: "none",
+                      pointerEvents: "none",
+                    }
+                  : {}
+              }
             >
               <option value={""}>-</option>
               {Object.entries(languages)
@@ -106,7 +143,16 @@ export const CardPossessionComponent: React.FC<CardPossessionComponentPropsType>
                 ))}
             </select>
           </div>
-          <div className="CardPossession-selectContainer">
+          <div
+            className="CardPossession-selectContainer labels"
+            style={
+              isUnloggedPage()
+                ? {
+                    pointerEvents: "none",
+                  }
+                : {}
+            }
+          >
             <label>Labels</label>
             <CardPossessionTagSelection
               cardPossession={possession}
@@ -135,28 +181,30 @@ export const CardPossessionComponent: React.FC<CardPossessionComponentPropsType>
                 color={isNoteOpened ? "green" : "primary"}
               />
             </div>
-            <ClickAwayListener
-              onClickAway={() => {
-                if (handleDelete) setHandleDelete(false);
-              }}
-            >
-              <div
-                onClick={() => {
-                  if (!handleDelete) setHandleDelete(true);
-                  else {
-                    destroy(possession.id);
-                    setHandleDelete(false);
-                  }
+            {!isUnloggedPage() && (
+              <ClickAwayListener
+                onClickAway={() => {
+                  if (handleDelete) setHandleDelete(false);
                 }}
               >
-                <ButtonComponent
-                  label={<Delete />}
-                  height={50}
-                  size={50}
-                  color={handleDelete ? "red" : "primary"}
-                />
-              </div>
-            </ClickAwayListener>
+                <div
+                  onClick={() => {
+                    if (!handleDelete) setHandleDelete(true);
+                    else {
+                      destroy(possession.id);
+                      setHandleDelete(false);
+                    }
+                  }}
+                >
+                  <ButtonComponent
+                    label={<Delete />}
+                    height={50}
+                    size={50}
+                    color={handleDelete ? "red" : "primary"}
+                  />
+                </div>
+              </ClickAwayListener>
+            )}
             <div
               onClick={() => {
                 if (canSave) {
@@ -164,12 +212,14 @@ export const CardPossessionComponent: React.FC<CardPossessionComponentPropsType>
                 }
               }}
             >
-              <ButtonComponent
-                label={<Save />}
-                height={50}
-                size={50}
-                disabled={!canSave}
-              />
+              {!isUnloggedPage() && (
+                <ButtonComponent
+                  label={<Save />}
+                  height={50}
+                  size={50}
+                  disabled={!canSave}
+                />
+              )}
             </div>
           </div>
         </div>
@@ -182,6 +232,7 @@ export const CardPossessionComponent: React.FC<CardPossessionComponentPropsType>
         >
           <div className="CardPossession-textareaContainer">
             <textarea
+              readOnly={isUnloggedPage()}
               value={possession.note ?? ""}
               onChange={(ev) => {
                 let localPossession = { ...possession };

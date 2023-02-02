@@ -71,6 +71,10 @@
     align-items: center;
     box-sizing: border-box;
 
+    &.labels {
+      flex: 1 1 auto;
+    }
+
     &>* {
       z-index: 1;
     }
@@ -162,6 +166,7 @@
     }
 
     &-selectContainer {
+      flex: none !important;
 
       &:nth-child(1),
       &:nth-child(2),

@@ -59,6 +59,7 @@ export type StoreType = {
   pagination: PaginationData | null;
   setPagination: React.Dispatch<React.SetStateAction<any>>;
   user: Partial<IUser>;
+  setUser: React.Dispatch<React.SetStateAction<Partial<IUser>>>;
   notifications: INotificationElement[];
   setNotifications: React.Dispatch<
     React.SetStateAction<INotificationElement[]>

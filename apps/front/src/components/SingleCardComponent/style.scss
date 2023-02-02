@@ -127,3 +127,17 @@
 
   }
 }
+
+@media (max-width: 1100px) {
+  .SingleCard {
+    height: 430px;
+
+    &-imgContainer {
+      width: 180px;
+    }
+
+    &Overlay {
+      width: 190px;
+    }
+  }
+}

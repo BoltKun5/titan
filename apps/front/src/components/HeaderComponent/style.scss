@@ -164,6 +164,8 @@
     border: 1px solid $primary-border;
     border-top: 1px solid $primary-bg;
     transform: translateY(-1px);
+    justify-content: center;
+    display: flex;
 
     &:hover {
       color: $primary;
@@ -181,6 +183,34 @@
 
     & svg {
       cursor: pointer;
+    }
+  }
+
+  &-disconnectedHeader {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    color: $white;
+    align-items: center;
+  }
+
+  &-fullLogo {
+    height: 100%;
+    width: auto;
+
+    & img {
+      height: 100%;
+      width: auto;
+    }
+  }
+
+  &-loginLinks {
+    margin-left: auto;
+    margin-right: 20px;
+    padding-left: 20px;
+
+    & a {
+      color: $primary;
     }
   }
 }
@@ -231,5 +261,11 @@
     &-burgerIcon {
       display: flex;
     }
+  }
+}
+
+@media (max-width: 400px) {
+  .HeaderComponent-loginLinks {
+    font-size: 15px;
   }
 }

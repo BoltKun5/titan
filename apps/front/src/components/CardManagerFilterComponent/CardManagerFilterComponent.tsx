@@ -7,7 +7,7 @@ import React, {
 import { ClickAwayListener, Tooltip } from "@mui/material";
 import { CategorizedAutocompleteChecklist } from "../CategorizedAutocompleteChecklist/CategorizedAutocompleteChecklist";
 import "./style.scss";
-import { frontRarity } from "../../pages/CardManager/CardManagerUtils";
+import { frontRarity, isUnloggedPage } from "../../general.utils";
 import FilterAltIcon from "@mui/icons-material/FilterAlt";
 import { TextInputComponent } from "../UI/TextInputComponent/TextInputComponent";
 import { ButtonComponent } from "../UI/Button/ButtonComponent";
@@ -257,7 +257,7 @@ export const CardManagerFilterComponent: React.FC<{
                     >
                       <img
                         className="CardManagerFilter-rarityImg"
-                        src={"./src/assets/icons/" + filter.rarity + ".png"}
+                        src={"/src/assets/icons/" + filter.rarity + ".png"}
                       />
                     </div>
                   </Tooltip>
@@ -287,10 +287,10 @@ export const CardManagerFilterComponent: React.FC<{
                   <option value={"fully_owned"}>
                     Toutes versions possédées
                   </option>
+                  <option value={"unowned"}>Aucune version possédée</option>
                   <option value={"multiple_owned"}>
                     Exemplaires multiples
                   </option>
-                  <option value={"unowned"}>Aucune version possédée</option>
                 </select>
               </div>
             </div>
@@ -319,6 +319,7 @@ export const CardManagerFilterComponent: React.FC<{
               </div>
               <div className="CardManagerFilter-paginationInputContainer">
                 <input
+                  disabled={isUnloggedPage()}
                   className="CardManagerFilter-paginationInput"
                   onBlur={(ev) => setPageValue(ev.currentTarget)}
                   onClick={(ev) => ev.currentTarget.select()}
@@ -359,12 +360,14 @@ export const CardManagerFilterComponent: React.FC<{
             {<FilterAltIcon />}
           </div>
           <div className="CardManagerFilter-options">
-            <div
-              className="CardManagerFilter-openOptions"
-              onClick={() => setIsOptionOpen(!isOptionOpen)}
-            >
-              <Settings />
-            </div>
+            {!isUnloggedPage() && (
+              <div
+                className="CardManagerFilter-openOptions"
+                onClick={() => setIsOptionOpen(!isOptionOpen)}
+              >
+                <Settings />
+              </div>
+            )}
             {isOptionOpen && (
               <ClickAwayListener onClickAway={() => setIsOptionOpen(false)}>
                 <div className="CardManagerFilter-optionsModale">

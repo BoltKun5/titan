@@ -9,9 +9,10 @@ import "./style.scss";
 import { CardCounterComponent } from "../CardCounterComponent/CardCounterComponent";
 import { ClickAwayListener } from "@mui/material";
 import { ButtonComponent } from "../UI/Button/ButtonComponent";
-import { getImageSource } from "../../pages/CardManager/CardManagerUtils";
+import { getImageSource } from "../../general.utils";
 import StoreContext from "../../hook/contexts/StoreContext";
 import { ICard } from "vokit_core";
+import useWindowDimensions from "../../hook/utils/useWindowDimensions";
 
 export const MassInputComponent: React.FC<{}> = () => {
   const { cards, setMassInput, massInput } = useContext(StoreContext);
@@ -20,6 +21,8 @@ export const MassInputComponent: React.FC<{}> = () => {
   const [currentType, setCurrentType] = useState<"classic" | "reverse">(
     "classic"
   );
+
+  const { width } = useWindowDimensions();
 
   const firstInput = useRef<HTMLInputElement>(null);
   const secondInput = useRef<HTMLInputElement>(null);
@@ -110,7 +113,7 @@ export const MassInputComponent: React.FC<{}> = () => {
               <ButtonComponent
                 label={"Carte suivante"}
                 size={160}
-                height={40}
+                height={width > 1100 ? 40 : 30}
               />
             </div>
           </div>

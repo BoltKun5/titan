@@ -29,7 +29,7 @@ export class UserCardPossessionService extends EntityService<
       return option;
     });
     await UserCardPossession.bulkCreate(values, {
-      updateOnDuplicate: ['condition', 'grade', 'printingId'],
+      updateOnDuplicate: ['condition', 'grade', 'printingId', 'language', 'note'],
     });
 
     if (options?.createdTags && options.createdTags.length > 0)

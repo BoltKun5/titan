@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import axios from "axios";
 import Joi from "joi";
 import { Link, useNavigate } from "react-router-dom";
@@ -10,12 +10,14 @@ import {
   ISigninAuthResponse,
   HttpErrorCode,
 } from "vokit_core";
+import StoreContext from "../../hook/contexts/StoreContext";
 
 export const Login: React.FC = () => {
   const [errorMessage, setErrorMessage] = useState("");
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
+  const { user, setUser } = useContext(StoreContext);
 
   const handleSubmit = async (event: React.SyntheticEvent) => {
     event.preventDefault();
@@ -45,6 +47,7 @@ export const Login: React.FC = () => {
         });
       localStorage.setItem("token", response.data.data.token);
       localStorage.setItem("user", JSON.stringify(response.data.data.user));
+      setUser(response.data.data.user);
       navigate("/cards");
     } catch (e: any) {
       const errorCode = e.response?.data?.error?.code;
@@ -60,9 +63,9 @@ export const Login: React.FC = () => {
   };
 
   useEffect(() => {
-    const user = localStorage.getItem("user");
-    const token = localStorage.getItem("token");
-    if (user !== null && token !== null) {
+    const savedUser = localStorage.getItem("user");
+    const savedToken = localStorage.getItem("token");
+    if (user?.id !== "" && savedUser !== null && savedToken !== null) {
       navigate("/cards");
     }
   });

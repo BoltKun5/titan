@@ -4,7 +4,8 @@ import { ClickAwayListener, Tooltip } from "@mui/material";
 import {
   frontRarity,
   getImageSource,
-} from "../../pages/CardManager/CardManagerUtils";
+  isUnloggedPage,
+} from "../../general.utils";
 import StoreContext from "../../hook/contexts/StoreContext";
 import { Add, Close } from "@mui/icons-material";
 import { CardPossessionComponent } from "../CardPossessionComponent/CardPossessionComponent";
@@ -224,7 +225,7 @@ export const CardModal: React.FC<{ card: ICard; closeModal: () => void }> = ({
                     <Tooltip title={card.cardSet.name}>
                       <img
                         src={
-                          "./src/assets/setIcons/" + card.cardSet.code + ".png"
+                          "/src/assets/setIcons/" + card.cardSet.code + ".png"
                         }
                       />
                     </Tooltip>
@@ -234,7 +235,7 @@ export const CardModal: React.FC<{ card: ICard; closeModal: () => void }> = ({
                   <img
                     className="CardModal-rarityImg"
                     src={
-                      "./src/assets/icons/" +
+                      "/src/assets/icons/" +
                       CardRarityEnum[card.rarity] +
                       ".png"
                     }
@@ -256,27 +257,31 @@ export const CardModal: React.FC<{ card: ICard; closeModal: () => void }> = ({
                   Exemplaires possédés
                 </div>
                 <div onClick={() => savePossession()}>
-                  <ButtonComponent
-                    label={"Enregistrer"}
-                    disabled={
-                      JSON.stringify(localCardPossession) ===
-                      JSON.stringify(card.userCardPossessions)
-                    }
-                    height={40}
-                    size={180}
-                  />
+                  {!isUnloggedPage && (
+                    <ButtonComponent
+                      label={"Enregistrer"}
+                      disabled={
+                        JSON.stringify(localCardPossession) ===
+                        JSON.stringify(card.userCardPossessions)
+                      }
+                      height={40}
+                      size={180}
+                    />
+                  )}
                 </div>
               </div>
               <div className="CardModal-possessionList">
                 <div className="CardModal-tableContainer">
-                  <div
-                    className="CardModal-createPossessionButton"
-                    onClick={() => createPossession()}
-                  >
-                    <span>
-                      Ajouter un exemplaire à la collection <Add />
-                    </span>
-                  </div>
+                  {!isUnloggedPage() && (
+                    <div
+                      className="CardModal-createPossessionButton"
+                      onClick={() => createPossession()}
+                    >
+                      <span>
+                        Ajouter un exemplaire à la collection <Add />
+                      </span>
+                    </div>
+                  )}
                   {localCardPossession.map((possession, index) => {
                     return (
                       <CardPossessionComponent
