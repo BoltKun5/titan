@@ -1,0 +1,58 @@
+.Card {
+    height: 350px;
+    display: flex;
+
+    & img {
+        border-radius: 10px;
+    }
+
+    &-inputs {
+        display: flex;
+        flex-wrap: wrap;
+        height: fit-content;
+        justify-content: center;
+        align-items: center;
+        width: fit-content;
+
+        &>* {
+            width: 300px;
+            margin: 3px !important;
+        }
+    }
+
+    &-add {
+        width: 910px;
+    }
+
+    &-add2 {
+        display: flex;
+        flex-wrap: wrap;
+        overflow: auto;
+
+        &>* {
+            width: 300px;
+            margin: 5px auto !important;
+        }
+    }
+
+    &-printings {
+        width: 200px;
+        background-color: rgb(247, 247, 247);
+        border-radius: 5px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding-left: 10px;
+        margin: 5px !important;
+
+        &:hover {
+            cursor: pointer;
+            background-color: aliceblue;
+        }
+    }
+}
+
+#spec>.MuiAccordionSummary-content {
+    display: flex;
+    align-items: center;
+}

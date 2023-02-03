@@ -14,3 +14,18 @@ export enum CardTypeEnum {
   FAIRY = 11,
   NONE = 12,
 }
+
+export enum CardTypeEnumFrench {
+  'Plante' = 1,
+  'Feu' = 2,
+  'Eau' = 3,
+  'Électrique' = 4,
+  'Combat' = 5,
+  'Psy' = 6,
+  'Incolore' = 7,
+  'Ténèbres' = 8,
+  'Acier' = 9,
+  'Dragon' = 10,
+  'Fée' = 11,
+  'Aucun' = 12,
+}

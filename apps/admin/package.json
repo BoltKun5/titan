@@ -1,0 +1,35 @@
+{
+  "name": "front",
+  "private": true,
+  "version": "0.0.0",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build"
+  },
+  "dependencies": {
+    "@emotion/react": "^11.9.0",
+    "@emotion/styled": "^11.8.1",
+    "@mui/icons-material": "^5.10.9",
+    "@mui/material": "^5.8.3",
+    "@tcgdex/sdk": "^2.4.6",
+    "axios": "^0.27.2",
+    "bootstrap": "^5.2.3",
+    "dayjs": "^1.11.5",
+    "dotenv": "^16.0.3",
+    "joi": "^17.6.0",
+    "notistack": "^2.0.8",
+    "react": "^18.0.0",
+    "react-dom": "^18.0.0",
+    "react-router-dom": "^6.3.0",
+    "recharts": "^2.1.13",
+    "sass": "^1.52.3",
+    "vokit_core": "workspace:*"
+  },
+  "devDependencies": {
+    "@types/react": "^18.0.0",
+    "@types/react-dom": "^18.0.0",
+    "@vitejs/plugin-react": "^1.3.0",
+    "typescript": "^4.6.3",
+    "vite": "^2.9.9"
+  }
+}

@@ -11,6 +11,7 @@ import {
   HttpErrorCode,
 } from "vokit_core";
 import StoreContext from "../../hook/contexts/StoreContext";
+import { api } from "../../axios";
 
 export const Login: React.FC = () => {
   const [errorMessage, setErrorMessage] = useState("");
@@ -41,10 +42,12 @@ export const Login: React.FC = () => {
     }
 
     try {
-      const response: { data: { data: ISigninAuthResponse } } =
-        await axios.post("https://localhost:10101/api/auth/signin", {
+      const response: { data: { data: ISigninAuthResponse } } = await api.post(
+        "/auth/signin",
+        {
           ...result.value,
-        });
+        }
+      );
       localStorage.setItem("token", response.data.data.token);
       localStorage.setItem("user", JSON.stringify(response.data.data.user));
       setUser(response.data.data.user);

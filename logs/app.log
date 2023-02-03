@@ -7701,3 +7701,132 @@
 {"content":"Abyss authentication configured","date":"2023-02-01T19:56:48.883Z","level":"debug","type":100}
 {"content":"Server listening on port: 10101","date":"2023-02-01T19:56:48.891Z","level":"debug","type":4}
 {"content":"\n      ###############################################\n      \ud83d\udee1️      Server listening on port: 10101      \ud83d\udee1️\n      ###############################################","date":"2023-02-01T19:56:48.892Z","level":"debug","type":4}
+{"content":"DB loaded and connected!","date":"2023-02-02T12:46:30.260Z","level":"debug","type":4}
+{"content":"21 Routes loaded !","date":"2023-02-02T12:46:30.612Z","level":"debug","type":1}
+{"content":"Express loaded","date":"2023-02-02T12:46:30.637Z","level":"debug","type":4}
+{"content":"All Dependency Injector loaded","date":"2023-02-02T12:46:30.637Z","level":"debug","type":4}
+{"content":"Abyss authentication configured","date":"2023-02-02T12:46:30.640Z","level":"debug","type":100}
+{"content":"Server listening on port: 10101","date":"2023-02-02T12:46:30.648Z","level":"debug","type":4}
+{"content":"\n      ###############################################\n      \ud83d\udee1️      Server listening on port: 10101      \ud83d\udee1️\n      ###############################################","date":"2023-02-02T12:46:30.649Z","level":"debug","type":4}
+{"date":"2023-02-02T16:40:10.704Z","error":{"code":"UNDELETABLE_POSSESSIONS","message":"not enough deletable possessions could be found"},"level":"error","requestId":"557cd492-4e3a-4283-8353-16911bd5a92c","type":1}
+{"date":"2023-02-02T16:40:43.296Z","error":{"code":"UNDELETABLE_POSSESSIONS","message":"not enough deletable possessions could be found"},"level":"error","requestId":"de6393c3-3edb-4ee4-bb02-fe4e74dcf645","type":1}
+{"content":"DB loaded and connected!","date":"2023-02-03T09:40:54.969Z","level":"debug","type":4}
+{"content":"21 Routes loaded !","date":"2023-02-03T09:40:55.187Z","level":"debug","type":1}
+{"content":"Express loaded","date":"2023-02-03T09:40:55.200Z","level":"debug","type":4}
+{"content":"All Dependency Injector loaded","date":"2023-02-03T09:40:55.201Z","level":"debug","type":4}
+{"content":"Abyss authentication configured","date":"2023-02-03T09:40:55.203Z","level":"debug","type":100}
+{"content":"Server listening on port: 10101","date":"2023-02-03T09:40:55.210Z","level":"debug","type":4}
+{"content":"\n      ###############################################\n      \ud83d\udee1️      Server listening on port: 10101      \ud83d\udee1️\n      ###############################################","date":"2023-02-03T09:40:55.211Z","level":"debug","type":4}
+{"date":"2023-02-03T12:58:57.540Z","error":{"code":"BAD_VALUES","message":"submitted values are not valid"},"level":"error","requestId":"3ca2d5bd-c17f-4247-8510-44422c8e062a","type":1}
+{"date":"2023-02-03T12:58:59.387Z","error":{"code":"BAD_VALUES","message":"submitted values are not valid"},"level":"error","requestId":"c4f81702-4e65-4a12-a7b6-89fd4fe72a80","type":1}
+{"date":"2023-02-03T12:59:00.719Z","error":{"code":"BAD_VALUES","message":"submitted values are not valid"},"level":"error","requestId":"5318a5d6-d8cd-4967-9d89-4ab401194c5a","type":1}
+{"date":"2023-02-03T12:59:05.394Z","error":{"code":"BAD_VALUES","message":"submitted values are not valid"},"level":"error","requestId":"5ceca161-3adc-4f1d-b822-de872d7e9eda","type":1}
+{"date":"2023-02-03T12:59:09.191Z","error":{"code":"BAD_VALUES","message":"submitted values are not valid"},"level":"error","requestId":"30916cb4-e75a-4d87-b24b-eb4db4ffff89","type":1}
+{"date":"2023-02-03T12:59:12.353Z","error":{"code":"BAD_VALUES","message":"submitted values are not valid"},"level":"error","requestId":"3597ae0d-9e7e-44b0-8c02-333b2e381d3d","type":1}
+{"date":"2023-02-03T12:59:13.381Z","error":{"code":"BAD_VALUES","message":"submitted values are not valid"},"level":"error","requestId":"c059b2c5-11e1-4309-b558-422e1cc62004","type":1}
+{"date":"2023-02-03T12:59:23.900Z","error":{"code":"BAD_VALUES","message":"submitted values are not valid"},"level":"error","requestId":"3a2bf64e-8e52-43ae-871e-3ecf882f8b0f","type":1}
+{"date":"2023-02-03T12:59:31.768Z","error":{"code":"BAD_VALUES","message":"submitted values are not valid"},"level":"error","requestId":"a4dedbdb-9b2c-40ac-8121-adba46b6389e","type":1}
+{"date":"2023-02-03T12:59:52.160Z","error":{"code":"BAD_VALUES","message":"submitted values are not valid"},"level":"error","requestId":"48bc4c7b-d598-41fe-9097-429a2e777fd0","type":1}
+{"date":"2023-02-03T13:00:03.207Z","error":{"code":"BAD_VALUES","message":"submitted values are not valid"},"level":"error","requestId":"effc4365-6769-4e25-8cb5-cd0c45536b8f","type":1}
+{"date":"2023-02-03T13:00:07.086Z","error":{"code":"BAD_VALUES","message":"submitted values are not valid"},"level":"error","requestId":"af228eb4-b26c-4ab2-b93c-d501afba0b83","type":1}
+{"date":"2023-02-03T13:00:11.004Z","error":{"code":"BAD_VALUES","message":"submitted values are not valid"},"level":"error","requestId":"a8b3bde4-fc29-4f9f-a796-0b84201ad360","type":1}
+{"date":"2023-02-03T13:00:24.810Z","error":{"code":"BAD_VALUES","message":"submitted values are not valid"},"level":"error","requestId":"ee3aaf30-9c77-4c46-8cb7-16055d6e7d0c","type":1}
+{"date":"2023-02-03T13:00:40.673Z","error":{"code":"BAD_VALUES","message":"submitted values are not valid"},"level":"error","requestId":"b1838262-5dc7-40e5-82f3-81572d8d10ab","type":1}
+{"content":"DB loaded and connected!","date":"2023-02-03T13:03:17.306Z","level":"debug","type":4}
+{"content":"21 Routes loaded !","date":"2023-02-03T13:03:17.331Z","level":"debug","type":1}
+{"content":"Express loaded","date":"2023-02-03T13:03:17.340Z","level":"debug","type":4}
+{"content":"All Dependency Injector loaded","date":"2023-02-03T13:03:17.340Z","level":"debug","type":4}
+{"content":"Abyss authentication configured","date":"2023-02-03T13:03:17.342Z","level":"debug","type":100}
+{"content":"Server listening on port: 10101","date":"2023-02-03T13:03:17.350Z","level":"debug","type":4}
+{"content":"\n      ###############################################\n      \ud83d\udee1️      Server listening on port: 10101      \ud83d\udee1️\n      ###############################################","date":"2023-02-03T13:03:17.351Z","level":"debug","type":4}
+{"content":"DB loaded and connected!","date":"2023-02-03T16:38:47.300Z","level":"debug","type":4}
+{"content":"21 Routes loaded !","date":"2023-02-03T16:38:47.326Z","level":"debug","type":1}
+{"content":"Express loaded","date":"2023-02-03T16:38:47.334Z","level":"debug","type":4}
+{"content":"All Dependency Injector loaded","date":"2023-02-03T16:38:47.334Z","level":"debug","type":4}
+{"content":"Abyss authentication configured","date":"2023-02-03T16:38:47.336Z","level":"debug","type":100}
+{"content":"Server listening on port: 10101","date":"2023-02-03T16:38:47.344Z","level":"debug","type":4}
+{"content":"\n      ###############################################\n      \ud83d\udee1️      Server listening on port: 10101      \ud83d\udee1️\n      ###############################################","date":"2023-02-03T16:38:47.344Z","level":"debug","type":4}
+{"content":"DB loaded and connected!","date":"2023-02-03T19:40:48.281Z","level":"debug","type":4}
+{"content":"21 Routes loaded !","date":"2023-02-03T19:40:48.307Z","level":"debug","type":1}
+{"content":"Express loaded","date":"2023-02-03T19:40:48.315Z","level":"debug","type":4}
+{"content":"All Dependency Injector loaded","date":"2023-02-03T19:40:48.316Z","level":"debug","type":4}
+{"content":"Abyss authentication configured","date":"2023-02-03T19:40:48.318Z","level":"debug","type":100}
+{"content":"Server listening on port: 10101","date":"2023-02-03T19:40:48.328Z","level":"debug","type":4}
+{"content":"\n      ###############################################\n      \ud83d\udee1️      Server listening on port: 10101      \ud83d\udee1️\n      ###############################################","date":"2023-02-03T19:40:48.329Z","level":"debug","type":4}
+{"content":"DB loaded and connected!","date":"2023-02-03T19:41:02.811Z","level":"debug","type":4}
+{"content":"21 Routes loaded !","date":"2023-02-03T19:41:02.836Z","level":"debug","type":1}
+{"content":"Express loaded","date":"2023-02-03T19:41:02.844Z","level":"debug","type":4}
+{"content":"All Dependency Injector loaded","date":"2023-02-03T19:41:02.844Z","level":"debug","type":4}
+{"content":"Abyss authentication configured","date":"2023-02-03T19:41:02.846Z","level":"debug","type":100}
+{"content":"Server listening on port: 10101","date":"2023-02-03T19:41:02.854Z","level":"debug","type":4}
+{"content":"\n      ###############################################\n      \ud83d\udee1️      Server listening on port: 10101      \ud83d\udee1️\n      ###############################################","date":"2023-02-03T19:41:02.855Z","level":"debug","type":4}
+{"content":"DB loaded and connected!","date":"2023-02-03T19:41:09.444Z","level":"debug","type":4}
+{"content":"21 Routes loaded !","date":"2023-02-03T19:41:09.468Z","level":"debug","type":1}
+{"content":"Express loaded","date":"2023-02-03T19:41:09.475Z","level":"debug","type":4}
+{"content":"All Dependency Injector loaded","date":"2023-02-03T19:41:09.476Z","level":"debug","type":4}
+{"content":"Abyss authentication configured","date":"2023-02-03T19:41:09.478Z","level":"debug","type":100}
+{"content":"Server listening on port: 10101","date":"2023-02-03T19:41:09.486Z","level":"debug","type":4}
+{"content":"\n      ###############################################\n      \ud83d\udee1️      Server listening on port: 10101      \ud83d\udee1️\n      ###############################################","date":"2023-02-03T19:41:09.487Z","level":"debug","type":4}
+{"content":"DB loaded and connected!","date":"2023-02-03T19:41:12.260Z","level":"debug","type":4}
+{"content":"21 Routes loaded !","date":"2023-02-03T19:41:12.285Z","level":"debug","type":1}
+{"content":"Express loaded","date":"2023-02-03T19:41:12.293Z","level":"debug","type":4}
+{"content":"All Dependency Injector loaded","date":"2023-02-03T19:41:12.294Z","level":"debug","type":4}
+{"content":"Abyss authentication configured","date":"2023-02-03T19:41:12.295Z","level":"debug","type":100}
+{"content":"Server listening on port: 10101","date":"2023-02-03T19:41:12.304Z","level":"debug","type":4}
+{"content":"\n      ###############################################\n      \ud83d\udee1️      Server listening on port: 10101      \ud83d\udee1️\n      ###############################################","date":"2023-02-03T19:41:12.305Z","level":"debug","type":4}
+{"content":"DB loaded and connected!","date":"2023-02-03T19:41:14.251Z","level":"debug","type":4}
+{"content":"21 Routes loaded !","date":"2023-02-03T19:41:14.275Z","level":"debug","type":1}
+{"content":"Express loaded","date":"2023-02-03T19:41:14.282Z","level":"debug","type":4}
+{"content":"All Dependency Injector loaded","date":"2023-02-03T19:41:14.282Z","level":"debug","type":4}
+{"content":"Abyss authentication configured","date":"2023-02-03T19:41:14.284Z","level":"debug","type":100}
+{"content":"Server listening on port: 10101","date":"2023-02-03T19:41:14.292Z","level":"debug","type":4}
+{"content":"\n      ###############################################\n      \ud83d\udee1️      Server listening on port: 10101      \ud83d\udee1️\n      ###############################################","date":"2023-02-03T19:41:14.293Z","level":"debug","type":4}
+{"content":"DB loaded and connected!","date":"2023-02-03T19:41:16.252Z","level":"debug","type":4}
+{"content":"21 Routes loaded !","date":"2023-02-03T19:41:16.277Z","level":"debug","type":1}
+{"content":"Express loaded","date":"2023-02-03T19:41:16.284Z","level":"debug","type":4}
+{"content":"All Dependency Injector loaded","date":"2023-02-03T19:41:16.285Z","level":"debug","type":4}
+{"content":"Abyss authentication configured","date":"2023-02-03T19:41:16.287Z","level":"debug","type":100}
+{"content":"Server listening on port: 10101","date":"2023-02-03T19:41:16.295Z","level":"debug","type":4}
+{"content":"\n      ###############################################\n      \ud83d\udee1️      Server listening on port: 10101      \ud83d\udee1️\n      ###############################################","date":"2023-02-03T19:41:16.295Z","level":"debug","type":4}
+{"content":"DB loaded and connected!","date":"2023-02-03T19:41:17.752Z","level":"debug","type":4}
+{"content":"21 Routes loaded !","date":"2023-02-03T19:41:17.776Z","level":"debug","type":1}
+{"content":"Express loaded","date":"2023-02-03T19:41:17.784Z","level":"debug","type":4}
+{"content":"All Dependency Injector loaded","date":"2023-02-03T19:41:17.785Z","level":"debug","type":4}
+{"content":"Abyss authentication configured","date":"2023-02-03T19:41:17.786Z","level":"debug","type":100}
+{"content":"Server listening on port: 10101","date":"2023-02-03T19:41:17.795Z","level":"debug","type":4}
+{"content":"\n      ###############################################\n      \ud83d\udee1️      Server listening on port: 10101      \ud83d\udee1️\n      ###############################################","date":"2023-02-03T19:41:17.796Z","level":"debug","type":4}
+{"content":"DB loaded and connected!","date":"2023-02-03T19:41:19.860Z","level":"debug","type":4}
+{"content":"21 Routes loaded !","date":"2023-02-03T19:41:19.888Z","level":"debug","type":1}
+{"content":"Express loaded","date":"2023-02-03T19:41:19.895Z","level":"debug","type":4}
+{"content":"All Dependency Injector loaded","date":"2023-02-03T19:41:19.896Z","level":"debug","type":4}
+{"content":"Abyss authentication configured","date":"2023-02-03T19:41:19.898Z","level":"debug","type":100}
+{"content":"Server listening on port: 10101","date":"2023-02-03T19:41:19.906Z","level":"debug","type":4}
+{"content":"\n      ###############################################\n      \ud83d\udee1️      Server listening on port: 10101      \ud83d\udee1️\n      ###############################################","date":"2023-02-03T19:41:19.907Z","level":"debug","type":4}
+{"content":"DB loaded and connected!","date":"2023-02-03T19:41:24.999Z","level":"debug","type":4}
+{"content":"21 Routes loaded !","date":"2023-02-03T19:41:25.024Z","level":"debug","type":1}
+{"content":"Express loaded","date":"2023-02-03T19:41:25.033Z","level":"debug","type":4}
+{"content":"All Dependency Injector loaded","date":"2023-02-03T19:41:25.034Z","level":"debug","type":4}
+{"content":"Abyss authentication configured","date":"2023-02-03T19:41:25.038Z","level":"debug","type":100}
+{"content":"Server listening on port: 10101","date":"2023-02-03T19:41:25.052Z","level":"debug","type":4}
+{"content":"\n      ###############################################\n      \ud83d\udee1️      Server listening on port: 10101      \ud83d\udee1️\n      ###############################################","date":"2023-02-03T19:41:25.053Z","level":"debug","type":4}
+{"content":"DB loaded and connected!","date":"2023-02-03T19:41:28.928Z","level":"debug","type":4}
+{"content":"21 Routes loaded !","date":"2023-02-03T19:41:28.952Z","level":"debug","type":1}
+{"content":"Express loaded","date":"2023-02-03T19:41:28.959Z","level":"debug","type":4}
+{"content":"All Dependency Injector loaded","date":"2023-02-03T19:41:28.959Z","level":"debug","type":4}
+{"content":"Abyss authentication configured","date":"2023-02-03T19:41:28.961Z","level":"debug","type":100}
+{"content":"Server listening on port: 10101","date":"2023-02-03T19:41:28.970Z","level":"debug","type":4}
+{"content":"\n      ###############################################\n      \ud83d\udee1️      Server listening on port: 10101      \ud83d\udee1️\n      ###############################################","date":"2023-02-03T19:41:28.971Z","level":"debug","type":4}
+{"content":"DB loaded and connected!","date":"2023-02-03T19:41:33.760Z","level":"debug","type":4}
+{"content":"21 Routes loaded !","date":"2023-02-03T19:41:33.786Z","level":"debug","type":1}
+{"content":"Express loaded","date":"2023-02-03T19:41:33.794Z","level":"debug","type":4}
+{"content":"All Dependency Injector loaded","date":"2023-02-03T19:41:33.794Z","level":"debug","type":4}
+{"content":"Abyss authentication configured","date":"2023-02-03T19:41:33.796Z","level":"debug","type":100}
+{"content":"Server listening on port: 10101","date":"2023-02-03T19:41:33.805Z","level":"debug","type":4}
+{"content":"\n      ###############################################\n      \ud83d\udee1️      Server listening on port: 10101      \ud83d\udee1️\n      ###############################################","date":"2023-02-03T19:41:33.805Z","level":"debug","type":4}
+{"content":"DB loaded and connected!","date":"2023-02-03T19:41:52.654Z","level":"debug","type":4}
+{"content":"21 Routes loaded !","date":"2023-02-03T19:41:52.677Z","level":"debug","type":1}
+{"content":"Express loaded","date":"2023-02-03T19:41:52.685Z","level":"debug","type":4}
+{"content":"All Dependency Injector loaded","date":"2023-02-03T19:41:52.685Z","level":"debug","type":4}
+{"content":"Abyss authentication configured","date":"2023-02-03T19:41:52.687Z","level":"debug","type":100}
+{"content":"Server listening on port: 10101","date":"2023-02-03T19:41:52.695Z","level":"debug","type":4}
+{"content":"\n      ###############################################\n      \ud83d\udee1️      Server listening on port: 10101      \ud83d\udee1️\n      ###############################################","date":"2023-02-03T19:41:52.695Z","level":"debug","type":4}

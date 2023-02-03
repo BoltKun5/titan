@@ -20,6 +20,7 @@ export class CardService extends EntityService<Card, ICard> {
 
   public async getCards(params: ICardQuery, user: IUser): Promise<ICard[]> {
     try {
+      console.log(this.getOptions(params, user));
       return await Card.findAll(this.getOptions(params, user));
     } catch (e: any) {
       console.log(e);

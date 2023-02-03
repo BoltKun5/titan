@@ -11,15 +11,7 @@ import {
   BelongsTo,
   HasMany,
 } from 'sequelize-typescript';
-import {
-  Overwrite,
-  ICard,
-  CardRarityEnum,
-  CardCategoryEnum,
-  CardEvolutionStageEnum,
-  CardTrainerTypeEnum,
-  CardEnergyTypeEnum,
-} from 'vokit_core';
+import { Overwrite, ICard, CardRarityEnum, CardCategoryEnum } from 'vokit_core';
 import { WithRequired } from '../../core';
 import { CustomModel } from '../custom/custom-model.model';
 import { CardAdditionalPrinting } from './card-additional-printing.model';
@@ -40,19 +32,7 @@ export type ModelCard = Overwrite<
 
 export type CreationModelCard = WithRequired<
   Partial<ICard>,
-  | 'name'
-  | 'rarity'
-  | 'category'
-  | 'setId'
-  | 'hp'
-  | 'evolveFrom'
-  | 'stage'
-  | 'types'
-  | 'trainerType'
-  | 'canBeReverse'
-  | 'isHolo'
-  | 'localId'
-  | 'energyType'
+  'name' | 'rarity' | 'category' | 'setId' | 'types' | 'canBeReverse' | 'localId'
 >;
 
 @DefaultScope(() => ({}))
@@ -88,28 +68,8 @@ export class Card extends CustomModel<ICard, CreationModelCard> implements Model
   @BelongsTo(() => CardSet)
   cardSet: CardSet;
 
-  @Column({
-    type: DataType.INTEGER,
-  })
-  hp: number;
-
-  @Column({
-    type: DataType.STRING,
-  })
-  evolveFrom: string;
-
-  @Column({
-    type: DataType.INTEGER,
-  })
-  stage: CardEvolutionStageEnum;
-
   @HasMany(() => CardType)
   types: CardType[];
-
-  @Column({
-    type: DataType.INTEGER,
-  })
-  trainerType: CardTrainerTypeEnum;
 
   @Column({
     type: DataType.BOOLEAN,
@@ -117,19 +77,9 @@ export class Card extends CustomModel<ICard, CreationModelCard> implements Model
   canBeReverse: boolean;
 
   @Column({
-    type: DataType.BOOLEAN,
-  })
-  isHolo: boolean;
-
-  @Column({
     type: DataType.STRING,
   })
   localId: string;
-
-  @Column({
-    type: DataType.INTEGER,
-  })
-  energyType: CardEnergyTypeEnum;
 
   @HasMany(() => UserCardPossession)
   userCardPossessions: UserCardPossession[];
