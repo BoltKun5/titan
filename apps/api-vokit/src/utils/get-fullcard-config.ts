@@ -1,27 +1,10 @@
-import {
-  CardAttack,
-  CardAttribute,
-  CardType,
-  CardAttackCost,
-  CardDamageModification,
-  CardDexId,
-  CardAbility,
-} from '../../database';
+import { CardType } from "../database";
+
 
 export const getFullCardsConfig = () => [
   {
     model: CardType,
     as: 'types',
-  },
-  {
-    model: CardAttack,
-    as: 'attacks',
-    include: [
-      {
-        model: CardAttackCost,
-        as: 'costs',
-      },
-    ],
   },
   {
     model: CardAbility,

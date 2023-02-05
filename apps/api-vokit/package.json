@@ -7,7 +7,8 @@
     "dev": "cross-env NODE_ENV=DEVELOPMENT ts-node-dev --respawn ./src/server.ts",
     "dev_setup": "cross-env NODE_ENV=DEVELOPMENT NEW_SETUP=enable ts-node-dev --respawn ./src/server.ts ",
     "tsc": "tsc",
-    "build": "webpack",
+    "start:prod": "cross-env NODE_ENV=PRODUCTION node ./dist/server.js",
+    "build": "tsc",
     "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",
     "lint:check": "eslint \"{src,apps,libs,test}/**/*.ts\" --max-warnings 0"
   },
@@ -63,6 +64,7 @@
     "winston": "^3.8.2"
   },
   "devDependencies": {
+    "vokit_core": "workspace:*",
     "@types/bcryptjs": "^2.4.2",
     "@types/body-parser": "^1.19.2",
     "@types/content-type": "^1.1.5",
@@ -84,7 +86,6 @@
     "@typescript-eslint/parser": "^4.27.0",
     "cross-env": "^7.0.3",
     "eslint": "^7.28.0",
-    "eslint-config-airbnb-base": "^14.2.1",
     "eslint-config-prettier": "^8.3.0",
     "eslint-config-standard": "^16.0.3",
     "eslint-plugin-filenames-simple": "^0.7.0",
@@ -95,6 +96,6 @@
     "prettier": "2.3.1",
     "sequelize-cli": "^6.2.0",
     "ts-node-dev": "2.0.0",
-    "typescript": "4.1.5"
+    "typescript": "4.5.4"
   }
 }
