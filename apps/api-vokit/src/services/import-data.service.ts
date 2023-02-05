@@ -2,9 +2,6 @@ import axios from 'axios';
 import {
   AdminConfigTypeEnum,
   CardCategoryEnum,
-  CardEvolutionStageEnum,
-  CardTrainerTypeEnum,
-  CardEnergyTypeEnum,
   CardAdditionalPrintingTypeEnum,
   CardAdditionalPrintingCreatorEnum,
 } from 'vokit_core';
@@ -15,13 +12,24 @@ import { CardAdditionalPrinting } from '../database/models/card-additional-print
 import { getLocalId } from '../utils/get-localid';
 import { getRarity } from '../utils/get-rarity';
 import { localCardType, getTypeEnum } from '../utils/get-type-enum-value';
-import fs from 'fs-extra';
 
 export class ImportDataService extends Service {
-  public async forceImport(): Promise<void> {
+  public async importData(setList: string[]): Promise<void> {
     const renames = await AdminConfig.findAll({
       where: { type: AdminConfigTypeEnum['DATA_IMPORT_SET_RENAME'] },
     });
+
+    try {
+      axios.post(process.env.ASSETS_SERVER_URL as string, {
+        ids: setList.map((e) => ({
+          id: e,
+          name: renames.find((rename) => rename.name === e)?.value ?? e,
+        })),
+      });
+    } catch (e) {
+      console.log(e);
+    }
+
     const series = (await axios.get('https://api.tcgdex.net/v2/fr/series')).data;
 
     for (const serie of series as Array<any>) {
@@ -44,19 +52,14 @@ export class ImportDataService extends Service {
       const sets = serieData.sets;
 
       for (const set of sets as Array<any>) {
+        if (!setList.includes(set.id)) continue;
         const setData: any = (await axios.get(`https://api.tcgdex.net/v2/fr/sets/${set.id}`)).data;
 
-        console.log(setData.name);
-
-        const realCode = renames.find((rename) => rename.name === setData.id)?.value;
-
-        console.log(realCode);
-
-        if (!realCode) continue;
+        const realCode = renames.find((rename) => rename.name === setData.id)?.value ?? setData.id;
 
         const [dbSet] = await CardSet.findOrCreate({
           where: {
-            code: realCode,
+            code: [realCode, setData.id],
           },
           defaults: {
             name: setData.name,
@@ -67,20 +70,11 @@ export class ImportDataService extends Service {
           },
         });
 
-        const cardsToIterate = setData.cards;
-
-        const URL = `${setData.symbol}`;
-        if (!fs.existsSync(`./img/setIcons/${realCode}.png`)) {
-          try {
-            const res = await axios.get(URL, {
-              responseType: 'arraybuffer',
-            });
-            if (!res.data) continue;
-            if (!fs.existsSync(`./img`)) fs.mkdirSync(`./img`);
-            if (!fs.existsSync(`./img/setIcons`)) fs.mkdirSync(`./img/setIcons`);
-            fs.writeFileSync(`./img/setIcons/${realCode}.png`, Buffer.from(res.data as any));
-          } catch (e) {}
+        if (dbSet.code !== realCode) {
+          await dbSet.update('code', realCode);
         }
+
+        const cardsToIterate = setData.cards;
 
         for (const card of cardsToIterate) {
           const localCard: any = (await axios.get(`https://api.tcgdex.net/v2/fr/cards/${card.id}`))
@@ -103,54 +97,18 @@ export class ImportDataService extends Service {
             ],
           });
 
-          if (dbCard) {
-            await dbCard.update({
-              name: localCard.name,
-              rarity: getRarity(localCard),
-              category:
-                CardCategoryEnum[localCard.category as keyof typeof CardCategoryEnum] ?? null,
-              hp: localCard.hp ?? null,
-              evolveFrom: localCard?.evolveFrom ?? null,
-              stage:
-                CardEvolutionStageEnum[localCard.stage as keyof typeof CardEvolutionStageEnum] ??
-                null,
-              types:
-                localCard.types?.map((el: localCardType) => {
-                  return { type: getTypeEnum(el) };
-                }) ?? [],
-              trainerType:
-                CardTrainerTypeEnum[localCard.trainerType as keyof typeof CardTrainerTypeEnum] ??
-                null,
-              canBeReverse: localCard.variants?.reverse ?? false,
-              isHolo: localCard.variants?.holo ?? false,
-              localId: getLocalId(localCard.localId),
-              energyType:
-                CardEnergyTypeEnum[localCard.energyType as keyof typeof CardEnergyTypeEnum] ?? null,
-              setId: dbSet.id,
-            });
-          } else {
+          if (!dbCard) {
             dbCard = await Card.create({
               name: localCard.name,
               rarity: getRarity(localCard),
               category:
                 CardCategoryEnum[localCard.category as keyof typeof CardCategoryEnum] ?? null,
-              hp: localCard.hp ?? null,
-              evolveFrom: localCard?.evolveFrom ?? null,
-              stage:
-                CardEvolutionStageEnum[localCard.stage as keyof typeof CardEvolutionStageEnum] ??
-                null,
               types:
                 localCard.types?.map((el: localCardType) => {
                   return { type: getTypeEnum(el) };
                 }) ?? [],
-              trainerType:
-                CardTrainerTypeEnum[localCard.trainerType as keyof typeof CardTrainerTypeEnum] ??
-                null,
               canBeReverse: localCard.variants?.reverse ?? false,
-              isHolo: localCard.variants?.holo ?? false,
               localId: getLocalId(localCard.localId),
-              energyType:
-                CardEnergyTypeEnum[localCard.energyType as keyof typeof CardEnergyTypeEnum] ?? null,
               setId: dbSet.id,
             });
           }
@@ -179,40 +137,6 @@ export class ImportDataService extends Service {
               });
             }
           }
-
-          // let URL = `${localCard.image}/low.jpg`;
-          // if (!fs.existsSync(`./img/cards/${realCode}/${getLocalId(localCard.localId)}.jpg`)) {
-          //   try {
-          //     const res = await axios.get(URL, {
-          //       responseType: 'arraybuffer',
-          //     });
-          //     if (!res.data) continue;
-          //     if (!fs.existsSync(`./img`)) fs.mkdirSync(`./img`);
-          //     if (!fs.existsSync(`./img/cards`)) fs.mkdirSync(`./img/cards`);
-          //     if (!fs.existsSync(`./img/cards/${realCode}`))
-          //       fs.mkdirSync(`./img/cards/${realCode}`);
-          //     fs.writeFileSync(
-          //       `./img/cards/${realCode}/${getLocalId(localCard.localId)}.jpg`,
-          //       Buffer.from(res.data as any),
-          //     );
-          //   } catch (e) {}
-          // }
-
-          // URL = `${localCard.image}/high.jpg`;
-          // if (!fs.existsSync(`./img/${realCode}/${getLocalId(localCard.localId)}-high.jpg`)) {
-          //   try {
-          //     const res = await axios.get(URL, {
-          //       responseType: 'arraybuffer',
-          //     });
-          //     if (!res.data) continue;
-          //     fs.writeFileSync(
-          //       `./img/cards/${realCode}/${getLocalId(localCard.localId)}-high.jpg`,
-          //       Buffer.from(res.data as any),
-          //     );
-          //   } catch (e) {
-          //     continue;
-          //   }
-          // }
         }
       }
     }
@@ -273,19 +197,6 @@ export class ImportDataService extends Service {
 
           const cardsToIterate = setData.cards;
 
-          const URL = `${setData.symbol}`;
-          if (!fs.existsSync(`./img/setIcons/${realCode}.png`)) {
-            try {
-              const res = await axios.get(URL, {
-                responseType: 'arraybuffer',
-              });
-              if (!res.data) continue;
-              if (!fs.existsSync(`./img`)) fs.mkdirSync(`./img`);
-              if (!fs.existsSync(`./img/setIcons`)) fs.mkdirSync(`./img/setIcons`);
-              fs.writeFileSync(`./img/setIcons/${realCode}.png`, Buffer.from(res.data as any));
-            } catch (e) {}
-          }
-
           for (const card of cardsToIterate) {
             const localCard: any = (
               await axios.get(`https://api.tcgdex.net/v2/fr/cards/${card.id}`)
@@ -314,24 +225,12 @@ export class ImportDataService extends Service {
                 rarity: getRarity(localCard),
                 category:
                   CardCategoryEnum[localCard.category as keyof typeof CardCategoryEnum] ?? null,
-                hp: localCard.hp ?? null,
-                evolveFrom: localCard?.evolveFrom ?? null,
-                stage:
-                  CardEvolutionStageEnum[localCard.stage as keyof typeof CardEvolutionStageEnum] ??
-                  null,
                 types:
                   localCard.types?.map((el: localCardType) => {
                     return { type: getTypeEnum(el) };
                   }) ?? [],
-                trainerType:
-                  CardTrainerTypeEnum[localCard.trainerType as keyof typeof CardTrainerTypeEnum] ??
-                  null,
                 canBeReverse: localCard.variants?.reverse ?? false,
-                isHolo: localCard.variants?.holo ?? false,
                 localId: getLocalId(localCard.localId),
-                energyType:
-                  CardEnergyTypeEnum[localCard.energyType as keyof typeof CardEnergyTypeEnum] ??
-                  null,
                 setId: dbSet.id,
               });
 
@@ -342,40 +241,6 @@ export class ImportDataService extends Service {
                   name: 'Reverse',
                   creator: CardAdditionalPrintingCreatorEnum.ADMIN,
                 });
-              }
-            }
-
-            let URL = `${localCard.image}/low.jpg`;
-            if (!fs.existsSync(`./img/cards/${realCode}/${getLocalId(localCard.localId)}.jpg`)) {
-              try {
-                const res = await axios.get(URL, {
-                  responseType: 'arraybuffer',
-                });
-                if (!res.data) continue;
-                if (!fs.existsSync(`./img`)) fs.mkdirSync(`./img`);
-                if (!fs.existsSync(`./img/cards`)) fs.mkdirSync(`./img/cards`);
-                if (!fs.existsSync(`./img/cards/${realCode}`))
-                  fs.mkdirSync(`./img/cards/${realCode}`);
-                fs.writeFileSync(
-                  `./img/cards/${realCode}/${getLocalId(localCard.localId)}.jpg`,
-                  Buffer.from(res.data as any),
-                );
-              } catch (e) {}
-            }
-
-            URL = `${localCard.image}/high.jpg`;
-            if (!fs.existsSync(`./img/${realCode}/${getLocalId(localCard.localId)}-high.jpg`)) {
-              try {
-                const res = await axios.get(URL, {
-                  responseType: 'arraybuffer',
-                });
-                if (!res.data) continue;
-                fs.writeFileSync(
-                  `./img/cards/${realCode}/${getLocalId(localCard.localId)}-high.jpg`,
-                  Buffer.from(res.data as any),
-                );
-              } catch (e) {
-                continue;
               }
             }
           }

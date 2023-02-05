@@ -28,9 +28,8 @@ export const Login: React.FC = () => {
         }
       );
       localStorage.setItem("token", response.data.data.token);
-      localStorage.setItem("user", JSON.stringify(response.data.data.user));
       setUser(response.data.data.user);
-      navigate("/cards");
+      navigate("/home");
     } catch (e: any) {
       console.log(e);
       const errorCode = e.response?.data?.error?.code;
@@ -46,9 +45,7 @@ export const Login: React.FC = () => {
   };
 
   useEffect(() => {
-    const savedUser = localStorage.getItem("user");
-    const savedToken = localStorage.getItem("token");
-    if (user?.id !== "" && savedUser !== null && savedToken !== null) {
+    if (user) {
       navigate("/home");
     }
   });

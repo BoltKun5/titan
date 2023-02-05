@@ -2,7 +2,6 @@ import React, { useCallback, useEffect, useState } from "react";
 import { Route, Routes, useNavigate } from "react-router-dom";
 import { Login } from "./pages/Login/Login";
 import { CardManager } from "./pages/CardManager/CardManager";
-import { AdminPage } from "./pages/AdminPage/AdminPage";
 import { HistoricPage } from "./pages/HistoricPage/HistoricPage";
 import { SignUp } from "./pages/SignUp/SignUp";
 import { Opening } from "./pages/Opening/Opening";
@@ -202,7 +201,6 @@ export const App: React.FC = () => {
                 <Route path="/cards" element={<CardManager />} />
                 <Route path="/opening" element={<Opening />} />
                 <Route path="/stats" element={<StatPage />} />
-                <Route path="/admin" element={<AdminPage />} />
                 <Route path="/historic" element={<HistoricPage />} />
                 <Route path="/signup" element={<SignUp />} />
                 <Route path="/collection/:id" element={<CardManager />} />

@@ -288,7 +288,12 @@ export const Opening: React.FC = () => {
                       setCardSet(set);
                     }}
                   >
-                    <img src={`src/assets/setIcons/${set.code}.png`} />
+                    <img
+                      src={
+                        import.meta.env.VITE_ASSETS_URL +
+                        `/setIcons/${set.code}.png`
+                      }
+                    />
                     <span>{set.name}</span>
                   </div>
                 ))}

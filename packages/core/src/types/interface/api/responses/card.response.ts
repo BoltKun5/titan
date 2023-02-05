@@ -10,3 +10,7 @@ export interface ICardListResponse {
 export interface IStatsResponse {
   stats: StatisticsDataType;
 }
+
+export interface ICardUpdateResponse {
+  card: ICard;
+}

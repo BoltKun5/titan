@@ -1,10 +1,21 @@
+import { ICardUpdateResponse } from './../../../../../packages/core/src/types/interface/api/responses/card.response';
+import { CardType } from './../../database/models/card-type.model';
+import { CardAdditionalPrinting } from './../../database/models/card-additional-printing.model';
 import { HttpResponseError } from './../../modules/http-response-error';
 import { User } from './../../database/models/user.model';
-import { ICardListResponse, ICardQuery, IResponse, IStatsResponse } from 'vokit_core';
+import {
+  CardTypeEnum,
+  ICardListResponse,
+  ICardQuery,
+  IResponse,
+  IStatsResponse,
+  IUpsertCardBody,
+} from 'vokit_core';
 import { Controller, LoggerModel, ILocals } from '../../core';
 import { Request, Response } from 'express';
 import cardService from '../../services/card.service';
 import CardValidation from '../validations/card.validation';
+import { Card, CardSet } from '../../database';
 
 class CardController implements Controller {
   private static readonly logger = new LoggerModel(CardController.name);
@@ -68,6 +79,113 @@ class CardController implements Controller {
       console.log(e.message);
     }
     // console.timeEnd('a');
+  }
+
+  async update(
+    req: Request<Record<string, never>, ICardUpdateResponse, IUpsertCardBody>,
+    res: Response<IResponse<ICardUpdateResponse>, ILocals>,
+  ): Promise<void> {
+    req.body = CardValidation.cardBody(req.body);
+
+    const card = await Card.findOne({
+      where: {
+        id: req.body.id,
+      },
+      include: [
+        {
+          model: CardAdditionalPrinting,
+          as: 'cardAdditionalPrinting',
+          attributes: {
+            exclude: ['cardId'],
+          },
+        },
+        {
+          model: CardType,
+          as: 'types',
+        },
+        {
+          model: CardSet,
+          as: 'cardSet',
+        },
+      ],
+    });
+
+    if (!card) throw HttpResponseError.createNotFoundError();
+
+    await card.update({
+      name: req.body.name,
+      rarity: req.body.rarity,
+      canBeReverse: req.body.canBeReverse,
+      localId: req.body.localId,
+      setId: req.body.setId,
+    });
+
+    const addPrinting = card.cardAdditionalPrinting;
+    const existingTypes = card.types.map((e) => e.type);
+
+    await Promise.all(
+      req.body.cardAdditionalPrinting.map((print): any => {
+        if (!print?.id) {
+          return CardAdditionalPrinting.create({
+            creator: print.creator,
+            cardId: card.id,
+            type: print.type,
+            name: print.name,
+          });
+        } else {
+          return CardAdditionalPrinting.update(
+            {
+              creator: print.creator,
+              cardId: card.id,
+              type: print.type,
+              name: print.name,
+            },
+            {
+              where: {
+                id: print.id,
+              },
+            },
+          );
+        }
+      }),
+    );
+
+    await Promise.all(
+      addPrinting.map((print) => {
+        if (!req.body.cardAdditionalPrinting.find((e) => e.id === print.id)) {
+          return CardAdditionalPrinting.destroy({
+            where: {
+              id: print.id,
+            },
+          });
+        }
+      }),
+    );
+
+    await Promise.all(
+      Object.values(CardTypeEnum)
+        .filter((e) => typeof e === 'number')
+        .map((type: any): any => {
+          if (existingTypes.includes(type) && !req.body.types.includes(type)) {
+            return CardType.destroy({
+              where: {
+                cardId: card.id,
+                type: type,
+              },
+            });
+          }
+          if (!existingTypes.includes(type) && req.body.types.includes(type)) {
+            return CardType.create({
+              cardId: card.id,
+              type: type,
+            });
+          }
+        }),
+    );
+
+    await card.reload();
+
+    res.json({ data: { card } });
   }
 }
 

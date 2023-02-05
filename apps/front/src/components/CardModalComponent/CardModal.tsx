@@ -225,7 +225,10 @@ export const CardModal: React.FC<{ card: ICard; closeModal: () => void }> = ({
                     <Tooltip title={card.cardSet.name}>
                       <img
                         src={
-                          "/src/assets/setIcons/" + card.cardSet.code + ".png"
+                          import.meta.env.VITE_ASSETS_URL +
+                          "/setIcons/" +
+                          card.cardSet.code +
+                          ".png"
                         }
                       />
                     </Tooltip>

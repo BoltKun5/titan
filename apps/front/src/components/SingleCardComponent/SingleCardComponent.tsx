@@ -97,7 +97,6 @@ export const SingleCardComponent: React.FC<SingleCardComponentPropsType> = ({
                 className="SingleCard-img"
                 src={getImageSource(card)}
                 loading={"lazy"}
-                onError={handleMissingImage}
               />
             </div>
 

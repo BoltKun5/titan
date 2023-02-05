@@ -28,12 +28,14 @@ import MuiAccordionSummary, {
 } from "@mui/material/AccordionSummary";
 import MuiAccordionDetails from "@mui/material/AccordionDetails";
 import { Delete } from "@mui/icons-material";
+import { loggedApi } from "../../axios";
 
-export const CardComponent: React.FC<{ card: ICard; sets: ICardSet[] }> = ({
-  card: _card,
-  sets,
-}) => {
-  const { closeSnackbar } = useSnackbar();
+export const CardComponent: React.FC<{
+  card: ICard;
+  sets: ICardSet[];
+  update: Function;
+}> = ({ card: _card, sets, update }) => {
+  const { enqueueSnackbar } = useSnackbar();
 
   const card = { ..._card };
 
@@ -44,7 +46,7 @@ export const CardComponent: React.FC<{ card: ICard; sets: ICardSet[] }> = ({
   const [setId, setSetId] = useState(card.setId);
   const [localId, setLocalId] = useState(card.localId);
   const [rarity, setRarity] = useState(card.rarity);
-  const [types, setTypes] = useState(card.types);
+  const [types, setTypes] = useState(card.types.map((e) => e.type));
   const [canBeReverse, setCanBeReverse] = useState(card.canBeReverse);
 
   const [index, setIndex] = useState<null | number>(null);
@@ -71,6 +73,28 @@ export const CardComponent: React.FC<{ card: ICard; sets: ICardSet[] }> = ({
       ) !== undefined
     );
   }, [cardAdditionalPrinting]);
+
+  const handleSubmit = async () => {
+    try {
+      const params: any = {
+        id: _card.id,
+        name,
+        rarity,
+        localId,
+        setId,
+        types,
+        canBeReverse,
+        cardAdditionalPrinting,
+      };
+
+      const newCard = (await loggedApi.post("/card/update", params)).data.data
+        .card;
+
+      update(newCard);
+    } catch (e: any) {
+      enqueueSnackbar(e.message);
+    }
+  };
 
   //#region Accordéon
   const Accordion = styled((props: AccordionProps) => (
@@ -281,7 +305,12 @@ export const CardComponent: React.FC<{ card: ICard; sets: ICardSet[] }> = ({
             >
               Ajouter une version
             </Button>
-            <Button variant="contained" color="warning" sx={{ margin: 1 }}>
+            <Button
+              variant="contained"
+              color="warning"
+              sx={{ margin: 1 }}
+              onClick={handleSubmit}
+            >
               Push
             </Button>
           </div>

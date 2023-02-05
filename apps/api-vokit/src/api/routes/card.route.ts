@@ -12,5 +12,7 @@ export const CardListRouter = (app: Router): Router => {
 
   route.get('/stats', auth, cardController.getStats);
 
+  route.post('/update', auth, cardController.update);
+
   return route;
 };

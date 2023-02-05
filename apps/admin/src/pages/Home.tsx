@@ -16,6 +16,7 @@ import {
   Select,
 } from "@mui/material";
 import { CardComponent } from "../components/Card/Card";
+import StoreContext from "../hook/contexts/StoreContext";
 
 export const Home: React.FC = () => {
   //#region Accordéon
@@ -107,7 +108,7 @@ export const Home: React.FC = () => {
         className="container overflow-auto border-1 border"
         style={{ height: "80vh" }}
       >
-        {cards.map((_card) => (
+        {cards.map((_card, index) => (
           <Accordion
             key={_card.id}
             expanded={expanded === _card.id}
@@ -119,8 +120,14 @@ export const Home: React.FC = () => {
             {expanded === _card.id && (
               <AccordionDetails>
                 <CardComponent
+                  key={_card.id}
                   card={_card}
                   sets={(series ?? []).map((e) => e?.cardSets ?? []).flat()}
+                  update={(card: ICard) => {
+                    const __cards = [...cards];
+                    __cards[index] = card;
+                    setCards(__cards);
+                  }}
                 />
               </AccordionDetails>
             )}

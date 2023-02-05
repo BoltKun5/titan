@@ -29,7 +29,7 @@ export const Navigation: React.FC = () => {
           icon={<FormatListBulleted />}
         />
         <BottomNavigationAction
-          label="Cartes"
+          label="Config"
           value={"/options"}
           icon={<Settings />}
         />

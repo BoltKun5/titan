@@ -17,13 +17,13 @@ import { AdminConfig } from '../../database';
 class AdminController implements Controller {
   private static readonly logger = new LoggerModel(AdminController.name);
 
-  async forceImportData(
-    req: Request<Record<string, never>, Record<string, never>, void>,
+  async importData(
+    req: Request<Record<string, never>, Record<string, never>, { setId: string[] }>,
     res: Response<Record<string, never>, ILocals>,
   ): Promise<void> {
-    await importDataService.forceImport();
+    await importDataService.importData([...req.body.setId]);
 
-    res.status(200);
+    res.json({});
   }
 
   async importTestData(

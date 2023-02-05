@@ -63,7 +63,12 @@ export const SetListComponent: React.FC = () => {
                     onClick={() => activateSetFilter(set.code)}
                   >
                     <Tooltip title={set.name}>
-                      <img src={`./src/assets/setIcons/${set.code}.png`} />
+                      <img
+                        src={
+                          import.meta.env.VITE_ASSETS_URL +
+                          `/setIcons/${set.code}.png`
+                        }
+                      />
                     </Tooltip>
                   </div>
                 ))}

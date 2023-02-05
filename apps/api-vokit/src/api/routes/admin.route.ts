@@ -7,15 +7,13 @@ const route = Router();
 export const AdminRouter = (app: Router): Router => {
   app.use('/admin', route);
 
-  route.get('/force-import-data', admin, adminController.forceImportData);
+  route.post('/import-data', admin, adminController.importData);
 
   route.get('/data-set-rename', admin, adminController.getSetRename);
 
   route.post('/data-set-rename', admin, adminController.postSetRename);
 
   route.delete('/data-set-rename', admin, adminController.deleteSetRename);
-
-  route.get('/import-test-data', admin, adminController.importTestData);
 
   return route;
 };
