@@ -1,29 +1,16 @@
 {
-  "eslint.validate": [
-    "javascript",
-    "javascriptreact",
-    "typescriptreact",
-    "typescript"
-  ],
-  "eslint.workingDirectories": [
-    { "directory": "front", "changeProcessCWD": true },
-    { "directory": "api-vokit", "changeProcessCWD": true }
-  ],
-  // Set the default
-  "editor.formatOnSave": true,
-  // "prettier.packageManager": "npm",
-  "prettier.resolveGlobalModules": true,
-  // Enable per-language
+  "javascript.validate.enable": true,
+  "editor.tabSize": 2,
+  "eslint.validate": ["javascript"],
+  "editor.formatOnSave": false,
   "[javascript]": {
-    "editor.formatOnSave": true
+    "editor.formatOnSave": false
   },
-  "editor.defaultFormatter": "esbenp.prettier-vscode",
-  "[typescriptreact]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode",
-    "editor.formatOnSave": true
+  "eslint.options": {
+    "experimentalDecorators": true
   },
-  "[typescript]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode",
-    "editor.formatOnSave": true
-  }
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": true
+  },
+  "editor.defaultFormatter": "esbenp.prettier-vscode"
 }
