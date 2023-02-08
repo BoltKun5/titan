@@ -104,7 +104,7 @@ export const getImageSource = (
       card.cardSet.code +
       "/" +
       card.localId +
-      (highQuality ? "-high" : "") +
+      // (highQuality ? "-high" : "") +
       ".jpg"
     );
   return (
@@ -113,7 +113,7 @@ export const getImageSource = (
     card.cardSet.code +
     "/" +
     card.localId +
-    (highQuality ? "-high" : "") +
+    // (highQuality ? "-high" : "") +
     ".jpg"
   );
 };

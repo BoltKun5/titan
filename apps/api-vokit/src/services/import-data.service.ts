@@ -32,119 +32,105 @@ export class ImportDataService extends Service {
       this.logger,
     );
 
-    const series: any = (await axios.get('https://api.tcgdex.net/v2/fr/series')).data;
+    for (const set of setList as Array<any>) {
+      this.logger.log(`Set ${set}`);
 
-    this.logger.log(`${series.length} series fetched`);
-
-    for (const serie of series as Array<any>) {
-      this.logger.log(`Serie ${serie.id}`);
-      const serieData: any = (await axios.get(`https://api.tcgdex.net/v2/fr/series/${serie.id}`))
-        .data;
+      const setData: any = (await axios.get(`https://api.tcgdex.net/v2/fr/sets/${set}`)).data;
 
       let dbSerie = await CardSerie.findOne({
         where: {
-          code: serieData.id,
+          code: setData.serie.id,
         },
       });
 
       if (!dbSerie) {
         dbSerie = await CardSerie.create({
-          name: serieData.name,
-          code: serieData.id,
+          name: setData.serie.name,
+          code: setData.serie.id,
         });
       }
 
-      const sets = serieData.sets;
+      const realCode = renames.find((rename) => rename.name === setData.id)?.value ?? setData.id;
 
-      for (const set of sets as Array<any>) {
-        if (!setList.includes(set.id)) continue;
-        this.logger.log(`${serie.id} - Set ${set.id}`);
+      const [dbSet] = await CardSet.findOrCreate({
+        where: {
+          code: [realCode, setData.id],
+        },
+        defaults: {
+          name: setData.name,
+          releaseDate: setData.releaseDate,
+          cardSerieId: dbSerie.id,
+          code: realCode,
+          cardCount: setData.cardCount,
+        },
+      });
 
-        const setData: any = (await axios.get(`https://api.tcgdex.net/v2/fr/sets/${set.id}`)).data;
+      if (dbSet.code !== realCode) {
+        await dbSet.update('code', realCode);
+      }
 
-        const realCode = renames.find((rename) => rename.name === setData.id)?.value ?? setData.id;
+      const cardsToIterate = setData.cards;
 
-        const [dbSet] = await CardSet.findOrCreate({
+      for (const card of cardsToIterate) {
+        this.logger.log(`${set} - Card ${card.localId}`);
+
+        const localCard: any = (await axios.get(`https://api.tcgdex.net/v2/fr/cards/${card.id}`))
+          .data;
+
+        console.log(getLocalId(localCard.localId));
+
+        let dbCard = await Card.findOne({
           where: {
-            code: [realCode, setData.id],
+            localId: getLocalId(localCard.localId),
           },
-          defaults: {
-            name: setData.name,
-            releaseDate: setData.releaseDate,
-            cardSerieId: dbSerie.id,
-            code: realCode,
-            cardCount: setData.cardCount,
-          },
+          include: [
+            {
+              where: { code: realCode },
+              model: CardSet,
+              required: true,
+              duplicating: false,
+              as: 'cardSet',
+            },
+          ],
         });
 
-        if (dbSet.code !== realCode) {
-          await dbSet.update('code', realCode);
+        if (!dbCard) {
+          dbCard = await Card.create({
+            name: localCard.name,
+            rarity: getRarity(localCard),
+            category: CardCategoryEnum[localCard.category as keyof typeof CardCategoryEnum] ?? null,
+            types:
+              localCard.types?.map((el: localCardType) => {
+                return { type: getTypeEnum(el) };
+              }) ?? [],
+            canBeReverse: localCard.variants?.reverse ?? false,
+            localId: getLocalId(localCard.localId),
+            setId: dbSet.id,
+          });
         }
 
-        const cardsToIterate = setData.cards;
-
-        for (const card of cardsToIterate) {
-          this.logger.log(`${serie.id} - ${set.id} - Card ${card.localId}`);
-
-          const localCard: any = (await axios.get(`https://api.tcgdex.net/v2/fr/cards/${card.id}`))
-            .data;
-
-          console.log(getLocalId(localCard.localId));
-
-          let dbCard = await Card.findOne({
+        if (dbCard.canBeReverse) {
+          let reversePrint = await CardAdditionalPrinting.findOne({
             where: {
-              localId: getLocalId(localCard.localId),
+              cardId: dbCard.id,
+              type: CardAdditionalPrintingTypeEnum.REVERSE,
             },
-            include: [
-              {
-                where: { code: realCode },
-                model: CardSet,
-                required: true,
-                duplicating: false,
-                as: 'cardSet',
-              },
-            ],
           });
 
-          if (!dbCard) {
-            dbCard = await Card.create({
-              name: localCard.name,
-              rarity: getRarity(localCard),
-              category:
-                CardCategoryEnum[localCard.category as keyof typeof CardCategoryEnum] ?? null,
-              types:
-                localCard.types?.map((el: localCardType) => {
-                  return { type: getTypeEnum(el) };
-                }) ?? [],
-              canBeReverse: localCard.variants?.reverse ?? false,
-              localId: getLocalId(localCard.localId),
-              setId: dbSet.id,
+          if (reversePrint) {
+            await reversePrint.update({
+              cardId: dbCard.id,
+              type: CardAdditionalPrintingTypeEnum.REVERSE,
+              name: 'Reverse',
+              creator: CardAdditionalPrintingCreatorEnum.ADMIN,
             });
-          }
-
-          if (dbCard.canBeReverse) {
-            let reversePrint = await CardAdditionalPrinting.findOne({
-              where: {
-                cardId: dbCard.id,
-                type: CardAdditionalPrintingTypeEnum.REVERSE,
-              },
+          } else {
+            reversePrint = await CardAdditionalPrinting.create({
+              cardId: dbCard.id,
+              type: CardAdditionalPrintingTypeEnum.REVERSE,
+              name: 'Reverse',
+              creator: CardAdditionalPrintingCreatorEnum.ADMIN,
             });
-
-            if (reversePrint) {
-              await reversePrint.update({
-                cardId: dbCard.id,
-                type: CardAdditionalPrintingTypeEnum.REVERSE,
-                name: 'Reverse',
-                creator: CardAdditionalPrintingCreatorEnum.ADMIN,
-              });
-            } else {
-              reversePrint = await CardAdditionalPrinting.create({
-                cardId: dbCard.id,
-                type: CardAdditionalPrintingTypeEnum.REVERSE,
-                name: 'Reverse',
-                creator: CardAdditionalPrintingCreatorEnum.ADMIN,
-              });
-            }
           }
         }
       }
@@ -210,8 +196,6 @@ export class ImportDataService extends Service {
             const localCard: any = (
               await axios.get(`https://api.tcgdex.net/v2/fr/cards/${card.id}`)
             ).data;
-
-            console.log(getLocalId(localCard.localId));
 
             let dbCard = await Card.findOne({
               where: {

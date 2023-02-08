@@ -134,7 +134,7 @@ export const CardComponent: React.FC<{
   return (
     <div className="Card">
       <div>
-        <img src={getImageSource(card)} />
+        <img width={230} src={getImageSource(card)} />
       </div>
       <div className="Card-inputs">
         <TextField
@@ -155,6 +155,7 @@ export const CardComponent: React.FC<{
             value={setId}
             onChange={(e) => setSetId(e.target.value)}
           >
+            <MenuItem value={"00000000-0000-0000-0000-000000000000"}>Aucun set</MenuItem>
             {sets.map((e) => [
               <MenuItem value={e.id} key={e.id}>
                 {e.name}

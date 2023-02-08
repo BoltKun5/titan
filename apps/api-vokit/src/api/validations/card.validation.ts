@@ -17,6 +17,7 @@ export default class CardValidation {
         .optional(),
       setFilter: Joi.array().items(Joi.string()).optional(),
       userId: Joi.string().optional(),
+      hidden: Joi.boolean().optional(),
     }).options({ presence: 'required' });
 
     const result = querySchema.validate(data);

@@ -288,6 +288,15 @@ export const Config: React.FC = () => {
           </div>
         </div>
       )}
+      <Button variant="contained" onClick={() => {
+        loggedApi.post("card/create");
+      }}>Créer carte</Button>
+      <Button variant="contained" onClick={() => {
+        loggedApi.post("series/create-set");
+      }}>Créer set</Button>
+      <Button variant="contained" onClick={() => {
+        loggedApi.post("series/create-serie");
+      }}>Créer série</Button>
     </div>
   );
 };

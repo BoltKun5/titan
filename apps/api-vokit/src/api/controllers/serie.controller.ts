@@ -24,6 +24,14 @@ class SerieController implements Controller {
       data: series,
     });
   }
+
+  async createSet(): Promise<void> {
+    await CardSet.create();
+  }
+
+  async createSerie(): Promise<void> {
+    await CardSerie.create();
+  }
 }
 
 export default new SerieController();

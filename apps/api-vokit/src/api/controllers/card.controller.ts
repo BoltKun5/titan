@@ -1,3 +1,4 @@
+import { ICardCreateResponse } from './../../vokit_core/types/interface/api/responses/card.response';
 import { CardType } from './../../database/models/card-type.model';
 import { CardAdditionalPrinting } from './../../database/models/card-additional-printing.model';
 import { HttpResponseError } from './../../modules/http-response-error';
@@ -182,6 +183,21 @@ class CardController implements Controller {
           }
         }),
     );
+
+    await card.reload();
+
+    res.json({ data: { card } });
+  }
+
+  async create(
+    req: Request<Record<string, never>, ICardCreateResponse, void>,
+    res: Response<IResponse<ICardCreateResponse>, ILocals>,
+  ): Promise<void> {
+    const card = await Card.create();
+
+    await card.update({
+      setId: '00000000-0000-0000-0000-000000000000',
+    });
 
     await card.reload();
 

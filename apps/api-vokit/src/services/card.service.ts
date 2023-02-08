@@ -35,9 +35,13 @@ export class CardService extends EntityService<Card, ICard> {
   public getOptions(params: ICardQuery, user: IUser): FindOptions | IncludeOptions {
     return {
       where: {
-        name: {
-          [Op.iLike]: `%${params?.namefilter ?? ''}%`,
-        },
+        ...(params?.hidden
+          ? {}
+          : {
+              name: {
+                [Op.iLike]: `%${params?.namefilter ?? ''}%`,
+              },
+            }),
         ...(params?.rarity && {
           rarity: {
             [Op.in]: params.rarity,
@@ -225,7 +229,24 @@ export class CardService extends EntityService<Card, ICard> {
           as: 'types',
         },
         {
-          where: { ...(params?.setFilter ? { code: params.setFilter } : {}) },
+          where: {
+            ...(params?.setFilter
+              ? {
+                  code: params.setFilter,
+                  ...(!params?.hidden
+                    ? { id: { [Op.ne]: '00000000-0000-0000-0000-000000000000' } }
+                    : {}),
+                }
+              : {
+                  ...(!params?.hidden
+                    ? {
+                        id: {
+                          [Op.ne]: '00000000-0000-0000-0000-000000000000',
+                        },
+                      }
+                    : {}),
+                }),
+          },
           model: CardSet,
           required: true,
           duplicating: false,

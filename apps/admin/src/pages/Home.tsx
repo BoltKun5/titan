@@ -16,7 +16,6 @@ import {
   Select,
 } from "@mui/material";
 import { CardComponent } from "../components/Card/Card";
-import StoreContext from "../hook/contexts/StoreContext";
 
 export const Home: React.FC = () => {
   //#region Accordéon
@@ -62,6 +61,7 @@ export const Home: React.FC = () => {
   const fetchCards = React.useCallback(async () => {
     if (!set) return;
     const response = await fetch("/card/list", {
+      hidden: true,
       setFilter: [set],
       page: -1,
       order: "default",
@@ -102,6 +102,8 @@ export const Home: React.FC = () => {
               <MenuItem value={_e.code}>{_e.name}</MenuItem>,
             ]),
           ])}
+          <ListSubheader>Autres</ListSubheader>,
+          <MenuItem value='99'>Sans set</MenuItem>
         </Select>
       </FormControl>
       <div
