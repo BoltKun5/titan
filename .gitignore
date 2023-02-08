@@ -6,3 +6,4 @@ front/src/assets/setLogos/*
 api-vokit/img
 **/node_modules/
 logs
+*/.env.production

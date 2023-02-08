@@ -238,7 +238,7 @@ export const CardModal: React.FC<{ card: ICard; closeModal: () => void }> = ({
                   <img
                     className="CardModal-rarityImg"
                     src={
-                      "/src/assets/icons/" +
+                      import.meta.env.VITE_ASSETS_URL + "/icons/" +
                       CardRarityEnum[card.rarity] +
                       ".png"
                     }

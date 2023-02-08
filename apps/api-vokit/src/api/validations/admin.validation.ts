@@ -1,5 +1,4 @@
-import { IDeleteSetRenameAdminQuery } from './../../../../../packages/core/src/types/interface/api/requests/admin.request';
-import { IPostSetRenameAdminBody } from 'vokit_core';
+import { IDeleteSetRenameAdminQuery, IPostSetRenameAdminBody } from 'vokit_core';
 import { HttpResponseError } from '../../modules/http-response-error';
 import Joi from 'joi';
 

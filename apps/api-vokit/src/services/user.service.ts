@@ -1,7 +1,7 @@
 import bcrypt from 'bcryptjs';
 import { FindOptions, WhereOptions } from 'sequelize';
 import { BasePaginate, IUser, QueryPaginate } from 'vokit_core';
-import { User } from '../../src/database';
+import { User } from '../database';
 import { EntityService, Paginator } from '../core';
 import { IncludeOptionsWithModel } from '../database/custom/custom-model.model';
 

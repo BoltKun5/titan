@@ -257,7 +257,7 @@ export const CardManagerFilterComponent: React.FC<{
                     >
                       <img
                         className="CardManagerFilter-rarityImg"
-                        src={"/src/assets/icons/" + filter.rarity + ".png"}
+                        src={import.meta.env.VITE_ASSETS_URL +"/icons/" + filter.rarity + ".png"}
                       />
                     </div>
                   </Tooltip>

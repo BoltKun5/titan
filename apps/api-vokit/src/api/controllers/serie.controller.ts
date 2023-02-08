@@ -1,7 +1,7 @@
-import { IGetAllSeriesResponse } from 'vokit_core/src/types/interface/api/responses/serie.response';
 import { Controller, LoggerModel, ILocals } from '../../core';
 import { Request, Response } from 'express';
 import { CardSerie, CardSet } from '../../database';
+import { IGetAllSeriesResponse } from 'vokit_core';
 
 class SerieController implements Controller {
   private static readonly logger = new LoggerModel(SerieController.name);

@@ -6,8 +6,8 @@
   "scripts": {
     "dev": "cross-env NODE_ENV=DEVELOPMENT ts-node-dev --respawn ./src/server.ts",
     "tsc": "tsc",
-    "start:prod": "cross-env NODE_ENV=PRODUCTION node ./dist/server.js",
-    "build": "tsc"
+    "start:prod": "cross-env NODE_ENV=PRODUCTION node ./dist/apps/api-vokit/src/server.js",
+    "build": "tsc && tsc-alias"
   },
   "repository": {
     "type": "git",
@@ -23,7 +23,6 @@
   "dependencies": {
     "@date-io/dayjs": "^2.15.0",
     "@types/archiver": "^5.3.1",
-    "vokit_core": "workspace:*",
     "app-root-path": "^3.1.0",
     "archiver": "^5.3.1",
     "axios": "^0.23.0",
@@ -58,7 +57,8 @@
     "stack-trace": "^0.0.10",
     "underscore": "^1.13.1",
     "uuid": "^8.3.2",
-    "winston": "^3.8.2"
+    "winston": "^3.8.2",
+    "vokit_core": "workspace:*"
   },
   "devDependencies": {
     "@types/bcryptjs": "^2.4.2",
@@ -80,7 +80,6 @@
     "@types/validator": "^13.7.6",
     "@typescript-eslint/eslint-plugin": "^4.27.0",
     "@typescript-eslint/parser": "^4.27.0",
-    "vokit_core": "workspace:*",
     "cross-env": "^7.0.3",
     "eslint": "^7.28.0",
     "eslint-config-prettier": "^8.3.0",

@@ -1,10 +1,10 @@
-import { ICardQuery } from './../../../../packages/core/src/types/interface/api/requests/card.request';
 import { FindOptions, Includeable, IncludeOptions } from 'sequelize/types';
 import { Op, literal } from 'sequelize';
 import {
   CardAdditionalPrintingTypeEnum,
   CardRarityEnum,
   ICard,
+  ICardQuery,
   IUser,
   StatisticsDataType,
 } from 'vokit_core';

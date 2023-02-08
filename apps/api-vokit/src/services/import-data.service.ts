@@ -1,3 +1,4 @@
+import { nonBlockingPromise } from './../utils/non-blocking-promise.utils';
 import axios from 'axios';
 import {
   AdminConfigTypeEnum,
@@ -19,20 +20,24 @@ export class ImportDataService extends Service {
       where: { type: AdminConfigTypeEnum['DATA_IMPORT_SET_RENAME'] },
     });
 
-    try {
+    this.logger.log('Import de ' + setList.length + ' nouveaux sets.');
+
+    nonBlockingPromise(
       axios.post(process.env.ASSETS_SERVER_URL as string, {
         ids: setList.map((e) => ({
           id: e,
           name: renames.find((rename) => rename.name === e)?.value ?? e,
         })),
-      });
-    } catch (e) {
-      console.log(e);
-    }
+      }),
+      this.logger,
+    );
 
-    const series = (await axios.get('https://api.tcgdex.net/v2/fr/series')).data;
+    const series: any = (await axios.get('https://api.tcgdex.net/v2/fr/series')).data;
+
+    this.logger.log(`${series.length} series fetched`);
 
     for (const serie of series as Array<any>) {
+      this.logger.log(`Serie ${serie.id}`);
       const serieData: any = (await axios.get(`https://api.tcgdex.net/v2/fr/series/${serie.id}`))
         .data;
 
@@ -53,6 +58,8 @@ export class ImportDataService extends Service {
 
       for (const set of sets as Array<any>) {
         if (!setList.includes(set.id)) continue;
+        this.logger.log(`${serie.id} - Set ${set.id}`);
+
         const setData: any = (await axios.get(`https://api.tcgdex.net/v2/fr/sets/${set.id}`)).data;
 
         const realCode = renames.find((rename) => rename.name === setData.id)?.value ?? setData.id;
@@ -77,6 +84,8 @@ export class ImportDataService extends Service {
         const cardsToIterate = setData.cards;
 
         for (const card of cardsToIterate) {
+          this.logger.log(`${serie.id} - ${set.id} - Card ${card.localId}`);
+
           const localCard: any = (await axios.get(`https://api.tcgdex.net/v2/fr/cards/${card.id}`))
             .data;
 

@@ -1,3 +1,4 @@
+require('express-async-errors');
 import express, { Response, Request, NextFunction } from 'express';
 import { json, urlencoded } from 'body-parser';
 import cors from 'cors';
@@ -13,9 +14,6 @@ import generalSetupMiddleware from '../api/middlewares/general-setup.middleware'
 import listEndpoints from 'express-list-endpoints';
 import { HttpResponseError } from '../modules/http-response-error';
 import { LogType } from 'vokit_core';
-import https from 'https';
-import { readFileSync } from 'fs-extra';
-require('express-async-errors');
 
 export default (): express.Application => {
   const app = express();
@@ -66,15 +64,7 @@ export default (): express.Application => {
     },
   );
 
-  const httpsServer = https.createServer(
-    {
-      key: readFileSync(__dirname + '/__fixtures__/privkey.pem'),
-      cert: readFileSync(__dirname + '/__fixtures__/cert.pem'),
-    },
-    app,
-  );
-
-  httpsServer
+  app
     .listen(AppConfig.config.app.port, () => {
       LoggerModule.log(`Server listening on port: ${AppConfig.config.app.port}`, {
         type: LogType.SYSTEM_STARTUP,

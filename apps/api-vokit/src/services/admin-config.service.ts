@@ -1,8 +1,7 @@
 import { HttpResponseError } from './../modules/http-response-error';
-import { IAdminConfig } from './../../../../packages/core/src/types/interface/models/admin-config.model';
 import { EntityService } from '../core';
 import { AdminConfig } from '../database/models/admin-config.model';
-import { AdminConfigTypeEnum } from 'vokit_core';
+import { AdminConfigTypeEnum, IAdminConfig } from 'vokit_core';
 
 export class ImportDataService extends EntityService<AdminConfig, IAdminConfig> {
   public async getSetRename(): Promise<AdminConfig[]> {

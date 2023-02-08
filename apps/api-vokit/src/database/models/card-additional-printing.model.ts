@@ -18,8 +18,8 @@ import {
   Overwrite,
   CardAdditionalPrintingTypeEnum,
   CardAdditionalPrintingCreatorEnum,
+  ICardAdditionalPrinting,
 } from 'vokit_core';
-import { ICardAdditionalPrinting } from 'vokit_core/src/types/interface/models/card-additional-printing.model';
 
 export type ModelCardAdditionalPrinting = Overwrite<
   ICardAdditionalPrinting,

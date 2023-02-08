@@ -70,7 +70,7 @@ export const HistoricPage: React.FC = () => {
           className="HistoricPage-type"
           onClick={() => setHistoricType("card")}
         >
-          <img src="/src/assets/card.svg" />
+          <img src={import.meta.env.VITE_ASSETS_URL + "/card.svg"} />
           <span>CARTES</span>
         </div>
       </div>

@@ -22,7 +22,8 @@ export const getImageSource = (
   const isValid = !isNaN(Number(card.localId));
   if (isValid)
     return (
-      "/src/assets/cards/" +
+      import.meta.env.VITE_ASSETS_URL +
+      "/" +
       card.cardSet.code +
       "/" +
       card.localId +
@@ -30,21 +31,12 @@ export const getImageSource = (
       ".jpg"
     );
   return (
-    "/src/assets/cards/" +
+    import.meta.env.VITE_ASSETS_URL +
+    "/" +
     card.cardSet.code +
     "/" +
     card.localId +
     (highQuality ? "-high" : "") +
     ".jpg"
   );
-};
-
-export const getImageFromSeparatedInfos = (
-  card: { name: string; localId: string },
-  cardSet: ICardSet
-): string => {
-  const isValid = !isNaN(Number(card.localId));
-  if (isValid)
-    return "/src/assets/cards/" + cardSet.code + "/" + card.localId + ".jpg";
-  return "/src/assets/cards/" + cardSet.code + "/" + card.localId + ".jpg";
 };

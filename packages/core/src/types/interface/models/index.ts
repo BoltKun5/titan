@@ -10,3 +10,4 @@ export * from './user.model';
 export * from './admin-config.model';
 export * from './card-tag.model';
 export * from './tag.model';
+export * from './card-additional-printing.model';

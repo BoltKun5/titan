@@ -28,13 +28,6 @@ export const SingleCardComponent: React.FC<SingleCardComponentPropsType> = ({
     setCardModal(card);
   };
 
-  const handleMissingImage = (
-    error: SyntheticEvent<HTMLImageElement, Event>
-  ) => {
-    error.currentTarget.src = "/src/assets/default_card_img.png";
-    setIsMissingImage(true);
-  };
-
   const elementRef = createRef<HTMLDivElement>();
 
   const [show, setShow] = useState(false);

@@ -2,3 +2,5 @@ node_modules
 dist
 logs
 img
+dist.rar
+src/vokit_core

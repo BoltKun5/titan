@@ -1,11 +1,11 @@
-import { IResponse } from './../../../../../packages/core/src/types/interface/api/type-message/response';
-import { IDeleteSetRenameAdminQuery } from './../../../../../packages/core/src/types/interface/api/requests/admin.request';
 import {
   AdminConfigTypeEnum,
+  IDeleteSetRenameAdminQuery,
   IDeleteSetRenameAdminResponse,
   IGetSetRenameAdminResponse,
   IPostSetRenameAdminBody,
   IPostSetRenameAdminResponse,
+  IResponse,
 } from 'vokit_core';
 import { Controller, LoggerModel, ILocals } from '../../core';
 import { Request, Response } from 'express';
@@ -23,7 +23,7 @@ class AdminController implements Controller {
   ): Promise<void> {
     await importDataService.importData([...req.body.setId]);
 
-    res.json({});
+    res.status(200).send();
   }
 
   async importTestData(
@@ -32,7 +32,7 @@ class AdminController implements Controller {
   ): Promise<void> {
     await importDataService.importTestData();
 
-    res.status(200);
+    res.status(200).send();
   }
 
   async getSetRename(

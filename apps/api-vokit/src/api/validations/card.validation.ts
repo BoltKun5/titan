@@ -1,6 +1,4 @@
-import { IUpsertCardBody } from './../../../../../packages/core/src/types/interface/api/requests/card.request';
-import { CardRarityEnum } from './../../../../../packages/core/src/enums/card-rarity.enum';
-import { ICardQuery, CardTypeEnum } from 'vokit_core';
+import { ICardQuery, CardTypeEnum, CardRarityEnum, IUpsertCardBody } from 'vokit_core';
 import { HttpResponseError } from '../../modules/http-response-error';
 import Joi from 'joi';
 

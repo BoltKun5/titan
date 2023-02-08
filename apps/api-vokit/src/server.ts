@@ -1,3 +1,4 @@
+require('express-async-errors');
 import * as dotenv from 'dotenv';
 import path from 'path';
 if (process.env.NODE_ENV === 'PRODUCTION') {

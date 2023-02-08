@@ -94,7 +94,7 @@ export const HeaderComponent: React.FC<{
             >
               <div className="HeaderComponent-profilePicture">
                 <img
-                  src={"/src/assets/logo_small.png"}
+                  src={import.meta.env.VITE_ASSETS_URL + "/logo_small.png"}
                   style={{
                     filter: isProfileDropdownOpen
                       ? "brightness(1)"
@@ -135,7 +135,7 @@ export const HeaderComponent: React.FC<{
       ) : (
         <div className="HeaderComponent-disconnectedHeader">
           <div className="HeaderComponent-fullLogo">
-            <img src="/src/assets/logo_full.png" />
+            <img src={import.meta.env.VITE_ASSETS_URL + "/logo_full.png"} />
           </div>
           <div className="HeaderComponent-loginLinks">
             Vous n'êtes pas connecté. Vous pouvez{" "}

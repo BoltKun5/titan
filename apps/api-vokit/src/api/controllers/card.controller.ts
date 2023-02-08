@@ -1,4 +1,3 @@
-import { ICardUpdateResponse } from './../../../../../packages/core/src/types/interface/api/responses/card.response';
 import { CardType } from './../../database/models/card-type.model';
 import { CardAdditionalPrinting } from './../../database/models/card-additional-printing.model';
 import { HttpResponseError } from './../../modules/http-response-error';
@@ -7,6 +6,7 @@ import {
   CardTypeEnum,
   ICardListResponse,
   ICardQuery,
+  ICardUpdateResponse,
   IResponse,
   IStatsResponse,
   IUpsertCardBody,

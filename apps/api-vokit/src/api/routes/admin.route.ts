@@ -1,6 +1,7 @@
 import { Router } from 'express';
 import admin from '../middlewares/admin';
 import adminController from '../controllers/admin.controller';
+require('express-async-errors');
 
 const route = Router();
 
