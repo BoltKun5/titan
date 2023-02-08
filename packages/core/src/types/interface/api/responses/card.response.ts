@@ -14,3 +14,7 @@ export interface IStatsResponse {
 export interface ICardUpdateResponse {
   card: ICard;
 }
+
+export interface ICardUpdateResponse {
+  card: ICard;
+}

@@ -9,6 +9,7 @@ export interface ICardQuery {
   possession?: 'partial_owned' | 'partial_unowned' | 'multiple_owned' | 'unowned' | 'fully_owned';
   setFilter?: string[];
   userId?: string;
+  hidden?: boolean;
 }
 
 export interface IUpsertCardBody {
