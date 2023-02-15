@@ -50,10 +50,10 @@ export const CardCounterComponent: React.FC<CardCounterComponentPropsType> = ({
         cardId: card.id,
         ...(cardType === "reverse"
           ? {
-              cardPrintingId: card.cardAdditionalPrinting.find(
-                (print) => print.type === CardAdditionalPrintingTypeEnum.REVERSE
-              )?.id,
-            }
+            cardPrintingId: card.cardAdditionalPrinting.find(
+              (print) => print.type === CardAdditionalPrintingTypeEnum.REVERSE
+            )?.id,
+          }
           : {}),
       });
       setIsDisabled(false);
@@ -86,10 +86,10 @@ export const CardCounterComponent: React.FC<CardCounterComponentPropsType> = ({
         cardId: card.id,
         ...(cardType === "reverse"
           ? {
-              cardPrintingId: card.cardAdditionalPrinting.find(
-                (print) => print.type === CardAdditionalPrintingTypeEnum.REVERSE
-              )?.id,
-            }
+            cardPrintingId: card.cardAdditionalPrinting.find(
+              (print) => print.type === CardAdditionalPrintingTypeEnum.REVERSE
+            )?.id,
+          }
           : {}),
       });
       setIsDisabled(false);
@@ -178,8 +178,8 @@ export const CardCounterComponent: React.FC<CardCounterComponentPropsType> = ({
           cardType === "classic"
             ? null
             : card.cardAdditionalPrinting.find(
-                (print) => print.type === CardAdditionalPrintingTypeEnum.REVERSE
-              )?.id,
+              (print) => print.type === CardAdditionalPrintingTypeEnum.REVERSE
+            )?.id,
         quantity: element.value,
       });
 
@@ -233,13 +233,13 @@ export const CardCounterComponent: React.FC<CardCounterComponentPropsType> = ({
     return String(
       type === "classic"
         ? card?.userCardPossessions?.filter(
-            (possession) => possession?.printing === null
-          ).length
+          (possession) => possession?.printing === null
+        ).length
         : card?.userCardPossessions?.filter(
-            (possession) =>
-              possession.printing?.type ===
-              CardAdditionalPrintingTypeEnum.REVERSE
-          ).length
+          (possession) =>
+            possession.printing?.type ===
+            CardAdditionalPrintingTypeEnum.REVERSE
+        ).length
     );
   };
 
@@ -263,12 +263,15 @@ export const CardCounterComponent: React.FC<CardCounterComponentPropsType> = ({
         <div className="CardCounter-inputContainer">
           <input
             className="CardCounter-input"
-            disabled={isDisabled}
+            disabled={isUnloggedPage() ?? isDisabled}
             onBlur={(ev) => setQuantity(card, type, ev.currentTarget)}
             onClick={(ev) => ev.currentTarget.select()}
             value={value}
             type="number"
-            onChange={(ev) => changeHandler(ev.currentTarget)}
+            onChange={(ev) => {
+              if (!isUnloggedPage())
+                changeHandler(ev.currentTarget)
+            }}
           />
         </div>
         {!isUnloggedPage() && (

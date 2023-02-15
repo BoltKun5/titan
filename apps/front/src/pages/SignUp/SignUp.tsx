@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import Joi from "joi";
 import { Link, useNavigate } from "react-router-dom";
 import "./style.scss";
@@ -6,6 +6,7 @@ import { api } from "../../axios";
 import { TextInputComponent } from "../../components/UI/TextInputComponent/TextInputComponent";
 import { ButtonComponent } from "../../components/UI/Button/ButtonComponent";
 import { ISignupAuthBody, ISigninAuthResponse } from "vokit_core";
+import StoreContext from "../../hook/contexts/StoreContext";
 
 export const SignUp: React.FC = () => {
   const [errorMessage, setErrorMessage] = useState("");
@@ -13,6 +14,8 @@ export const SignUp: React.FC = () => {
   const [password, setPassword] = useState("");
   const [shownName, setShownName] = useState("");
   const navigate = useNavigate();
+
+  const {setUser} = useContext(StoreContext)
 
   const handleSubmit = async (event: React.SyntheticEvent) => {
     event.preventDefault();
@@ -43,6 +46,7 @@ export const SignUp: React.FC = () => {
       );
       localStorage.setItem("token", response.data.data.token);
       localStorage.setItem("user", JSON.stringify(response.data.data.user));
+      setUser(response.data.data.user);
       navigate("/cards");
     } catch (e: any) {
       const errorCode = e.response?.data?.error?.code;

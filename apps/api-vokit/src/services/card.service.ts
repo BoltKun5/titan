@@ -76,7 +76,7 @@ export class CardService extends EntityService<Card, ICard> {
           FROM (
             select "card".id, count(ucp.id)
             from "card"
-            left outer join "userCardPossession" ucp on ucp."cardId" = "card"."id" and ucp."userId" = '${user.id}'
+            left outer join "userCardPossession" ucp on ucp."cardId" = "card"."id" and ucp."userId" = '${user.id}' and ucp."deletedAt" is null
             left outer join "cardAdditionalPrinting" cap on cap.id = ucp."printingId" 
             group by "card"."id", cap.type 
             having count(ucp.id) > 0
@@ -109,7 +109,7 @@ export class CardService extends EntityService<Card, ICard> {
         left join (
           select "card".id, count(ucp."cardId")
           from "card"
-          left outer join "userCardPossession" ucp on ucp."cardId" = "card"."id" and ucp."userId" = '${user.id}'
+          left outer join "userCardPossession" ucp on ucp."cardId" = "card"."id" and ucp."userId" = '${user.id}' and ucp."deletedAt" is null
           left outer join "cardAdditionalPrinting" cap on cap.id = ucp."printingId" 
           group by "card"."id", cap.type 
           having count(ucp.id) > 0
@@ -129,7 +129,7 @@ export class CardService extends EntityService<Card, ICard> {
         left join (
           select "card".id, count(ucp."cardId") as c
           from "card"
-          left outer join "userCardPossession" ucp on ucp."cardId" = "card"."id" and ucp."userId" = 'c25b0298-82c8-4e31-b6a7-4e317e7e4031'
+          left outer join "userCardPossession" ucp on ucp."cardId" = "card"."id" and ucp."userId" = '${user.id}' and ucp."deletedAt" is null
           left outer join "cardAdditionalPrinting" cap on cap.id = ucp."printingId" 
           group by "card"."id", cap.type 
           having count(ucp.id) > 0
@@ -138,7 +138,7 @@ export class CardService extends EntityService<Card, ICard> {
         group by c.id, sub."c"
         order by c."name"`;
       default:
-        return '';
+        return ``;
     }
   }
 
@@ -280,6 +280,9 @@ export class CardService extends EntityService<Card, ICard> {
             ...filterOptions,
           },
         ],
+        where: {
+          userId: user.id,
+        },
       });
 
       const distinctRarityCount: any = await UserCardPossession.count({
@@ -295,6 +298,9 @@ export class CardService extends EntityService<Card, ICard> {
             ...filterOptions,
           },
         ],
+        where: {
+          userId: user.id,
+        },
       });
 
       const totalSetCount: any = await UserCardPossession.count({
@@ -308,12 +314,16 @@ export class CardService extends EntityService<Card, ICard> {
             ...filterOptions,
           },
         ],
+        where: {
+          userId: user.id,
+        },
       });
 
       const distinctNormal = (
         await UserCardPossession.count({
           where: {
             printingId: null,
+            userId: user.id,
           },
           group: ['cardId'],
           include: [
@@ -350,6 +360,9 @@ export class CardService extends EntityService<Card, ICard> {
             },
           ],
           group: ['UserCardPossession.cardId'],
+          where: {
+            userId: user.id,
+          },
         })
       ).length;
 
@@ -376,11 +389,15 @@ export class CardService extends EntityService<Card, ICard> {
             ...filterOptions,
           },
         ],
+        where: {
+          userId: user.id,
+        },
       });
 
       const totalNormal = await UserCardPossession.count({
         where: {
           printingId: null,
+          userId: user.id,
         },
         include: [
           {
@@ -409,6 +426,9 @@ export class CardService extends EntityService<Card, ICard> {
             ...filterOptions,
           },
         ],
+        where: {
+          userId: user.id,
+        },
       });
 
       const countByRarity: any = {
@@ -463,6 +483,9 @@ export class CardService extends EntityService<Card, ICard> {
             as: 'printing',
           },
         ],
+        where: {
+          userId: user.id,
+        },
       });
 
       const distinctOwnedCountBySet = await UserCardPossession.count({
@@ -482,6 +505,9 @@ export class CardService extends EntityService<Card, ICard> {
             as: 'printing',
           },
         ],
+        where: {
+          userId: user.id,
+        },
       });
 
       const countBySet: any = {};

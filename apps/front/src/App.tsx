@@ -113,6 +113,7 @@ export const App: React.FC = () => {
         return filter;
       })
     );
+    setPossessionFilter(null);
   };
 
   useEffect(() => {

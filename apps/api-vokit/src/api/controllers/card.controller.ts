@@ -77,6 +77,7 @@ class CardController implements Controller {
       }
       res.json({ data: { stats } });
     } catch (e: any) {
+      res.status(404).send();
       console.log(e.message);
     }
     // console.timeEnd('a');
