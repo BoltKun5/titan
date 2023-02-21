@@ -10,6 +10,8 @@ export const AdminRouter = (app: Router): Router => {
 
   route.post('/import-data', admin, adminController.importData);
 
+  route.post('/import-test-data', admin, adminController.importTestData);
+
   route.get('/data-set-rename', admin, adminController.getSetRename);
 
   route.post('/data-set-rename', admin, adminController.postSetRename);

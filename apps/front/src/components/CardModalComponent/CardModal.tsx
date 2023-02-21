@@ -211,7 +211,7 @@ export const CardModal: React.FC<{ card: ICard; closeModal: () => void }> = ({
         <div className="CardModal-modale">
           <div className="CardModal-miscContainer">
             <div className="CardModal-misc">
-              <div className="CardModal-name">{card.name}</div>
+              <div className="CardModal-name">{card.name} ({card.localId})</div>
               <div className="CardModal-subMisc">
                 <div className="CardModal-serieContainer">
                   <div className="CardModal-serie">

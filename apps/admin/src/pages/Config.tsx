@@ -66,7 +66,7 @@ export const Config: React.FC = () => {
 
   const importTestData = () => {
     try {
-      loggedApi.get("admin/import-test-data");
+      loggedApi.post("admin/import-test-data");
     } catch (e) {
       console.log(e);
     }

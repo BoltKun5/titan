@@ -267,6 +267,28 @@ export class CardService extends EntityService<Card, ICard> {
         attributes: ['rarity'],
         group: ['rarity'],
         ...filterOptions,
+        include: [
+          {
+            where: {
+              ...(params?.setFilter
+                ? {
+                    code: params.setFilter,
+                    id: { [Op.ne]: '00000000-0000-0000-0000-000000000000' },
+                  }
+                : {
+                    id: {
+                      [Op.ne]: '00000000-0000-0000-0000-000000000000',
+                    },
+                  }),
+            },
+            model: CardSet,
+            required: true,
+            duplicating: false,
+            attributes: {
+              exclude: ['cardCount', 'isPlayableInStandard', 'id', 'releaseDate', 'tcgOnline'],
+            },
+          },
+        ],
       });
 
       const totalRarityCount: any = await UserCardPossession.count({
@@ -278,6 +300,28 @@ export class CardService extends EntityService<Card, ICard> {
             as: 'card',
             required: true,
             ...filterOptions,
+            include: [
+              {
+                where: {
+                  ...(params?.setFilter
+                    ? {
+                        code: params.setFilter,
+                        id: { [Op.ne]: '00000000-0000-0000-0000-000000000000' },
+                      }
+                    : {
+                        id: {
+                          [Op.ne]: '00000000-0000-0000-0000-000000000000',
+                        },
+                      }),
+                },
+                model: CardSet,
+                required: true,
+                duplicating: false,
+                attributes: {
+                  exclude: ['cardCount', 'isPlayableInStandard', 'id', 'releaseDate', 'tcgOnline'],
+                },
+              },
+            ],
           },
         ],
         where: {
@@ -296,6 +340,28 @@ export class CardService extends EntityService<Card, ICard> {
             as: 'card',
             required: true,
             ...filterOptions,
+            include: [
+              {
+                where: {
+                  ...(params?.setFilter
+                    ? {
+                        code: params.setFilter,
+                        id: { [Op.ne]: '00000000-0000-0000-0000-000000000000' },
+                      }
+                    : {
+                        id: {
+                          [Op.ne]: '00000000-0000-0000-0000-000000000000',
+                        },
+                      }),
+                },
+                model: CardSet,
+                required: true,
+                duplicating: false,
+                attributes: {
+                  exclude: ['cardCount', 'isPlayableInStandard', 'id', 'releaseDate', 'tcgOnline'],
+                },
+              },
+            ],
           },
         ],
         where: {
@@ -312,6 +378,28 @@ export class CardService extends EntityService<Card, ICard> {
             as: 'card',
             required: true,
             ...filterOptions,
+            include: [
+              {
+                where: {
+                  ...(params?.setFilter
+                    ? {
+                        code: params.setFilter,
+                        id: { [Op.ne]: '00000000-0000-0000-0000-000000000000' },
+                      }
+                    : {
+                        id: {
+                          [Op.ne]: '00000000-0000-0000-0000-000000000000',
+                        },
+                      }),
+                },
+                model: CardSet,
+                required: true,
+                duplicating: false,
+                attributes: {
+                  exclude: ['cardCount', 'isPlayableInStandard', 'id', 'releaseDate', 'tcgOnline'],
+                },
+              },
+            ],
           },
         ],
         where: {
@@ -332,6 +420,34 @@ export class CardService extends EntityService<Card, ICard> {
               as: 'card',
               required: true,
               ...filterOptions,
+              include: [
+                {
+                  where: {
+                    ...(params?.setFilter
+                      ? {
+                          code: params.setFilter,
+                          id: { [Op.ne]: '00000000-0000-0000-0000-000000000000' },
+                        }
+                      : {
+                          id: {
+                            [Op.ne]: '00000000-0000-0000-0000-000000000000',
+                          },
+                        }),
+                  },
+                  model: CardSet,
+                  required: true,
+                  duplicating: false,
+                  attributes: {
+                    exclude: [
+                      'cardCount',
+                      'isPlayableInStandard',
+                      'id',
+                      'releaseDate',
+                      'tcgOnline',
+                    ],
+                  },
+                },
+              ],
             },
           ],
         })
@@ -339,6 +455,28 @@ export class CardService extends EntityService<Card, ICard> {
 
       const distinctNormalPossible = await Card.count({
         ...this.getOptions(params, user),
+        include: [
+          {
+            where: {
+              ...(params?.setFilter
+                ? {
+                    code: params.setFilter,
+                    id: { [Op.ne]: '00000000-0000-0000-0000-000000000000' },
+                  }
+                : {
+                    id: {
+                      [Op.ne]: '00000000-0000-0000-0000-000000000000',
+                    },
+                  }),
+            },
+            model: CardSet,
+            required: true,
+            duplicating: false,
+            attributes: {
+              exclude: ['cardCount', 'isPlayableInStandard', 'id', 'releaseDate', 'tcgOnline'],
+            },
+          },
+        ],
       });
 
       const distinctReverse = (
@@ -357,6 +495,34 @@ export class CardService extends EntityService<Card, ICard> {
               as: 'card',
               required: true,
               ...filterOptions,
+              include: [
+                {
+                  where: {
+                    ...(params?.setFilter
+                      ? {
+                          code: params.setFilter,
+                          id: { [Op.ne]: '00000000-0000-0000-0000-000000000000' },
+                        }
+                      : {
+                          id: {
+                            [Op.ne]: '00000000-0000-0000-0000-000000000000',
+                          },
+                        }),
+                  },
+                  model: CardSet,
+                  required: true,
+                  duplicating: false,
+                  attributes: {
+                    exclude: [
+                      'cardCount',
+                      'isPlayableInStandard',
+                      'id',
+                      'releaseDate',
+                      'tcgOnline',
+                    ],
+                  },
+                },
+              ],
             },
           ],
           group: ['UserCardPossession.cardId'],
@@ -377,6 +543,26 @@ export class CardService extends EntityService<Card, ICard> {
               type: CardAdditionalPrintingTypeEnum.REVERSE,
             },
           },
+          {
+            where: {
+              ...(params?.setFilter
+                ? {
+                    code: params.setFilter,
+                    id: { [Op.ne]: '00000000-0000-0000-0000-000000000000' },
+                  }
+                : {
+                    id: {
+                      [Op.ne]: '00000000-0000-0000-0000-000000000000',
+                    },
+                  }),
+            },
+            model: CardSet,
+            required: true,
+            duplicating: false,
+            attributes: {
+              exclude: ['cardCount', 'isPlayableInStandard', 'id', 'releaseDate', 'tcgOnline'],
+            },
+          },
         ],
       });
 
@@ -387,6 +573,28 @@ export class CardService extends EntityService<Card, ICard> {
             as: 'card',
             required: true,
             ...filterOptions,
+            include: [
+              {
+                where: {
+                  ...(params?.setFilter
+                    ? {
+                        code: params.setFilter,
+                        id: { [Op.ne]: '00000000-0000-0000-0000-000000000000' },
+                      }
+                    : {
+                        id: {
+                          [Op.ne]: '00000000-0000-0000-0000-000000000000',
+                        },
+                      }),
+                },
+                model: CardSet,
+                required: true,
+                duplicating: false,
+                attributes: {
+                  exclude: ['cardCount', 'isPlayableInStandard', 'id', 'releaseDate', 'tcgOnline'],
+                },
+              },
+            ],
           },
         ],
         where: {
@@ -405,6 +613,28 @@ export class CardService extends EntityService<Card, ICard> {
             as: 'card',
             required: true,
             ...filterOptions,
+            include: [
+              {
+                where: {
+                  ...(params?.setFilter
+                    ? {
+                        code: params.setFilter,
+                        id: { [Op.ne]: '00000000-0000-0000-0000-000000000000' },
+                      }
+                    : {
+                        id: {
+                          [Op.ne]: '00000000-0000-0000-0000-000000000000',
+                        },
+                      }),
+                },
+                model: CardSet,
+                required: true,
+                duplicating: false,
+                attributes: {
+                  exclude: ['cardCount', 'isPlayableInStandard', 'id', 'releaseDate', 'tcgOnline'],
+                },
+              },
+            ],
           },
         ],
       });
@@ -424,6 +654,28 @@ export class CardService extends EntityService<Card, ICard> {
             as: 'card',
             required: true,
             ...filterOptions,
+            include: [
+              {
+                where: {
+                  ...(params?.setFilter
+                    ? {
+                        code: params.setFilter,
+                        id: { [Op.ne]: '00000000-0000-0000-0000-000000000000' },
+                      }
+                    : {
+                        id: {
+                          [Op.ne]: '00000000-0000-0000-0000-000000000000',
+                        },
+                      }),
+                },
+                model: CardSet,
+                required: true,
+                duplicating: false,
+                attributes: {
+                  exclude: ['cardCount', 'isPlayableInStandard', 'id', 'releaseDate', 'tcgOnline'],
+                },
+              },
+            ],
           },
         ],
         where: {
@@ -448,6 +700,26 @@ export class CardService extends EntityService<Card, ICard> {
           {
             model: CardAdditionalPrinting,
             as: 'cardAdditionalPrinting',
+          },
+          {
+            where: {
+              ...(params?.setFilter
+                ? {
+                    code: params.setFilter,
+                    id: { [Op.ne]: '00000000-0000-0000-0000-000000000000' },
+                  }
+                : {
+                    id: {
+                      [Op.ne]: '00000000-0000-0000-0000-000000000000',
+                    },
+                  }),
+            },
+            model: CardSet,
+            required: true,
+            duplicating: false,
+            attributes: {
+              exclude: ['cardCount', 'isPlayableInStandard', 'id', 'releaseDate', 'tcgOnline'],
+            },
           },
         ],
         group: ['cardAdditionalPrinting.type', 'Card.setId'],
@@ -477,6 +749,28 @@ export class CardService extends EntityService<Card, ICard> {
             as: 'card',
             required: true,
             ...filterOptions,
+            include: [
+              {
+                where: {
+                  ...(params?.setFilter
+                    ? {
+                        code: params.setFilter,
+                        id: { [Op.ne]: '00000000-0000-0000-0000-000000000000' },
+                      }
+                    : {
+                        id: {
+                          [Op.ne]: '00000000-0000-0000-0000-000000000000',
+                        },
+                      }),
+                },
+                model: CardSet,
+                required: true,
+                duplicating: false,
+                attributes: {
+                  exclude: ['cardCount', 'isPlayableInStandard', 'id', 'releaseDate', 'tcgOnline'],
+                },
+              },
+            ],
           },
           {
             model: CardAdditionalPrinting,
@@ -499,6 +793,28 @@ export class CardService extends EntityService<Card, ICard> {
             as: 'card',
             required: true,
             ...filterOptions,
+            include: [
+              {
+                where: {
+                  ...(params?.setFilter
+                    ? {
+                        code: params.setFilter,
+                        id: { [Op.ne]: '00000000-0000-0000-0000-000000000000' },
+                      }
+                    : {
+                        id: {
+                          [Op.ne]: '00000000-0000-0000-0000-000000000000',
+                        },
+                      }),
+                },
+                model: CardSet,
+                required: true,
+                duplicating: false,
+                attributes: {
+                  exclude: ['cardCount', 'isPlayableInStandard', 'id', 'releaseDate', 'tcgOnline'],
+                },
+              },
+            ],
           },
           {
             model: CardAdditionalPrinting,

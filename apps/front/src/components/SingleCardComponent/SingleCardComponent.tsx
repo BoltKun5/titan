@@ -86,6 +86,9 @@ export const SingleCardComponent: React.FC<SingleCardComponentPropsType> = ({
                 {card.name} ({card.localId})<br />
                 {card.cardSet.code} - {card.cardSet.name}
               </div>
+              <div className="SingleCard-infos">
+                {card.name} ({card.localId})
+              </div>
               <img
                 className="SingleCard-img"
                 src={getImageSource(card)}

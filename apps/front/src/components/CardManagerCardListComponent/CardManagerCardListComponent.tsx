@@ -79,13 +79,6 @@ export const CardManagerCardListComponent: React.FC = () => {
               card={card}
               index={index}
             />
-            {collectionMode && separateReverse && card.canBeReverse && (
-              <SingleCardComponent
-                firstType={"reverse"}
-                card={card}
-                index={index}
-              />
-            )}
           </React.Fragment>
         ))}
       </div>
