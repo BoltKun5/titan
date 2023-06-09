@@ -47,7 +47,7 @@ export const SignUp: React.FC = () => {
       localStorage.setItem("token", response.data.data.token);
       localStorage.setItem("user", JSON.stringify(response.data.data.user));
       setUser(response.data.data.user);
-      navigate("/cards");
+      navigate("/");
     } catch (e: any) {
       const errorCode = e.response?.data?.error?.code;
       switch (errorCode) {
@@ -90,7 +90,7 @@ export const SignUp: React.FC = () => {
           {errorMessage}
         </div>
         <span className="SignUp-toSignIn">
-          Déjà inscrit ? <Link to="/">Connectez-vous</Link>
+          Déjà inscrit ? <Link to="/login">Connectez-vous</Link>
         </span>
       </form>
     </div>

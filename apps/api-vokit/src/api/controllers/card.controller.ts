@@ -38,10 +38,8 @@ class CardController implements Controller {
         throw HttpResponseError.createNotFoundError();
       }
     } else {
-      user = res.locals.currentUser;
+      user = res.locals?.currentUser ?? undefined;
     }
-
-    if (!user) throw HttpResponseError.createNotFoundError();
 
     const cards = await cardService.getCards({ ...req.query }, user);
     const count = await cardService.getCount({ ...req.query }, user);

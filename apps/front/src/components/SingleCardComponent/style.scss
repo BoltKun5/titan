@@ -3,11 +3,10 @@
 .SingleCard {
   margin: auto;
   position: relative;
-  height: 507px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: fit-content;
+  width: 85%;
   padding: 12px 10px 12px !important;
   background-color: $primary-bg;
   border: 1px solid $primary-border;
@@ -65,10 +64,6 @@
     z-index: 10;
   }
 
-  &:not(.SingleCard-notCollection) &-imgContainer {
-    background-color: $primary-border;
-  }
-
   &-data {
     position: absolute;
     top: 0;
@@ -87,11 +82,12 @@
   }
 
   &-imgContainer {
-    height: 316px;
-    width: 230px;
+    aspect-ratio: 300 / 410;
+    background-image: url('../../assets/default_card_img.png');
+    background-size: 100%;
+    width: 95%;
     position: relative;
     overflow: hidden;
-    background: #8c8c8c;
     z-index: 2;
 
     &:hover {
@@ -128,13 +124,6 @@
       left: 0;
       top: 0;
     }
-
-    & img {
-      clip-path: polygon(2px 2px,
-          calc(100% - 2px) 2px,
-          calc(100% - 2px) calc(100% - 2px),
-          2px calc(100% - 2px));
-    }
   }
 
   &-img {
@@ -147,15 +136,5 @@
 }
 
 @media (max-width: 1100px) {
-  .SingleCard {
-    height: 430px;
 
-    &-imgContainer {
-      width: 180px;
-    }
-
-    &Overlay {
-      width: 190px;
-    }
-  }
 }

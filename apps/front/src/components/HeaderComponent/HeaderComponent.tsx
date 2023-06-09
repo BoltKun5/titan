@@ -72,7 +72,7 @@ export const HeaderComponent: React.FC<{
               "HeaderComponent-navButtons " + (isMobileMenuOpen ? "isOpen" : "")
             }
           >
-            <Link to={"/cards"} onClick={() => setIsMobileMenuOpen(false)}>
+            <Link to={"/"} onClick={() => setIsMobileMenuOpen(false)}>
               <div className="HeaderComponent-navButton HeaderComponent-mainButton">
                 CARTES
               </div>
@@ -139,7 +139,7 @@ export const HeaderComponent: React.FC<{
           </div>
           <div className="HeaderComponent-loginLinks">
             Vous n'êtes pas connecté. Vous pouvez{" "}
-            <Link to="/">vous connecter</Link> ou{" "}
+            <Link to="/login">vous connecter</Link> ou{" "}
             <Link to="/signup">vous inscrire</Link>.
           </div>
         </div>

@@ -217,7 +217,7 @@ export const StatPage: React.FC = () => {
                   </div>
                   <div className={"StatPage-radialData"}>
                     <b>
-                      {Math.round((data.values.value / data.values.max) * 100)}%
+                      {Math.floor((data.values.value / data.values.max) * 100)}%
                     </b>{" "}
                     <br />
                     {data.values.value} / {data.values.max}

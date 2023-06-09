@@ -7,7 +7,7 @@ import React, {
 import { ClickAwayListener, Tooltip } from "@mui/material";
 import { CategorizedAutocompleteChecklist } from "../CategorizedAutocompleteChecklist/CategorizedAutocompleteChecklist";
 import "./style.scss";
-import { frontRarity, isUnloggedPage } from "../../general.utils";
+import { frontRarity, isUnloggedPage, isUserConnected } from "../../general.utils";
 import FilterAltIcon from "@mui/icons-material/FilterAlt";
 import { TextInputComponent } from "../UI/TextInputComponent/TextInputComponent";
 import { ButtonComponent } from "../UI/Button/ButtonComponent";
@@ -22,6 +22,7 @@ import { SwipeCheckboxComponent } from "../UI/SwipeCheckboxComponent/SwipeCheckb
 import { Loader } from "../UI/Loader/LoaderComponent";
 import { ICardSetFilter } from "../../local-core";
 import useWindowDimensions from "../../hook/utils/useWindowDimensions";
+import { useParams } from "react-router-dom";
 
 export const CardManagerFilterComponent: React.FC<{
   hidePagination?: boolean;
@@ -45,6 +46,11 @@ export const CardManagerFilterComponent: React.FC<{
   const [isOptionOpen, setIsOptionOpen] = useState(false);
 
   const { width } = useWindowDimensions();
+
+  let id: string | undefined = useParams().id;
+  if (!isUnloggedPage()) {
+    id = undefined;
+  }
 
   const updateSetFilters = (event: any) => {
     if (!cardSetFilter) return;
@@ -257,7 +263,7 @@ export const CardManagerFilterComponent: React.FC<{
                     >
                       <img
                         className="CardManagerFilter-rarityImg"
-                        src={import.meta.env.VITE_ASSETS_URL +"/icons/" + filter.rarity + ".png"}
+                        src={import.meta.env.VITE_ASSETS_URL + "/icons/" + filter.rarity + ".png"}
                       />
                     </div>
                   </Tooltip>
@@ -265,7 +271,7 @@ export const CardManagerFilterComponent: React.FC<{
               </div>
             </div>
           </div>
-          <div className="CardManagerFilter-fixedWidthContainer">
+          {isUserConnected() || id && <div className="CardManagerFilter-fixedWidthContainer">
             <div className="CardManagerFilter-htmlSelectInput">
               <label>Possession</label>
               <div className="CardManagerFilter-htmlSelectInput-container">
@@ -294,7 +300,7 @@ export const CardManagerFilterComponent: React.FC<{
                 </select>
               </div>
             </div>
-          </div>
+          </div>}
 
           <div className="CardManagerFilter-fixedWidthContainer">
             <div
@@ -342,7 +348,7 @@ export const CardManagerFilterComponent: React.FC<{
               </div>
             </div>
           )}
-          <div className="CardManagerFilter-activeFiltersList">
+          {/* <div className="CardManagerFilter-activeFiltersList">
             <span>Filtres actifs</span>
             {getActiveFiltersList().map((activeFilter) => (
               <div
@@ -352,7 +358,7 @@ export const CardManagerFilterComponent: React.FC<{
                 {activeFilter.text}
               </div>
             ))}
-          </div>
+          </div> */}
           <div
             className="CardManagerFilter-openFilters"
             onClick={() => setIsFilterPanelOpen(!isFilterPanelOpen)}
@@ -360,7 +366,7 @@ export const CardManagerFilterComponent: React.FC<{
             {<FilterAltIcon />}
           </div>
           <div className="CardManagerFilter-options">
-            {!isUnloggedPage() && (
+            {!isUnloggedPage() && isUserConnected() && (
               <div
                 className="CardManagerFilter-openOptions"
                 onClick={() => setIsOptionOpen(!isOptionOpen)}

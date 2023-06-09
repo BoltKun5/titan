@@ -63,7 +63,7 @@ export class CardService extends EntityService<Card, ICard> {
     };
   }
 
-  public getPossessionQuery(possession: ICardQuery['possession'], user: IUser): string {
+  public getPossessionQuery(possession: ICardQuery['possession'] | undefined, user: IUser): string {
     switch (possession) {
       case 'unowned':
         return `SELECT "card".id 
@@ -200,30 +200,34 @@ export class CardService extends EntityService<Card, ICard> {
             exclude: ['cardId'],
           },
         },
-        {
-          model: UserCardPossession,
-          as: 'userCardPossessions',
-          order: [['createdAt', 'ASC']],
-          required: false,
-          separate: true,
-          where: {
-            userId: user.id,
-          },
-          include: [
-            {
-              model: CardAdditionalPrinting,
-              as: 'printing',
-              required: false,
-              duplicating: false,
-            },
-            {
-              model: Tag,
-              as: 'tags',
-              required: false,
-              duplicating: false,
-            },
-          ],
-        },
+        ...(user?.id
+          ? [
+              {
+                model: UserCardPossession,
+                as: 'userCardPossessions',
+                order: [['createdAt', 'ASC']],
+                required: false,
+                separate: true,
+                where: {
+                  userId: user?.id,
+                },
+                include: [
+                  {
+                    model: CardAdditionalPrinting,
+                    as: 'printing',
+                    required: false,
+                    duplicating: false,
+                  },
+                  {
+                    model: Tag,
+                    as: 'tags',
+                    required: false,
+                    duplicating: false,
+                  },
+                ],
+              },
+            ]
+          : []),
         {
           model: CardType,
           as: 'types',

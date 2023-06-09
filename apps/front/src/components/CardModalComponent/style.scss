@@ -15,12 +15,12 @@
 
   &-modale {
     background: $primary-bg;
-    width: 100%;
     max-width: 1550px;
     height: 100%;
     display: flex;
     position: relative;
     border-right: 1px solid $primary-border;
+    padding: 0 20px;
   }
 
   &-misc {
@@ -49,6 +49,7 @@
 
     & img {
       width: 330px;
+      aspect-ratio: 300 / 410;
       border-radius: 20px;
       margin: 0 10px;
     }
@@ -312,7 +313,7 @@
   .CardModal {
     &-modale {
       flex-direction: column;
-      overflow-y: scroll;
+      overflow-y: auto;
       align-items: center;
     }
 

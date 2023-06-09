@@ -51,7 +51,7 @@ export const Login: React.FC = () => {
       localStorage.setItem("token", response.data.data.token);
       localStorage.setItem("user", JSON.stringify(response.data.data.user));
       setUser(response.data.data.user);
-      navigate("/cards");
+      navigate("/");
     } catch (e: any) {
       const errorCode = e.response?.data?.error?.code;
       switch (errorCode) {
@@ -69,7 +69,7 @@ export const Login: React.FC = () => {
     const savedUser = localStorage.getItem("user");
     const savedToken = localStorage.getItem("token");
     if (user?.id !== "" && savedUser !== null && savedToken !== null) {
-      navigate("/cards");
+      navigate("/");
     }
   });
 

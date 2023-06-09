@@ -17,7 +17,8 @@ body {
   }
 
   & *::-webkit-scrollbar {
-    width: 12px;
+    width: 9px;
+    height: 9px;
   }
 
   & *::-webkit-scrollbar-track {
@@ -143,5 +144,12 @@ body {
   100% {
     top: 10%;
     left: -70%;
+  }
+}
+
+@media (max-width: 600px) {
+  body *::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
   }
 }

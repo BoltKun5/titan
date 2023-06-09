@@ -33,7 +33,7 @@ export const CardModal: React.FC<{ card: ICard; closeModal: () => void }> = ({
   const [handleClose, setHandleClose] = useState(false);
 
   useEffect(() => {
-    setLocalCardPossession([...card.userCardPossessions]);
+    setLocalCardPossession([...card.userCardPossessions ?? []]);
   }, []);
 
   const context = {
@@ -194,7 +194,7 @@ export const CardModal: React.FC<{ card: ICard; closeModal: () => void }> = ({
   const handleCloseModal = () => {
     const unsavedData =
       JSON.stringify(localCardPossession) !==
-      JSON.stringify(card.userCardPossessions);
+      JSON.stringify(card.userCardPossessions ?? []);
     if (!unsavedData) return closeModal();
     else {
       if (handleClose) {
@@ -253,7 +253,7 @@ export const CardModal: React.FC<{ card: ICard; closeModal: () => void }> = ({
               <img src={getImageSource(card, true)} />
             </div>
           </div>
-          <div className="CardModal-possessionsContainer">
+          {card.userCardPossessions && <div className="CardModal-possessionsContainer">
             <div className="CardModal-possessions">
               <div className="CardModal-possessionHeaders">
                 <div className="CardModal-possessionTitle">
@@ -309,7 +309,7 @@ export const CardModal: React.FC<{ card: ICard; closeModal: () => void }> = ({
                 </div>
               </div>
             </div>
-          </div>
+          </div>}
           <div className="CardModal-closeButtonContainer">
             {handleClose ? (
               <ClickAwayListener

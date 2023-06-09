@@ -181,7 +181,7 @@ export const App: React.FC = () => {
   }, [series]);
 
   const showHeader = () => {
-    const hideHeaderPaths = ["/", "/signup", "/devtool"];
+    const hideHeaderPaths = ["/login", "/signup", "/devtool"];
     return !hideHeaderPaths.includes(window.location.pathname);
   };
 
@@ -198,8 +198,8 @@ export const App: React.FC = () => {
                 />
               )}
               <Routes>
-                <Route path="/" element={<Login />} />
-                <Route path="/cards" element={<CardManager />} />
+                <Route path="/login" element={<Login />} />
+                <Route path="/" element={<CardManager />} />
                 <Route path="/opening" element={<Opening />} />
                 <Route path="/stats" element={<StatPage />} />
                 <Route path="/historic" element={<HistoricPage />} />

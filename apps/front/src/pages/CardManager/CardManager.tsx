@@ -14,7 +14,6 @@ import { useParams } from "react-router-dom";
 
 export const CardManager: React.FC = () => {
   const { isLoading, fetch } = useFetchData(isUnloggedPage());
-
   const {
     cardSetFilter,
     nameFilter,
@@ -29,6 +28,7 @@ export const CardManager: React.FC = () => {
     setPage,
     tags,
     setTags,
+    user
   } = useContext(StoreContext);
 
   let id: string | undefined = useParams().id;
@@ -84,6 +84,7 @@ export const CardManager: React.FC = () => {
   ]);
 
   const fetchTags = useCallback(async () => {
+    if (user.id === '') return;
     const response = await fetch(`/tag`, {
       ...(id ? { userId: id } : {}),
     });

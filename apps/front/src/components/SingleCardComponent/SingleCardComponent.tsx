@@ -91,17 +91,18 @@ export const SingleCardComponent: React.FC<SingleCardComponentPropsType> = ({
               </div>
               <img
                 className="SingleCard-img"
+                decoding="async"
                 src={getImageSource(card)}
                 loading={"lazy"}
               />
             </div>
 
             <div className="SingleCard-collectionBackground" />
-            <SingleCardOverlayComponent
+            {card.userCardPossessions && <SingleCardOverlayComponent
               firstType={firstType}
               card={card}
               index={index}
-            />
+            />}
           </>
         )}
       </div>
