@@ -1,4 +1,10 @@
-import { ICardQuery, CardTypeEnum, CardRarityEnum, IUpsertCardBody } from 'vokit_core';
+import {
+  ICardQuery,
+  CardTypeEnum,
+  CardRarityEnum,
+  IUpsertCardBody,
+  ICardCreateBody,
+} from 'vokit_core';
 import { HttpResponseError } from '../../modules/http-response-error';
 import Joi from 'joi';
 
@@ -43,6 +49,17 @@ export default class CardValidation {
       rarity: Joi.number(),
       setId: Joi.string(),
       types: Joi.array().items(Joi.number().valid(...Object.values(CardTypeEnum))),
+    }).options({ presence: 'required' });
+
+    const result = querySchema.validate(data);
+    if (result.error) throw HttpResponseError.createWrongValuesError();
+
+    return { ...result.value };
+  }
+
+  static cardCreateBody(data: ICardCreateBody): ICardCreateBody {
+    const querySchema = Joi.object<ICardCreateBody>({
+      cardSetId: Joi.string(),
     }).options({ presence: 'required' });
 
     const result = querySchema.validate(data);

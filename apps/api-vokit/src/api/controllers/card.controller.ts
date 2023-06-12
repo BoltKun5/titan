@@ -1,10 +1,11 @@
-import { ICardCreateResponse } from './../../vokit_core/types/interface/api/responses/card.response';
 import { CardType } from './../../database/models/card-type.model';
 import { CardAdditionalPrinting } from './../../database/models/card-additional-printing.model';
 import { HttpResponseError } from './../../modules/http-response-error';
 import { User } from './../../database/models/user.model';
 import {
   CardTypeEnum,
+  ICardCreateBody,
+  ICardCreateResponse,
   ICardListResponse,
   ICardQuery,
   ICardUpdateResponse,
@@ -118,6 +119,8 @@ class CardController implements Controller {
       canBeReverse: req.body.canBeReverse,
       localId: req.body.localId,
       setId: req.body.setId,
+      thumbnailId: req.body.thumbnailId,
+      imageId: req.body.imageId,
     });
 
     const addPrinting = card.cardAdditionalPrinting;
@@ -189,16 +192,12 @@ class CardController implements Controller {
   }
 
   async create(
-    req: Request<Record<string, never>, ICardCreateResponse, void>,
+    req: Request<Record<string, never>, ICardCreateResponse, ICardCreateBody>,
     res: Response<IResponse<ICardCreateResponse>, ILocals>,
   ): Promise<void> {
-    const card = await Card.create();
+    req.body = CardValidation.cardCreateBody(req.body);
 
-    await card.update({
-      setId: '00000000-0000-0000-0000-000000000000',
-    });
-
-    await card.reload();
+    const card = await Card.create({ setId: req.body.cardSetId });
 
     res.json({ data: { card } });
   }

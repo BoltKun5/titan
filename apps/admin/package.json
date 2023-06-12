@@ -7,14 +7,13 @@
     "build": "vite build"
   },
   "dependencies": {
-    "@emotion/react": "^11.9.0",
-    "@emotion/styled": "^11.8.1",
     "@mui/icons-material": "^5.10.9",
     "@mui/material": "^5.8.3",
+    "@mui/x-date-pickers": "^6.7.0",
     "@tcgdex/sdk": "^2.4.6",
     "axios": "^0.27.2",
     "bootstrap": "^5.2.3",
-    "dayjs": "^1.11.5",
+    "dayjs": "^1.11.7",
     "dotenv": "^16.0.3",
     "joi": "^17.6.0",
     "notistack": "^2.0.8",

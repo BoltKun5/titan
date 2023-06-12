@@ -29,3 +29,18 @@ export enum CardTypeEnumFrench {
   'Fée' = 11,
   'Aucun' = 12,
 }
+
+export enum PokecardexCardTypeEnum {
+  'Plante' = 1,
+  'Feu' = 2,
+  'Eau' = 3,
+  'Electrik' = 4,
+  'Combat' = 5,
+  'Psy' = 6,
+  'Incolore' = 7,
+  'Obscur' = 8,
+  'Métal' = 9,
+  'Dragon' = 10,
+  'Fée' = 11,
+  'Aucun' = 12,
+}

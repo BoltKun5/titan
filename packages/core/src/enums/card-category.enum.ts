@@ -3,3 +3,9 @@ export enum CardCategoryEnum {
   'Pokemon',
   'Trainer',
 }
+
+export enum PokecardexCardCategoryEnum {
+  'Energie' = 1,
+  'Pokemon',
+  'Trainer',
+}

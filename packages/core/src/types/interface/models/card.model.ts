@@ -16,4 +16,6 @@ export type ICard = {
   localId: string;
   userCardPossessions: IUserCardPossession[];
   cardAdditionalPrinting: ICardAdditionalPrinting[];
+  imageId: string;
+  thumbnailId: string;
 };

@@ -1,6 +1,6 @@
 export * from './models/log-console.model';
 export * from './models/log-endpoint.model';
-export * from './models/card';
+export * from './models/card.model';
 export * from './models/card-serie.model';
 export * from './models/card-set.model';
 export * from './models/card-type.model';

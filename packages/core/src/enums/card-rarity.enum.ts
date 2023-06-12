@@ -7,6 +7,10 @@ export enum CardRarityEnum {
   'Ultra Rare',
   'Uncommon',
   'Holo',
+  'Double Rare',
+  'Illustration Rare',
+  'Illustration Spéciale Rare',
+  'Hyper Rare',
 }
 
 export enum CardRarityEnumFrench {
@@ -17,5 +21,24 @@ export enum CardRarityEnumFrench {
   'Magnifique rare',
   'Ultra Rare',
   'Peu Commune',
-  'Holo',
+  'Holographique',
+  'Double Rare',
+  'Illustration Rare',
+  'Illustration Spéciale Rare',
+  'Hyper Rare',
+}
+
+export enum PokecardexRarityEnum {
+  'Magnifique' = 1,
+  'Commune',
+  'Promo',
+  'Rare',
+  'Secrète',
+  'Ultra-rare',
+  'Unco',
+  'Holographique',
+  'Double Rare',
+  'Illustration Rare',
+  'Illustration Spéciale Rare',
+  'Hyper Rare',
 }

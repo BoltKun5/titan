@@ -1,5 +1,5 @@
 import { CardTag } from './card-tag.model';
-import { Card } from './card';
+import { Card } from './card.model';
 import {
   DataType,
   Column,

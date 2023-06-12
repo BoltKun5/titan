@@ -61,6 +61,7 @@ export default (): express.Application => {
     ) => {
       LoggerModule.error(error, { type: LogType.API, requestId: httpContextGet('reqId') });
       HttpResponseError.sendError(error, req, res);
+      console.log(error);
     },
   );
 

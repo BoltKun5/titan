@@ -18,3 +18,7 @@ export interface ICardUpdateResponse {
 export interface ICardUpdateResponse {
   card: ICard;
 }
+
+export interface ICardCreateResponse {
+  card: ICard;
+}

@@ -13,7 +13,7 @@ export const Navigation: React.FC = () => {
 
   return (
     <div
-      className="position-absolute"
+      className="position-absolute w-100"
       style={{ left: "50%", bottom: 0, transform: "translate(-50%)" }}
     >
       <BottomNavigation

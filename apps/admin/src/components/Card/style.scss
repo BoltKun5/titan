@@ -1,9 +1,19 @@
 .Card {
-    height: 350px;
     display: flex;
+    flex-direction: column;
+    height: 100%;
+    overflow: hidden auto;
+
+    &-imageContainer {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        padding: 10px 0;
+    }
 
     & img {
         border-radius: 10px;
+        width: 200px;
     }
 
     &-inputs {
@@ -11,6 +21,7 @@
         flex-wrap: wrap;
         height: fit-content;
         justify-content: center;
+        flex-direction: column;
         align-items: center;
         width: fit-content;
 
@@ -21,7 +32,9 @@
     }
 
     &-add {
-        width: 910px;
+        width: 100%;
+        display: flex;
+        flex-direction: column;
     }
 
     &-add2 {
@@ -36,14 +49,12 @@
     }
 
     &-printings {
-        width: 200px;
         background-color: rgb(247, 247, 247);
         border-radius: 5px;
         display: flex;
         align-items: center;
         justify-content: center;
         padding-left: 10px;
-        margin: 5px !important;
 
         &:hover {
             cursor: pointer;

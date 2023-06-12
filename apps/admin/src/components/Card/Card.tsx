@@ -34,11 +34,8 @@ export const CardComponent: React.FC<{
   card: ICard;
   sets: ICardSet[];
   update: Function;
-}> = ({ card: _card, sets, update }) => {
+}> = ({ card, sets, update }) => {
   const { enqueueSnackbar } = useSnackbar();
-
-  const card = { ..._card };
-
   const [name, setName] = useState(card.name);
   const [cardAdditionalPrinting, setCardAdditionalPrinting] = useState(
     card.cardAdditionalPrinting
@@ -48,11 +45,23 @@ export const CardComponent: React.FC<{
   const [rarity, setRarity] = useState(card.rarity);
   const [types, setTypes] = useState(card.types.map((e) => e.type));
   const [canBeReverse, setCanBeReverse] = useState(card.canBeReverse);
+  const [imageId, setImageId] = useState(card.imageId);
+  const [thumbnailId, setThumbnailId] = useState(card.thumbnailId);
 
   const [index, setIndex] = useState<null | number>(null);
   const [_name, _setName] = useState("");
   const [creator, setCreator] = useState("");
   const [type, setType] = useState("");
+
+  useEffect(() => {
+    setName(card.name ?? '');
+    setCardAdditionalPrinting(card.cardAdditionalPrinting ?? '');
+    setSetId(card.setId ?? '');
+    setLocalId(card.localId ?? '');
+    setRarity(card.rarity ?? '');
+    setTypes(card.types.map((e) => e.type) ?? []);
+    setCanBeReverse(card.canBeReverse ?? false)
+  }, [card])
 
   useEffect(() => {
     if (index !== null) {
@@ -77,7 +86,7 @@ export const CardComponent: React.FC<{
   const handleSubmit = async () => {
     try {
       const params: any = {
-        id: _card.id,
+        id: card.id,
         name,
         rarity,
         localId,
@@ -96,59 +105,34 @@ export const CardComponent: React.FC<{
     }
   };
 
-  //#region Accordéon
-  const Accordion = styled((props: AccordionProps) => (
-    <MuiAccordion disableGutters elevation={0} square {...props} />
-  ))(({ theme }) => ({
-    border: `1px solid ${theme.palette.divider}`,
-    "&:not(:last-child)": {
-      borderBottom: 0,
-    },
-    "&:before": {
-      display: "none",
-    },
-  }));
-
-  const AccordionSummary = styled((props: AccordionSummaryProps) => (
-    <MuiAccordionSummary {...props} />
-  ))(({ theme }) => ({
-    backgroundColor:
-      theme.palette.mode === "dark"
-        ? "rgba(255, 255, 255, .05)"
-        : "rgba(0, 0, 0, .03)",
-  }));
-
-  const AccordionDetails = styled(MuiAccordionDetails)(({ theme }) => ({
-    padding: theme.spacing(2),
-    borderTop: "1px solid rgba(0, 0, 0, .125)",
-  }));
-
-  const [expanded, setExpanded] = React.useState<string | false>("panel1");
-
-  const handleChange =
-    (panel: string) => (event: React.SyntheticEvent, newExpanded: boolean) => {
-      setExpanded(newExpanded ? panel : false);
-    };
-  //#endregion
-
   return (
     <div className="Card">
-      <div>
-        <img width={230} src={getImageSource(card)} />
+      <div className="Card-imageContainer">
+        <img width={230} height={275} src={getImageSource(card)} />
       </div>
       <div className="Card-inputs">
         <TextField
           value={name}
           onChange={(ev) => setName(ev.target.value)}
           label={"Nom"}
-        />
+          InputLabelProps={{ shrink: true }} />
         <TextField
           value={localId}
           onChange={(ev) => setLocalId(ev.target.value)}
           label={"ID"}
-        />
+          InputLabelProps={{ shrink: true }} />
+        <TextField
+          value={imageId}
+          onChange={(ev) => setImageId(ev.target.value)}
+          label={"ID image"}
+          InputLabelProps={{ shrink: true }} />
+        <TextField
+          value={thumbnailId}
+          onChange={(ev) => setThumbnailId(ev.target.value)}
+          label={"ID thumbnail"}
+          InputLabelProps={{ shrink: true }} />
         <FormControl>
-          <InputLabel htmlFor="grouped-select">Set</InputLabel>
+          <InputLabel htmlFor="grouped-select" shrink>Set</InputLabel>
           <Select
             defaultValue=""
             label="Set"
@@ -164,12 +148,13 @@ export const CardComponent: React.FC<{
           </Select>
         </FormControl>
         <FormControl>
-          <InputLabel htmlFor="grouped-select">Rareté</InputLabel>
+          <InputLabel htmlFor="grouped-select" shrink>Rareté</InputLabel>
           <Select
             defaultValue=""
             label="Rareté"
             value={rarity as any}
             onChange={(e) => setRarity(e.target.value as any)}
+
           >
             {Object.values(CardRarityEnumFrench).map((el: any) => {
               if (typeof el !== "number") {
@@ -183,7 +168,7 @@ export const CardComponent: React.FC<{
           </Select>
         </FormControl>
         <FormControl sx={{ m: 1, width: 300 }}>
-          <InputLabel>Types</InputLabel>
+          <InputLabel shrink>Types</InputLabel>
           <Select
             multiple
             value={types}
@@ -215,17 +200,15 @@ export const CardComponent: React.FC<{
           <Switch checked={canBeReverse} sx={{ pointerEvents: "none" }} />
         </div>
         <div className="Card-add">
-          <span>Versions additionnelles</span>
+          <span style={{ width: 300, margin: 'auto' }}>Versions additionnelles</span>
           <div
-            style={{
-              height: 140,
-            }}
             className="Card-add2"
           >
             <TextField
               disabled={index === null}
               value={creator}
               type={"number"}
+              InputLabelProps={{ shrink: true }}
               onChange={(ev) => {
                 if (index !== null) {
                   const _array = [...cardAdditionalPrinting];
@@ -239,6 +222,7 @@ export const CardComponent: React.FC<{
             <TextField
               disabled={index === null}
               value={_name}
+              InputLabelProps={{ shrink: true }} 
               onChange={(ev) => {
                 if (index !== null) {
                   const _array = [...cardAdditionalPrinting];
@@ -253,6 +237,7 @@ export const CardComponent: React.FC<{
               disabled={index === null}
               value={type}
               type={"number"}
+              InputLabelProps={{ shrink: true }} 
               onChange={(ev) => {
                 if (index !== null) {
                   const _array = [...cardAdditionalPrinting];
@@ -293,7 +278,7 @@ export const CardComponent: React.FC<{
               </div>
             ))}
           </div>
-          <div className="d-flex justify-content-end">
+          <div className="d-flex flex-column mx-auto" style={{ width: 300 }}>
             <Button
               variant="contained"
               sx={{ margin: 1 }}

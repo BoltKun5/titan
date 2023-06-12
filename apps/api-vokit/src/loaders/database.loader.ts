@@ -29,7 +29,7 @@ export default async (): Promise<Sequelize> => {
       });
       await connection.authenticate();
 
-      await connection.sync({ alter: false, force: false });
+      await connection.sync({ alter: true, force: false });
 
       await Promise.all([
         connection.query('CREATE TABLE IF NOT EXISTS "SequelizeData" (name VARCHAR(255));'),

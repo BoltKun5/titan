@@ -29,7 +29,7 @@ export const App: React.FC = () => {
     <>
       <div className="main w-100 h-100">
         {user && <Navigation />}
-        <div className="content w-100 h-100 d-flex">
+        <div className="content w-100 d-flex" style={{height: 'calc(100% - 56px)', borderBottom: '3px solid black'}}>
           <StoreContext.Provider value={store}>
             <Routes>
               <Route path="/" element={<Login />} />

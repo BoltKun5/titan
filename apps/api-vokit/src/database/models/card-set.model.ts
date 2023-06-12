@@ -1,4 +1,4 @@
-import { Card } from './card';
+import { Card } from './card.model';
 import {
   DataType,
   Column,
@@ -26,10 +26,7 @@ export type ModelCardSet = Overwrite<
   }
 >;
 
-export type CreationModelCardSet = WithRequired<
-  Partial<ICardSet>,
-  'name' | 'cardCount' | 'releaseDate' | 'code' | 'cardSerieId'
->;
+export type CreationModelCardSet = WithRequired<Partial<ICardSet>, 'cardSerieId'>;
 
 @DefaultScope(() => ({}))
 @Scopes(() => ({}))

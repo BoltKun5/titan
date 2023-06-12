@@ -11,7 +11,13 @@ export const SeriesRouter = (app: Router): Router => {
 
   route.post('/create-set', admin, serieController.createSet);
 
+  route.post('/update-set', admin, serieController.updateSet);
+
+  route.post('/import-data', admin, serieController.importData);
+
   route.post('/create-serie', admin, serieController.createSerie);
+
+  route.post('/update-serie', admin, serieController.updateSerie);
 
   return route;
 };

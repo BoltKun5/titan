@@ -21,4 +21,10 @@ export interface IUpsertCardBody {
   rarity: number;
   setId: string;
   types: CardTypeEnum[];
+  thumbnailId: string;
+  imageId: string;
+}
+
+export interface ICardCreateBody {
+  cardSetId: string;
 }

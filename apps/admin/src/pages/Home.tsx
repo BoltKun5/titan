@@ -1,4 +1,3 @@
-import * as React from "react";
 import { styled } from "@mui/material/styles";
 import MuiAccordion, { AccordionProps } from "@mui/material/Accordion";
 import MuiAccordionSummary, {
@@ -6,8 +5,8 @@ import MuiAccordionSummary, {
 } from "@mui/material/AccordionSummary";
 import MuiAccordionDetails from "@mui/material/AccordionDetails";
 import { useFetchData } from "../hook/api/cards";
-import { ICard, ICardSerie } from "vokit_core";
-import { api } from "../axios";
+import { ICard, ICardSerie, ICardSet } from "vokit_core";
+import { api, loggedApi } from "../axios";
 import {
   FormControl,
   InputLabel,
@@ -16,49 +15,22 @@ import {
   Select,
 } from "@mui/material";
 import { CardComponent } from "../components/Card/Card";
+import { useState, useCallback, useEffect } from "react";
+import { SetComponent } from "../components/Set/Set";
+import { IceSkating } from "@mui/icons-material";
+import { SerieComponent } from "../components/Serie/Serie";
 
 export const Home: React.FC = () => {
-  //#region Accordéon
-  const Accordion = styled((props: AccordionProps) => (
-    <MuiAccordion disableGutters elevation={0} square {...props} />
-  ))(({ theme }) => ({
-    border: `1px solid ${theme.palette.divider}`,
-    "&:not(:last-child)": {
-      borderBottom: 0,
-    },
-    "&:before": {
-      display: "none",
-    },
-  }));
+  const { fetch } = useFetchData(false);
+  const [set, setSet] = useState<string>("");
+  const [cards, setCards] = useState<ICard[]>([]);
+  const [series, setSeries] = useState<ICardSerie[] | null>(null);
+  const [selectedSerieId, setSelectedSerieId] = useState<null | string>(null);
 
-  const AccordionSummary = styled((props: AccordionSummaryProps) => (
-    <MuiAccordionSummary {...props} />
-  ))(({ theme }) => ({
-    backgroundColor:
-      theme.palette.mode === "dark"
-        ? "rgba(255, 255, 255, .05)"
-        : "rgba(0, 0, 0, .03)",
-  }));
+  const [currentSet, setCurrentSet] = useState<undefined | ICardSet>(undefined);
+  const [currentCard, setCurrentCard] = useState<undefined | ICard>(undefined);
 
-  const AccordionDetails = styled(MuiAccordionDetails)(({ theme }) => ({
-    padding: theme.spacing(2),
-    borderTop: "1px solid rgba(0, 0, 0, .125)",
-  }));
-
-  const [expanded, setExpanded] = React.useState<string | false>("panel1");
-
-  const handleChange =
-    (panel: string) => (event: React.SyntheticEvent, newExpanded: boolean) => {
-      setExpanded(newExpanded ? panel : false);
-    };
-  //#endregion
-
-  const { isLoading, fetch } = useFetchData(false);
-  const [set, setSet] = React.useState<string>("");
-  const [cards, setCards] = React.useState<ICard[]>([]);
-  const [series, setSeries] = React.useState<ICardSerie[] | null>(null);
-
-  const fetchCards = React.useCallback(async () => {
+  const fetchCards = useCallback(async () => {
     if (!set) return;
     const response = await fetch("/card/list", {
       hidden: true,
@@ -69,72 +41,83 @@ export const Home: React.FC = () => {
     setCards(response.data.cards);
   }, [set]);
 
-  const fetchSeries = React.useCallback(async () => {
+  const fetchSeries = useCallback(async () => {
     const response = await api.get(`/series/all-series`);
     setSeries(response.data.data);
   }, []);
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (!series) {
       fetchSeries();
     }
   }, [series, fetchSeries]);
 
-  React.useEffect(() => {
+  useEffect(() => {
+    setCards([])
+  }, [selectedSerieId])
+
+  useEffect(() => {
     fetchCards();
   }, [set]);
 
+  const currentSerie = series?.find(e => e.id === selectedSerieId)
+
   return (
-    <div className="w-100 d-flex flex-column">
-      <FormControl
-        sx={{ m: 2, minWidth: 250, maxWidth: 300, margin: "10px auto" }}
-      >
-        <InputLabel htmlFor="grouped-select">Set</InputLabel>
-        <Select
-          defaultValue=""
-          label="Set"
-          value={set}
-          onChange={(e) => setSet(e.target.value)}
-        >
-          {(series ?? []).map((e) => [
-            <ListSubheader>{e.name}</ListSubheader>,
-            (e.cardSets ?? []).map((_e) => [
-              <MenuItem value={_e.code}>{_e.name}</MenuItem>,
-            ]),
-          ])}
-          <ListSubheader>Autres</ListSubheader>,
-          <MenuItem value='99'>Sans set</MenuItem>
-        </Select>
-      </FormControl>
-      <div
-        className="container overflow-auto border-1 border"
-        style={{ height: "80vh" }}
-      >
-        {cards.map((_card, index) => (
-          <Accordion
-            key={_card.id}
-            expanded={expanded === _card.id}
-            onChange={handleChange(_card.id)}
-          >
-            <AccordionSummary>
-              #{_card.localId} - {_card.name}
-            </AccordionSummary>
-            {expanded === _card.id && (
-              <AccordionDetails>
-                <CardComponent
-                  key={_card.id}
-                  card={_card}
-                  sets={(series ?? []).map((e) => e?.cardSets ?? []).flat()}
-                  update={(card: ICard) => {
-                    const __cards = [...cards];
-                    __cards[index] = card;
-                    setCards(__cards);
-                  }}
-                />
-              </AccordionDetails>
-            )}
-          </Accordion>
-        ))}
+    <div className="Home-container">
+      <div className="Lists-container">
+        <div className={"Series-container"}>
+          {<div className={"Cards-element add"} onClick={async () => { await loggedApi.post("series/create-serie"); fetchSeries() }}>
+            AJOUTER
+          </div>}
+          {
+            series?.map(e => (
+              <div className={"Series-element" + (e.id === selectedSerieId ? ' selected' : '')} onClick={() => { setSelectedSerieId(e.id); setCurrentCard(undefined); setCurrentSet(undefined) }}>
+                {e.name}
+              </div>
+            ))
+          }
+        </div>
+        <div className="Sets-container">
+          {selectedSerieId && <div className={"Cards-element add"} onClick={async () => { await loggedApi.post("series/create-set", { cardSerieId: selectedSerieId }); fetchSeries(); }}>
+            AJOUTER
+          </div>}
+          {
+            series?.find(e => e.id === selectedSerieId)?.cardSets?.map(e => (
+              <div className={"Series-element" + (e.id === currentSet?.id ? ' selected' : '')} onClick={() => { setCurrentSet(e); setSet(e.code); setCurrentCard(undefined); }}>
+                {e.name}
+              </div>
+            ))
+          }
+        </div>
+        <div className="Cards-container">
+          {currentSet && <div className={"Cards-element add"} onClick={async () => { await loggedApi.post("card/create", { cardSetId: currentSet.id }); fetchCards(); }}>
+            AJOUTER
+          </div>}
+          {
+            cards.map(e => (
+              <div className={"Cards-element" + (e.id === currentCard?.id ? ' selected' : '')} onClick={() => { setCurrentCard(e) }}>
+                <span>{e.localId}</span> {e.name}
+              </div>
+            ))
+          }
+        </div>
+      </div>
+
+      <div className="UpdateData-container">
+        {currentCard && <CardComponent
+          card={currentCard}
+          sets={(series ?? []).map((e) => e?.cardSets ?? []).flat()}
+          update={() => fetchCards()}
+        />}
+        {!currentCard && currentSet && <SetComponent
+          set={currentSet}
+          series={(series ?? [])}
+          update={() => {fetchSeries(); fetchCards()}}
+        />}
+        {!currentCard && !currentSet && series?.find(e => e.id === selectedSerieId) && <SerieComponent
+          serie={series?.find(e => e.id === selectedSerieId) as ICardSerie}
+          update={() => fetchSeries()}
+        />}
       </div>
     </div>
   );

@@ -12,7 +12,7 @@ import {
 } from 'sequelize-typescript';
 import { v4 as uuidv4 } from 'uuid';
 import { CustomModel } from '../custom/custom-model.model';
-import { Card } from './card';
+import { Card } from './card.model';
 import { WithRequired } from '../../core';
 import {
   Overwrite,
