@@ -1,17 +1,17 @@
-import expressLoader from './api.loader';
-import postgresLoader from './database.loader';
-import LoggerModule from '../modules/logger.module';
-import { Sequelize } from 'sequelize/types';
-import { LogType } from 'vokit_core';
+import { LogScenario } from 'abyss_monitor_core';
+import AppConfig from '../modules/app-config.module';
+import { apiLoader } from './api.loader';
+import { databaseLoader } from './database.loader';
+import { Sequelize } from 'sequelize-typescript';
 
-export default async (): Promise<Sequelize> => {
-  const postgressConnection = await postgresLoader();
-  LoggerModule.log('DB loaded and connected!', { type: LogType.SYSTEM_STARTUP });
+export const appLoader = async (): Promise<Sequelize> => {
+  const connection = await databaseLoader();
+  AppConfig.logger.log('DB loaded and connected!', { scenario: LogScenario.SYSTEM_STARTUP });
 
-  expressLoader();
-  LoggerModule.log('Express loaded', { type: LogType.SYSTEM_STARTUP });
+  apiLoader();
+  AppConfig.logger.log('Express loaded', { scenario: LogScenario.SYSTEM_STARTUP });
 
-  LoggerModule.log('All Dependency Injector loaded', { type: LogType.SYSTEM_STARTUP });
+  AppConfig.logger.log('All Dependency Injector loaded', { scenario: LogScenario.SYSTEM_STARTUP });
 
-  return postgressConnection;
+  return connection;
 };

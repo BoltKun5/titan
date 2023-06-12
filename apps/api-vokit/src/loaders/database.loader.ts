@@ -1,60 +1,66 @@
 import { Sequelize } from 'sequelize-typescript';
 import AppConfig from '../modules/app-config.module';
-import LoggerModule from '../modules/logger.module';
 import { exec } from 'child_process';
-import { readdirSync } from 'fs-extra';
+import { existsSync, mkdirSync, readdirSync } from 'fs-extra';
 import path from 'path';
 import { requireModules } from '../utils/import.utils';
-import { LogType } from 'vokit_core';
+import { LogScenario } from 'abyss_monitor_core';
 
-export default async (): Promise<Sequelize> => {
+export const databaseLoader = async (): Promise<Sequelize> => {
   const database = AppConfig.config.database;
 
-  return new Promise(async (resolve) => {
-    try {
-      const connection = new Sequelize(database.database, database.username, database.password, {
-        host: database.host,
-        password: database.password,
-        port: database.port,
-        dialect: database.dialect,
-        models: requireModules(path.join(__dirname, '../database/models')),
-        logging: false,
-        logQueryParameters: true,
-        pool: {
-          max: 10,
-          min: 0,
-          idle: 10000,
-          acquire: 30000,
-        },
-      });
-      await connection.authenticate();
+  try {
+    const connection = new Sequelize(database.database, database.username, database.password, {
+      host: database.host,
+      password: database.password,
+      port: database.port,
+      dialect: database.dialect,
+      models: requireModules(path.join(__dirname, '../database/models')),
+      logging: false,
+      logQueryParameters: true,
+      pool: {
+        max: 10,
+        min: 0,
+        idle: 10000,
+        acquire: 30000,
+      },
+    });
+    await connection.authenticate();
 
-      await connection.sync({ alter: true, force: false });
+    await connection.sync({ alter: true, force: false });
 
-      await Promise.all([
-        connection.query('CREATE TABLE IF NOT EXISTS "SequelizeData" (name VARCHAR(255));'),
-        connection.query('CREATE TABLE IF NOT EXISTS "SequelizeMeta" (name VARCHAR(255));'),
-      ]);
+    await Promise.all([
+      connection.query('CREATE TABLE IF NOT EXISTS "SequelizeData" (name VARCHAR(255));'),
+      connection.query('CREATE TABLE IF NOT EXISTS "SequelizeMeta" (name VARCHAR(255));'),
+    ]);
 
-      AppConfig.sequelize = connection;
+    AppConfig.sequelize = connection;
 
-      // await customMigrations(connection);
-      // await customSeeders(connection);
+    // await customMigrations(connection);
+    // await customSeeders(connection);
 
-      AppConfig.process.sequelizeReady = true;
+    AppConfig.process.sequelizeReady = true;
 
-      resolve(connection);
-    } catch (error: any) {
-      LoggerModule.error(error, { type: LogType.SYSTEM_STARTUP });
-    }
-  });
+    return connection;
+  } catch (error: any) {
+    AppConfig.logger.error(error, { scenario: LogScenario.SYSTEM_STARTUP });
+    throw error;
+  }
 };
 
-export const customSeeders = async (sequelize: Sequelize, down?: boolean): Promise<void> => {
+export const customSeeders = async (sequelize: Sequelize): Promise<void> => {
   try {
-    LoggerModule.log('-----------------------');
-    LoggerModule.log('seeders sync...');
-    const files = readdirSync(`${process.cwd()}/src/database/seeders`);
+    AppConfig.logger.log('Running seeders...', { scenario: LogScenario.SYSTEM_STARTUP });
+    const seederPath = `${process.cwd()}/src/database/seeders`;
+
+    existsSync(seederPath);
+    if (!existsSync(seederPath)) {
+      AppConfig.logger.log(`Creating seeder directory because directory do not exist...`, {
+        scenario: LogScenario.SYSTEM_STARTUP,
+      });
+      mkdirSync(seederPath);
+    }
+    const files = readdirSync(seederPath);
 
     const seeders = (
       (await sequelize.query('SELECT * FROM "SequelizeData";')) as { name: string }[][]
@@ -64,28 +70,40 @@ export const customSeeders = async (sequelize: Sequelize, down?: boolean): Promi
       const seederName = file.split('.')[0];
       const seed = await require(`./../database/seeders/${seederName}`);
       try {
-        LoggerModule.log(`Running seeder **${seederName}**`);
-        await (down ? seed.down : seed.up)(sequelize.getQueryInterface());
+        AppConfig.logger.log(`Running seeder **${seederName}**`, {
+          scenario: LogScenario.SYSTEM_STARTUP,
+        });
+        await seed.up(sequelize.getQueryInterface());
         await sequelize.query(`INSERT INTO "SequelizeData" (name) VALUES ('${file.toString()}');`);
       } catch (error: any) {
         console.error(error);
-        await (!down ? seed.down : seed.up)(sequelize.getQueryInterface());
+        await seed.down(sequelize.getQueryInterface());
         throw error;
       }
     }
 
-    await LoggerModule.log('Seeders synchronized');
+    await AppConfig.logger.log('Seeders synchronized', { scenario: LogScenario.SYSTEM_STARTUP });
   } catch (error: any) {
-    await LoggerModule.error(new Error(`>>>LOG:error SEEDERS ${error}`));
+    await AppConfig.logger.error(new Error(`>>>LOG:error SEEDERS ${error}`), {
+      scenario: LogScenario.SYSTEM_STARTUP,
+    });
     throw error;
   }
 };
 
-export const customMigrations = async (sequelize: Sequelize, down?: boolean): Promise<void> => {
+export const customMigrations = async (sequelize: Sequelize): Promise<void> => {
   try {
-    LoggerModule.log('-----------------------');
-    LoggerModule.log('migrations sync...');
-    const files = readdirSync(`${process.cwd()}/src/database/migrations`);
+    AppConfig.logger.log('Running migrations...', { scenario: LogScenario.SYSTEM_STARTUP });
+
+    const migrationPath = `${process.cwd()}/src/database/migrations`;
+    existsSync(migrationPath);
+    if (!existsSync(migrationPath)) {
+      AppConfig.logger.log(`Creating migration directory because directory do not exist...`, {
+        scenario: LogScenario.SYSTEM_STARTUP,
+      });
+      mkdirSync(migrationPath);
+    }
+    const files = readdirSync(migrationPath);
 
     const migrations = (
       (await sequelize.query('SELECT * FROM "SequelizeMeta";')) as { name: string }[][]
@@ -96,19 +114,23 @@ export const customMigrations = async (sequelize: Sequelize, down?: boolean): Pr
       const migration = await require(`./../database/migrations/${migrationName}`);
 
       try {
-        LoggerModule.log(`Running migrations **${migrationName}**`);
-        await (down ? migration.down : migration.up)(sequelize.getQueryInterface());
+        AppConfig.logger.log(`Running migrations **${migrationName}**`, {
+          scenario: LogScenario.SYSTEM_STARTUP,
+        });
+        await migration.up(sequelize.getQueryInterface());
         await sequelize.query(`INSERT INTO "SequelizeMeta" (name) VALUES ('${file.toString()}');`);
       } catch (error: any) {
         console.error(error);
-        await (!down ? migration.down : migration.up)(sequelize.getQueryInterface());
+        await migration.down(sequelize.getQueryInterface());
         throw error;
       }
     }
 
-    await LoggerModule.log('Migrations synchronized');
+    await AppConfig.logger.log('Migrations synchronized', { scenario: LogScenario.SYSTEM_STARTUP });
   } catch (error: any) {
-    await LoggerModule.error(new Error(`>>>LOG:error MIGRATIONS ${error}`));
+    await AppConfig.logger.error(new Error(`>>>LOG:error MIGRATIONS ${error}`), {
+      scenario: LogScenario.SYSTEM_STARTUP,
+    });
     throw error;
   }
 };

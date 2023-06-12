@@ -10,6 +10,8 @@ export default class SerieValidation {
       id: Joi.string(),
       releaseDate: Joi.date(),
       cardSerieId: Joi.string(),
+      imageId: Joi.string(),
+      logoId: Joi.string(),
     }).options({ presence: 'required' });
 
     const result = querySchema.validate(data);

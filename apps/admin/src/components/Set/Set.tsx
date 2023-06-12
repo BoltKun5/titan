@@ -27,10 +27,12 @@ export const SetComponent: React.FC<{
 }> = ({ set, series, update }) => {
   const { enqueueSnackbar } = useSnackbar();
 
-  const [name, setName] = useState(set.name);
-  const [cardSerieId, setCardSerieId] = useState(set.cardSerieId);
-  const [releaseDate, setReleaseDate] = useState(set.releaseDate);
-  const [code, setCode] = useState(set.code);
+  const [name, setName] = useState(set.name ?? '');
+  const [cardSerieId, setCardSerieId] = useState(set.cardSerieId ?? '');
+  const [releaseDate, setReleaseDate] = useState(set.releaseDate ?? '');
+  const [logoId, setLogoId] = useState(set.logoId ?? '');
+  const [imageId, setImageId] = useState(set.imageId ?? '');
+  const [code, setCode] = useState(set.code ?? '');
   const [data, setData] = useState('')
 
   useEffect(() => {
@@ -67,7 +69,7 @@ export const SetComponent: React.FC<{
       };
 
       await loggedApi.post("/series/import-data", params)
-      update();
+      // update();
     } catch (e: any) {
       enqueueSnackbar(e.message);
     }
@@ -80,12 +82,22 @@ export const SetComponent: React.FC<{
           value={name}
           onChange={(ev) => setName(ev.target.value)}
           label={"Nom"}
-          InputLabelProps={{ shrink: true }}     />
+          InputLabelProps={{ shrink: true }} />
         <TextField
           value={code}
           onChange={(ev) => setCode(ev.target.value)}
           label={"Code"}
-          InputLabelProps={{ shrink: true }}    />
+          InputLabelProps={{ shrink: true }} />
+        <TextField
+          value={logoId}
+          onChange={(ev) => setLogoId(ev.target.value)}
+          label={"logoId"}
+          InputLabelProps={{ shrink: true }} />
+        <TextField
+          value={imageId}
+          onChange={(ev) => setImageId(ev.target.value)}
+          label={"imageId"}
+          InputLabelProps={{ shrink: true }} />
         <LocalizationProvider dateAdapter={AdapterDayjs}> <DatePicker
           value={dayjs(releaseDate)}
           onChange={(newValue) => { if (newValue) setReleaseDate(newValue.toDate()) }}
@@ -127,7 +139,7 @@ export const SetComponent: React.FC<{
           multiline
           maxRows={10}
           minRows={10}
-          InputLabelProps={{ shrink: true }}      />
+          InputLabelProps={{ shrink: true }} />
       </div>
       <div className="d-flex flex-column mx-auto" style={{ width: 300 }}>
         <Button

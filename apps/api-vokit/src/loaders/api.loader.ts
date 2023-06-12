@@ -1,4 +1,3 @@
-require('express-async-errors');
 import express, { Response, Request, NextFunction } from 'express';
 import { json, urlencoded } from 'body-parser';
 import cors from 'cors';
@@ -7,18 +6,22 @@ import createError from 'http-errors';
 import routes from '../api';
 import { ILocals } from '../core';
 import AppConfig from '../modules/app-config.module';
-import LoggerModule from '../modules/logger.module';
-import { middleware as httpContextMiddleware, get as httpContextGet } from 'express-http-context';
-import endpointLoggerMiddleware from '../api/middlewares/endpoint-logger.middleware';
-import generalSetupMiddleware from '../api/middlewares/general-setup.middleware';
 import listEndpoints from 'express-list-endpoints';
+import {
+  LogScenario,
+  contextMiddleware,
+  loggerEndpointMiddleware,
+  loggerSetupMiddleware,
+} from 'abyss_monitor_core';
 import { HttpResponseError } from '../modules/http-response-error';
-import { LogType } from 'vokit_core';
+require('express-async-errors');
 
-export default (): express.Application => {
+const PREFIX = '/api';
+
+export const apiLoader = (): express.Application => {
   const app = express();
 
-  app.use(httpContextMiddleware);
+  app.use(contextMiddleware);
 
   app.disable('x-powered-by');
 
@@ -33,6 +36,7 @@ export default (): express.Application => {
     res.setHeader('Access-Control-Expose-Headers', 'Content-disposition, filename');
     next();
   });
+
   app.use(urlencoded({ extended: true }));
   app.use(json());
   app.use(cookieParser());
@@ -41,15 +45,22 @@ export default (): express.Application => {
   // eslint-disable-next-line @typescript-eslint/no-var-requires
   app.use(require('compression')());
 
-  app.use(generalSetupMiddleware);
-  app.use(endpointLoggerMiddleware);
+  // Note(Mehdi): Skipping to don't spam request from monitor
+  app.get('/', (req, res, next) => {
+    res.locals.shouldNotPublishLog = true;
+    res.send();
+    next();
+  });
 
-  app.use(AppConfig.config.api.prefix, routes());
+  app.use(loggerSetupMiddleware);
+  app.use((req, res, next) => loggerEndpointMiddleware(AppConfig.logger, req, res as any, next));
+
+  app.use(PREFIX, routes());
 
   const endpoints = listEndpoints(app);
   const numberOfRoutes = endpoints.reduce((acc, endpoint) => acc + endpoint.methods.length, 0);
-  LoggerModule.log(`${numberOfRoutes} Routes loaded !`, {
-    type: LogType.API,
+  AppConfig.logger.log(`${numberOfRoutes} Routes loaded !`, {
+    scenario: LogScenario.SYSTEM_STARTUP,
   });
 
   app.use(
@@ -59,27 +70,19 @@ export default (): express.Application => {
       res: Response<unknown, ILocals>,
       _next: NextFunction,
     ) => {
-      LoggerModule.error(error, { type: LogType.API, requestId: httpContextGet('reqId') });
-      HttpResponseError.sendError(error, req, res);
       console.log(error);
+      HttpResponseError.sendError(error, req, res);
     },
   );
 
   app
     .listen(AppConfig.config.app.port, () => {
-      LoggerModule.log(`Server listening on port: ${AppConfig.config.app.port}`, {
-        type: LogType.SYSTEM_STARTUP,
+      AppConfig.logger.log(`API Server listening on port: ${AppConfig.config.app.port}`, {
+        scenario: LogScenario.SYSTEM_STARTUP,
       });
-      LoggerModule.log(
-        `
-      ###############################################
-      🛡️      Server listening on port: ${AppConfig.config.app.port}      🛡️
-      ###############################################`,
-        { type: LogType.SYSTEM_STARTUP },
-      );
     })
     .on('error', (err) => {
-      LoggerModule.error(err, { type: LogType.SYSTEM_STARTUP });
+      AppConfig.logger.error(err, { scenario: LogScenario.SYSTEM_STARTUP });
       process.exit(1);
     });
 

@@ -11678,3 +11678,26 @@
 {"content":"Abyss authentication configured","date":"2023-06-12T09:59:04.500Z","level":"debug","type":100}
 {"content":"Server listening on port: 10101","date":"2023-06-12T09:59:04.509Z","level":"debug","type":4}
 {"content":"\n      ###############################################\n      \ud83d\udee1️      Server listening on port: 10101      \ud83d\udee1️\n      ###############################################","date":"2023-06-12T09:59:04.510Z","level":"debug","type":4}
+{"content":"DB loaded and connected!","date":"2023-06-12T10:29:57.152Z","level":"debug","type":4}
+{"content":"28 Routes loaded !","date":"2023-06-12T10:29:57.179Z","level":"debug","type":1}
+{"content":"Express loaded","date":"2023-06-12T10:29:57.181Z","level":"debug","type":4}
+{"content":"All Dependency Injector loaded","date":"2023-06-12T10:29:57.182Z","level":"debug","type":4}
+{"content":"Abyss authentication configured","date":"2023-06-12T10:29:57.184Z","level":"debug","type":100}
+{"content":"Server listening on port: 10101","date":"2023-06-12T10:29:57.191Z","level":"debug","type":4}
+{"content":"\n      ###############################################\n      \ud83d\udee1️      Server listening on port: 10101      \ud83d\udee1️\n      ###############################################","date":"2023-06-12T10:29:57.192Z","level":"debug","type":4}
+{"content":"DB loaded and connected!","date":"2023-06-12T10:43:44.442Z","level":"debug","type":4}
+{"content":"28 Routes loaded !","date":"2023-06-12T10:43:44.469Z","level":"debug","type":1}
+{"content":"Express loaded","date":"2023-06-12T10:43:44.471Z","level":"debug","type":4}
+{"content":"All Dependency Injector loaded","date":"2023-06-12T10:43:44.471Z","level":"debug","type":4}
+{"content":"Abyss authentication configured","date":"2023-06-12T10:43:44.473Z","level":"debug","type":100}
+{"content":"Server listening on port: 10101","date":"2023-06-12T10:43:44.481Z","level":"debug","type":4}
+{"content":"\n      ###############################################\n      \ud83d\udee1️      Server listening on port: 10101      \ud83d\udee1️\n      ###############################################","date":"2023-06-12T10:43:44.482Z","level":"debug","type":4}
+{"content":"DB loaded and connected!","date":"2023-06-12T10:43:58.881Z","level":"debug","type":4}
+{"content":"28 Routes loaded !","date":"2023-06-12T10:43:58.907Z","level":"debug","type":1}
+{"content":"Express loaded","date":"2023-06-12T10:43:58.910Z","level":"debug","type":4}
+{"content":"All Dependency Injector loaded","date":"2023-06-12T10:43:58.910Z","level":"debug","type":4}
+{"content":"Abyss authentication configured","date":"2023-06-12T10:43:58.912Z","level":"debug","type":100}
+{"content":"Server listening on port: 10101","date":"2023-06-12T10:43:58.919Z","level":"debug","type":4}
+{"content":"\n      ###############################################\n      \ud83d\udee1️      Server listening on port: 10101      \ud83d\udee1️\n      ###############################################","date":"2023-06-12T10:43:58.920Z","level":"debug","type":4}
+{"date":"2023-06-12T10:50:41.645Z","error":{},"level":"error","type":4}
+{"date":"2023-06-12T10:50:42.813Z","error":{},"level":"error","type":4}

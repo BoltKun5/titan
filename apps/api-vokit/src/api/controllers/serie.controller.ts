@@ -23,6 +23,12 @@ import { HttpResponseError } from './../../modules/http-response-error';
 import SerieValidation from '../validations/serie.validation';
 import { getRarityFromPokecardex } from '../../utils/get-rarity';
 import { CardAdditionalPrinting } from '../../database/models/card-additional-printing.model';
+import {
+  PreSignUrlType,
+  getPreSignedUrlUserApplicationFile,
+  uploadUserApplicationFile,
+} from 'abyss_storage_core';
+import axios from 'axios';
 
 class SerieController implements Controller {
   private static readonly logger = new LoggerModel(SerieController.name);
@@ -74,6 +80,8 @@ class SerieController implements Controller {
       cardSerieId: req.body.cardSerieId,
       releaseDate: req.body.releaseDate,
       code: req.body.code,
+      imageId: req.body.imageId,
+      logoId: req.body.logoId,
     });
 
     await set.reload();
@@ -159,6 +167,39 @@ class SerieController implements Controller {
           localId: card.id,
           setId: set.id,
         });
+      }
+
+      if (!existingCard.imageId) {
+        const image: ArrayBuffer = (
+          await axios.get('https://' + card.image.substring(2), {
+            responseType: 'arraybuffer',
+          })
+        ).data as ArrayBuffer;
+
+        if (image) {
+          const url = await getPreSignedUrlUserApplicationFile(
+            {
+              userApplicationId: process.env.MONITOR_APPLICATION_ID || '',
+            },
+            {
+              type: PreSignUrlType.UPLOAD,
+              fileName: set.code + '-' + existingCard.localId,
+              shouldGeneratePublicAccess: true,
+            },
+          );
+
+          const abyssImage = await uploadUserApplicationFile(
+            {
+              token: url.data.preSignUrl,
+            },
+            {
+              should_skip_await_webhook_delivery: true,
+            },
+            image,
+          );
+
+          console.log(abyssImage.data.userApplicationFile);
+        }
       }
 
       const cardTypes = await CardType.findAll({

@@ -111,6 +111,11 @@ export const CardComponent: React.FC<{
         <img width={230} height={275} src={getImageSource(card)} />
       </div>
       <div className="Card-inputs">
+      <TextField
+          value={card.id}
+          label={"uniqueID"}
+          InputLabelProps={{ shrink: true }}
+          disabled />
         <TextField
           value={name}
           onChange={(ev) => setName(ev.target.value)}

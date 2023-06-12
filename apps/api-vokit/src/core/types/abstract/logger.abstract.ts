@@ -1,18 +1,15 @@
-import LoggerModule from '../../../modules/logger.module';
-import { get as httpContextGet } from 'express-http-context';
-import { LogType } from 'vokit_core';
+import { LogScenario, getRequestContext } from 'abyss_monitor_core';
+import AppConfig from '../../../modules/app-config.module';
 
 type ParamsError = {
-  type?: LogType;
+  //
 };
 
 type ParamsInfo = {
-  type?: LogType;
   shouldLogIntoDiscord?: boolean;
 };
 
 type ParamsWarn = {
-  type?: LogType;
   shouldLogIntoDiscord?: boolean;
 };
 export class LoggerModel {
@@ -22,39 +19,41 @@ export class LoggerModel {
     this.name = name;
   }
 
-  private getCurrentRequestId(): string | null {
-    return httpContextGet('reqId') || null;
+  private getCurrentRequestId(): string {
+    return getRequestContext().requestId;
   }
 
   public async error(error: Error | string, options?: ParamsError): Promise<void> {
-    LoggerModule.error(error, {
+    AppConfig.logger.error(error, {
       context: this.name,
-      requestId: this.getCurrentRequestId() || undefined,
+      scenario: LogScenario.API,
+      requestId: this.getCurrentRequestId(),
       ...options,
     });
   }
 
   public async log(message: string): Promise<void> {
-    LoggerModule.log(message, {
+    AppConfig.logger.log(message, {
       context: this.name,
-      requestId: this.getCurrentRequestId() || undefined,
+      scenario: LogScenario.API,
+      requestId: this.getCurrentRequestId(),
     });
   }
 
   public async info(message: string, options?: ParamsInfo): Promise<void> {
-    LoggerModule.log(message, {
+    AppConfig.logger.info(message, {
       context: this.name,
-      requestId: this.getCurrentRequestId() || undefined,
-      shouldLogIntoDiscord: true,
+      scenario: LogScenario.API,
+      requestId: this.getCurrentRequestId(),
       ...options,
     });
   }
 
   public async warn(message: string, options?: ParamsWarn): Promise<void> {
-    LoggerModule.warn(message, {
+    AppConfig.logger.warn(message, {
       context: this.name,
-      requestId: this.getCurrentRequestId() || undefined,
-      shouldLogIntoDiscord: true,
+      scenario: LogScenario.API,
+      requestId: this.getCurrentRequestId(),
       ...options,
     });
   }

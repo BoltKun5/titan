@@ -71,7 +71,7 @@ export const Home: React.FC = () => {
           </div>}
           {
             series?.map(e => (
-              <div className={"Series-element" + (e.id === selectedSerieId ? ' selected' : '')} onClick={() => { setSelectedSerieId(e.id); setCurrentCard(undefined); setCurrentSet(undefined) }}>
+              <div className={"Series-element" + (e.id === selectedSerieId ? ' selected' : '')} onClick={() => { setSelectedSerieId(e.id); setCurrentCard(undefined); setSet(""); setCurrentSet(undefined) }}>
                 {e.name}
               </div>
             ))
@@ -94,7 +94,9 @@ export const Home: React.FC = () => {
             AJOUTER
           </div>}
           {
-            cards.map(e => (
+            cards.sort((a: any, b: any) => {
+              return (isNaN(Number(a.localId)) ? a.localId : Number(a.localId)) - (isNaN(Number(b.localId)) ? b.localId : Number(b.localId))
+            }).map(e => (
               <div className={"Cards-element" + (e.id === currentCard?.id ? ' selected' : '')} onClick={() => { setCurrentCard(e) }}>
                 <span>{e.localId}</span> {e.name}
               </div>

@@ -9,4 +9,6 @@ export type ICardSet = {
   code: string;
   cardSerieId: string;
   cardSerie: ICardSerie;
+  imageId: string;
+  logoId: string;
 };

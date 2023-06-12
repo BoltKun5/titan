@@ -18,7 +18,7 @@ export enum CardRarityEnumFrench {
   'Commune',
   'Sans Rareté',
   'Rare',
-  'Magnifique rare',
+  'Secrète',
   'Ultra Rare',
   'Peu Commune',
   'Holographique',

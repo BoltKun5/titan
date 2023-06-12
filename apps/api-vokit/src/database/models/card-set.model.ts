@@ -61,6 +61,16 @@ export class CardSet extends CustomModel<ICardSet, CreationModelCardSet> impleme
   })
   code: string;
 
+  @Column({
+    type: DataType.STRING,
+  })
+  imageId: string;
+
+  @Column({
+    type: DataType.STRING,
+  })
+  logoId: string;
+
   @ForeignKey(() => CardSerie)
   @Column({
     type: DataType.STRING,

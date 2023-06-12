@@ -3,6 +3,8 @@ import { Response, Request } from 'express';
 import { ServiceException } from '../utils/error.utils';
 import { HttpErrorCode } from 'vokit_core';
 import { ILocals } from '../core';
+import { getRequestContext, LogScenario } from 'abyss_monitor_core';
+import AppConfig from './app-config.module';
 
 export class HttpResponseError {
   public static createInternalServerError(): createError.HttpError {
@@ -94,16 +96,19 @@ export class HttpResponseError {
   public static sendError(
     error: Error | createError.HttpError,
     req: Request,
-    res: Response<unknown, ILocals>,
+    res: Response<any, ILocals>,
   ): void {
-    let errorToUse = error;
+    const errorToUse = HttpResponseError.generateError(error);
 
-    if (error instanceof Error) errorToUse = HttpResponseError.generateError(error);
+    if (errorToUse.status >= 500) {
+      AppConfig.logger.error(error, {
+        requestId: getRequestContext().requestId,
+        scenario: LogScenario.SYSTEM_STARTUP,
+      });
+    }
 
-    const err = errorToUse as createError.HttpError;
-
-    res.status(err.status).json({
-      error: err,
+    res.status(errorToUse.status).json({
+      error: errorToUse,
     });
   }
 }

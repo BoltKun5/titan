@@ -23,6 +23,8 @@
   "dependencies": {
     "@date-io/dayjs": "^2.15.0",
     "@types/archiver": "^5.3.1",
+    "abyss_monitor_core": "^0.0.13",
+    "abyss_storage_core": "^0.0.65",
     "app-root-path": "^3.1.0",
     "archiver": "^5.3.1",
     "axios": "^0.23.0",
@@ -57,8 +59,8 @@
     "stack-trace": "^0.0.10",
     "underscore": "^1.13.1",
     "uuid": "^8.3.2",
-    "winston": "^3.8.2",
-    "vokit_core": "workspace:*"
+    "vokit_core": "workspace:*",
+    "winston": "^3.8.2"
   },
   "devDependencies": {
     "@types/bcryptjs": "^2.4.2",

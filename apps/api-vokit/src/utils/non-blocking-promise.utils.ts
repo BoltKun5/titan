@@ -1,13 +1,12 @@
 import { LoggerModel } from '../core';
-import LoggerModule from '../modules/logger.module';
-
+import AppConfig from '../modules/app-config.module';
 export const nonBlockingPromise = (promise: Promise<unknown>, logger?: LoggerModel): void => {
   if (promise) {
     promise.catch((error) => {
       if (logger) {
-        logger.error(new Error(error));
+        logger.error(error);
       } else {
-        LoggerModule.error(new Error(error));
+        AppConfig.logger.error(error);
       }
     });
   }

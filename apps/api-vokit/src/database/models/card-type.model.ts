@@ -44,7 +44,7 @@ export class CardType
   })
   cardId: string;
 
-  @BelongsTo(() => Card)
+  @BelongsTo(() => Card, { onDelete: 'CASCADE' })
   card: Card;
 
   @Column({

@@ -7,6 +7,8 @@ export interface ISetUpdateBody {
   // cardCount: CardCountType;
   releaseDate: Date;
   code: string;
+  logoId: string;
+  imageId: string;
 }
 
 export interface ISerieUpdateBody {
