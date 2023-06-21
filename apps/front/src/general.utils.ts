@@ -47,6 +47,11 @@ export const frontRarity: frontRarityType = {
   "Ultra Rare": "Ultra Rare",
   None: "Promotionnelle",
   Amazing: "Magnifique",
+  'Ultra-rare': 'Ultra-rare',
+  'Double Rare': 'Double Rare',
+  'Illustration Rare': 'Illustration Rare',
+  'Illustration Spéciale Rare': 'Illustration Spéciale Rare',
+  'Hyper Rare': 'Hyper Rare',
 };
 
 type frontRarityType = {
@@ -96,26 +101,9 @@ export const getImageSource = (
   card: ICard,
   highQuality: boolean = false
 ): string => {
-  const isValid = !isNaN(Number(card.localId));
-  if (isValid)
-    return (
-      import.meta.env.VITE_ASSETS_URL +
-      "/" +
-      card.cardSet.code +
-      "/" +
-      card.localId +
-      // (highQuality ? "-high" : "") +
-      ".jpg"
-    );
-  return (
-    import.meta.env.VITE_ASSETS_URL +
-    "/" +
-    card.cardSet.code +
-    "/" +
-    card.localId +
-    // (highQuality ? "-high" : "") +
-    ".jpg"
-  );
+  if (highQuality)
+    return `${import.meta.env.VITE_ASSETS_URL}/user-application-file/file/download/public-access/${card.imageId}`;
+  return `${import.meta.env.VITE_ASSETS_URL}/user-application-file-thumbnail/file-thumbnail/${card.thumbnailId}/download`
 };
 
 export const getImageFromSeparatedInfos = (

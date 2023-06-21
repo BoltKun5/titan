@@ -25,6 +25,7 @@ import { getRarityFromPokecardex } from '../../utils/get-rarity';
 import { CardAdditionalPrinting } from '../../database/models/card-additional-printing.model';
 import {
   PreSignUrlType,
+  generateUserApplicationFileThumbnail,
   getPreSignedUrlUserApplicationFile,
   uploadUserApplicationFile,
 } from 'abyss_storage_core';
@@ -125,6 +126,8 @@ class SerieController implements Controller {
   ): Promise<void> {
     req.body = SerieValidation.importData(req.body);
 
+    SerieController.logger.info(`Importing new cards for set ${req.body.id}`);
+
     const set = await CardSet.findOne({
       where: {
         id: req.body.id,
@@ -146,6 +149,8 @@ class SerieController implements Controller {
       });
 
       if (!existingCard) {
+        SerieController.logger.info(`Creating card ${set.code}-${card.id}`);
+
         existingCard = await Card.create({
           name: card.name,
           rarity: getRarityFromPokecardex(card.rarity) as unknown as CardRarityEnum,
@@ -177,28 +182,55 @@ class SerieController implements Controller {
         ).data as ArrayBuffer;
 
         if (image) {
-          const url = await getPreSignedUrlUserApplicationFile(
-            {
-              userApplicationId: process.env.MONITOR_APPLICATION_ID || '',
-            },
-            {
-              type: PreSignUrlType.UPLOAD,
-              fileName: set.code + '-' + existingCard.localId,
-              shouldGeneratePublicAccess: true,
-            },
-          );
+          try {
+            SerieController.logger.info(`Getting image for ${card.id}`);
+            const url = await getPreSignedUrlUserApplicationFile(
+              {
+                userApplicationId: process.env.MONITOR_APPLICATION_ID || '',
+              },
+              {
+                type: PreSignUrlType.UPLOAD,
+                fileName: set.code + '-' + existingCard.localId,
+                shouldGeneratePublicAccess: true,
+              },
+            );
+            SerieController.logger.info(`Uploading image for ${card.id}`);
 
-          const abyssImage = await uploadUserApplicationFile(
-            {
-              token: url.data.preSignUrl,
-            },
-            {
-              should_skip_await_webhook_delivery: true,
-            },
-            image,
-          );
+            const abyssImage = await uploadUserApplicationFile(
+              {
+                token: url.data.preSignUrl,
+              },
+              {
+                should_skip_await_webhook_delivery: true,
+                should_not_generate_thumbnail: true,
+              },
+              image,
+            );
+            SerieController.logger.info(`Generating thumbnail for ${card.id}`);
 
-          console.log(abyssImage.data.userApplicationFile);
+            const thumbnail = await generateUserApplicationFileThumbnail(
+              {
+                userApplicationFileId: abyssImage.data.userApplicationFile.id ?? '',
+                userApplicationId: abyssImage.data.userApplicationFile.userApplicationId,
+              },
+              {
+                resolution: {
+                  x: 230,
+                  y: 315,
+                },
+                name: set.code + '-' + existingCard.localId + '-LOW',
+              },
+            );
+
+            existingCard.update({
+              imageId: abyssImage.data.userApplicationFile.publicAccessId ?? '',
+              thumbnailId: thumbnail.data.userApplicationFileThumbnail?.publicAccessId,
+            });
+          } catch (e: any) {
+            console.log(e?.response?.data);
+
+            throw HttpResponseError.createInternalServerError();
+          }
         }
       }
 
@@ -207,28 +239,36 @@ class SerieController implements Controller {
           cardId: existingCard.id,
         },
       });
+      SerieController.logger.info(`Updating card types for ${card.id}`);
 
       await Promise.all(
         cardTypes.map(async (cardType, index) => {
           if (index > 0) {
             return await cardType.destroy();
           }
-          if (
-            cardType.type !==
-            (PokecardexCardTypeEnum[
-              card.type as keyof typeof PokecardexCardTypeEnum
-            ] as unknown as CardTypeEnum)
-          ) {
-            return await cardType.update({
-              type: PokecardexCardTypeEnum[
+          if (PokecardexCardTypeEnum[card.type as keyof typeof PokecardexCardTypeEnum]) {
+            if (
+              cardType.type !==
+              (PokecardexCardTypeEnum[
                 card.type as keyof typeof PokecardexCardTypeEnum
-              ] as unknown as CardTypeEnum,
-            });
+              ] as unknown as CardTypeEnum)
+            ) {
+              return await cardType.update({
+                type: PokecardexCardTypeEnum[
+                  card.type as keyof typeof PokecardexCardTypeEnum
+                ] as unknown as CardTypeEnum,
+              });
+            }
+          } else {
+            return await cardType.destroy();
           }
         }),
       );
 
-      if (!cardTypes[0]) {
+      if (
+        !cardTypes[0] &&
+        PokecardexCardTypeEnum[card.type as keyof typeof PokecardexCardTypeEnum]
+      ) {
         await CardType.create({
           type: PokecardexCardTypeEnum[
             card.type as keyof typeof PokecardexCardTypeEnum
@@ -236,6 +276,7 @@ class SerieController implements Controller {
           cardId: existingCard.id,
         });
       }
+      SerieController.logger.info(`Updating card prints for ${card.id}`);
 
       if (card.canBeReverse) {
         let reversePrint = await CardAdditionalPrinting.findOne({

@@ -50,6 +50,8 @@ export const SetComponent: React.FC<{
         cardSerieId,
         releaseDate,
         code,
+        imageId,
+        logoId
       };
 
       const newCard = (await loggedApi.post("/series/update-set", params)).data.data

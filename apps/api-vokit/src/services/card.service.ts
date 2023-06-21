@@ -12,6 +12,7 @@ import { Card, CardSet, CardType, User, UserCardPossession } from '../database';
 import { EntityService, Paginator } from '../core';
 import { CardAdditionalPrinting } from '../database/models/card-additional-printing.model';
 import { Tag } from '../database/models/tag.model';
+import { Sequelize } from 'sequelize-typescript';
 
 export class CardService extends EntityService<Card, ICard> {
   private readonly paginator = new Paginator(User);
@@ -150,7 +151,7 @@ export class CardService extends EntityService<Card, ICard> {
         case 'default':
           mainOrder = [
             [{ model: CardSet, as: 'cardSet' }, 'releaseDate', 'desc'],
-            ['localId', 'asc'],
+            [Sequelize.fn('lpad', Sequelize.col('localId'), 5, '00'), 'asc'],
           ];
           break;
         case 'name':

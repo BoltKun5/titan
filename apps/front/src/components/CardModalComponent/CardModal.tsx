@@ -224,12 +224,7 @@ export const CardModal: React.FC<{ card: ICard; closeModal: () => void }> = ({
                   <div className="CardModal-set">
                     <Tooltip title={card.cardSet.name}>
                       <img
-                        src={
-                          import.meta.env.VITE_ASSETS_URL +
-                          "/setIcons/" +
-                          card.cardSet.code +
-                          ".png"
-                        }
+                        src={`${import.meta.env.VITE_ASSETS_URL}/user-application-file/file/download/public-access/${card.cardSet.logoId}`}
                       />
                     </Tooltip>
                   </div>
@@ -238,7 +233,7 @@ export const CardModal: React.FC<{ card: ICard; closeModal: () => void }> = ({
                   <img
                     className="CardModal-rarityImg"
                     src={
-                      import.meta.env.VITE_ASSETS_URL + "/icons/" +
+                      "./assets/icons/" +
                       CardRarityEnum[card.rarity] +
                       ".png"
                     }

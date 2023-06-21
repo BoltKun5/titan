@@ -64,10 +64,7 @@ export const SetListComponent: React.FC = () => {
                   >
                     <Tooltip title={set.name}>
                       <img
-                        src={
-                          import.meta.env.VITE_ASSETS_URL +
-                          `/setIcons/${set.code}.png`
-                        }
+                        src={`${import.meta.env.VITE_ASSETS_URL}/user-application-file/file/download/public-access/${set.logoId}`}
                       />
                     </Tooltip>
                   </div>

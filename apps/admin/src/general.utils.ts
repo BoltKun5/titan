@@ -19,24 +19,7 @@ export const getImageSource = (
   card: ICard,
   highQuality: boolean = false
 ): string => {
-  const isValid = !isNaN(Number(card.localId));
-  if (isValid)
-    return (
-      import.meta.env.VITE_ASSETS_URL +
-      "/" +
-      card.cardSet.code +
-      "/" +
-      card.localId +
-      // (highQuality ? "-high" : "") +
-      ".jpg"
-    );
-  return (
-    import.meta.env.VITE_ASSETS_URL +
-    "/" +
-    card.cardSet.code +
-    "/" +
-    card.localId +
-    // (highQuality ? "-high" : "") +
-    ".jpg"
-  );
+  if (highQuality)
+    return `${import.meta.env.VITE_ASSETS_URL}/user-application-file/file/download/public-access/${card.imageId}`;
+  return `${import.meta.env.VITE_ASSETS_URL}/user-application-file-thumbnail/file-thumbnail/${card.thumbnailId}/download`
 };

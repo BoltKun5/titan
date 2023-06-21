@@ -60,7 +60,9 @@ export const CardComponent: React.FC<{
     setLocalId(card.localId ?? '');
     setRarity(card.rarity ?? '');
     setTypes(card.types.map((e) => e.type) ?? []);
-    setCanBeReverse(card.canBeReverse ?? false)
+    setCanBeReverse(card.canBeReverse ?? false);
+    setImageId(card.imageId ?? '');
+    setThumbnailId(card.thumbnailId ?? '');
   }, [card])
 
   useEffect(() => {

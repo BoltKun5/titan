@@ -263,7 +263,7 @@ export const CardManagerFilterComponent: React.FC<{
                     >
                       <img
                         className="CardManagerFilter-rarityImg"
-                        src={import.meta.env.VITE_ASSETS_URL + "/icons/" + filter.rarity + ".png"}
+                        src={"./assets/icons/" + filter.rarity + ".png"}
                       />
                     </div>
                   </Tooltip>
@@ -271,7 +271,7 @@ export const CardManagerFilterComponent: React.FC<{
               </div>
             </div>
           </div>
-          {isUserConnected() || id && <div className="CardManagerFilter-fixedWidthContainer">
+          {(isUserConnected() || id) && <div className="CardManagerFilter-fixedWidthContainer">
             <div className="CardManagerFilter-htmlSelectInput">
               <label>Possession</label>
               <div className="CardManagerFilter-htmlSelectInput-container">

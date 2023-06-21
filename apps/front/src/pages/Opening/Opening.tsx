@@ -11,7 +11,7 @@ import { ButtonComponent } from "../../components/UI/Button/ButtonComponent";
 import { SwipeCheckboxComponent } from "../../components/UI/SwipeCheckboxComponent/SwipeCheckboxComponent";
 import { Close, Done } from "@mui/icons-material";
 import { useFetchData } from "../../hook/api/cards";
-import { CardAdditionalPrintingTypeEnum, ICard, ICardSerie } from "vokit_core";
+import { CardAdditionalPrintingTypeEnum, ICard, ICardSerie, ICardSet } from "vokit_core";
 import { ICardAdditionalPrinting } from "vokit_core/src/types/interface/models/card-additional-printing.model";
 import useWindowDimensions from "../../hook/utils/useWindowDimensions";
 
@@ -42,6 +42,7 @@ export const Opening: React.FC = () => {
     name: string;
     id: string;
     code: string;
+    logoId: string;
   };
 
   useEffect(() => {
@@ -50,11 +51,12 @@ export const Opening: React.FC = () => {
     series.map(
       (serie) => {
         _setList = _setList.concat(
-          serie.cardSets?.map((_serie: ICardSerie) => {
+          serie.cardSets?.map((_serie: ICardSet) => {
             return {
               name: _serie.name,
               id: _serie.id,
               code: _serie.code,
+              logoId: _serie.logoId
             };
           }) ?? []
         );
@@ -289,10 +291,7 @@ export const Opening: React.FC = () => {
                     }}
                   >
                     <img
-                      src={
-                        import.meta.env.VITE_ASSETS_URL +
-                        `/setIcons/${set.code}.png`
-                      }
+                      src={`${import.meta.env.VITE_ASSETS_URL}/user-application-file/file/download/public-access/${set.logoId}`}
                     />
                     <span>{set.name}</span>
                   </div>

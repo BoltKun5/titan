@@ -16,9 +16,8 @@ export default class AppConfig {
 
   public static init(): void {
     AppConfig.logger = new Logger({
-      userApplicationApiKey: process.env.USER_APPLICATION_API_KEY || '',
-      userApplicationId: process.env.APPLICATION_ID || '',
       shouldDisableRemoteLogging: this.process.env === 'development',
+      shouldDisableConsoleResponseBodyLogging: true,
     });
   }
 }
