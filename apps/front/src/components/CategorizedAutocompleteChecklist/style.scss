@@ -1,7 +1,6 @@
 @import "../../scss/variables.scss";
 
 .CategorizedAutocompleteChecklist {
-  width: 400px;
   position: relative;
   display: flex;
   scrollbar-color: $primary rgb(41, 41, 41);
@@ -19,27 +18,12 @@
     }
   }
 
-  & .TextInputComponent {
-    & input {
-      margin: auto;
-    }
-
-    & label {
-      top: -25px
-    }
-  }
-
-  &-searchBarContainer {
-    height: 60px;
-  }
-
-
   &-dropdown {
     border: 1px solid rgb(41, 41, 41);
     display: none;
     position: fixed;
     overflow: hidden auto;
-    top: 100%;
+    top: 190px;
     left: 0;
     flex-direction: column;
     word-break: normal;
@@ -60,10 +44,15 @@
     &Element {
       display: flex;
       align-items: center;
-      padding: 15px 0 15px 30px;
+      padding: 10px 0 10px 10px;
       cursor: pointer;
       background-color: #161827;
       color: $white;
+
+      & img {
+        width: 25px;
+        margin-right: 5px;
+      }
 
       &:hover {
         --mc-r: 59;
@@ -97,31 +86,54 @@
         }
       }
 
-
-
       &.selected {
-        color: rgb(59, 153, 241);
-        text-shadow: rgb(59 153 241) 0 0 20px;
+        background-color: $secondary;
       }
     }
   }
 
   &-title {
     font-size: 1rem;
-    padding: 20px 15px;
+    padding: 10px 8px;
     font-weight: bold;
     background: linear-gradient(to right, rgb(37, 61, 110), rgb(2, 36, 59));
     color: $white;
     cursor: pointer;
 
     &:hover {
-      color: rgb(59, 153, 241);
-      text-shadow: rgb(59 153 241) 0 0 20px;
+      --mc-r: 255;
+      --mc-g: 255;
+      --mc-b: 255;
+      --c: radial-gradient(circle at bottom left, rgba(var(--mc-r), var(--mc-g), var(--mc-b), 1) 0%, rgba(var(--mc-r), var(--mc-g), var(--mc-b), 0) 7px),
+        radial-gradient(circle at bottom right, rgba(var(--mc-r), var(--mc-g), var(--mc-b)) 0, rgba(var(--mc-r), var(--mc-g), var(--mc-b), 0) 7px),
+        radial-gradient(circle at top left, rgba(var(--mc-r), var(--mc-g), var(--mc-b)) 0, rgba(var(--mc-r), var(--mc-g), var(--mc-b), 0) 7px),
+        radial-gradient(circle at top right, rgba(var(--mc-r), var(--mc-g), var(--mc-b)) 0, rgba(var(--mc-r), var(--mc-g), var(--mc-b), 0) 7px);
+      --w: 10px;
+      --b: 1px;
+
+      position: relative;
+
+
+      &:after {
+        content: "";
+        position: absolute;
+        z-index: 1;
+        inset: 0;
+        background: var(--c, red);
+        --_g: #0000 90deg, #000 0;
+        --_p: var(--w) var(--w) no-repeat;
+        --mask:
+          conic-gradient(from 90deg at top var(--b) left var(--b), var(--_g)) 0 0 / var(--_p),
+          conic-gradient(from 180deg at top var(--b) right var(--b), var(--_g)) 100% 0 / var(--_p),
+          conic-gradient(from 0deg at bottom var(--b) left var(--b), var(--_g)) 0 100% / var(--_p),
+          conic-gradient(from -90deg at bottom var(--b) right var(--b), var(--_g)) 100% 100% / var(--_p);
+        -webkit-mask: var(--mask);
+        mask: var(--mask);
+      }
     }
 
     &.selected {
-      color: rgb(59, 153, 241);
-      text-shadow: rgb(59 153 241) 0 0 20px;
+      background: linear-gradient(to right, rgb(75, 99, 146), rgb(14, 41, 58));
 
       &:hover {
         filter: brightness(1.1);

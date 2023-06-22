@@ -57,6 +57,9 @@ export type TextInputComponentType = {
   onKeyUpCallback?: any;
   onKeyDownCallback?: any;
   width?: number;
+  height?: number;
+  labelAsPlaceholder?: boolean;
+  preset?: string;
 };
 
 export type ButtonComponentPropsType = {
@@ -65,7 +68,14 @@ export type ButtonComponentPropsType = {
   size?: number;
   disabled?: boolean;
   height?: number;
-  color?: "primary" | "green" | "red";
+  color?: "primary" | "green" | "red" | "secondary";
+  style?: any;
+  className?: string;
+  weight?: number | string;
+  fontSize?: number;
+  preset?: string;
+  clipPath?: number;
+  hoverOffset?: number;
 };
 
 export type SwipeCheckboxComponentType = {
@@ -75,6 +85,7 @@ export type SwipeCheckboxComponentType = {
   elements: { value: any; name: string }[];
   value: any;
   width: number;
+  preset?: string;
 };
 
 export type CardPossessionComponentPropsType = {

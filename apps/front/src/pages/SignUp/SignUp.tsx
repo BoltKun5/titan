@@ -15,7 +15,7 @@ export const SignUp: React.FC = () => {
   const [shownName, setShownName] = useState("");
   const navigate = useNavigate();
 
-  const {setUser} = useContext(StoreContext)
+  const { setUser } = useContext(StoreContext)
 
   const handleSubmit = async (event: React.SyntheticEvent) => {
     event.preventDefault();
@@ -60,6 +60,12 @@ export const SignUp: React.FC = () => {
   return (
     <div className="SignUp-Page">
       <form onSubmit={handleSubmit} className="SignUp-Form coloredCorner">
+        <Link to={"/"}>
+          <div className="BackButton">
+            <svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 24 24" fill="none" stroke="#000000" stroke-width="3" strokeLinecap="square" strokeLinejoin={"arcs" as any}><path d="M19 12H6M12 5l-7 7 7 7" /></svg>
+          </div>
+        </Link>
+        <div className="Logo"><img src="./assets/logo_full.png" /></div>
         <h2>Inscription</h2>
         <div className="SignUp-inputs">
           <TextInputComponent
@@ -84,7 +90,7 @@ export const SignUp: React.FC = () => {
           <ButtonComponent label={"S'inscrire"} />
         </div>
         <div
-          className="Login-errorMessage"
+          className="SignUp-errorMessage"
           style={{ ...(errorMessage ? {} : { border: "none" }) }}
         >
           {errorMessage}

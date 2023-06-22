@@ -66,6 +66,8 @@ export type StoreType = {
   >;
   tags: ITag[] | null;
   setTags: React.Dispatch<React.SetStateAction<ITag[] | null>>;
+  listDisplay: boolean;
+  setListDisplay: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 export type CardModalType = {

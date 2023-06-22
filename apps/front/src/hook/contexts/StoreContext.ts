@@ -38,4 +38,6 @@ export default React.createContext<StoreType>({
   setNotifications: () => {},
   tags: null,
   setTags: () => {},
+  listDisplay: false,
+  setListDisplay: () => {}
 });

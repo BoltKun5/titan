@@ -51,6 +51,8 @@ export const App: React.FC = () => {
   const [pagination, setPagination] = useState<PaginationData | null>(null);
   const [massInput, setMassInput] = useState(false);
 
+  const [listDisplay, setListDisplay] = useState(false);
+
   // Filtres
   const [cardSetFilter, setCardSetFilter] = useState<ICardSetFilter[] | null>(
     null
@@ -159,6 +161,8 @@ export const App: React.FC = () => {
     setNotifications,
     tags,
     setTags,
+    listDisplay,
+    setListDisplay
   };
 
   useEffect(() => {
@@ -173,6 +177,7 @@ export const App: React.FC = () => {
             categoryCode: serie.code,
             status: false,
             code: set.code,
+            logoId: set.logoId
           });
         });
       });

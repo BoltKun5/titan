@@ -8,6 +8,7 @@ export const SwipeCheckboxComponent: React.FC<SwipeCheckboxComponentType> = ({
   width,
   elements,
   callback,
+  preset
 }) => {
   const getSelectedElementBgStyle = () => {
     let offset;
@@ -18,7 +19,7 @@ export const SwipeCheckboxComponent: React.FC<SwipeCheckboxComponentType> = ({
   };
 
   return (
-    <div className="SwipeCheckboxComponent">
+    <div className={"SwipeCheckboxComponent" + (' ' + preset)}>
       {label && <label>{label}</label>}
       <div className="SwipeCheckboxComponent-container">
         <div className="SwipeCheckboxComponent-elements">

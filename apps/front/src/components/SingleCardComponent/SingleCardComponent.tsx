@@ -4,6 +4,7 @@ import React, {
   useCallback,
   useContext,
   useEffect,
+  useRef,
   useState,
 } from "react";
 
@@ -23,6 +24,7 @@ export const SingleCardComponent: React.FC<SingleCardComponentPropsType> = ({
   const { collectionMode, separateReverse } = useContext(StoreContext);
   const [cardModal, setCardModal] = useState<ICard | null>(null);
   const [isMissingImage, setIsMissingImage] = useState<boolean>(false);
+  const imageElement = useRef(null)
 
   const openCardInfo = (card: ICard) => {
     setCardModal(card);
@@ -33,6 +35,13 @@ export const SingleCardComponent: React.FC<SingleCardComponentPropsType> = ({
   const [show, setShow] = useState(false);
 
   const [parent, setParent] = useState<HTMLElement | null | undefined>(null);
+
+  // useEffect(() => {
+  //   if (show) {
+  //     const url = getImageSource(card, true);
+  //     (imageElement.current as unknown as HTMLImageElement).setAttribute('src', url)
+  //   }
+  // }, [show])
 
   const isElementInViewport = useCallback(() => {
     let windowHeight = parent?.clientHeight;
@@ -79,20 +88,16 @@ export const SingleCardComponent: React.FC<SingleCardComponentPropsType> = ({
               className="SingleCard-imgContainer"
               onClick={() => openCardInfo(card)}
             >
-              <div
-                className="SingleCard-data"
-                style={{ zIndex: isMissingImage ? 100 : 0 }}
-              >
-                {card.name} ({card.localId})<br />
-                {card.cardSet.code} - {card.cardSet.name}
-              </div>
               <div className="SingleCard-infos">
                 {card.name} ({card.localId})
               </div>
               <img
+                ref={imageElement}
                 className="SingleCard-img"
-                decoding="async"
                 src={getImageSource(card, true)}
+                onLoad={(e) => {
+                  e.currentTarget.classList.add('show')
+                }}
                 loading={"lazy"}
               />
             </div>

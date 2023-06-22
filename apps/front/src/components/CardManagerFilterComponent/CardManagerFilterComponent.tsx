@@ -4,18 +4,17 @@ import React, {
   useEffect,
   useState,
 } from "react";
-import { ClickAwayListener, Tooltip } from "@mui/material";
+import { ClickAwayListener, Grow, Slide, Tooltip, Zoom } from "@mui/material";
 import { CategorizedAutocompleteChecklist } from "../CategorizedAutocompleteChecklist/CategorizedAutocompleteChecklist";
 import "./style.scss";
 import { frontRarity, isUnloggedPage, isUserConnected } from "../../general.utils";
 import FilterAltIcon from "@mui/icons-material/FilterAlt";
 import { TextInputComponent } from "../UI/TextInputComponent/TextInputComponent";
 import { ButtonComponent } from "../UI/Button/ButtonComponent";
-import { CardManagerOptions } from "../CardManagerOptionsComponent/CardManagerOptionsComponent";
 import {
   ArrowBackIosNew,
   ArrowForwardIos,
-  Settings,
+  List
 } from "@mui/icons-material";
 import StoreContext from "../../hook/contexts/StoreContext";
 import { SwipeCheckboxComponent } from "../UI/SwipeCheckboxComponent/SwipeCheckboxComponent";
@@ -23,6 +22,7 @@ import { Loader } from "../UI/Loader/LoaderComponent";
 import { ICardSetFilter } from "../../local-core";
 import useWindowDimensions from "../../hook/utils/useWindowDimensions";
 import { useParams } from "react-router-dom";
+import { SwitchInputComponent } from "../SwitchInputComponent/SwitchInputComponent";
 
 export const CardManagerFilterComponent: React.FC<{
   hidePagination?: boolean;
@@ -40,10 +40,12 @@ export const CardManagerFilterComponent: React.FC<{
     possessionFilter,
     setPossessionFilter,
     setRarityFilter,
+    setListDisplay,
+    listDisplay
   } = useContext(StoreContext);
 
   const [isFilterPanelOpen, setIsFilterPanelOpen] = useState(false);
-  const [isOptionOpen, setIsOptionOpen] = useState(false);
+  // const [isOptionOpen, setIsOptionOpen] = useState(false);
 
   const { width } = useWindowDimensions();
 
@@ -186,133 +188,74 @@ export const CardManagerFilterComponent: React.FC<{
     <Loader />
   ) : (
     <>
-      {isFilterPanelOpen && (
-        <div
-          className="CardManagerFilter-blurFilter"
-          onClick={() => setIsFilterPanelOpen(false)}
-        />
-      )}
-      <div
-        className={"CardManagerFilter" + (isFilterPanelOpen ? " blured" : "")}
-        style={{
-          transform: isFilterPanelOpen ? "" : "translateY(calc(-100% + 55px))",
-        }}
-      >
+      <div className={"CardManagerFilter"}>
         <div className="CardManagerFilter-top">
-          <div className="CardManagerFilter-fixedWidthContainer">
-            <TextInputComponent
-              width={width > 450 ? 368 : 310}
-              label={"Nom"}
-              id={"nameFilter"}
-              onKeyUpCallback={startCountdown}
-              onKeyDownCallback={() => clearTimeout(nameInputTimer)}
-            />
-          </div>
-          <div className="CardManagerFilter-fixedWidthContainer">
-            <div className="CardManagerFilter-selectInput">
-              <label>Trier par</label>
-              <div className="CardManagerFilter-selectInputOptions-container">
-                <SwipeCheckboxComponent
-                  callback={setOrder}
-                  elements={[
-                    {
-                      name: "Set",
-                      value: "default",
-                    },
-                    {
-                      name: "Nom",
-                      value: "name",
-                    },
-                    {
-                      name: "Type",
-                      value: "type",
-                    },
-                  ]}
-                  value={order}
-                  width={width > 450 ? 127 : 108}
-                />
+          <div className="CardManagerFilter-topElements">
+            {(
+              <div
+                className="CardManagerFilter-openFilters" style={{ marginLeft: 10 }}
+                onClick={() => setIsFilterPanelOpen(!isFilterPanelOpen)}
+              >
+                <FilterAltIcon />
+              </div>
+            )}
+            <div className="CardManagerFilter-fixedWidthContainer" style={{ width: 150 }}>
+              <div
+                className="CardManagerFilter-resetContainer"
+                onClick={resetAllFilters}
+              >
+                <ButtonComponent label={"Réinitialiser"} size={150} height={40} clipPath={10} />
               </div>
             </div>
-          </div>
-          <div className="CardManagerFilter-fixedWidthContainer">
-            <CategorizedAutocompleteChecklist
-              items={cardSetFilter}
-              placeholder={"Filtrer par sets"}
-              onFilterChange={updateSetFilters}
-              width={width > 450 ? 368 : 310}
-            />
-          </div>
-          <div className="CardManagerFilter-fixedWidthContainer">
-            <div className="CardManagerFilter-rarityFilter">
-              <label>Filtrer par rareté</label>
-              <div className="CardManagerFilter-rarityList">
-                {rarityFilter.map((filter: any) => (
-                  // @ts-ignore
-                  <Tooltip
-                    title={frontRarity[filter.rarity]}
-                    key={"rarity" + filter.rarity}
-                  >
-                    <div
-                      className={
-                        "CardManagerFilter-rarityContainer " +
-                        (filter.value ? "selected" : "")
-                      }
-                      onClick={() => {
-                        updateRarityFilter(filter.rarity);
-                      }}
+            <div className="CardManagerFilter-fixedWidthContainer" style={{ width: 250 }}>
+              <TextInputComponent
+                label={"Nom"}
+                id={"nameFilter"}
+                onKeyUpCallback={startCountdown}
+                onKeyDownCallback={() => clearTimeout(nameInputTimer)}
+                height={40}
+                preset={'filter'}
+              />
+            </div>
+            <div className="CardManagerFilter-fixedWidthContainer" style={{ width: 300 }}>
+              <CategorizedAutocompleteChecklist
+                items={cardSetFilter}
+                placeholder={"Filtrer par sets"}
+                onFilterChange={updateSetFilters}
+                width={300}
+              />
+            </div>
+            <div className="CardManagerFilter-fixedWidthContainer" style={{ width: 'auto', marginRight: 20 }}>
+              <div className="CardManagerFilter-rarityFilter">
+                <label>Filtrer par rareté</label>
+                <div className="CardManagerFilter-rarityList">
+                  {rarityFilter.map((filter: any) => (
+                    // @ts-ignore
+                    <Tooltip
+                      title={frontRarity[filter.rarity]}
+                      key={"rarity" + filter.rarity}
                     >
-                      <img
-                        className="CardManagerFilter-rarityImg"
-                        src={"./assets/icons/" + filter.rarity + ".png"}
-                      />
-                    </div>
-                  </Tooltip>
-                ))}
+                      <div
+                        className={
+                          "CardManagerFilter-rarityContainer " +
+                          (filter.value ? "selected" : "")
+                        }
+                        onClick={() => {
+                          updateRarityFilter(filter.rarity);
+                        }}
+                      >
+                        <img
+                          className="CardManagerFilter-rarityImg"
+                          src={"./assets/icons/" + filter.rarity + ".png"}
+                        />
+                      </div>
+                    </Tooltip>
+                  ))}
+                </div>
               </div>
             </div>
           </div>
-          {(isUserConnected() || id) && <div className="CardManagerFilter-fixedWidthContainer">
-            <div className="CardManagerFilter-htmlSelectInput">
-              <label>Possession</label>
-              <div className="CardManagerFilter-htmlSelectInput-container">
-                <select
-                  value={possessionFilter ?? "null"}
-                  onChange={(ev) =>
-                    setPossessionFilter(
-                      ev.target.value !== "null"
-                        ? (ev.target.value as any)
-                        : null
-                    )
-                  }
-                >
-                  <option value={"null"}>Toutes</option>
-                  <option value={"partial_owned"}>1+ version possédée</option>
-                  <option value={"partial_unowned"}>
-                    1+ version non possédée
-                  </option>
-                  <option value={"fully_owned"}>
-                    Toutes versions possédées
-                  </option>
-                  <option value={"unowned"}>Aucune version possédée</option>
-                  <option value={"multiple_owned"}>
-                    Exemplaires multiples
-                  </option>
-                </select>
-              </div>
-            </div>
-          </div>}
-
-          <div className="CardManagerFilter-fixedWidthContainer">
-            <div
-              className="CardManagerFilter-resetContainer"
-              onClick={resetAllFilters}
-            >
-              <ButtonComponent label={"Réinitialiser"} />
-            </div>
-          </div>
-        </div>
-        <div className="CardManagerFilter-activeFilters">
-          {pagination && !hidePagination && (
+          {pagination && !hidePagination && (<div className="CardManagerFilter-topPagination">
             <div className="CardManagerFilter-pagination">
               <div
                 className={
@@ -347,43 +290,77 @@ export const CardManagerFilterComponent: React.FC<{
                 <ArrowForwardIos />
               </div>
             </div>
-          )}
-          {/* <div className="CardManagerFilter-activeFiltersList">
-            <span>Filtres actifs</span>
-            {getActiveFiltersList().map((activeFilter) => (
-              <div
-                className="CardManagerFilter-activeFilter"
-                key={activeFilter.text}
-              >
-                {activeFilter.text}
-              </div>
-            ))}
-          </div> */}
-          <div
-            className="CardManagerFilter-openFilters"
-            onClick={() => setIsFilterPanelOpen(!isFilterPanelOpen)}
-          >
-            {<FilterAltIcon />}
-          </div>
-          <div className="CardManagerFilter-options">
-            {!isUnloggedPage() && isUserConnected() && (
-              <div
-                className="CardManagerFilter-openOptions"
-                onClick={() => setIsOptionOpen(!isOptionOpen)}
-              >
-                <Settings />
-              </div>
-            )}
-            {isOptionOpen && (
-              <ClickAwayListener onClickAway={() => setIsOptionOpen(false)}>
-                <div className="CardManagerFilter-optionsModale">
-                  <CardManagerOptions />
-                </div>
-              </ClickAwayListener>
-            )}
-          </div>
+            <div className="CardManagerFilter-listMod">
+              <SwitchInputComponent value={listDisplay} isDisabled={false} modifyValue={setListDisplay} label={""} id={"listdisplay"} />
+              <Tooltip title={'Mode liste'}>
+                <List />
+              </Tooltip>
+            </div>
+          </div>)}
         </div>
-      </div>
+        {isFilterPanelOpen &&
+          <Zoom in={isFilterPanelOpen}>
+            <div className="CardManagerFilter-bottom">
+              <div className="CardManagerFilter-fixedWidthContainer" style={{ width: 250 }}>
+                <div className="CardManagerFilter-selectInput">
+                  <label>Trier par</label>
+                  <div className="CardManagerFilter-selectInputOptions-container">
+                    <SwipeCheckboxComponent
+                      callback={setOrder}
+                      elements={[
+                        {
+                          name: "Set",
+                          value: "default",
+                        },
+                        {
+                          name: "Nom",
+                          value: "name",
+                        },
+                        {
+                          name: "Type",
+                          value: "type",
+                        },
+                      ]}
+                      preset='filter'
+                      value={order}
+                      width={80}
+                    />
+                  </div>
+                </div>
+              </div>
+              {(isUserConnected() || id) && <div className="CardManagerFilter-fixedWidthContainer">
+                <div className="CardManagerFilter-htmlSelectInput">
+                  <label>Possession</label>
+                  <div className="CardManagerFilter-htmlSelectInput-container">
+                    <select
+                      value={possessionFilter ?? "null"}
+                      onChange={(ev) =>
+                        setPossessionFilter(
+                          ev.target.value !== "null"
+                            ? (ev.target.value as any)
+                            : null
+                        )
+                      }
+                    >
+                      <option value={"null"}>Toutes</option>
+                      <option value={"partial_owned"}>1+ version possédée</option>
+                      <option value={"partial_unowned"}>
+                        1+ version non possédée
+                      </option>
+                      <option value={"fully_owned"}>
+                        Toutes versions possédées
+                      </option>
+                      <option value={"unowned"}>Aucune version possédée</option>
+                      <option value={"multiple_owned"}>
+                        Exemplaires multiples
+                      </option>
+                    </select>
+                  </div>
+                </div>
+              </div>}
+            </div>
+          </Zoom>}
+      </div >
     </>
   );
 };

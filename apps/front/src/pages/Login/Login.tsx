@@ -76,6 +76,12 @@ export const Login: React.FC = () => {
   return (
     <div className="Login-Page">
       <form onSubmit={handleSubmit} className="Login-Form coloredCorner">
+        <Link to={"/"}>
+          <div className="BackButton">
+            <svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 24 24" fill="none" stroke="#000000" stroke-width="3" strokeLinecap="square" strokeLinejoin={"arcs" as any}><path d="M19 12H6M12 5l-7 7 7 7" /></svg>
+          </div>
+        </Link>
+        <div className="Logo"><img src="./assets/logo_full.png" /></div>
         <h2>Connexion</h2>
         <div className="Login-inputs">
           <TextInputComponent

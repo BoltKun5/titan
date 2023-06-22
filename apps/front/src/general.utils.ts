@@ -36,6 +36,26 @@ export const initialRarityFilter = [
     rarity: "Amazing",
     value: false,
   },
+  {
+    rarity: "Ultra-rare",
+    value: false,
+  },
+  {
+    rarity: "Double Rare",
+    value: false,
+  },
+  {
+    rarity: "Illustration Rare",
+    value: false,
+  },
+  {
+    rarity: "Illustration Spéciale Rare",
+    value: false,
+  },
+  {
+    rarity: "Hyper Rare",
+    value: false,
+  },
 ];
 
 export const frontRarity: frontRarityType = {

@@ -70,10 +70,13 @@ export const CategorizedAutocompleteChecklist: React.FC<Props> = ({
       return;
     }
 
+    console.log(items)
+
     const regex = new RegExp(/\s/g);
     const searchText = searchTerm.replace(regex, "").toLowerCase();
     const filteredItems = items.filter((item) => {
-      const cleanLabel = item.name.replace(regex, "").toLowerCase();
+      if (!item?.name) return false;
+      const cleanLabel = item?.name?.replace(regex, "").toLowerCase();
       return cleanLabel.includes(searchText);
     });
     setFilteredItems(manageCategoryTitles(filteredItems, allCategories));
@@ -129,7 +132,7 @@ export const CategorizedAutocompleteChecklist: React.FC<Props> = ({
 
     if (!v) return { top: "", left: "" };
 
-    return { top: `${v.y + v.height}px`, left: `${v.x}px` };
+    return { top: `${v.y + v.height - 18}px`, left: `${v.x}px` };
   };
 
   return (
@@ -146,8 +149,10 @@ export const CategorizedAutocompleteChecklist: React.FC<Props> = ({
                 modifyValue={setSearchTerm}
                 label="Filtrer par set"
                 width={width}
+                preset="filter"
+                height={40}
               />
-              <div className="CategorizedAutocompleteChecklist-fastFilterIcon">
+              {/* <div className="CategorizedAutocompleteChecklist-fastFilterIcon">
                 <Tooltip title="Filtres rapides">
                   <ListIcon
                     onClick={(event) => {
@@ -160,7 +165,7 @@ export const CategorizedAutocompleteChecklist: React.FC<Props> = ({
                     }}
                   />
                 </Tooltip>
-              </div>
+              </div> */}
             </div>
             <ClickAwayListener
               onClickAway={closeDropdown}
@@ -171,7 +176,7 @@ export const CategorizedAutocompleteChecklist: React.FC<Props> = ({
                   "CategorizedAutocompleteChecklist-dropdown " +
                   (isDropdownOpen ? "show" : "")
                 }
-                style={{ width: width + 33, ...getFixedPositionStyle() }}
+                style={{ width: width, ...getFixedPositionStyle() }}
               >
                 <>
                   {filteredItems.map((item: ICardSetFilter, index: number) => {
@@ -198,7 +203,7 @@ export const CategorizedAutocompleteChecklist: React.FC<Props> = ({
                               (item.status ? "selected" : "")
                             }
                           >
-                            {item.name} ({item.code})
+                            <img src={item.logoId} />{item.name}
                           </div>
                         </div>
                       );

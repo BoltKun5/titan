@@ -2,52 +2,103 @@
 
 .CardManagerFilter {
   width: 100%;
-  background: #161827;
-  border-bottom: rgb(41, 41, 41) solid 1px;
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
   flex: 0 1 auto;
-  position: absolute;
   z-index: 200;
-  top: 76px;
-  transition: 0.5s;
+  top: 0;
+  position: sticky;
+  margin-top: 20px;
+  margin-bottom: 20px;
+
+  &-listMod {
+    display: flex;
+    align-items: center;
+    flex-direction: column-reverse;
+    height: 80%;
+    margin: auto;
+
+    svg {
+      color: $white;
+      width: 40px;
+      height: 40px;
+    }
+  }
 
   &-top {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(410px, 1fr));
+    display: flex;
+    position: relative;
+    width: fit-content;
+    z-index: 1;
     width: 100%;
-    max-height: calc(100vh - 300px);
-    overflow: hidden auto;
-    padding-top: 10px;
+    flex-wrap: wrap;
+
+    &Elements {
+      display: flex;
+      box-shadow: 0px 0px 20px 3px black;
+      box-sizing: border-box;
+      border: 1px solid $primary-border;
+      background: $primary-bg;
+      overflow: auto hidden;
+      gap: 20px;
+      height: 90px;
+      padding: 5px 0;
+      padding-top: 10px;
+      max-width: calc(100% - 350px);
+      margin-left: 24px;
+      min-width: 300px;
+    }
+
+    &Pagination {
+      display: flex;
+      box-shadow: 0px 0px 20px 3px black;
+      box-sizing: border-box;
+      border: 1px solid $primary-border;
+      background: $primary-bg;
+      margin-left: auto;
+      margin-right: 24px;
+      padding: 0 10px;
+      gap: 10px;
+
+      .SwitchInput {
+
+        &-light {
+          margin: 0;
+        }
+
+        label {
+          border: none;
+          padding: 5px;
+        }
+      }
+    }
 
     &>* {
-      margin-left: 10px;
-      margin-right: 10px;
-      margin: auto !important;
+      z-index: 1;
     }
   }
 
   &-rarityFilter {
     position: relative;
-    padding-top: 5px;
     padding-bottom: 5px;
     border: 1px solid $primary;
-    height: 45px;
-    margin-bottom: 10px;
-    margin-top: 20px;
-    width: 400px;
+    height: 42px;
+    box-sizing: border-box;
 
     & label {
       z-index: 1;
       position: absolute;
-      left: -10px;
-      top: -25px;
-      color: $secondary;
+      color: $white;
+      top: -15px;
+      left: -5px;
       background: $primary-radiant;
       padding: 10px;
       clip-path: clipPath(10px);
       font-size: 15px;
+      padding: 5px;
+      clip-path: clipPath(5px);
+      display: none;
     }
   }
 
@@ -63,25 +114,26 @@
   }
 
   &-rarityContainer {
-    width: 28px;
+    width: 20px;
     margin: 5px;
-    height: 28px;
+    height: 20px;
     padding: 5px;
     background: $white;
     border-radius: 10000px;
     cursor: pointer;
 
     &.selected {
-      box-shadow: rgb(59 153 241) 0 0 15px inset;
+      background: $secondary;
     }
   }
 
   &-openFilters,
   &-openOptions {
     cursor: pointer;
-    margin: auto 15px auto auto;
+    margin: auto;
     display: flex;
-    padding-left: 10px;
+    width: 50px;
+    box-sizing: border-box;
 
     & svg {
       color: rgb(59, 153, 241);
@@ -104,12 +156,25 @@
     top: calc(100% + 40px)
   }
 
-  &-activeFilters {
+  &-bottom {
+    padding: 20px 0;
+    padding-top: 30px;
+    border: 1px solid $primary-border;
     width: 100%;
+    max-width: 305px;
     display: flex;
     border-top: rgb(41, 41, 41) 1px solid;
     box-sizing: border-box;
-    padding: 3px 5px 3px;
+    background-color: $primary-bg;
+    position: absolute;
+    flex-wrap: wrap;
+    left: 24px;
+    top: 100%;
+    justify-content: center;
+    gap: 30px;
+    z-index: 10;
+    box-shadow: 0px 10px 5px 3px black;
+    animation: fadeIn 0.3s;
 
     & span {
       margin: 10px;
@@ -183,19 +248,21 @@
     & label {
       z-index: 1;
       position: absolute;
+      color: $white;
+      top: -20px;
       left: -5px;
-      top: -25px;
-      color: $secondary;
       background: $primary-radiant;
       padding: 10px;
       clip-path: clipPath(10px);
       font-size: 15px;
+      padding: 5px;
+      clip-path: clipPath(5px);
     }
   }
 
   &-htmlSelectInput {
 
-    height: 60px;
+    height: 40px;
     width: 100%;
     position: relative;
 
@@ -203,10 +270,11 @@
       display: flex;
       justify-content: center;
       align-items: center;
-      width: 100%;
+      width: 250px;
       height: 100%;
       background-color: $primary;
       clip-path: clipPath(10px);
+      margin: auto;
     }
 
     & select {
@@ -216,7 +284,7 @@
       color: $white;
       border: none;
       box-sizing: border-box;
-      font-size: 18px;
+      font-size: 15px;
       width: calc(100% - 2px);
       height: calc(100% - 2px);
 
@@ -231,13 +299,15 @@
     & label {
       z-index: 1;
       position: absolute;
-      left: -5px;
-      top: -25px;
-      color: $secondary;
+      color: $white;
+      top: -20px;
+      left: 20px;
       background: $primary-radiant;
       padding: 10px;
       clip-path: clipPath(10px);
       font-size: 15px;
+      padding: 5px;
+      clip-path: clipPath(5px);
     }
   }
 
@@ -257,10 +327,9 @@
   }
 
   &-fixedWidthContainer {
-    width: 400px;
+    width: 300px;
     display: flex;
     justify-content: center;
-    height: 110px;
     align-items: center;
   }
 
@@ -289,10 +358,10 @@
   }
 
   &-pagination {
-    margin: 5px 0;
-    padding-right: 10px;
     display: flex;
     color: $white;
+    height: 40px;
+    margin: auto 0;
 
     &InputContainer {
       display: flex;
@@ -302,6 +371,7 @@
       margin: 3px 5px;
       justify-content: center;
       align-items: center;
+      min-width: 62px;
 
       text-align: center;
       font-weight: 400;
@@ -370,29 +440,22 @@
 
 }
 
-@media (max-width: 450px) {
+@media (max-width: 700px) {
   .CardManagerFilter {
     &-top {
-      justify-content: center;
-    }
+      gap: 10px;
 
-    &-fixedWidthContainer {
-      width: 330px;
-    }
+      &Elements {
+        min-width: 90vw;
+        margin: auto;
+      }
 
-    &-rarityFilter {
-      width: 340px;
-    }
-
-    &-rarityContainer {
-      width: 22px;
-      height: 22px;
-    }
-
-    & .customOverride {
-      & .SwipeCheckboxComponent-activeElement {
-        height: 56px;
+      &Pagination {
+        height: 90px;
+        margin: auto;
       }
     }
+
+    flex-wrap: wrap;
   }
 }

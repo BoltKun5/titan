@@ -71,6 +71,7 @@ export const CardManager: React.FC = () => {
     rarityFilter,
     page,
     id,
+    user
   ]);
 
   useEffect(() => {
@@ -103,9 +104,9 @@ export const CardManager: React.FC = () => {
 
   return (
     <>
-      <CardManagerFilterComponent />
       <div className="CardManager">
         <div className="CardManager-mainContent">
+          <CardManagerFilterComponent />
           {isLoading ? <Loader /> : <CardManagerCardListComponent />}
         </div>
       </div>

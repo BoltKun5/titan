@@ -7,6 +7,7 @@ import { Close, Menu } from "@mui/icons-material";
 import { ClickAwayListener } from "@mui/material";
 import { isUnloggedPage, isUserConnected } from "../../general.utils";
 import { useSnackbar } from "notistack";
+import { ButtonComponent } from "../UI/Button/ButtonComponent";
 
 export const HeaderComponent: React.FC<{
   forceRender: boolean;
@@ -73,7 +74,8 @@ export const HeaderComponent: React.FC<{
             }
           >
             <Link to={"/"} onClick={() => setIsMobileMenuOpen(false)}>
-              <div className="HeaderComponent-navButton HeaderComponent-mainButton">
+              <div className={getButtonClassName("/")}>
+                <img src="./assets/logo.png" className="Logo"></img>
                 CARTES
               </div>
             </Link>
@@ -138,9 +140,12 @@ export const HeaderComponent: React.FC<{
             <img src={"./assets/logo_full.png"} />
           </div>
           <div className="HeaderComponent-loginLinks">
-            Vous n'êtes pas connecté. Vous pouvez{" "}
-            <Link to="/login">vous connecter</Link> ou{" "}
-            <Link to="/signup">vous inscrire</Link>.
+            <Link to="/login">
+              <ButtonComponent label={"Se connecter"} weight={'normal'} fontSize={15} size={120} height={40} preset='secondary' hoverOffset={3} clipPath={10} />
+            </Link>
+            <Link to="/signup">
+              <ButtonComponent label={"S'inscrire"} weight={'normal'} fontSize={15} size={120} height={40} preset='secondary' color="secondary" hoverOffset={3} clipPath={10} />
+            </Link>
           </div>
         </div>
       )}

@@ -4,26 +4,45 @@
   background-color: #161827;
   border-bottom: rgb(41, 41, 41) 1px solid;
   display: flex;
-  height: 75px;
+  height: 55px;
   margin: 0;
   z-index: 10000;
   position: relative;
+
+  & .HeaderButton {
+    width: 120px !important;
+    height: 50px !important;
+    font-size: 15px;
+  }
 
   a {
     text-decoration: none;
   }
 
   &-navButtons {
-    padding-top: 10px;
     display: flex;
+
+    &>a {
+      height: 100%;
+    }
   }
 
   &-navButton {
     color: $white;
-    font-size: 25px;
+    font-size: 20px;
     font-weight: bold;
-    padding: 16px 35px;
+    padding: 0 15px;
     cursor: pointer;
+    align-items: center;
+    display: flex;
+    height: 100%;
+
+    & .Logo {
+      height: 30px;
+      margin: 0 5px 0 0px;
+    }
+
+
 
     &:hover:not(.HeaderComponent-mainButton) {
       --mc-r: 59;
@@ -197,6 +216,7 @@
   &-fullLogo {
     height: 100%;
     width: auto;
+    margin-left: 10px;
 
     & img {
       height: 100%;
@@ -206,8 +226,10 @@
 
   &-loginLinks {
     margin-left: auto;
+    gap: 10px;
     margin-right: 20px;
     padding-left: 20px;
+    display: flex;
 
     & a {
       color: $primary;

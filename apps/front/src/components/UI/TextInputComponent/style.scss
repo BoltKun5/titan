@@ -22,10 +22,18 @@
     position: absolute;
     left: -5px;
     top: -5px;
-    color: $secondary;
+    color: $white;
     background: $primary-radiant;
     padding: 10px;
     clip-path: clipPath(10px);
     font-size: 15px;
+  }
+
+  &.filter {
+    label {
+      padding: 5px;
+      clip-path: clipPath(5px);
+      top: 3px;
+    }
   }
 }

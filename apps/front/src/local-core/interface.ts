@@ -13,6 +13,7 @@ export interface ICardSetFilter {
   categoryCode: string;
   title?: string;
   code?: string;
+  logoId?: string;
 }
 
 export interface ICardRarityFilter {

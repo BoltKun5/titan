@@ -7,6 +7,7 @@ import { SingleCardComponent } from "../SingleCardComponent/SingleCardComponent"
 import { ButtonComponent } from "../UI/Button/ButtonComponent";
 import "./style.scss";
 import useWindowDimensions from "../../hook/utils/useWindowDimensions";
+import { CardManagerFilterComponent } from "../CardManagerFilterComponent/CardManagerFilterComponent";
 
 export const CardManagerCardListComponent: React.FC = () => {
   const {
