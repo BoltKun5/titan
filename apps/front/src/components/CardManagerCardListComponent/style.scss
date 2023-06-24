@@ -6,6 +6,11 @@
   flex-direction: column;
   box-sizing: border-box;
 
+  &-list {
+    display: flex;
+    flex-direction: column;
+  }
+
   &-grid {
     width: 98.5%;
     display: grid;

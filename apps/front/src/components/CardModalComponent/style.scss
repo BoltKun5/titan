@@ -1,39 +1,35 @@
 @import "../../scss/variables.scss";
 
 .CardModal {
-  width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.7);
-  position: absolute;
-  top: 0;
-  left: 0;
-  z-index: 1000;
-  display: flex;
-  color: $white;
-  border: 1px solid $primary-border;
-  box-sizing: border-box;
+  background: $primary-bg;
+  max-width: 95%;
+  max-height: calc(100% - 86px);
+  overflow: hidden auto;
+  position: absolute !important;
+  left: 50%;
+  top: 50%;
+  transform: translate(calc(-50% - 30px), calc(-50% - 1px));
+  outline: none !important;
 
-  &-modale {
-    background: $primary-bg;
-    max-width: 1550px;
-    height: 100%;
+  &-paddingContainer {
+    padding: 30px;
     display: flex;
-    position: relative;
-    border-right: 1px solid $primary-border;
-    padding: 0 20px;
+    padding-top: 40px;
   }
 
-  &-misc {
-    align-items: center;
-    justify-content: center;
+  & img {
+    opacity: 0;
+    transition: 0.3s;
+
+    &.show {
+      opacity: 1;
+    }
+  }
+
+  &-cardInfos {
     display: flex;
-    flex-direction: column;
-    background-color: $primary;
-    height: 585px;
-    box-sizing: border-box;
-    padding-bottom: 20px;
-    clip-path: clipPath(30px);
-    position: relative;
+    height: fit-content;
+    margin: auto;
 
     &>* {
       z-index: 1;
@@ -46,59 +42,71 @@
       justify-content: center;
       align-items: center;
     }
+  }
+
+  &-cardMain {
+    clip-path: clipPath(15px);
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    background-color: $primary;
+    position: relative;
+    height: fit-content;
+    width: 360px;
 
     & img {
       width: 330px;
       aspect-ratio: 300 / 410;
       border-radius: 20px;
-      margin: 0 10px;
+      z-index: 1;
+      margin: 10px;
     }
 
     &::before {
       content: "";
       position: absolute;
-      width: calc(100% - 4px);
-      height: calc(100% - 4px);
-      left: 2px;
-      top: 2px;
-      clip-path: clipPath(30px);
+      width: calc(100% - 2px);
+      height: calc(100% - 2px);
+      left: 1px;
+      top: 1px;
+      clip-path: clipPath(15px);
       background-color: $primary-bg;
     }
+  }
+
+  &-cardMisc {
+    min-width: 300px;
+    height: fit-content;
+    margin-top: 34px;
+    height: 400px;
+    padding: 10px;
+    box-sizing: border-box;
+    gap: 10px;
+    display: flex;
+    flex-direction: column;
   }
 
   &-name {
     width: 100%;
     background-color: $primary;
     font-weight: bold;
-    font-size: 20px;
-    padding: 10px 10px 10px 40px;
+    font-size: 18px;
+    padding: 5px 20px;
     box-sizing: border-box;
+    z-index: 1;
+    color: $white;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
   }
 
-  &-subMisc {
-    display: flex;
-    margin: 10px;
-    right: 0px;
-  }
-
-  &-setInfo {
-    width: 90%;
-    display: flex;
-    flex-direction: column;
-    height: 83%;
-
-    &>*:last-child {
-      margin-top: auto;
-    }
-  }
-
-
-  &-serieContainer {
-    background-color: $primary-border;
+  &-stylizedContainer {
+    background-color: $primary;
     display: flex;
     clip-path: clipPath(10px);
     width: fit-content;
     position: relative;
+    font-size: 15px;
 
     &>* {
       position: relative;
@@ -107,74 +115,55 @@
     &::before {
       content: "";
       position: absolute;
-      width: calc(100% - 4px);
-      height: calc(100% - 4px);
-      left: 2px;
-      top: 2px;
+      width: calc(100% - 2px);
+      height: calc(100% - 2px);
+      left: 1px;
+      top: 1px;
       clip-path: clipPath(10px);
-      background-color: rgb(8, 7, 19);
+      background-color: $white;
     }
   }
 
-  &-rarityContainer {
-    background-color: $primary-border;
-    display: flex;
-    clip-path: clipPath(10px);
-    width: fit-content;
-    justify-content: center;
-    align-items: center;
-    padding: 5px;
-    margin-left: 10px;
-
-    & span {
-      margin: 0 3px;
-      color: black;
-      font-weight: bold;
-    }
-
-    &>* {
-      position: relative;
-    }
-
-    &::before {
-      content: "";
-      position: absolute;
-      width: calc(100% - 4px);
-      height: calc(100% - 4px);
-      left: 2px;
-      top: 2px;
-      clip-path: clipPath(10px);
-      background-color: $primary;
-    }
-
-    & img {
-      width: 30px;
-      height: 30px;
-    }
-  }
-
-  &-serie {
+  &-stylizedMain {
+    color: $white;
     margin: auto 0;
-    font-size: 17px;
+    font-size: 15px;
     padding: 10px;
-    margin: 2px;
-    background-color: $primary-bg;
+    margin: 1px;
     clip-path: clipPath(10px);
+    background-color: $primary;
     z-index: 2;
+
+    &>* {
+      z-index: 1;
+      position: relative;
+    }
+
+    &::before {
+      content: "";
+      position: absolute;
+      width: calc(100% - 1px);
+      height: calc(100%);
+      left: 0px;
+      top: 0px;
+      clip-path: clipPath(10px);
+      background-color: $primary-bg;
+      z-index: 0;
+    }
   }
 
-  &-set {
+  &-stylizedImage {
     display: flex;
     justify-content: center;
     align-items: center;
     margin: auto 0px auto 15px;
-    padding: 5px 0;
+    padding: 6px 3px;
     clip-path: clipPath(10px);
     transform: translateX(-10px);
+    font-weight: bold;
 
     & img {
       width: 30px;
-      height: 30px;
     }
   }
 
@@ -189,9 +178,11 @@
     & svg {
       width: 30px;
       height: 30px;
+      color: $white;
     }
 
     &Container {
+      top: 0;
       position: absolute;
       right: 0;
     }
@@ -201,16 +192,19 @@
     border: 1px solid $primary;
     background-color: $dark;
     display: flex;
-    margin: 10px 10px 0;
     justify-content: center;
     align-items: center;
     flex-direction: column;
     z-index: 10;
-    position: relative;
+    left: 50%;
+    top: 50%;
+    color: $white;
+    position: absolute;
 
     & span {
       padding: 10px;
       width: 230px;
+      text-align: center;
     }
 
     &>div {
@@ -218,50 +212,44 @@
     }
   }
 
+  &-buttonsContainer {
+    display: flex;
+    gap: 10px;
+  }
+
   &-possessions {
-    width: 90%;
     height: 585px;
     margin: auto;
     display: flex;
     flex-direction: column;
+    min-width: 800px;
 
     &Container {
-      flex: 1 1 auto;
+      min-width: 350px;
       display: flex;
       flex-direction: column;
       align-items: center;
     }
   }
 
+  &-possessionHeaders {
+    display: flex;
+  }
+
   &-possessionTitle {
     background-color: $primary;
     width: fit-content;
-    padding: 10px 30px;
-    font-weight: bold;
-    font-size: 20px;
-  }
-
-  &-possessionListHeader {
-    display: flex;
-    width: 100%;
-    background-color: $tableHeader;
-    padding: 10px;
-    box-sizing: border-box;
-
-    &>* {
-      font-weight: bold;
-    }
+    padding: 5px 15px;
+    font-size: 15px;
+    color: $white;
+    margin-right: 10px;
   }
 
   &-possessionList {
     border: 2px solid $primary;
     flex: 1 1 auto;
     overflow: auto;
-  }
-
-  &-possessionHeaders {
-    display: flex;
-    justify-content: space-between;
+    transform: translateY(-1px);
   }
 
   &-createPossessionButton {
@@ -271,11 +259,12 @@
     align-items: center;
     position: relative;
     width: 98%;
-    height: 70px;
+    height: 45px;
     margin: 10px auto 5px;
     color: $white;
     font-weight: bold;
     cursor: pointer;
+    font-size: 13px;
     clip-path: clipPath(10px);
 
     &>* {

@@ -1,6 +1,5 @@
 import React, {
   createRef,
-  SyntheticEvent,
   useCallback,
   useContext,
   useEffect,
@@ -12,36 +11,27 @@ import { SingleCardOverlayComponent } from "../SingleCardOverlayComponent/Single
 import "./style.scss";
 import { CardModal } from "../CardModalComponent/CardModal";
 import StoreContext from "../../hook/contexts/StoreContext";
-import { ICard } from "vokit_core";
+import { CardRarityEnum, CardRarityEnumFrench, CardTypeEnum, CardTypeEnumFrench, ICard } from "vokit_core";
 import { SingleCardComponentPropsType } from "../../local-core";
 import { getImageSource } from "../../general.utils";
+import { Tooltip } from "@mui/material";
 
 export const SingleCardComponent: React.FC<SingleCardComponentPropsType> = ({
   card,
   index,
   firstType,
+  style,
+  modal,
+  setModal
 }) => {
   const { collectionMode, separateReverse } = useContext(StoreContext);
-  const [cardModal, setCardModal] = useState<ICard | null>(null);
-  const [isMissingImage, setIsMissingImage] = useState<boolean>(false);
   const imageElement = useRef(null)
-
-  const openCardInfo = (card: ICard) => {
-    setCardModal(card);
-  };
 
   const elementRef = createRef<HTMLDivElement>();
 
   const [show, setShow] = useState(false);
 
   const [parent, setParent] = useState<HTMLElement | null | undefined>(null);
-
-  // useEffect(() => {
-  //   if (show) {
-  //     const url = getImageSource(card, true);
-  //     (imageElement.current as unknown as HTMLImageElement).setAttribute('src', url)
-  //   }
-  // }, [show])
 
   const isElementInViewport = useCallback(() => {
     let windowHeight = parent?.clientHeight;
@@ -70,27 +60,32 @@ export const SingleCardComponent: React.FC<SingleCardComponentPropsType> = ({
 
   return (
     <>
-      {cardModal !== null && (
-        <CardModal card={cardModal} closeModal={() => setCardModal(null)} />
-      )}
-
       <div
-        className={"SingleCard"}
+        className={"SingleCard" + (' ' + style)}
         key={card.id}
         style={{
           ...(separateReverse && collectionMode ? { height: 420 } : {}),
         }}
         ref={elementRef}
+        onClick={() => { if (style === 'line') console.log('a') }}
       >
-        {isElementInViewport() && (
+        {(
           <>
+            {
+              style === 'line' && <>
+                <div className="SingleCard-setLogo">
+                  <Tooltip title={card.cardSet.name}>
+                    <img src={card.cardSet.logoId} />
+                  </Tooltip>
+                </div>
+
+              </>
+            }
             <div
               className="SingleCard-imgContainer"
-              onClick={() => openCardInfo(card)}
+              onClick={() => setModal(card)}
             >
-              <div className="SingleCard-infos">
-                {card.name} ({card.localId})
-              </div>
+
               <img
                 ref={imageElement}
                 className="SingleCard-img"
@@ -101,8 +96,34 @@ export const SingleCardComponent: React.FC<SingleCardComponentPropsType> = ({
                 loading={"lazy"}
               />
             </div>
+            {
+              style === 'line' && (
+                <>
+                  <div className="SingleCard-hoverHandler" />
+                  <div className="SingleCard-lineInfo">
+                    <div className="SingleCard-lineInfo-type">
 
-            <div className="SingleCard-collectionBackground" />
+                      <Tooltip title={CardTypeEnumFrench[card.types[0]?.type ?? 0]}>
+                        <img src={`./assets/icons/types_icons/${card.types[0]?.type ?? 0}.svg`} />
+                      </Tooltip>
+                    </div>
+                    <div className="SingleCard-lineInfo-rarity">
+                      <Tooltip title={CardRarityEnumFrench[card.rarity]}>
+                        <img
+                          src={
+                            "./assets/icons/" +
+                            CardRarityEnum[card.rarity] +
+                            ".png"
+                          }
+                        />
+                      </Tooltip>
+                    </div>
+                    <div className="SingleCard-lineInfo-name"><span>{card.localId}</span> {card.name}</div>
+                  </div>
+                </>
+              )
+            }
+
             {card.userCardPossessions && <SingleCardOverlayComponent
               firstType={firstType}
               card={card}

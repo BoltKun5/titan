@@ -16,6 +16,7 @@ export enum CardTypeEnum {
 }
 
 export enum CardTypeEnumFrench {
+  'Aucun type' = 0,
   'Plante' = 1,
   'Feu' = 2,
   'Eau' = 3,

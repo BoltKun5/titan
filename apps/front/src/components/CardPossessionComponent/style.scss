@@ -37,9 +37,7 @@
 
   &-container {
     display: flex;
-    justify-content: center;
     align-items: center;
-    height: 80px;
 
     & select {
       clip-path: clipPath(10px);
@@ -48,10 +46,9 @@
       color: $white;
       border: none;
       box-sizing: border-box;
-      font-size: 18px;
+      font-size: 14px;
       clip-path: clipPath(10px);
       width: 100%;
-
 
       &:focus,
       &:visited,
@@ -62,14 +59,22 @@
     }
   }
 
+  &-selectorsContainer {
+    display: flex;
+    flex-wrap: wrap;
+    padding: 10px 0;
+
+  }
+
   &-selectContainer {
     color: $white;
-    margin: auto 10px 16px 10px;
+    margin: 20px 10px 0px 10px;
     position: relative;
     display: flex;
     justify-content: center;
     align-items: center;
     box-sizing: border-box;
+    width: 30%;
 
     &.labels {
       flex: 1 1 auto;
@@ -94,9 +99,9 @@
       position: absolute;
       top: 0;
       left: 0px;
-      top: -22px;
+      top: -18px;
       z-index: 1;
-      font-size: 13px;
+      font-size: 12px;
     }
   }
 
@@ -129,7 +134,7 @@
       box-sizing: border-box;
       border: none;
       color: $white;
-      font-size: 18px;
+      font-size: 15px;
       padding: 10px;
       clip-path: clipPath(10px);
 
@@ -155,33 +160,6 @@
       z-index: 1;
     }
 
-  }
-}
-
-@media (max-width: 1550px) {
-  .CardPossession {
-    &-container {
-      flex-wrap: wrap;
-      height: 150px;
-    }
-
-    &-selectContainer {
-      flex: none !important;
-
-      &:nth-child(1),
-      &:nth-child(2),
-      &:nth-child(5),
-      &:nth-child(3),
-      &:nth-child(4) {
-        width: 25%;
-      }
-    }
-
-    &-buttons {
-      width: 25%;
-      margin: 0px 10px 0 10px;
-      justify-content: center;
-    }
   }
 }
 

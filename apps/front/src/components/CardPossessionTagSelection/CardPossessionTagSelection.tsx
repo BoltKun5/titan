@@ -135,7 +135,7 @@ export const CardPossessionTagSelection: React.FC<Props> = ({
                     key={item.id + index.toString()}
                     className={"CardPossessionTagSelection-emptyTagList"}
                   >
-                    Aucun label
+                    Aucun label ne correspond, vous pouvez le créer avec +
                   </div>
                 );
               } else {

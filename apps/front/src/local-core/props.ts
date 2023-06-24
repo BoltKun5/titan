@@ -17,6 +17,9 @@ export type SingleCardComponentPropsType = {
   card: ICard;
   index: number;
   firstType: "classic" | "reverse";
+  style?: string;
+  setModal: Function;
+  modal: ICard | null;
 };
 
 export type SingleCardOverlayComponentPropsType = {

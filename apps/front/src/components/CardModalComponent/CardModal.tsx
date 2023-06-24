@@ -1,10 +1,11 @@
 import React, { useContext, useEffect, useState } from "react";
 import "./style.scss";
-import { ClickAwayListener, Tooltip } from "@mui/material";
+import { ClickAwayListener, Fade, Modal, Tooltip, Zoom, capitalize } from "@mui/material";
 import {
   frontRarity,
   getImageSource,
   isUnloggedPage,
+  isUserConnected,
 } from "../../general.utils";
 import StoreContext from "../../hook/contexts/StoreContext";
 import { Add, Close } from "@mui/icons-material";
@@ -20,9 +21,13 @@ import {
   ICreatePossessionResponse,
   IUpdatePossessionResponse,
   CardRarityEnum,
+  CardRarityEnumFrench,
+  CardTypeEnumFrench,
 } from "vokit_core";
+import Backdrop from '@mui/material/Backdrop';
+import { useParams } from "react-router-dom";
 
-export const CardModal: React.FC<{ card: ICard; closeModal: () => void }> = ({
+export const CardModal: React.FC<{ card: ICard | null; closeModal: () => void }> = ({
   card,
   closeModal,
 }) => {
@@ -32,9 +37,15 @@ export const CardModal: React.FC<{ card: ICard; closeModal: () => void }> = ({
   >([]);
   const [handleClose, setHandleClose] = useState(false);
 
+  let id: string | undefined = useParams().id;
+  if (!isUnloggedPage()) {
+    id = undefined;
+  }
+
   useEffect(() => {
-    setLocalCardPossession([...card.userCardPossessions ?? []]);
+    setLocalCardPossession([...card?.userCardPossessions ?? []]);
   }, []);
+
 
   const context = {
     localCardPossession,
@@ -47,11 +58,11 @@ export const CardModal: React.FC<{ card: ICard; closeModal: () => void }> = ({
         IResponse<ICreatePossessionResponse>,
         any
       > = await loggedApi.post(`/possession/create`, {
-        cardId: card.id,
+        cardId: card?.id,
       });
       setCards(
         cards.map((localCard) => {
-          if (card.id === localCard.id) {
+          if (card?.id === localCard.id) {
             localCard.userCardPossessions.push(
               response.data.data?.possession as IUserCardPossession
             );
@@ -79,7 +90,7 @@ export const CardModal: React.FC<{ card: ICard; closeModal: () => void }> = ({
           else return id === el.id;
         })
         .map((el) => {
-          const currentPossession = card.userCardPossessions.find(
+          const currentPossession = card?.userCardPossessions.find(
             (poss) => poss.id === el.id
           );
 
@@ -109,7 +120,7 @@ export const CardModal: React.FC<{ card: ICard; closeModal: () => void }> = ({
         IResponse<IUpdatePossessionResponse>,
         any
       > = await loggedApi.post(`/possession/update`, {
-        cardId: card.id,
+        cardId: card?.id,
         possessions: possessions.map((possession) => {
           let _possession: any = {};
           _possession.boosterId = possession.boosterId;
@@ -130,7 +141,7 @@ export const CardModal: React.FC<{ card: ICard; closeModal: () => void }> = ({
       if (!id) {
         setCards(
           cards.map((localCard) => {
-            if (card.id === localCard.id) {
+            if (card?.id === localCard.id) {
               localCard.userCardPossessions = response.data.data
                 ?.possessions as IUserCardPossession[];
             }
@@ -141,7 +152,7 @@ export const CardModal: React.FC<{ card: ICard; closeModal: () => void }> = ({
       } else {
         setCards(
           cards.map((localCard) => {
-            if (card.id === localCard.id) {
+            if (card?.id === localCard.id) {
               localCard.userCardPossessions = response.data.data
                 ?.possessions as IUserCardPossession[];
             }
@@ -175,11 +186,11 @@ export const CardModal: React.FC<{ card: ICard; closeModal: () => void }> = ({
         cleanCardPossession.splice(index, 1);
         setLocalCardPossession(cleanCardPossession);
       }
-      index = card.userCardPossessions.findIndex((el) => el.id === id);
+      index = card?.userCardPossessions.findIndex((el) => el.id === id) ?? 0;
       if (index !== -1) {
         setCards(
           cards.map((localCard) => {
-            if (card.id === localCard.id) {
+            if (card?.id === localCard.id) {
               localCard.userCardPossessions.splice(index, 1);
             }
             return localCard;
@@ -194,10 +205,11 @@ export const CardModal: React.FC<{ card: ICard; closeModal: () => void }> = ({
   const handleCloseModal = () => {
     const unsavedData =
       JSON.stringify(localCardPossession) !==
-      JSON.stringify(card.userCardPossessions ?? []);
+      JSON.stringify(card?.userCardPossessions ?? []);
     if (!unsavedData) return closeModal();
     else {
       if (handleClose) {
+        setHandleClose(false);
         return closeModal();
       } else {
         setHandleClose(true);
@@ -205,130 +217,199 @@ export const CardModal: React.FC<{ card: ICard; closeModal: () => void }> = ({
     }
   };
 
+  if (!card) return <div></div>
+
   return (
     <CardModalContext.Provider value={context}>
-      <div className="CardModal">
-        <div className="CardModal-modale">
-          <div className="CardModal-miscContainer">
-            <div className="CardModal-misc">
-              <div className="CardModal-name">{card.name} ({card.localId})</div>
-              <div className="CardModal-subMisc">
-                <div className="CardModal-serieContainer">
-                  <div className="CardModal-serie">
-                    {
-                      series?.find(
-                        (serie) => serie.id === card.cardSet.cardSerieId
-                      )?.name
-                    }
-                  </div>
-                  <div className="CardModal-set">
-                    <Tooltip title={card.cardSet.name}>
-                      <img
-                        src={`${import.meta.env.VITE_ASSETS_URL}/user-application-file/file/download/public-access/${card.cardSet.logoId}`}
-                      />
-                    </Tooltip>
-                  </div>
+      <Modal open={card ? true : false}
+        closeAfterTransition
+        slots={{ backdrop: Backdrop }}
+        slotProps={{
+          backdrop: {
+            timeout: 500,
+          } as any,
+        }}>
+        <Zoom in={card ? true : false} style={{ translate: 'calc(-50% - 1px) calc(-51%)' }}>
+          <div className="CardModal coloredCorner">
+            <div className="CardModal-paddingContainer">
+              <div className="CardModal-cardInfos">
+                <div className="CardModal-cardMain">
+                  <div className="CardModal-name">{card?.name}</div>
+                  <img src={card ? getImageSource(card, true) : ''} onLoad={(e) => {
+                    e.currentTarget.classList.add('show')
+                  }} />
                 </div>
-                <div className="CardModal-rarityContainer">
-                  <img
-                    className="CardModal-rarityImg"
-                    src={
-                      "./assets/icons/" +
-                      CardRarityEnum[card.rarity] +
-                      ".png"
-                    }
-                  />
-                  <span>
-                    {frontRarity[
-                      CardRarityEnum[card.rarity]
-                    ].toLocaleUpperCase()}
-                  </span>
-                </div>
-              </div>
-              <img src={getImageSource(card, true)} />
-            </div>
-          </div>
-          {card.userCardPossessions && <div className="CardModal-possessionsContainer">
-            <div className="CardModal-possessions">
-              <div className="CardModal-possessionHeaders">
-                <div className="CardModal-possessionTitle">
-                  Exemplaires possédés
-                </div>
-                <div onClick={() => savePossession()}>
-                  {!isUnloggedPage && (
-                    <ButtonComponent
-                      label={"Enregistrer"}
-                      disabled={
-                        JSON.stringify(localCardPossession) ===
-                        JSON.stringify(card.userCardPossessions)
-                      }
-                      height={40}
-                      size={180}
-                    />
-                  )}
-                </div>
-              </div>
-              <div className="CardModal-possessionList">
-                <div className="CardModal-tableContainer">
-                  {!isUnloggedPage() && (
-                    <div
-                      className="CardModal-createPossessionButton"
-                      onClick={() => createPossession()}
-                    >
-                      <span>
-                        Ajouter un exemplaire à la collection <Add />
-                      </span>
+                <div className="CardModal-cardMisc">
+                  <div className="CardModal-stylizedContainer">
+                    <div className="CardModal-stylizedMain">
+                      <div>Numéro</div>
                     </div>
-                  )}
-                  {localCardPossession.map((possession, index) => {
-                    return (
-                      <CardPossessionComponent
-                        index={index}
-                        key={"Possession" + index}
-                        card={card}
-                        possession={possession}
-                        update={(possessionIteration: IUserCardPossession) => {
-                          const locPos = [...localCardPossession];
-                          locPos[index] = possessionIteration;
-                          setLocalCardPossession(locPos);
-                        }}
-                        delete={(id: string) => deletePossession(id)}
-                        canSave={
-                          JSON.stringify(possession) !==
-                          JSON.stringify(card.userCardPossessions[index])
-                        }
-                        save={() => savePossession(possession.id)}
-                      />
-                    );
-                  })}
+                    <div className="CardModal-stylizedImage">
+                      {card?.localId.padStart(3, '0')}
+                    </div>
+                  </div>
+
+                  <div className="CardModal-stylizedContainer">
+                    <div className="CardModal-stylizedMain">
+                      <div>Rareté</div>
+                    </div>
+                    <div className="CardModal-stylizedImage">
+                      <Tooltip title={capitalize(CardRarityEnumFrench[card?.rarity ?? 0].toLowerCase())}>
+                        <img
+                          src={"./assets/icons/" + CardRarityEnum[card?.rarity ?? 0] + ".png"}
+                          onLoad={(e) => e.currentTarget.classList.add('show')} />
+                      </Tooltip>
+                    </div>
+                  </div>
+
+                  <div className="CardModal-stylizedContainer">
+                    <div className="CardModal-stylizedMain">
+                      <div>Types</div>
+                    </div>
+                    <div className="CardModal-stylizedImage">
+                      {
+                        card?.types.map((type) =>
+                          <Tooltip title={CardTypeEnumFrench[type.type]} key={card.id + 'type' + type.id}>
+                            <img
+                              src={`./assets/icons/types_icons/${type?.type ?? 0}.svg`}
+                              onLoad={(e) => e.currentTarget.classList.add('show')} />
+                          </Tooltip>
+                        )
+                      }
+                      {
+                        card?.types.length === 0 && <Tooltip title={'Aucun type'}>
+                          <img
+                            src={`./assets/icons/types_icons/0.svg`}
+                            onLoad={(e) => e.currentTarget.classList.add('show')} />
+                        </Tooltip>
+                      }
+                    </div>
+                  </div>
+
+                  <div className="CardModal-stylizedContainer">
+                    <div className="CardModal-stylizedMain">
+                      <div>
+                        Série
+                      </div>
+                    </div>
+                    <div className="CardModal-stylizedImage">
+                      {
+                        series?.find(
+                          (serie) => serie.id === card?.cardSet.cardSerieId
+                        )?.name
+                      }
+                    </div>
+                  </div>
+                  <div className="CardModal-stylizedContainer">
+                    <div className="CardModal-stylizedMain">
+                      <div>
+                        Extension
+                      </div>
+                    </div>
+                    <div className="CardModal-stylizedImage">
+                      <Tooltip title={card?.cardSet.name}>
+                        <img
+                          src={`${import.meta.env.VITE_ASSETS_URL}/user-application-file/file/download/public-access/${card?.cardSet.logoId}`}
+                          onLoad={(e) => {
+                            e.currentTarget.classList.add('show')
+                          }}
+                        />
+                      </Tooltip>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              {card?.userCardPossessions && <div className="CardModal-possessionsContainer">
+                <div className="CardModal-possessions">
+                  <div className="CardModal-possessionHeaders">
+                    <div className="CardModal-possessionTitle">
+                      Exemplaires possédés
+                    </div>
+                    <div onClick={() => savePossession()} className="CardModal-saveAll">
+                      {isUserConnected() && id === undefined && (
+                        <ButtonComponent
+                          label={"Tout enregistrer"}
+                          disabled={
+                            JSON.stringify(localCardPossession) ===
+                            JSON.stringify(card.userCardPossessions)
+                          }
+                          height={25}
+                          size={140}
+                          fontSize={15}
+                          clipPath={5}
+                        />
+                      )}
+                    </div>
+                  </div>
+                  <div className="CardModal-possessionList">
+                    <div className="CardModal-tableContainer">
+                      {isUserConnected() && id === undefined && (
+                        <div
+                          className="CardModal-createPossessionButton"
+                          onClick={() => createPossession()}
+                        >
+                          <span>
+                            Ajouter un exemplaire à la collection <Add />
+                          </span>
+                        </div>
+                      )}
+                      {localCardPossession.map((possession, index) => {
+                        return (
+                          <CardPossessionComponent
+                            index={index}
+                            key={"Possession" + index}
+                            card={card}
+                            possession={possession}
+                            update={(possessionIteration: IUserCardPossession) => {
+                              const locPos = [...localCardPossession];
+                              locPos[index] = possessionIteration;
+                              setLocalCardPossession(locPos);
+                            }}
+                            delete={(id: string) => deletePossession(id)}
+                            canSave={
+                              JSON.stringify(possession) !==
+                              JSON.stringify(card.userCardPossessions[index])
+                            }
+                            save={() => savePossession(possession.id)}
+                          />
+                        );
+                      })}
+                    </div>
+                  </div>
+                </div>
+              </div>}
+              <div className="CardModal-closeButtonContainer">
+                <div className="CardModal-closeButton" onClick={handleCloseModal}>
+                  <Close />
                 </div>
               </div>
             </div>
-          </div>}
-          <div className="CardModal-closeButtonContainer">
-            {handleClose ? (
-              <ClickAwayListener
-                onClickAway={() => {
-                  if (handleClose) setHandleClose(false);
-                }}
-              >
+            <Modal open={handleClose}
+              slots={{ backdrop: Backdrop }}
+              slotProps={{
+                backdrop: {
+                  translate: "yes",
+                },
+              }}>
+              <Zoom in={handleClose} style={{ translate: 'calc(-50% - 1px) calc(-51%)' }}>
                 <div className="CardModal-confirmClose">
                   <span>
                     Les modifications non enregistrées seront perdues.
                   </span>
-                  <div onClick={handleCloseModal}>
-                    <ButtonComponent size={90} label={"Quitter"} height={40} />
+                  <div className="CardModal-buttonsContainer">
+                    <div onClick={() => setHandleClose(false)}>
+                      <ButtonComponent size={70} label={"Rester"} clipPath={10} color="green" fontSize={16} height={40} />
+                    </div>
+                    <div onClick={handleCloseModal}>
+                      <ButtonComponent size={70} label={"Fermer"} clipPath={10} color="red" fontSize={16} height={40} />
+                    </div>
                   </div>
                 </div>
-              </ClickAwayListener>
-            ) : (
-              <div className="CardModal-closeButton" onClick={handleCloseModal}>
-                <Close />
-              </div>
-            )}
+              </Zoom>
+            </Modal>
           </div>
-        </div>
-      </div>
+        </Zoom>
+      </Modal>
     </CardModalContext.Provider>
   );
 };

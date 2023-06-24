@@ -42,142 +42,144 @@ export const CardPossessionComponent: React.FC<CardPossessionComponentPropsType>
         style={{ zIndex: card.userCardPossessions.length - index }}
       >
         <div className="CardPossession-container">
-          <div className="CardPossession-selectContainer">
-            <label>État</label>
-            <select
-              value={possession?.condition ?? undefined}
-              onChange={(ev) => handleUpdate("condition", ev.target.value)}
-              style={
-                isUnloggedPage()
-                  ? {
+          <div className="CardPossession-selectorsContainer">
+            <div className="CardPossession-selectContainer">
+              <label>État</label>
+              <select
+                value={possession?.condition ?? undefined}
+                onChange={(ev) => handleUpdate("condition", ev.target.value)}
+                style={
+                  isUnloggedPage()
+                    ? {
                       MozAppearance: "none",
                       WebkitAppearance: "none",
                       pointerEvents: "none",
                     }
-                  : {}
-              }
-            >
-              <option value={""}>-</option>
-              {Object.entries(cardCondition)
-                .filter((condition) => !isNaN(Number(condition[0])))
-                .map((condition, index) => (
-                  <option
-                    key={"condition" + index}
-                    value={Number(condition[0])}
-                  >
-                    {condition[1]}
+                    : {}
+                }
+              >
+                <option value={""}>-</option>
+                {Object.entries(cardCondition)
+                  .filter((condition) => !isNaN(Number(condition[0])))
+                  .map((condition, index) => (
+                    <option
+                      key={"condition" + index}
+                      value={Number(condition[0])}
+                    >
+                      {condition[1]}
+                    </option>
+                  ))}
+              </select>
+            </div>
+            <div className="CardPossession-selectContainer">
+              <label>Gradage</label>
+              <select
+                value={possession?.grade ?? undefined}
+                onChange={(ev) => handleUpdate("grade", ev.target.value)}
+                style={
+                  isUnloggedPage()
+                    ? {
+                      MozAppearance: "none",
+                      WebkitAppearance: "none",
+                      pointerEvents: "none",
+                    }
+                    : {}
+                }
+              >
+                <option value={""}>-</option>
+                {Object.entries(gradeCompany)
+                  .filter((condition) => !isNaN(Number(condition[0])))
+                  .map((condition, index) => (
+                    <option key={"grade" + index} value={Number(condition[0])}>
+                      {condition[1]}
+                    </option>
+                  ))}
+              </select>
+            </div>
+            <div className="CardPossession-selectContainer">
+              <label>Version</label>
+              <select
+                value={possession?.printingId ?? undefined}
+                onChange={(ev) => handleUpdate("printingId", ev.target.value)}
+                style={
+                  isUnloggedPage()
+                    ? {
+                      MozAppearance: "none",
+                      WebkitAppearance: "none",
+                      pointerEvents: "none",
+                    }
+                    : {}
+                }
+              >
+                <option value={""}>Classique</option>
+                {card.cardAdditionalPrinting.map((print, index) => (
+                  <option key={"printing" + index} value={print.id}>
+                    {print.name}
                   </option>
                 ))}
-            </select>
-          </div>
-          <div className="CardPossession-selectContainer">
-            <label>Gradage</label>
-            <select
-              value={possession?.grade ?? undefined}
-              onChange={(ev) => handleUpdate("grade", ev.target.value)}
-              style={
-                isUnloggedPage()
-                  ? {
+              </select>
+            </div>
+            <div className="CardPossession-selectContainer">
+              <label>Langue</label>
+              <select
+                value={possession?.language ?? undefined}
+                onChange={(ev) => handleUpdate("language", ev.target.value)}
+                style={
+                  isUnloggedPage()
+                    ? {
                       MozAppearance: "none",
                       WebkitAppearance: "none",
                       pointerEvents: "none",
                     }
-                  : {}
-              }
-            >
-              <option value={""}>-</option>
-              {Object.entries(gradeCompany)
-                .filter((condition) => !isNaN(Number(condition[0])))
-                .map((condition, index) => (
-                  <option key={"grade" + index} value={Number(condition[0])}>
-                    {condition[1]}
-                  </option>
-                ))}
-            </select>
-          </div>
-          <div className="CardPossession-selectContainer">
-            <label>Version</label>
-            <select
-              value={possession?.printingId ?? undefined}
-              onChange={(ev) => handleUpdate("printingId", ev.target.value)}
+                    : {}
+                }
+              >
+                <option value={""}>-</option>
+                {Object.entries(languages)
+                  .filter((condition) => !isNaN(Number(condition[0])))
+                  .map((condition, index) => (
+                    <option key={"grade" + index} value={Number(condition[0])}>
+                      {condition[1]}
+                    </option>
+                  ))}
+              </select>
+            </div>
+            <div className="CardPossession-selectContainer labels"
               style={
                 isUnloggedPage()
                   ? {
-                      MozAppearance: "none",
-                      WebkitAppearance: "none",
-                      pointerEvents: "none",
-                    }
-                  : {}
-              }
-            >
-              <option value={""}>Classique</option>
-              {card.cardAdditionalPrinting.map((print, index) => (
-                <option key={"printing" + index} value={print.id}>
-                  {print.name}
-                </option>
-              ))}
-            </select>
-          </div>
-          <div className="CardPossession-selectContainer">
-            <label>Langue</label>
-            <select
-              value={possession?.language ?? undefined}
-              onChange={(ev) => handleUpdate("language", ev.target.value)}
-              style={
-                isUnloggedPage()
-                  ? {
-                      MozAppearance: "none",
-                      WebkitAppearance: "none",
-                      pointerEvents: "none",
-                    }
-                  : {}
-              }
-            >
-              <option value={""}>-</option>
-              {Object.entries(languages)
-                .filter((condition) => !isNaN(Number(condition[0])))
-                .map((condition, index) => (
-                  <option key={"grade" + index} value={Number(condition[0])}>
-                    {condition[1]}
-                  </option>
-                ))}
-            </select>
-          </div>
-          <div
-            className="CardPossession-selectContainer labels"
-            style={
-              isUnloggedPage()
-                ? {
                     pointerEvents: "none",
                   }
-                : {}
-            }
-          >
-            <label>Labels</label>
-            <CardPossessionTagSelection
-              cardPossession={possession}
-              onTagChange={(tag: ITag) => {
-                let localTags = [...(possession?.tags ?? [])];
-                const index = localTags.findIndex(
-                  (localTag) => localTag.id === tag.id
-                );
-                if (index !== -1) {
-                  localTags.splice(index, 1);
-                } else {
-                  localTags.push(tag);
-                }
-                const newPossession = { ...possession };
-                newPossession.tags = localTags;
-                update(newPossession);
-              }}
-            />
+                  : {}
+              }
+            >
+              <label>Labels</label>
+              <CardPossessionTagSelection
+                cardPossession={possession}
+                onTagChange={(tag: ITag) => {
+                  let localTags = [...(possession?.tags ?? [])];
+                  const index = localTags.findIndex(
+                    (localTag) => localTag.id === tag.id
+                  );
+                  if (index !== -1) {
+                    localTags.splice(index, 1);
+                  } else {
+                    localTags.push(tag);
+                  }
+                  const newPossession = { ...possession };
+                  newPossession.tags = localTags;
+                  update(newPossession);
+                }}
+              />
+            </div>
           </div>
           <div className="CardPossession-buttons">
             <div onClick={() => setIsNoteOpened(!isNoteOpened)}>
               <ButtonComponent
                 label={<Comment />}
-                height={50}
-                size={50}
+                height={40}
+                size={40}
+                clipPath={10}
                 color={isNoteOpened ? "green" : "primary"}
               />
             </div>
@@ -198,8 +200,9 @@ export const CardPossessionComponent: React.FC<CardPossessionComponentPropsType>
                 >
                   <ButtonComponent
                     label={<Delete />}
-                    height={50}
-                    size={50}
+                    height={40}
+                    size={40}
+                    clipPath={10}
                     color={handleDelete ? "red" : "primary"}
                   />
                 </div>
@@ -215,16 +218,16 @@ export const CardPossessionComponent: React.FC<CardPossessionComponentPropsType>
               {!isUnloggedPage() && (
                 <ButtonComponent
                   label={<Save />}
-                  height={50}
-                  size={50}
+                  height={40}
+                  size={40}
+                  clipPath={10}
                   disabled={!canSave}
                 />
               )}
             </div>
           </div>
         </div>
-        <div
-          className="CardPossession-note"
+        <div className="CardPossession-note"
           style={{
             height: isNoteOpened ? 80 : 0,
             marginBottom: isNoteOpened ? 10 : 0,
