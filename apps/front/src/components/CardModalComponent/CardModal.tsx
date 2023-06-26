@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import "./style.scss";
-import { ClickAwayListener, Fade, Modal, Tooltip, Zoom, capitalize } from "@mui/material";
+import { Box, ClickAwayListener, Fade, Modal, Tooltip, Zoom, capitalize } from "@mui/material";
 import {
   frontRarity,
   getImageSource,
@@ -8,7 +8,7 @@ import {
   isUserConnected,
 } from "../../general.utils";
 import StoreContext from "../../hook/contexts/StoreContext";
-import { Add, Close } from "@mui/icons-material";
+import { Add, Close, SettingsEthernetSharp } from "@mui/icons-material";
 import { CardPossessionComponent } from "../CardPossessionComponent/CardPossessionComponent";
 import CardModalContext from "../../hook/contexts/CardModalContext";
 import { ButtonComponent } from "../UI/Button/ButtonComponent";
@@ -35,7 +35,8 @@ export const CardModal: React.FC<{ card: ICard | null; closeModal: () => void }>
   const [localCardPossession, setLocalCardPossession] = useState<
     IUserCardPossession[]
   >([]);
-  const [handleClose, setHandleClose] = useState(false);
+  const [handlingClose, setHandlingClose] = useState(false);
+  const [open, setOpen] = React.useState(false);
 
   let id: string | undefined = useParams().id;
   if (!isUnloggedPage()) {
@@ -44,7 +45,7 @@ export const CardModal: React.FC<{ card: ICard | null; closeModal: () => void }>
 
   useEffect(() => {
     setLocalCardPossession([...card?.userCardPossessions ?? []]);
-  }, []);
+  }, [card]);
 
 
   const context = {
@@ -202,17 +203,32 @@ export const CardModal: React.FC<{ card: ICard | null; closeModal: () => void }>
     }
   };
 
+
+  useEffect(() => {
+    setOpen(card ? true : false)
+  }, [card])
+
+  const handleClose = () => setOpen(false);
+
+  useEffect(() => {
+    setTimeout(() => {
+      if (!open && card) {
+        closeModal()
+      }
+    }, 500)
+  }, [open])
+
   const handleCloseModal = () => {
     const unsavedData =
       JSON.stringify(localCardPossession) !==
       JSON.stringify(card?.userCardPossessions ?? []);
-    if (!unsavedData) return closeModal();
+    if (!unsavedData) return handleClose();
     else {
-      if (handleClose) {
-        setHandleClose(false);
-        return closeModal();
+      if (handlingClose) {
+        setHandlingClose(false);
+        return handleClose();
       } else {
-        setHandleClose(true);
+        setHandlingClose(true);
       }
     }
   };
@@ -221,7 +237,8 @@ export const CardModal: React.FC<{ card: ICard | null; closeModal: () => void }>
 
   return (
     <CardModalContext.Provider value={context}>
-      <Modal open={card ? true : false}
+      <Modal open={open}
+        onClose={handleClose}
         closeAfterTransition
         slots={{ backdrop: Backdrop }}
         slotProps={{
@@ -229,9 +246,14 @@ export const CardModal: React.FC<{ card: ICard | null; closeModal: () => void }>
             timeout: 500,
           } as any,
         }}>
-        <Zoom in={card ? true : false} style={{ translate: 'calc(-50% - 1px) calc(-51%)' }}>
+        <Zoom in={open} style={{ translate: 'calc(-50% - 1px) calc(-51%)' }}>
           <div className="CardModal coloredCorner">
             <div className="CardModal-paddingContainer">
+              <div className="CardModal-closeButtonContainer">
+                <div className="CardModal-closeButton" onClick={handleCloseModal}>
+                  <Close />
+                </div>
+              </div>
               <div className="CardModal-cardInfos">
                 <div className="CardModal-cardMain">
                   <div className="CardModal-name">{card?.name}</div>
@@ -240,7 +262,7 @@ export const CardModal: React.FC<{ card: ICard | null; closeModal: () => void }>
                   }} />
                 </div>
                 <div className="CardModal-cardMisc">
-                  <div className="CardModal-stylizedContainer">
+                  <div className="CardModal-stylizedContainer" style={{ animationDelay: '0.4s' }}>
                     <div className="CardModal-stylizedMain">
                       <div>Numéro</div>
                     </div>
@@ -248,8 +270,7 @@ export const CardModal: React.FC<{ card: ICard | null; closeModal: () => void }>
                       {card?.localId.padStart(3, '0')}
                     </div>
                   </div>
-
-                  <div className="CardModal-stylizedContainer">
+                  <div className="CardModal-stylizedContainer" style={{ animationDelay: '.6s' }}>
                     <div className="CardModal-stylizedMain">
                       <div>Rareté</div>
                     </div>
@@ -261,8 +282,7 @@ export const CardModal: React.FC<{ card: ICard | null; closeModal: () => void }>
                       </Tooltip>
                     </div>
                   </div>
-
-                  <div className="CardModal-stylizedContainer">
+                  <div className="CardModal-stylizedContainer" style={{ animationDelay: '.8s' }}>
                     <div className="CardModal-stylizedMain">
                       <div>Types</div>
                     </div>
@@ -285,8 +305,7 @@ export const CardModal: React.FC<{ card: ICard | null; closeModal: () => void }>
                       }
                     </div>
                   </div>
-
-                  <div className="CardModal-stylizedContainer">
+                  <div className="CardModal-stylizedContainer" style={{ animationDelay: '1s' }}>
                     <div className="CardModal-stylizedMain">
                       <div>
                         Série
@@ -300,7 +319,7 @@ export const CardModal: React.FC<{ card: ICard | null; closeModal: () => void }>
                       }
                     </div>
                   </div>
-                  <div className="CardModal-stylizedContainer">
+                  <div className="CardModal-stylizedContainer" style={{ animationDelay: '1.2s' }}>
                     <div className="CardModal-stylizedMain">
                       <div>
                         Extension
@@ -378,26 +397,22 @@ export const CardModal: React.FC<{ card: ICard | null; closeModal: () => void }>
                   </div>
                 </div>
               </div>}
-              <div className="CardModal-closeButtonContainer">
-                <div className="CardModal-closeButton" onClick={handleCloseModal}>
-                  <Close />
-                </div>
-              </div>
+
             </div>
-            <Modal open={handleClose}
+            <Modal open={handlingClose}
               slots={{ backdrop: Backdrop }}
               slotProps={{
                 backdrop: {
                   translate: "yes",
                 },
               }}>
-              <Zoom in={handleClose} style={{ translate: 'calc(-50% - 1px) calc(-51%)' }}>
+              <Zoom in={handlingClose} style={{ translate: 'calc(-50% - 1px) calc(-51%)' }}>
                 <div className="CardModal-confirmClose">
                   <span>
                     Les modifications non enregistrées seront perdues.
                   </span>
                   <div className="CardModal-buttonsContainer">
-                    <div onClick={() => setHandleClose(false)}>
+                    <div onClick={() => setHandlingClose(false)}>
                       <ButtonComponent size={70} label={"Rester"} clipPath={10} color="green" fontSize={16} height={40} />
                     </div>
                     <div onClick={handleCloseModal}>

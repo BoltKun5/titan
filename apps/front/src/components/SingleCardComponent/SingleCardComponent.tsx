@@ -9,7 +9,6 @@ import React, {
 
 import { SingleCardOverlayComponent } from "../SingleCardOverlayComponent/SingleCardOverlayComponent";
 import "./style.scss";
-import { CardModal } from "../CardModalComponent/CardModal";
 import StoreContext from "../../hook/contexts/StoreContext";
 import { CardRarityEnum, CardRarityEnumFrench, CardTypeEnum, CardTypeEnumFrench, ICard } from "vokit_core";
 import { SingleCardComponentPropsType } from "../../local-core";

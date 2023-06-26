@@ -4,17 +4,19 @@
   background: $primary-bg;
   max-width: 95%;
   max-height: calc(100% - 86px);
-  overflow: hidden auto;
   position: absolute !important;
   left: 50%;
-  top: 50%;
-  transform: translate(calc(-50% - 30px), calc(-50% - 1px));
+  top: calc(43px + 50%);
   outline: none !important;
+  overflow: auto;
 
   &-paddingContainer {
     padding: 30px;
     display: flex;
     padding-top: 40px;
+    overflow: hidden auto;
+    max-height: calc(100vh - 136px);
+    box-sizing: border-box;
   }
 
   & img {
@@ -53,6 +55,7 @@
     position: relative;
     height: fit-content;
     width: 360px;
+    z-index: 10;
 
     & img {
       width: 330px;
@@ -78,7 +81,6 @@
     min-width: 300px;
     height: fit-content;
     margin-top: 34px;
-    height: 400px;
     padding: 10px;
     box-sizing: border-box;
     gap: 10px;
@@ -107,6 +109,9 @@
     width: fit-content;
     position: relative;
     font-size: 15px;
+    transform: translate(-120%);
+    animation: forwards slide-in 0.3s;
+    opacity: 0;
 
     &>* {
       position: relative;
@@ -298,64 +303,112 @@
   }
 }
 
-@media (max-width: 1120px) {
+
+@media (max-width: 1600px) and (min-width: 1311px) {
   .CardModal {
-    &-modale {
+    &-cardInfos {
       flex-direction: column;
-      overflow-y: auto;
-      align-items: center;
+      width: 360px;
     }
 
-    &-miscContainer {
-      margin: 20px 0;
+    &-cardMisc {
+      margin: 0;
+      padding: 10px 0;
+      display: flex;
+      flex-wrap: wrap;
+      flex-direction: row;
+      width: 100%;
     }
 
     &-possessions {
-      padding-bottom: 30px
+      margin: 0;
+      margin-left: 10px;
     }
   }
 }
 
-@media (max-width: 535px) {
+@media (max-width: 1310px) {
   .CardModal {
-    &-miscContainer {
-      margin-top: 40px;
-      width: 95%;
+    &-paddingContainer {
+      flex-direction: column;
     }
 
-    &-misc {
-
-      height: fit-content;
-
-      &>img {
-        width: 95%;
-        max-width: 320px;
-      }
+    &-cardInfos {
+      flex-direction: row;
+      margin: 0;
     }
 
-    &-possessionTitle {
-      padding: 5px 10px;
-      font-size: 15px;
-      align-items: center;
-      display: flex;
+    &-possessions {
+      margin-top: 20px;
+      padding-bottom: 0;
     }
 
-    &-createPossessionButton span {
-      text-align: center;
+    &-closeButtonContainer {
+      right: 10px;
+    }
+  }
+}
+
+@media (max-width: 920px) {
+  .CardModal {
+    &-possessions {
+      min-width: 0;
     }
   }
 
-  // OVERRIDE BUTTON
-  .CardModal-possessionHeaders .ButtonComponent {
-    width: 120px !important;
-    height: 25px !important;
-    clip-path: clipPath(5px);
-
-    & button {
-      width: 120px !important;
-      font-size: 15px;
-      height: 25px !important;
-      clip-path: clipPath(5px);
+  .CardPossession {
+    &-selectContainer {
+      width: calc(50% - 20px) !important;
     }
+
+    &-buttons {
+      flex-direction: column;
+      gap: 5px;
+    }
+  }
+}
+
+@media (max-width: 730px) {
+  .CardModal {
+    max-width: 100%;
+    width: 100%;
+    box-sizing: border-box;
+
+    &-closeButtonContainer {
+      position: relative;
+      display: flex;
+      width: 100%;
+      justify-content: end;
+    }
+
+    &-paddingContainer {
+      padding: 0px;
+    }
+
+    &-cardInfos {
+      flex-direction: column;
+      width: 360px;
+    }
+
+    &-cardMisc {
+      margin: 0;
+      padding: 10px 0;
+      display: flex;
+      flex-wrap: wrap;
+      flex-direction: row;
+      width: 100%;
+    }
+  }
+}
+
+@keyframes slide-in {
+  0% {
+    transform: translate(-120%);
+    opacity: 0;
+  }
+
+  100% {
+    transform: translate(0);
+    opacity: 1;
   }
 }
