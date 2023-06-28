@@ -27,6 +27,14 @@
     padding: 10px;
     clip-path: clipPath(10px);
     font-size: 15px;
+    align-items: center;
+    display: flex;
+
+    svg {
+      width: 20px;
+      height: 20px;
+      margin-left: 5px;
+    }
   }
 
   &.filter {
@@ -34,6 +42,7 @@
       padding: 5px;
       clip-path: clipPath(5px);
       top: 3px;
+
     }
   }
 }

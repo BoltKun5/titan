@@ -26,6 +26,7 @@ import {
   ICardSet,
   IUser,
 } from "vokit_core";
+import { Profile } from "./pages/Profile/Profile";
 
 export const App: React.FC = () => {
   // Données de la base
@@ -209,6 +210,7 @@ export const App: React.FC = () => {
                 <Route path="/stats" element={<StatPage />} />
                 <Route path="/historic" element={<HistoricPage />} />
                 <Route path="/signup" element={<SignUp />} />
+                <Route path="/profile" element={<Profile />} />
                 <Route path="/collection/:id" element={<CardManager />} />
               </Routes>
             </StoreContext.Provider>

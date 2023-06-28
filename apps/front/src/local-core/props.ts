@@ -63,6 +63,7 @@ export type TextInputComponentType = {
   height?: number;
   labelAsPlaceholder?: boolean;
   preset?: string;
+  tooltip?: string;
 };
 
 export type ButtonComponentPropsType = {

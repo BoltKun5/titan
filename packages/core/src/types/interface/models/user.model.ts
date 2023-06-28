@@ -5,7 +5,8 @@ export type IUser = {
   id: string;
   role: number;
   shownName: string;
-  username: string;
+  mail: string;
+  options: Record<string, string> | null;
   password: string;
   cards: IUserCardPossession[];
   tags: ITag[];

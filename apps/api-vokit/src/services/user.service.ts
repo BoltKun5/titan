@@ -6,7 +6,7 @@ import { EntityService, Paginator } from '../core';
 import { IncludeOptionsWithModel } from '../database/custom/custom-model.model';
 
 interface ParamsCreate {
-  username: string;
+  mail: string;
   password: string;
   shownName: string;
 }
@@ -44,13 +44,13 @@ export class UserService extends EntityService<User, IUser> {
 
   public async create(params: ParamsCreate): Promise<User> {
     try {
-      const { username, password, shownName } = params;
+      const { mail, password, shownName } = params;
       const hash = bcrypt.hashSync(password, 12);
 
-      this.logger.log(`User has been created with username ${username}`);
+      this.logger.log(`User has been created with mail ${mail}`);
 
       const user = await User.create({
-        username,
+        mail,
         password: hash,
         shownName: shownName,
         role: 0,

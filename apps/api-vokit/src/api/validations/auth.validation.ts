@@ -5,7 +5,7 @@ import Joi from 'joi';
 export default class AuthValidation {
   static signinBody(data: ISigninAuthBody): ISigninAuthBody {
     const querySchema = Joi.object<ISigninAuthBody>({
-      username: Joi.string(),
+      mail: Joi.string().email({ tlds: { allow: false } }),
       password: Joi.string(),
     }).options({ presence: 'required' });
 
@@ -17,9 +17,9 @@ export default class AuthValidation {
 
   static signupBody(data: ISignupAuthBody): ISignupAuthBody {
     const querySchema = Joi.object<ISignupAuthBody>({
-      username: Joi.string().min(3).max(20),
-      password: Joi.string().min(5).max(30),
-      shownName: Joi.string().min(3).max(20),
+      password: Joi.string().min(5),
+      shownName: Joi.string().min(2).max(20),
+      mail: Joi.string().email({ tlds: { allow: false } }),
     }).options({ presence: 'required' });
 
     const result = querySchema.validate(data);

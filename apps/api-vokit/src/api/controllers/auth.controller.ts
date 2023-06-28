@@ -23,7 +23,7 @@ class AuthController implements Controller {
     req.body = AuthValidation.signinBody(req.body);
 
     const { user, token } = await authService.login({
-      username: req.body.username,
+      mail: req.body.mail,
       password: req.body.password,
     });
 
@@ -46,21 +46,21 @@ class AuthController implements Controller {
     req.body = AuthValidation.signupBody(req.body);
     const existingUser = await User.findOne({
       where: {
-        username: req.body.username,
+        mail: req.body.mail,
       },
     });
 
     if (existingUser) {
       throw createError(409, {
         type: ErrorType.resourceError,
-        code: 'USERNAME_USED',
-        message: 'Username already used.',
+        code: 'MAIL_USED',
+        message: 'Email already used.',
       });
     }
 
     const user = await authService.signup({
       shownName: req.body.shownName,
-      username: req.body.username,
+      mail: req.body.mail,
       password: req.body.password,
     });
 

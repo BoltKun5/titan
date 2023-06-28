@@ -36,7 +36,9 @@ export const CardModal: React.FC<{ card: ICard | null; closeModal: () => void }>
     IUserCardPossession[]
   >([]);
   const [handlingClose, setHandlingClose] = useState(false);
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = useState(false);
+
+  const connectedUser = isUserConnected();
 
   let id: string | undefined = useParams().id;
   if (!isUnloggedPage()) {
@@ -203,7 +205,6 @@ export const CardModal: React.FC<{ card: ICard | null; closeModal: () => void }>
     }
   };
 
-
   useEffect(() => {
     setOpen(card ? true : false)
   }, [card])
@@ -233,11 +234,9 @@ export const CardModal: React.FC<{ card: ICard | null; closeModal: () => void }>
     }
   };
 
-  if (!card) return <div></div>
-
   return (
     <CardModalContext.Provider value={context}>
-      <Modal open={open}
+      {card && <Modal open={open}
         onClose={handleClose}
         closeAfterTransition
         slots={{ backdrop: Backdrop }}
@@ -345,7 +344,7 @@ export const CardModal: React.FC<{ card: ICard | null; closeModal: () => void }>
                       Exemplaires possédés
                     </div>
                     <div onClick={() => savePossession()} className="CardModal-saveAll">
-                      {isUserConnected() && id === undefined && (
+                      {connectedUser && id === undefined && (
                         <ButtonComponent
                           label={"Tout enregistrer"}
                           disabled={
@@ -362,7 +361,7 @@ export const CardModal: React.FC<{ card: ICard | null; closeModal: () => void }>
                   </div>
                   <div className="CardModal-possessionList">
                     <div className="CardModal-tableContainer">
-                      {isUserConnected() && id === undefined && (
+                      {connectedUser && id === undefined && (
                         <div
                           className="CardModal-createPossessionButton"
                           onClick={() => createPossession()}
@@ -424,7 +423,7 @@ export const CardModal: React.FC<{ card: ICard | null; closeModal: () => void }>
             </Modal>
           </div>
         </Zoom>
-      </Modal>
+      </Modal>}
     </CardModalContext.Provider>
   );
 };

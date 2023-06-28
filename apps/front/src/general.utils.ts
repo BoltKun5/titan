@@ -21,7 +21,7 @@ export const initialRarityFilter = [
     value: false,
   },
   {
-    rarity: "Ultra Rare",
+    rarity: "Ultra-rare",
     value: false,
   },
   {
@@ -37,11 +37,11 @@ export const initialRarityFilter = [
     value: false,
   },
   {
-    rarity: "Ultra-rare",
+    rarity: "Double Rare",
     value: false,
   },
   {
-    rarity: "Double Rare",
+    rarity: "Ultra Rare",
     value: false,
   },
   {
@@ -206,6 +206,6 @@ export const isUserConnected = () => {
 };
 
 export const isUnloggedPage = () => {
-  const unloggedPaged = ["collection"];
+  const unloggedPaged = ["collection", "login", "signup"];
   return unloggedPaged.includes(window.location.pathname.split("/")[1]);
 };

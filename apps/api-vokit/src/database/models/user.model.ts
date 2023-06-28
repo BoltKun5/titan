@@ -27,7 +27,7 @@ export type ModelUser = Overwrite<
 
 export type CreationModelUser = WithRequired<
   Partial<IUser>,
-  'role' | 'shownName' | 'username' | 'password'
+  'role' | 'shownName' | 'mail' | 'password'
 >;
 
 @DefaultScope(() => ({}))
@@ -52,11 +52,16 @@ export class User extends CustomModel<IUser, CreationModelUser> implements Model
   })
   shownName: string;
 
-  @AllowNull(false)
   @Column({
     type: DataType.STRING,
   })
-  username: string;
+  mail: string;
+
+  @AllowNull(true)
+  @Column({
+    type: DataType.JSON,
+  })
+  options: JSON;
 
   @AllowNull(false)
   @Column({

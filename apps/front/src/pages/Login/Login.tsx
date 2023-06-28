@@ -15,7 +15,7 @@ import { api } from "../../axios";
 
 export const Login: React.FC = () => {
   const [errorMessage, setErrorMessage] = useState("");
-  const [username, setUsername] = useState("");
+  const [mail, setMail] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
   const { user, setUser } = useContext(StoreContext);
@@ -25,13 +25,13 @@ export const Login: React.FC = () => {
     setErrorMessage("");
 
     const querySchema = Joi.object<ISigninAuthBody>({
-      username: Joi.string().min(3).max(20).required(),
-      password: Joi.string().min(5).max(30).required(),
+      mail: Joi.string().email({ tlds: { allow: false } }).required(),
+      password: Joi.string().min(5).required(),
     });
 
     const result = querySchema.validate({
-      username: username,
-      password: password,
+      mail,
+      password,
     });
 
     if (result.error) {
@@ -78,17 +78,17 @@ export const Login: React.FC = () => {
       <form onSubmit={handleSubmit} className="Login-Form coloredCorner">
         <Link to={"/"}>
           <div className="BackButton">
-            <svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 24 24" fill="none" stroke="#000000" stroke-width="3" strokeLinecap="square" strokeLinejoin={"arcs" as any}><path d="M19 12H6M12 5l-7 7 7 7" /></svg>
+            <svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 24 24" fill="none" stroke="#000000" strokeWidth="3" strokeLinecap="square" strokeLinejoin={"arcs" as any}><path d="M19 12H6M12 5l-7 7 7 7" /></svg>
           </div>
         </Link>
         <div className="Logo"><img src="./assets/logo_full.png" /></div>
         <h2>Connexion</h2>
         <div className="Login-inputs">
           <TextInputComponent
-            value={username}
-            modifyValue={setUsername}
-            label={"Nom de compte"}
-            id="username"
+            value={mail}
+            modifyValue={setMail}
+            label={"Adresse mail"}
+            id="mail"
           />
           <TextInputComponent
             value={password}

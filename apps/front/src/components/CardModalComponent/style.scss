@@ -353,6 +353,7 @@
   .CardModal {
     &-possessions {
       min-width: 0;
+      width: 95%;
     }
   }
 
@@ -385,9 +386,13 @@
       padding: 0px;
     }
 
+    &-possessions {
+      min-width: 95%;
+    }
+
     &-cardInfos {
       flex-direction: column;
-      width: 360px;
+      width: 95%;
     }
 
     &-cardMisc {

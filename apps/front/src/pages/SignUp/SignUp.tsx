@@ -10,9 +10,9 @@ import StoreContext from "../../hook/contexts/StoreContext";
 
 export const SignUp: React.FC = () => {
   const [errorMessage, setErrorMessage] = useState("");
-  const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [shownName, setShownName] = useState("");
+  const [mail, setMail] = useState("");
   const navigate = useNavigate();
 
   const { setUser } = useContext(StoreContext)
@@ -21,19 +21,19 @@ export const SignUp: React.FC = () => {
     event.preventDefault();
 
     const querySchema = Joi.object<ISignupAuthBody>({
-      username: Joi.string().min(3).max(20).required(),
       password: Joi.string().min(5).max(30).required(),
-      shownName: Joi.string().min(3).max(30).required(),
+      shownName: Joi.string().min(2).max(30).required(),
+      mail: Joi.string().email({ tlds: { allow: false } }).required()
     });
 
     const result = querySchema.validate({
-      username: username,
-      password: password,
-      shownName: shownName,
+      password,
+      shownName,
+      mail
     });
 
     if (result.error) {
-      setErrorMessage("Les formats ne sont pas respectés.");
+      setErrorMessage("Les données ne sont pas valides.");
       return;
     }
 
@@ -53,6 +53,10 @@ export const SignUp: React.FC = () => {
       switch (errorCode) {
         case "USER_NOT_FOUND":
           setErrorMessage("Mauvais identifiants");
+        case "MAIL_USED":
+          setErrorMessage("L'adresse mail est déjà utilisée.");
+        default:
+          setErrorMessage("Une erreur est survenue.")
       }
     }
   };
@@ -62,17 +66,17 @@ export const SignUp: React.FC = () => {
       <form onSubmit={handleSubmit} className="SignUp-Form coloredCorner">
         <Link to={"/"}>
           <div className="BackButton">
-            <svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 24 24" fill="none" stroke="#000000" stroke-width="3" strokeLinecap="square" strokeLinejoin={"arcs" as any}><path d="M19 12H6M12 5l-7 7 7 7" /></svg>
+            <svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 24 24" fill="none" stroke="#000000" strokeWidth="3" strokeLinecap="square" strokeLinejoin={"arcs" as any}><path d="M19 12H6M12 5l-7 7 7 7" /></svg>
           </div>
         </Link>
         <div className="Logo"><img src="./assets/logo_full.png" /></div>
         <h2>Inscription</h2>
         <div className="SignUp-inputs">
           <TextInputComponent
-            value={username}
-            modifyValue={setUsername}
-            label={"Nom de compte"}
-            id={"username"}
+            value={mail}
+            modifyValue={setMail}
+            label={"Adresse mail"}
+            id={"mail"}
           />
           <TextInputComponent
             value={shownName}
@@ -86,6 +90,7 @@ export const SignUp: React.FC = () => {
             type="password"
             label={"Mot de passe"}
             id={"password"}
+            tooltip={'Au moins 3 caractères'}
           />
           <ButtonComponent label={"S'inscrire"} />
         </div>

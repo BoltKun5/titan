@@ -230,7 +230,6 @@ export const CardManagerFilterComponent: React.FC<{
                 <label>Filtrer par rareté</label>
                 <div className="CardManagerFilter-rarityList">
                   {rarityFilter.map((filter: any) => (
-                    // @ts-ignore
                     <Tooltip
                       title={frontRarity[filter.rarity]}
                       key={"rarity" + filter.rarity}

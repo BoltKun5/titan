@@ -4,7 +4,7 @@ import StoreContext from "../../hook/contexts/StoreContext";
 import "./style.scss";
 import { UserRoleEnum } from "vokit_core";
 import { Close, Menu } from "@mui/icons-material";
-import { ClickAwayListener } from "@mui/material";
+import { ClickAwayListener, Grow, Slide } from "@mui/material";
 import { isUnloggedPage, isUserConnected } from "../../general.utils";
 import { useSnackbar } from "notistack";
 import { ButtonComponent } from "../UI/Button/ButtonComponent";
@@ -15,6 +15,7 @@ export const HeaderComponent: React.FC<{
 }> = ({ forceRender, setForceRender }) => {
   const [isProfileDropdownOpen, setIsProfileDropdownOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [listenToClose, setListenToClose] = useState(false);
 
   const navigate = useNavigate();
   const { enqueueSnackbar } = useSnackbar();
@@ -92,47 +93,42 @@ export const HeaderComponent: React.FC<{
           <div className="HeaderComponent-misc">
             <div
               className="HeaderComponent-profile"
-              onClick={() => setIsProfileDropdownOpen(true)}
+              onClick={() => {
+                setIsProfileDropdownOpen(true); setTimeout(() => {
+                  setListenToClose(true)
+                }, 500)
+              }}
             >
               <div className="HeaderComponent-profilePicture">
                 <img
-                  src={"./assets/logo_small.png"}
-                  style={{
-                    filter: isProfileDropdownOpen
-                      ? "brightness(1)"
-                      : "brightness(0.7)",
-                  }}
+                  src={`./assets/profile_picture/${user?.options?.profilePictureId ?? 1}.png`}
                 />
               </div>
             </div>
           </div>
-          {isProfileDropdownOpen && (
-            <ClickAwayListener
-              onClickAway={() => setIsProfileDropdownOpen(false)}
-            >
-              <div className="HeaderComponent-profileOptions">
-                {user.role === UserRoleEnum["ADMIN"] && (
-                  <Link to="/admin">
-                    <div className="HeaderComponent-profileButtons">
-                      Administration
+
+          <Grow in={isProfileDropdownOpen}>
+            <div>
+              <ClickAwayListener onClickAway={() => { if (listenToClose) { setIsProfileDropdownOpen(false); setListenToClose(false) } }}>
+                <div className="HeaderComponent-profileOptions">
+                  <Link to={'/profile'} onClick={() => { setIsProfileDropdownOpen(false); setListenToClose(false) }}>
+                    <div
+                      className="HeaderComponent-profileButtons"
+                      onClick={() => copyShareLink()}
+                    >
+                      Mon profil
                     </div>
                   </Link>
-                )}
-                <div
-                  className="HeaderComponent-profileButtons"
-                  onClick={() => copyShareLink()}
-                >
-                  Partager ma collection
+                  <div
+                    className="HeaderComponent-profileButtons"
+                    onClick={() => disconnect()}
+                  >
+                    Se déconnecter
+                  </div>
                 </div>
-                <div
-                  className="HeaderComponent-profileButtons"
-                  onClick={() => disconnect()}
-                >
-                  Se déconnecter
-                </div>
-              </div>
-            </ClickAwayListener>
-          )}
+              </ClickAwayListener>
+            </div>
+          </Grow>
         </>
       ) : (
         <div className="HeaderComponent-disconnectedHeader">

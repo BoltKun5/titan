@@ -8,13 +8,13 @@ import { SessionTokenPayload } from 'vokit_core';
 import { Service } from '../core';
 
 type ParamsSignup = {
-  username: string;
+  mail: string;
   password: string;
   shownName: string;
 };
 
 type ParamsLogin = {
-  username: string;
+  mail: string;
   password: string;
 };
 
@@ -24,19 +24,19 @@ type ResultLogin = {
 };
 
 class AuthService extends Service {
-  public async signup({ username, password, shownName }: ParamsSignup): Promise<User> {
-    this.logger.log(`New user **${username}** registered`);
+  public async signup({ mail, password, shownName }: ParamsSignup): Promise<User> {
+    this.logger.log(`New user **${mail}** registered`);
 
     return UserService.create({
-      username,
+      mail,
       password,
       shownName,
     });
   }
 
-  public async login({ username, password }: ParamsLogin): Promise<ResultLogin> {
+  public async login({ mail, password }: ParamsLogin): Promise<ResultLogin> {
     const user = await User.findOne({
-      where: { username },
+      where: { mail },
     });
 
     if (!user) {

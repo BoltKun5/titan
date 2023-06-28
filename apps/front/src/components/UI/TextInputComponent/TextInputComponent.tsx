@@ -1,12 +1,18 @@
 import React from "react";
 import './style.scss'
 import { TextInputComponentType } from "../../../local-core";
+import { Info } from "@mui/icons-material";
+import { Tooltip } from "@mui/material";
 
 export const TextInputComponent: React.FC<TextInputComponentType> = (
-  { value = null, modifyValue = () => { }, label = "", id = "", type = 'text', onKeyUpCallback = () => { }, onKeyDownCallback = () => { }, width = 250, height = 59, labelAsPlaceholder = false, preset = '' }) => {
+  { value = null, modifyValue = () => { }, label = "", id = "", type = 'text', onKeyUpCallback = () => { }, onKeyDownCallback = () => { }, width = 250, height = 59, labelAsPlaceholder = false, preset = '', tooltip }) => {
   return (
     <div className={"TextInputComponent" + (' ' + preset)}>
-      {!labelAsPlaceholder && <label htmlFor={id}>{label}</label>}
+
+      {!labelAsPlaceholder && <label htmlFor={id}>{label}
+        {
+          tooltip && <Tooltip title={tooltip}><Info /></Tooltip>
+        }</label>}
       {
         value === null ? (
           <input

@@ -1,10 +1,10 @@
 export interface ISigninAuthBody {
   password: string;
-  username: string;
+  mail: string;
 }
 
 export interface ISignupAuthBody {
   password: string;
-  username: string;
   shownName: string;
+  mail: string;
 }
