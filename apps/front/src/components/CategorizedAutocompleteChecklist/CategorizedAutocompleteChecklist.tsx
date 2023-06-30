@@ -147,7 +147,7 @@ export const CategorizedAutocompleteChecklist: React.FC<Props> = ({
               <TextInputComponent
                 value={searchTerm}
                 modifyValue={setSearchTerm}
-                label="Filtrer par set"
+                label="Filtrer par extension"
                 width={width}
                 preset="filter"
                 height={40}

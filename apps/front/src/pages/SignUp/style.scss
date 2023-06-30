@@ -41,7 +41,7 @@
     padding: 0 0 20px 0;
     font-size: 30px;
     width: 400px;
-    min-height: 600px;
+    min-height: 400px;
     justify-content: center;
     align-items: center;
     margin: auto;
@@ -50,6 +50,7 @@
     background-color: #181526;
     color: #f1f5fe;
     max-height: 100vh;
+    min-height: 500px;
   }
 
   &-toSignIn {
@@ -75,7 +76,7 @@
     border: 1px solid $white;
     padding: 10px;
     margin: auto 0;
-    margin-bottom: 10px;
+    text-align: center;
   }
 
   &-inputs {

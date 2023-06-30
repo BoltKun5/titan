@@ -10,5 +10,7 @@ export const AuthRouter = (app: Router): Router => {
 
   route.post('/signup', authController.signUp);
 
+  route.post('/pre-signup', authController.preSignUp);
+
   return route;
 };

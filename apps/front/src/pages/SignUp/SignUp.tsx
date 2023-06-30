@@ -5,7 +5,7 @@ import "./style.scss";
 import { api } from "../../axios";
 import { TextInputComponent } from "../../components/UI/TextInputComponent/TextInputComponent";
 import { ButtonComponent } from "../../components/UI/Button/ButtonComponent";
-import { ISignupAuthBody, ISigninAuthResponse } from "vokit_core";
+import { ISignupAuthBody, ISigninAuthResponse, IPreSignupAuthBody } from "vokit_core";
 import StoreContext from "../../hook/contexts/StoreContext";
 
 export const SignUp: React.FC = () => {
@@ -17,18 +17,14 @@ export const SignUp: React.FC = () => {
 
   const { setUser } = useContext(StoreContext)
 
+  const querySchema = Joi.object<IPreSignupAuthBody>({
+    mail: Joi.string().email({ tlds: { allow: false } }).required()
+  });
+
   const handleSubmit = async (event: React.SyntheticEvent) => {
     event.preventDefault();
 
-    const querySchema = Joi.object<ISignupAuthBody>({
-      password: Joi.string().min(5).max(30).required(),
-      shownName: Joi.string().min(2).max(30).required(),
-      mail: Joi.string().email({ tlds: { allow: false } }).required()
-    });
-
     const result = querySchema.validate({
-      password,
-      shownName,
       mail
     });
 
@@ -39,15 +35,16 @@ export const SignUp: React.FC = () => {
 
     try {
       const response: { data: { data: ISigninAuthResponse } } = await api.post(
-        "/auth/signup",
+        "/auth/pre-signup",
         {
           ...result.value,
         }
       );
-      localStorage.setItem("token", response.data.data.token);
-      localStorage.setItem("user", JSON.stringify(response.data.data.user));
-      setUser(response.data.data.user);
-      navigate("/");
+      setErrorMessage('Un mail vous a été envoyé pour poursuivre la création de votre compte.')
+      // localStorage.setItem("token", response.data.data.token);
+      // localStorage.setItem("user", JSON.stringify(response.data.data.user));
+      // setUser(response.data.data.user);
+      // navigate("/");
     } catch (e: any) {
       const errorCode = e.response?.data?.error?.code;
       switch (errorCode) {
@@ -78,7 +75,7 @@ export const SignUp: React.FC = () => {
             label={"Adresse mail"}
             id={"mail"}
           />
-          <TextInputComponent
+          {/* <TextInputComponent
             value={shownName}
             modifyValue={setShownName}
             label={"Pseudo affiché"}
@@ -91,8 +88,8 @@ export const SignUp: React.FC = () => {
             label={"Mot de passe"}
             id={"password"}
             tooltip={'Au moins 3 caractères'}
-          />
-          <ButtonComponent label={"S'inscrire"} />
+          /> */}
+          <ButtonComponent label={"S'inscrire"} disabled={!!querySchema.validate({mail})?.error}/>
         </div>
         <div
           className="SignUp-errorMessage"

@@ -61,7 +61,7 @@ export class User extends CustomModel<IUser, CreationModelUser> implements Model
   @Column({
     type: DataType.JSON,
   })
-  options: JSON;
+  options: Record<string, string>;
 
   @AllowNull(false)
   @Column({

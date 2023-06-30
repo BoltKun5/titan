@@ -64,6 +64,7 @@ importers:
       '@types/http-errors': ^1.8.2
       '@types/jsonwebtoken': ^8.5.9
       '@types/lodash': ^4.14.195
+      '@types/nodemailer': ^6.4.8
       '@types/pg': ^7.14.11
       '@types/stack-trace': ^0.0.29
       '@types/umzug': ^2.3.3
@@ -109,6 +110,7 @@ importers:
       joi: ^17.9.2
       jsonwebtoken: ^8.5.1
       lodash: ^4.17.21
+      nodemailer: ^6.9.3
       pg: ^8.11.0
       prettier: 2.3.1
       reflect-metadata: ^0.1.13
@@ -154,6 +156,7 @@ importers:
       joi: 17.9.2
       jsonwebtoken: 8.5.1
       lodash: 4.17.21
+      nodemailer: 6.9.3
       pg: 8.11.0
       reflect-metadata: 0.1.13
       sequelize: 6.32.0_pg@8.11.0
@@ -176,6 +179,7 @@ importers:
       '@types/http-errors': 1.8.2
       '@types/jsonwebtoken': 8.5.9
       '@types/lodash': 4.14.195
+      '@types/nodemailer': 6.4.8
       '@types/pg': 7.14.11
       '@types/stack-trace': 0.0.29
       '@types/umzug': 2.3.3
@@ -2353,6 +2357,12 @@ packages:
 
   /@types/node/20.3.1:
     resolution: {integrity: sha512-EhcH/wvidPy1WeML3TtYFGR83UzjxeWRen9V402T8aUGYsCHOmfoisV3ZSg03gAFIbLq8TnWOJ0f4cALtnSEUg==}
+
+  /@types/nodemailer/6.4.8:
+    resolution: {integrity: sha512-oVsJSCkqViCn8/pEu2hfjwVO+Gb3e+eTWjg3PcjeFKRItfKpKwHphQqbYmPQrlMk+op7pNNWPbsJIEthpFN/OQ==}
+    dependencies:
+      '@types/node': 20.3.1
+    dev: true
 
   /@types/parse-json/4.0.0:
     resolution: {integrity: sha512-//oorEZjL6sbPcKUaCdIGlIUeH26mgzimjBB77G6XRgnDl/L5wOnpyBGRe/Mmf5CVW3PwEBE1NjiMZ/ssFh4wA==}
@@ -5720,6 +5730,11 @@ packages:
   /node-releases/2.0.8:
     resolution: {integrity: sha512-dFSmB8fFHEH/s81Xi+Y/15DQY6VHW81nXRj86EMSL3lmuTmK1e+aT4wrFCkTbm+gSwkw4KpX+rT/pMM2c1mF+A==}
     dev: true
+
+  /nodemailer/6.9.3:
+    resolution: {integrity: sha512-fy9v3NgTzBngrMFkDsKEj0r02U7jm6XfC3b52eoNV+GCrGj+s8pt5OqhiJdWKuw51zCTdiNR/IUD1z33LIIGpg==}
+    engines: {node: '>=6.0.0'}
+    dev: false
 
   /nopt/6.0.0:
     resolution: {integrity: sha512-ZwLpbTgdhuZUnZzjd7nb1ZV+4DoiC6/sfiVKok72ym/4Tlf+DFdlHYmT2JPmcNNWV6Pi3SDf1kT+A4r9RTuT9g==}

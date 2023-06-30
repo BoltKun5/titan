@@ -20,3 +20,4 @@ export * from './card-variation.enum';
 export * from './tag-type.enum';
 export * from './card-additional-printing.enum';
 export * from './card-variation.enum';
+export * from './pre-signed-type.enum';

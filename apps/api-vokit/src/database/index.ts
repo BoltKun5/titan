@@ -7,3 +7,4 @@ export * from './models/card-type.model';
 export * from './models/user.model';
 export * from './models/user-card-possession.model';
 export * from './models/admin-config.model';
+export * from './models/pre-signed-url.model';
