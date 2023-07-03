@@ -202,10 +202,10 @@ export const getFilterQuery = (
 
 export const isUserConnected = () => {
   const { user } = useContext(StoreContext);
-  return user.id !== "";
+  return user?.id !== "";
 };
 
 export const isUnloggedPage = () => {
-  const unloggedPaged = ["collection", "login", "signup"];
+  const unloggedPaged = ["collection", "login", "signup", "pre-signed", "renew-password"];
   return unloggedPaged.includes(window.location.pathname.split("/")[1]);
 };

@@ -103,14 +103,14 @@ export const SingleCardComponent: React.FC<SingleCardComponentPropsType> = ({
                     <div className="SingleCard-lineInfo-type">
 
                       <Tooltip title={CardTypeEnumFrench[card.types[0]?.type ?? 0]}>
-                        <img src={`./assets/icons/types_icons/${card.types[0]?.type ?? 0}.svg`} />
+                        <img src={`/assets/icons/types_icons/${card.types[0]?.type ?? 0}.svg`} />
                       </Tooltip>
                     </div>
                     <div className="SingleCard-lineInfo-rarity">
                       <Tooltip title={CardRarityEnumFrench[card.rarity]}>
                         <img
                           src={
-                            "./assets/icons/" +
+                            "/assets/icons/" +
                             CardRarityEnum[card.rarity] +
                             ".png"
                           }

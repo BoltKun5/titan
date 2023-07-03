@@ -237,7 +237,7 @@ export const StatPage: React.FC = () => {
                 distinctQuantity: data.distinctOwned,
                 ownedQuantity: data.totalOwned,
                 possibleQuantity: data.distinctPossible,
-                icon: "./assets/icons/collection.png",
+                icon: "/assets/icons/collection.png",
               }}
             />
             <StatCardComponent
@@ -246,7 +246,7 @@ export const StatPage: React.FC = () => {
                 distinctQuantity: data.distinctNormal,
                 ownedQuantity: data.totalNormal,
                 possibleQuantity: data.distinctNormalPossible,
-                icon: "./assets/icons/normales.png",
+                icon: "/assets/icons/normales.png",
               }}
             />
             <StatCardComponent
@@ -255,7 +255,7 @@ export const StatPage: React.FC = () => {
                 distinctQuantity: data.distinctReverse,
                 ownedQuantity: data.totalReverse,
                 possibleQuantity: data.distinctReversePossible,
-                icon: "./assets/icons/reverses.png",
+                icon: "/assets/icons/reverses.png",
               }}
             />
             {Object.entries(data.countByRarity).map(
@@ -267,7 +267,7 @@ export const StatPage: React.FC = () => {
                     distinctQuantity: rarityValues.distinctOwned,
                     ownedQuantity: rarityValues.totalOwned,
                     possibleQuantity: rarityValues.distinctPossible,
-                    icon: "./assets/icons/" + rarity + ".png",
+                    icon: "/assets/icons/" + rarity + ".png",
                   }}
                 />
               )

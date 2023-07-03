@@ -27,6 +27,8 @@ import {
   IUser,
 } from "vokit_core";
 import { Profile } from "./pages/Profile/Profile";
+import { PreSigned } from "./pages/PreSigned/PreSigned";
+import { RenewPassword } from "./pages/RenewPassword/RenewPassword";
 
 export const App: React.FC = () => {
   // Données de la base
@@ -187,7 +189,7 @@ export const App: React.FC = () => {
   }, [series]);
 
   const showHeader = () => {
-    const hideHeaderPaths = ["/login", "/signup", "/devtool"];
+    const hideHeaderPaths = ["/login", "/signup", "/devtool", "/renew-password", "/pre-signed"];
     return !hideHeaderPaths.includes(window.location.pathname);
   };
 
@@ -212,6 +214,8 @@ export const App: React.FC = () => {
                 <Route path="/signup" element={<SignUp />} />
                 <Route path="/profile" element={<Profile />} />
                 <Route path="/collection/:id" element={<CardManager />} />
+                <Route path="/pre-signed" element={<PreSigned />} />
+                <Route path="/renew-password" element={<RenewPassword />} />
               </Routes>
             </StoreContext.Provider>
           </div>

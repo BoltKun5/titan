@@ -10,7 +10,7 @@ export const AuthRouter = (app: Router): Router => {
 
   route.post('/signup', authController.signUp);
 
-  route.post('/pre-signup', authController.preSignUp);
+  route.post('/renew-password', authController.renewPassword);
 
   return route;
 };

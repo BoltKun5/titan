@@ -14,24 +14,23 @@ import StoreContext from "../../hook/contexts/StoreContext";
 import { api } from "../../axios";
 import { useSnackbar } from "notistack";
 
-export const Login: React.FC = () => {
+export const RenewPassword: React.FC = () => {
   const [mail, setMail] = useState("");
-  const [password, setPassword] = useState("");
+  const [submitted, setSubmitted] = useState(false);
   const navigate = useNavigate();
   const { user, setUser } = useContext(StoreContext);
   const { enqueueSnackbar } = useSnackbar();
 
   const querySchema = Joi.object<ISigninAuthBody>({
     mail: Joi.string().email({ tlds: { allow: false } }).required(),
-    password: Joi.string().min(5).required(),
   });
 
   const handleSubmit = async (event: React.SyntheticEvent) => {
     event.preventDefault();
 
+
     const result = querySchema.validate({
       mail,
-      password,
     });
 
     if (result.error) {
@@ -43,29 +42,17 @@ export const Login: React.FC = () => {
 
     try {
       const response: { data: { data: ISigninAuthResponse } } = await api.post(
-        "/auth/signin",
+        "/auth/renew-password",
         {
           ...result.value,
         }
       );
-      localStorage.setItem("token", response.data.data.token);
-      localStorage.setItem("user", JSON.stringify(response.data.data.user));
-      setUser(response.data.data.user);
-      navigate("/");
+      setSubmitted(true);
     } catch (e: any) {
       const errorCode = e.response?.data?.error?.code;
       switch (errorCode) {
-        case HttpErrorCode.invaliduser:
-          enqueueSnackbar("Ces informations ne correspondent à aucun compte.");
-          break;
-        case HttpErrorCode.badpassword:
-          enqueueSnackbar("Le mot de passe est erroné.");
-          break;
-        case HttpErrorCode.badusername:
-          enqueueSnackbar("Ce compte n'existe pas.");
-          break;
-        case HttpErrorCode.inactiveAccount:
-          enqueueSnackbar("L'adresse e-mail de ce compte n'a pas été validée. Un nouveau mail de validation vous a été envoyé.");
+        case HttpErrorCode.notFound:
+          enqueueSnackbar("Cet e-mail ne correspond à aucun compte.");
           break;
         default: enqueueSnackbar("Une erreur est survenue.")
       }
@@ -81,37 +68,36 @@ export const Login: React.FC = () => {
   });
 
   return (
-    <div className="Login-Page">
-      <form onSubmit={handleSubmit} className="Login-Form coloredCorner">
-        <Link to={"/"}>
+    <div className="RenewPassword-Page">
+      <form onSubmit={handleSubmit} className="RenewPassword-Form coloredCorner">
+        <Link to={"/login"}>
           <div className="BackButton">
             <svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 24 24" fill="none" stroke="#000000" strokeWidth="3" strokeLinecap="square" strokeLinejoin={"arcs" as any}><path d="M19 12H6M12 5l-7 7 7 7" /></svg>
           </div>
         </Link>
-        <div className="Logo"><img src="/assets/logo_full_big.png" /></div>
-        <h3>Connexion</h3>
-        <div className="Login-inputs">
-          <TextInputComponent
-            value={mail}
-            modifyValue={setMail}
-            label={"Adresse mail"}
-            id="mail"
-          />
-          <TextInputComponent
-            value={password}
-            modifyValue={setPassword}
-            label={"Mot de passe"}
-            id="password"
-            type={"password"}
-          />
-          <div className="Login-renewPassword">
-            <Link to={'/renew-password'}>Mot de passe oublié</Link>
-          </div>
+
+        <div className="Logo">
+          <img src="/assets/logo_full_big.png" />
         </div>
-        <ButtonComponent label="Se connecter" type="submit" disabled={!!querySchema.validate({ mail, password })?.error} />
-        <span className="Login-toSignUp">
-          Pas encore de compte ? <Link to="/signup">Inscrivez-vous</Link>
-        </span>
+        <h2 style={{ fontSize: 24 }}>Réinitialiser le mot de passe</h2>
+        {!submitted && <>
+          <div className="RenewPassword-inputs">
+            <TextInputComponent
+              value={mail}
+              modifyValue={setMail}
+              label={"Adresse mail"}
+              id="mail"
+            />
+          </div>
+          <ButtonComponent label="Recevoir un mail" type="submit" disabled={!!querySchema.validate({ mail })?.error} />
+        </>}
+        {submitted && <>
+          <div className="RenewPassword-submitted">Un e-mail contenant un lien de réinitialisation vous a été envoyé.</div>
+          <Link to={'/login'}>
+            <ButtonComponent label="Retourner à la connexion" size={250} clipPath={13} type="submit" />
+          </Link>
+        </>
+        }
       </form>
     </div>
   );

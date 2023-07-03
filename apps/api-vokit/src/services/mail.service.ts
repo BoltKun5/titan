@@ -237,7 +237,7 @@ class MailService extends Service {
                                             >
                                               <p style="margin: 0; font-size: 14px; text-align: center">
                                                 <span style="font-size: 14px"
-                                                  >Cliquez sur le bouton ci-dessous pour poursuivre la création de votre compte Vokit. Ce lien est valide pendant une semaine.</span
+                                                  >Cliquez sur le bouton ci-dessous pour valider votre adresse e-mail. Ce lien est valide pendant une semaine.</span
                                                 >
                                               </p>
                                             </div>
@@ -297,50 +297,10 @@ class MailService extends Service {
                                                     word-break: break-word;
                                                     line-height: 32px;
                                                   "
-                                                  >Créer mon compte</span
+                                                  >Valider mon adresse e-mail</span
                                                 >
                                               </span>
                                             </a>
-                                          </div>
-                                        </td>
-                                      </tr>
-                                    </tbody>
-                                  </table>
-                                  <table
-                                    border="0"
-                                    cellpadding="0"
-                                    cellspacing="0"
-                                    role="presentation"
-                                    style="word-break: break-word"
-                                    width="100%"
-                                  >
-                                    <tbody>
-                                      <tr>
-                                        <td
-                                          class="m_-7192359969736224378pad"
-                                          style="
-                                            padding-bottom: 10px;
-                                            padding-left: 10px;
-                                            padding-right: 10px;
-                                            padding-top: 25px;
-                                          "
-                                        >
-                                          <div style="font-family: sans-serif">
-                                            <div
-                                              style="
-                                                font-size: 12px;
-                                                color: #a4aab6;
-                                                line-height: 1.2;
-                                                font-family: Arial, Helvetica Neue, Helvetica, sans-serif;
-                                              "
-                                            >
-                                              <p style="margin: 0; font-size: 14px; text-align: center">
-                                                Si vous n'êtes pas à l'origine de cette demande, vous pouvez ignorer cet e-mail.
-                                              </p>
-                                              <p style="margin: 0; font-size: 14px; text-align: center">
-                                                Aucun compte ne sera créé.
-                                              </p>
-                                            </div>
                                           </div>
                                         </td>
                                       </tr>
@@ -371,7 +331,7 @@ class MailService extends Service {
                                             "
                                           >
                                             <p style="margin: 0">
-                                              Vous recevez cet e-mail car vous crééez un compte sur
+                                              Vous recevez cet e-mail car vous avez créé un compte sur
                                               <a
                                                 style="
                                                   text-decoration: none;
@@ -800,6 +760,9 @@ class MailService extends Service {
         </div>
         `,
         };
+      default: {
+        return null;
+      }
     }
   }
 
@@ -807,6 +770,8 @@ class MailService extends Service {
     this.logger.log(`Sending **${PreSignedTypeEnum[type]}** mail`);
 
     const mailContent = this.getMailContent(link, type);
+
+    if (!mailContent) return;
 
     try {
       await createTransport({

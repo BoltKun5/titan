@@ -5,3 +5,4 @@ export * from './user.response';
 export * from './card.response';
 export * from './auth.response';
 export * from './possession.response';
+export * from './pre-signed.response';

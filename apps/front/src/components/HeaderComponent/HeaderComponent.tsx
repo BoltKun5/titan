@@ -76,7 +76,7 @@ export const HeaderComponent: React.FC<{
           >
             <Link to={"/"} onClick={() => setIsMobileMenuOpen(false)}>
               <div className={getButtonClassName("/")}>
-                <img src="./assets/logo.png" className="Logo"></img>
+                <img src="/assets/logo.png" className="Logo"></img>
                 CARTES
               </div>
             </Link>
@@ -101,7 +101,7 @@ export const HeaderComponent: React.FC<{
             >
               <div className="HeaderComponent-profilePicture">
                 <img
-                  src={`./assets/profile_picture/${user?.options?.profilePictureId ?? 1}.png`}
+                  src={`/assets/profile_picture/${user?.options?.profilePictureId ?? 1}.png`}
                 />
               </div>
             </div>
@@ -133,7 +133,9 @@ export const HeaderComponent: React.FC<{
       ) : (
         <div className="HeaderComponent-disconnectedHeader">
           <div className="HeaderComponent-fullLogo">
-            <img src={"./assets/logo_full.png"} />
+            <Link to={'/'}>
+              <img src={"/assets/logo_full_big.png"} />
+            </Link>
           </div>
           <div className="HeaderComponent-loginLinks">
             <Link to="/login">

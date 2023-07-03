@@ -21,10 +21,7 @@ export type ModelPreSignedUrl = Overwrite<
   }
 >;
 
-export type CreationModelPreSignedUrl = WithRequired<
-  Partial<IPreSignedUrl>,
-  'type' | 'mail' | 'expirationDate'
->;
+export type CreationModelPreSignedUrl = WithRequired<Partial<IPreSignedUrl>, 'type' | 'token'>;
 
 @DefaultScope(() => ({}))
 @Scopes(() => ({}))
@@ -48,10 +45,5 @@ export class PreSignedUrl
   @Column({
     type: DataType.STRING,
   })
-  mail: string;
-
-  @Column({
-    type: DataType.DATE,
-  })
-  expirationDate: Date;
+  token: string;
 }

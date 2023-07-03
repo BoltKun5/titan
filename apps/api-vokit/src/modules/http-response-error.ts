@@ -14,6 +14,13 @@ export class HttpResponseError {
     });
   }
 
+  public static createInactiveAccountError(): createError.HttpError {
+    return createError(401, {
+      code: HttpErrorCode.inactiveAccount,
+      message: 'account not yet activated',
+    });
+  }
+
   public static createUnauthorized(): createError.HttpError {
     return createError(401, {
       code: HttpErrorCode.unauthorized,
@@ -42,7 +49,7 @@ export class HttpResponseError {
     });
   }
 
-  public static createSignInValidationError(): createError.HttpError {
+  public static createValidationError(): createError.HttpError {
     return createError(400, {
       code: HttpErrorCode.signinvalidation,
       message: 'submitted values are not valid',

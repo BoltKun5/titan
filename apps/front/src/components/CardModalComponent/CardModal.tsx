@@ -276,7 +276,7 @@ export const CardModal: React.FC<{ card: ICard | null; closeModal: () => void }>
                     <div className="CardModal-stylizedImage">
                       <Tooltip title={capitalize(CardRarityEnumFrench[card?.rarity ?? 0].toLowerCase())}>
                         <img
-                          src={"./assets/icons/" + CardRarityEnum[card?.rarity ?? 0] + ".png"}
+                          src={"/assets/icons/" + CardRarityEnum[card?.rarity ?? 0] + ".png"}
                           onLoad={(e) => e.currentTarget.classList.add('show')} />
                       </Tooltip>
                     </div>
@@ -290,7 +290,7 @@ export const CardModal: React.FC<{ card: ICard | null; closeModal: () => void }>
                         card?.types.map((type) =>
                           <Tooltip title={CardTypeEnumFrench[type.type]} key={card.id + 'type' + type.id}>
                             <img
-                              src={`./assets/icons/types_icons/${type?.type ?? 0}.svg`}
+                              src={`/assets/icons/types_icons/${type?.type ?? 0}.svg`}
                               onLoad={(e) => e.currentTarget.classList.add('show')} />
                           </Tooltip>
                         )
@@ -298,7 +298,7 @@ export const CardModal: React.FC<{ card: ICard | null; closeModal: () => void }>
                       {
                         card?.types.length === 0 && <Tooltip title={'Aucun type'}>
                           <img
-                            src={`./assets/icons/types_icons/0.svg`}
+                            src={`/assets/icons/types_icons/0.svg`}
                             onLoad={(e) => e.currentTarget.classList.add('show')} />
                         </Tooltip>
                       }

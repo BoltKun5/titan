@@ -5,3 +5,4 @@ export * from './series.route';
 export * from './admin.route';
 export * from './user.route';
 export * from './tag.route';
+export * from './pre-signed.route';

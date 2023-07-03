@@ -1,4 +1,4 @@
-import { IPreSignupAuthBody, ISigninAuthBody, ISignupAuthBody } from 'vokit_core';
+import { IRenewPasswordBody, ISigninAuthBody, ISignupAuthBody } from 'vokit_core';
 import { HttpResponseError } from '../../modules/http-response-error';
 import Joi from 'joi';
 
@@ -10,7 +10,7 @@ export default class AuthValidation {
     }).options({ presence: 'required' });
 
     const result = querySchema.validate(data);
-    if (result.error) throw HttpResponseError.createSignInValidationError();
+    if (result.error) throw HttpResponseError.createValidationError();
 
     return { ...result.value };
   }
@@ -18,8 +18,8 @@ export default class AuthValidation {
   static signupBody(data: ISignupAuthBody): ISignupAuthBody {
     const querySchema = Joi.object<ISignupAuthBody>({
       password: Joi.string().min(5),
-      shownName: Joi.string().min(2).max(20),
-      id: Joi.string(),
+      shownName: Joi.string().min(3).max(30),
+      mail: Joi.string().email({ tlds: { allow: false } }),
     }).options({ presence: 'required' });
 
     const result = querySchema.validate(data);
@@ -28,8 +28,8 @@ export default class AuthValidation {
     return { ...result.value };
   }
 
-  static preSignupBody(data: IPreSignupAuthBody): IPreSignupAuthBody {
-    const querySchema = Joi.object<IPreSignupAuthBody>({
+  static renewPasswordBody(data: IRenewPasswordBody): IRenewPasswordBody {
+    const querySchema = Joi.object<IRenewPasswordBody>({
       mail: Joi.string().email({ tlds: { allow: false } }),
     }).options({ presence: 'required' });
 

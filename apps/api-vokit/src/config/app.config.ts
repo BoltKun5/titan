@@ -3,6 +3,6 @@ export default {
   stackTraceLimit: 10,
   auth: {
     secretToken: process.env.AUTH_SECRET_TOKEN || '',
-    expiration: '30d' || '',
+    expiration: '7d' || '',
   },
 };

@@ -7,8 +7,9 @@ export interface ISignupAuthBody {
   password: string;
   shownName: string;
   id: string;
+  mail: string;
 }
 
-export interface IPreSignupAuthBody {
+export interface IRenewPasswordBody {
   mail: string;
 }

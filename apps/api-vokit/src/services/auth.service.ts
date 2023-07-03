@@ -4,8 +4,9 @@ import { User } from '../database';
 import AppConfig from '../modules/app-config.module';
 import UserService from './user.service';
 import bcrypt from 'bcryptjs';
-import { SessionTokenPayload } from 'vokit_core';
+import { PreSignedTypeEnum, SessionTokenPayload } from 'vokit_core';
 import { Service } from '../core';
+import mailService from './mail.service';
 
 type ParamsSignup = {
   mail: string;
@@ -41,6 +42,27 @@ class AuthService extends Service {
 
     if (!user) {
       throw HttpResponseError.createWrongUsernameError();
+    }
+
+    if (!user.isActive) {
+      const token = jws.sign(
+        {
+          mail: mail,
+          password: password,
+          type: PreSignedTypeEnum.CREATE_ACCOUNT,
+        },
+        AppConfig.config.app.auth.secretToken,
+        {
+          expiresIn: '7d',
+        },
+      );
+
+      await mailService.sendMail(
+        mail,
+        PreSignedTypeEnum.CREATE_ACCOUNT,
+        `${process.env.FRONT_URL ?? ''}pre-signed?token=${token}`,
+      );
+      throw HttpResponseError.createInactiveAccountError();
     }
 
     const isCorrect = bcrypt.compareSync(password, user.password);

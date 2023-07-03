@@ -69,6 +69,12 @@ export class User extends CustomModel<IUser, CreationModelUser> implements Model
   })
   password: string;
 
+  @Default(false)
+  @Column({
+    type: DataType.BOOLEAN,
+  })
+  isActive: boolean;
+
   @HasMany(() => UserCardPossession)
   cards: UserCardPossession[];
 

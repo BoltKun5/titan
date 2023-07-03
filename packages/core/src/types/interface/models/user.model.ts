@@ -10,4 +10,5 @@ export type IUser = {
   password: string;
   cards: IUserCardPossession[];
   tags: ITag[];
+  isActive: boolean;
 };

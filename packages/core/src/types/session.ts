@@ -7,3 +7,8 @@ export type SessionToken = {
 export type SessionTokenPayload = {
   UUID?: string;
 };
+
+export type Token = {
+  iat?: number;
+  exp?: number;
+};
