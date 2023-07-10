@@ -1,17 +1,11 @@
+import { IUser } from '../../models';
+
 export interface ISignupAuthResponse {
-  user: {
-    shownName: string;
-    id: string;
-    role: number;
-  };
+  user: IUser;
   token: string;
 }
 
 export interface ISigninAuthResponse {
-  user: {
-    shownName: string;
-    id: string;
-    role: number;
-  };
+  user: IUser;
   token: string;
 }

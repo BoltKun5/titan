@@ -11,6 +11,7 @@ export enum HttpErrorCode {
   badvalues = 'BAD_VALUES',
   undeletablepossessions = 'UNDELETABLE_POSSESSIONS',
   inactiveAccount = 'INACTIVE_ACCOUNT',
+  expired = 'EXPIRED_TOKEN',
 }
 
 export enum ErrorType {

@@ -14,11 +14,12 @@ import { useFetchData } from "../../hook/api/cards";
 import { CardAdditionalPrintingTypeEnum, ICard, ICardSerie, ICardSet } from "vokit_core";
 import { ICardAdditionalPrinting } from "vokit_core/src/types/interface/models/card-additional-printing.model";
 import useWindowDimensions from "../../hook/utils/useWindowDimensions";
+import { Tab, Tabs } from "@mui/material";
 
 export const Opening: React.FC = () => {
   const { series } = useContext(StoreContext);
 
-  const [step, setStep] = useState(1);
+  const [step, setStep] = useState(2);
   const [cardSetSearch, setCardSetSearch] = useState<string>("");
 
   const [cardSet, setCardSet] = useState<LocalCardSet | null>(null);
@@ -32,7 +33,7 @@ export const Opening: React.FC = () => {
   const [cardType, setCardType] = useState<"normal" | "reverse">("normal");
   const [possibleCards, setPossibleCards] = useState<ICard[]>([]);
   const [setList, setSetList] = useState<LocalCardSet[]>([]);
-  const [isDescMobileOpen, setIsDescMobileOpen] = useState(false);
+  const [currentTab, setCurrentTab] = useState(0);
 
   const { width } = useWindowDimensions();
 
@@ -181,13 +182,13 @@ export const Opening: React.FC = () => {
           printingId:
             value.type === "reverse"
               ? value.card?.cardAdditionalPrinting?.find(
-                  (e: ICardAdditionalPrinting) =>
-                    e.type === CardAdditionalPrintingTypeEnum.REVERSE
-                )?.id
+                (e: ICardAdditionalPrinting) =>
+                  e.type === CardAdditionalPrintingTypeEnum.REVERSE
+              )?.id
               : null,
         })),
       });
-    } catch (e) {}
+    } catch (e) { }
     setStep(3);
   };
 
@@ -231,14 +232,14 @@ export const Opening: React.FC = () => {
 
   return (
     <div className={"OpeningPage " + "step" + step}>
-      {width < 955 && (
+      {/* {width < 955 && (
         <div className="OpeningPage-mobileDescButton">
           <div onClick={() => setIsDescMobileOpen(true)}>
             <ButtonComponent label={"Description"} />
           </div>
         </div>
-      )}
-      {(width > 955 || isDescMobileOpen) && (
+      )} */}
+      {/* {(width > 955 || isDescMobileOpen) && (
         <div className="OpeningPage-description coloredCorner">
           {width < 955 && (
             <div
@@ -260,19 +261,19 @@ export const Opening: React.FC = () => {
             l'ajouter en version reverse (rester appuyer sur téléphone).
           </span>
         </div>
-      )}
+      )} */}
       <div className="OpeningPage-swippingArea">
         {step === 1 && (
           <div className="OpeningPage-swippingContent coloredCorner">
             <div className="OpeningPage-setChoice">
-              <h2>Choisir le set du booster</h2>
+              <h2>Choisir l'extension</h2>
               <div className="OpeningPage-flex">
                 <div className="OpeningPage-setChoiceInputContainer">
                   <input
                     className="OpeningPage-setChoiceInput"
                     type={"text"}
                     value={cardSetSearch}
-                    placeholder="Nom de set"
+                    placeholder="Chercher une extension"
                     onChange={(ev) => handleChange(ev)}
                   />
                 </div>
@@ -297,9 +298,21 @@ export const Opening: React.FC = () => {
                   </div>
                 ))}
               </div>
+              <h2>Choisir la taille du booster</h2>
+              <div
+                style={{ margin: "10px 20px 10px 20px", flex: "0 0 auto" }}
+              >
+                <SwipeCheckboxComponent
+                  callback={updateCardAmount}
+                  elements={swipeCheckboxAmountElements}
+                  value={cardAmount}
+                  width={50}
+                  label={"Taille"}
+                />
+              </div>
               <div
                 className="OpeningPage-nextButton"
-                style={!cardSet ? { pointerEvents: "none" } : {}}
+                style={{ marginTop: 'auto', marginBottom: 20 }}
                 onClick={() => setStep(step + 1)}
               >
                 <ButtonComponent label="Continuer" disabled={!cardSet} />
@@ -309,183 +322,244 @@ export const Opening: React.FC = () => {
         )}
         {step === 2 && (
           <div className="OpeningPage-swippingContent swipping2">
-            <div className="OpeningPage-boosterContentInput">
-              <div className="OpeningPage-boosterContent-features coloredCorner">
-                <div
-                  style={{ margin: "25px 10px 10px 10px", flex: "0 0 auto" }}
-                >
-                  <SwipeCheckboxComponent
-                    callback={updateCardAmount}
-                    elements={swipeCheckboxAmountElements}
-                    value={cardAmount}
-                    width={50}
-                    label={"Taille"}
-                  />
-                </div>
-                <div className={"OpeningPage-preselected"}>
-                  <div
-                    className={
-                      "OpeningPage-preselectedImgContainer " +
-                      (preselectedCard && cardType === "reverse"
-                        ? "reverseShining"
-                        : "")
-                    }
-                    style={{ borderColor: preselectedCard ? "none" : "" }}
-                  >
-                    {preselectedCard && (
-                      <img src={getImageSource(preselectedCard)} />
-                    )}
-                  </div>
-                </div>
-                <div className="OpeningPage-boosterContent-textInput">
-                  <input
-                    type={"text"}
-                    value={cardLocalId}
-                    placeholder="ID de carte"
-                    onChange={(ev) => {
-                      setCardLocalId(ev.currentTarget.value);
-                      setIsPrevalidated(false);
-                      setIsWrongId(false);
-                    }}
-                    style={{ color: isWrongId ? "rgb(122, 28, 28)" : "" }}
-                  />
-                </div>
-                <div className={"OpeningPage-typeSelect"}>
-                  <SwipeCheckboxComponent
-                    callback={setCardType}
-                    elements={swipeCheckboxTypeElements}
-                    value={cardType}
-                    width={100}
-                  />
-                  <div>
+            <div className="OpeningPage-tabsContainer coloredCorner" style={width < 955 ? { flexDirection: 'column' } : { flexDirection: 'row' }}>
+              {width < 955 && <div className="OpeningPage-tabSelector">
+                <SwipeCheckboxComponent callback={setCurrentTab} elements={[{
+                  name: 'Par numéro',
+                  value: 0,
+                },
+                {
+                  name: "Liste",
+                  value: 1,
+                },]} value={currentTab} width={120} />
+              </div>}
+
+              {currentTab === 0 && <div className="OpeningPage-boosterContentInput">
+                <div className="OpeningPage-boosterContent-features">
+                  <div className={"OpeningPage-preselected"}>
                     <div
-                      className="OpeningPage-boosterContent-validate"
-                      onClick={() => {
-                        processNewLocalId();
-                      }}
-                    >
-                      <Done />
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div className="OpeningPage-boosterContentOthers">
-              <div className="OpeningPage-boosterContent coloredCorner">
-                <div className="OpeningPage-boosterCards">
-                  {cardList.map((value, index) => (
-                    <div
-                      onClick={() => onClickHandler(index, value)}
-                      key={"OpeningPage-boosterContentElement" + index}
                       className={
-                        "OpeningPage-boosterContent-element " +
-                        (value.type === "reverse" ? "reverseShining" : "")
+                        "OpeningPage-preselectedImgContainer " +
+                        (preselectedCard && cardType === "reverse"
+                          ? "reverseShining"
+                          : "")
                       }
-                      style={{
-                        border:
-                          currentIndex === index
-                            ? "rgb(59, 153, 241) 2px solid"
-                            : "",
-                      }}
+                      style={{ borderColor: preselectedCard ? "none" : "" }}
                     >
-                      {value.card !== null && (
-                        <img src={getImageSource(value.card)} />
+                      {preselectedCard && (
+                        <img src={getImageSource(preselectedCard)} />
                       )}
                     </div>
-                  ))}
+                  </div>
+                  <div className="OpeningPage-boosterContent-textInput">
+                    <input
+                      type={"text"}
+                      value={cardLocalId}
+                      placeholder="Numéro de carte"
+                      onChange={(ev) => {
+                        setCardLocalId(ev.currentTarget.value);
+                        setIsPrevalidated(false);
+                        setIsWrongId(false);
+                      }}
+                      style={{ color: isWrongId ? "rgb(122, 28, 28)" : "" }}
+                    />
+                  </div>
+                  <div className={"OpeningPage-typeSelect"}>
+                    <SwipeCheckboxComponent
+                      callback={setCardType}
+                      elements={swipeCheckboxTypeElements}
+                      value={cardType}
+                      width={100}
+                    />
+                    <div>
+                      <div
+                        className="OpeningPage-boosterContent-validate"
+                        onClick={() => {
+                          processNewLocalId();
+                        }}
+                      >
+                        <Done />
+                      </div>
+                    </div>
+                  </div>
                 </div>
-
-                <div
-                  className="OpeningPage-nextButton2"
-                  onClick={() => {
-                    setPreselectedCard(null);
-                    setIsPrevalidated(false);
-                    setCurrentIndex(0);
-                    updateCardAmount(9);
-                    setCardList(initialCardList);
-                    setIsWrongId(false);
-                    setCardLocalId("");
-                    setStep(1);
-                  }}
-                >
-                  <ButtonComponent label="Retour" size={150} height={40} />
+                {
+                  width > 956 && <div className="OpeningPage-boosterContentOthers">
+                    <div className="OpeningPage-possibleCardsContainer ">
+                      <div className="OpeningPage-possibleCards">
+                        {possibleCards.map((card, index) => (
+                          <div
+                            className="OpeningPage-possibleCard"
+                            key={"OpeningPage-setCard" + index}
+                            onClick={() => {
+                              setCardLocalId("");
+                              setIsWrongId(false);
+                              setIsPrevalidated(false);
+                              setPreselectedCard(null);
+                              setCardList(
+                                cardList.map((value, index) => {
+                                  if (index === currentIndex)
+                                    return {
+                                      card: card,
+                                      type: "normal",
+                                    };
+                                  return value;
+                                })
+                              );
+                              setCurrentIndex(
+                                currentIndex + 1 < cardList.length
+                                  ? currentIndex + 1
+                                  : currentIndex
+                              );
+                            }}
+                            onContextMenu={(ev) => {
+                              ev.preventDefault();
+                              if (!card.canBeReverse) return;
+                              setCardLocalId("");
+                              setIsWrongId(false);
+                              setIsPrevalidated(false);
+                              setPreselectedCard(null);
+                              setCardList(
+                                cardList.map((value, index) => {
+                                  if (index === currentIndex)
+                                    return {
+                                      card: card,
+                                      type: "reverse",
+                                    };
+                                  return value;
+                                })
+                              );
+                              setCurrentIndex(
+                                currentIndex + 1 < cardList.length
+                                  ? currentIndex + 1
+                                  : currentIndex
+                              );
+                            }}
+                          >
+                            <img src={getImageSource(card)} />
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                }
+              </div>}
+              {currentTab === 1 && <div className="OpeningPage-boosterContentOthers" style={{ width: '100%' }}>
+                <div className="OpeningPage-possibleCardsContainer" style={{ marginLeft: 0 }}>
+                  <div className="OpeningPage-possibleCards">
+                    {possibleCards.map((card, index) => (
+                      <div
+                        className="OpeningPage-possibleCard"
+                        key={"OpeningPage-setCard" + index}
+                        onClick={() => {
+                          setCardLocalId("");
+                          setIsWrongId(false);
+                          setIsPrevalidated(false);
+                          setPreselectedCard(null);
+                          setCardList(
+                            cardList.map((value, index) => {
+                              if (index === currentIndex)
+                                return {
+                                  card: card,
+                                  type: "normal",
+                                };
+                              return value;
+                            })
+                          );
+                          setCurrentIndex(
+                            currentIndex + 1 < cardList.length
+                              ? currentIndex + 1
+                              : currentIndex
+                          );
+                        }}
+                        onContextMenu={(ev) => {
+                          ev.preventDefault();
+                          if (!card.canBeReverse) return;
+                          setCardLocalId("");
+                          setIsWrongId(false);
+                          setIsPrevalidated(false);
+                          setPreselectedCard(null);
+                          setCardList(
+                            cardList.map((value, index) => {
+                              if (index === currentIndex)
+                                return {
+                                  card: card,
+                                  type: "reverse",
+                                };
+                              return value;
+                            })
+                          );
+                          setCurrentIndex(
+                            currentIndex + 1 < cardList.length
+                              ? currentIndex + 1
+                              : currentIndex
+                          );
+                        }}
+                      >
+                        <img src={getImageSource(card)} />
+                      </div>
+                    ))}
+                  </div>
                 </div>
-
-                <div
-                  className="OpeningPage-nextButton2"
-                  style={
-                    cardList.filter((el) => el.card === null).length !== 0
-                      ? { pointerEvents: "none" }
-                      : {}
-                  }
-                  onClick={() => submit()}
-                >
-                  <ButtonComponent
-                    label="Valider"
-                    disabled={
-                      cardList.filter((el) => el.card === null).length !== 0
+              </div>}
+            </div>
+            <div className="OpeningPage-boosterContent coloredCorner">
+              <div className="OpeningPage-boosterCards">
+                {cardList.map((value, index) => (
+                  <div
+                    onClick={() => onClickHandler(index, value)}
+                    key={"OpeningPage-boosterContentElement" + index}
+                    className={
+                      "OpeningPage-boosterContent-element " +
+                      (value.type === "reverse" ? "reverseShining" : "")
                     }
-                    size={150}
-                    height={40}
-                  />
-                </div>
+                    style={{
+                      border:
+                        currentIndex === index
+                          ? "rgb(59, 153, 241) 2px solid"
+                          : "",
+                    }}
+                  >
+                    {value.card !== null && (
+                      <img src={getImageSource(value.card)} />
+                    )}
+                  </div>
+                ))}
               </div>
 
-              <div className="OpeningPage-possibleCardsContainer ">
-                <div className="OpeningPage-possibleCards coloredCorner">
-                  {possibleCards.map((card, index) => (
-                    <div
-                      className="OpeningPage-possibleCard"
-                      key={"OpeningPage-setCard" + index}
-                      onClick={() => {
-                        setCardLocalId("");
-                        setIsWrongId(false);
-                        setIsPrevalidated(false);
-                        setPreselectedCard(null);
-                        setCardList(
-                          cardList.map((value, index) => {
-                            if (index === currentIndex)
-                              return {
-                                card: card,
-                                type: "normal",
-                              };
-                            return value;
-                          })
-                        );
-                        setCurrentIndex(
-                          currentIndex + 1 < cardList.length
-                            ? currentIndex + 1
-                            : currentIndex
-                        );
-                      }}
-                      onContextMenu={(ev) => {
-                        ev.preventDefault();
-                        if (!card.canBeReverse) return;
-                        setCardLocalId("");
-                        setIsWrongId(false);
-                        setIsPrevalidated(false);
-                        setPreselectedCard(null);
-                        setCardList(
-                          cardList.map((value, index) => {
-                            if (index === currentIndex)
-                              return {
-                                card: card,
-                                type: "reverse",
-                              };
-                            return value;
-                          })
-                        );
-                        setCurrentIndex(
-                          currentIndex + 1 < cardList.length
-                            ? currentIndex + 1
-                            : currentIndex
-                        );
-                      }}
-                    >
-                      <img src={getImageSource(card)} />
-                    </div>
-                  ))}
-                </div>
+              <div
+                className="OpeningPage-nextButton2"
+                onClick={() => {
+                  setPreselectedCard(null);
+                  setIsPrevalidated(false);
+                  setCurrentIndex(0);
+                  updateCardAmount(9);
+                  setCardList(initialCardList);
+                  setIsWrongId(false);
+                  setCardLocalId("");
+                  setStep(1);
+                }}
+              >
+                <ButtonComponent label="Retour" size={150} height={40} />
+              </div>
+
+              <div
+                className="OpeningPage-nextButton2"
+                style={
+                  cardList.filter((el) => el.card === null).length !== 0
+                    ? { pointerEvents: "none" }
+                    : {}
+                }
+                onClick={() => submit()}
+              >
+                <ButtonComponent
+                  label="Valider"
+                  disabled={
+                    cardList.filter((el) => el.card === null).length !== 0
+                  }
+                  size={150}
+                  height={40}
+                />
               </div>
             </div>
           </div>
@@ -516,18 +590,29 @@ export const Opening: React.FC = () => {
                     setCurrentIndex(0);
                   }}
                 >
-                  <ButtonComponent label="Ouvrir un autre booster" size={350} />
+                  <ButtonComponent label="Ouvrir un autre booster"
+                    size={230} clipPath={13} fontSize={16} height={40}
+                  />
                 </div>
                 <div
                   onClick={() => {
                     setStep(2);
                     setCardList(initialCardList);
                     setCurrentIndex(0);
+
+                    setPreselectedCard(null);
+                    setIsPrevalidated(false);
+                    setCurrentIndex(0);
+                    updateCardAmount(9);
+                    setCardList(initialCardList);
+                    setIsWrongId(false);
+                    setCardLocalId("");
+                    setStep(2);
                   }}
                 >
                   <ButtonComponent
-                    label="Ouvrir un booster du même set"
-                    size={350}
+                    label="Ouvrir la même extension"
+                    size={230} clipPath={13} fontSize={16} height={40}
                   />
                 </div>
               </div>

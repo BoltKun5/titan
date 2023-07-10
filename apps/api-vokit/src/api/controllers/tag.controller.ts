@@ -4,6 +4,7 @@ import {
   ICreateTagBody,
   ICreateTagResponse,
   IUserTagsQuery,
+  IDeleteTagQuery,
 } from 'vokit_core';
 import { Controller, LoggerModel, ILocals } from '../../core';
 import { Request, Response } from 'express';
@@ -56,6 +57,33 @@ class TagController implements Controller {
       name: req.body.name,
       type: 0,
     });
+    const allTags = await Tag.findAll({
+      where: {
+        userId: res.locals.currentUser.id,
+      },
+    });
+    res.json({ data: { tags: allTags } });
+  }
+
+  async deleteTag(
+    req: Request<Record<string, never>, ICreateTagResponse, IDeleteTagQuery, IDeleteTagQuery>,
+    res: Response<IResponse<ICreateTagResponse>, ILocals>,
+  ): Promise<void> {
+    req.query = TagValidation.deleteTag(req.query);
+
+    const tag = await Tag.findOne({
+      where: {
+        id: req.query.id,
+        userId: res.locals.currentUser.id,
+      },
+    });
+
+    if (!tag) {
+      throw HttpResponseError.createNotFoundError();
+    }
+
+    await tag.destroy();
+
     const allTags = await Tag.findAll({
       where: {
         userId: res.locals.currentUser.id,

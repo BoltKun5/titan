@@ -2,10 +2,17 @@
 
 .StatPage {
   width: 100%;
-  height: calc(100% - 126px);
-  position: absolute;
+  height: calc(100% - 56px);
   display: flex;
-  margin-top: 50px;
+  flex-direction: column;
+  overflow: auto;
+  max-height: calc(100vh - 56px);
+
+  &-container {
+    display: flex;
+    width: 100%;
+    max-height: calc(100vh - 186px);
+  }
 
   & h2 {
     margin-left: 20px;
@@ -23,10 +30,11 @@
 
   &-mainChart {
     height: 100%;
-    overflow: auto;
+    overflow: hidden auto;
+    position: relative;
 
     &Container {
-      height: calc(100% - 225px);
+      height: calc(100% - 230px);
       background-color: $primary-bg;
     }
   }
@@ -36,7 +44,7 @@
     margin: auto 20px auto;
     flex: 1 0;
     height: calc(100% - 40px);
-    min-width: 350px;
+    min-width: 400px;
     background-color: $primary-bg;
 
     &Datas {
@@ -85,7 +93,7 @@
     display: grid;
     width: 100%;
     margin: auto;
-    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
     height: 100%;
     overflow-x: hidden;
     overflow-y: auto;
@@ -93,7 +101,7 @@
 
     &Container {
       margin-top: 20px;
-      height: 205px;
+      height: 210px;
       background-color: $primary-bg;
     }
   }
@@ -114,6 +122,16 @@
     font-size: 20px;
     color: white;
     text-align: center;
+  }
+
+  &-noCard {
+    color: $white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    width: 100%;
+    height: 80%;
   }
 }
 
@@ -168,21 +186,30 @@
 
 @media (max-width: 900px) {
   .StatPage {
-    flex-direction: column;
-    overflow: auto;
-
-    &-left {
-      width: calc(100% - 40px);
-      margin-top: 20px;
+    &-container {
+      flex-direction: column;
+      overflow: auto;
+      max-height: none;
+      min-height: fit-content;
+      height: auto;
       overflow: initial;
     }
 
+    &-left {
+      width: calc(100% - 20px);
+      margin: 20px auto;
+      box-sizing: border-box;
+      overflow: initial;
+      margin-bottom: 0;
+      height: fit-content;
+    }
+
     &-right {
-      margin-top: 20px;
       width: calc(100% - 40px);
       min-height: 145px;
-      margin-bottom: 20px;
       min-width: 0;
+      margin: 10px auto 20px;
+      width: calc(100% - 20px);
     }
 
     &-mainChartContainer {
@@ -191,6 +218,7 @@
 
     &-radialChartsContainer {
       height: 200px;
+      margin-top: 20px;
     }
 
     &-rightDatas {
@@ -198,11 +226,21 @@
       min-height: 145px;
       width: fit-content;
       overflow-x: scroll;
+      align-items: center;
     }
 
     & .StatCard {
-      min-width: 290px;
+      min-width: fit-content;
       margin: 10px 3px;
+      padding-right: 10px;
+
+      &-icon {
+        min-width: 50px;
+      }
+
+      &-label {
+        white-space: nowrap;
+      }
     }
 
   }

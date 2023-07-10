@@ -59,11 +59,7 @@ class PreSignedController implements Controller {
             type: PreSignedTypeEnum.CREATE_ACCOUNT,
             data: {
               token: token,
-              user: {
-                shownName: user.shownName,
-                id: user.id,
-                role: user.role,
-              },
+              user,
             },
           },
         });

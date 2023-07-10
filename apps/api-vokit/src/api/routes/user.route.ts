@@ -9,5 +9,11 @@ export const UserRouter = (app: Router): Router => {
 
   route.get('/me', auth, userController.me);
 
+  route.post('/update-options', auth, userController.updateOption);
+
+  route.post('/update-password', auth, userController.updatePassword);
+
+  route.post('/update-shown-name', auth, userController.updateShownName);
+
   return route;
 };

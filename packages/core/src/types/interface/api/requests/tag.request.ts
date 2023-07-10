@@ -9,3 +9,7 @@ export interface IUserTagsQuery {
 export interface ICreateTagBody {
   name: string;
 }
+
+export interface IDeleteTagQuery {
+  id?: string;
+}

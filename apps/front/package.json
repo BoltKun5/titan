@@ -12,6 +12,7 @@
     "@mui/icons-material": "^5.10.9",
     "@mui/material": "^5.8.3",
     "@tcgdex/sdk": "^2.4.6",
+    "@types/recharts": "^1.8.24",
     "axios": "^0.27.2",
     "dayjs": "^1.11.5",
     "dotenv": "^16.0.3",

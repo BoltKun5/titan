@@ -43,8 +43,10 @@ export default async (
 
     next();
   } catch (error: any) {
-    console.error(error);
+    console.error(error.name);
     if (error.name === 'TokenExpiredError')
+      return HttpResponseError.sendError(HttpResponseError.createUnauthorized(), req, res);
+    if (error.name === 'JsonWebTokenError')
       return HttpResponseError.sendError(HttpResponseError.createUnauthorized(), req, res);
 
     HttpResponseError.sendError(error, req, res);

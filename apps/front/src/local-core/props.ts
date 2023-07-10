@@ -1,3 +1,4 @@
+import { MouseEventHandler } from "react";
 import { ICardSerie, ICard, IUserCardPossession } from "../../../../packages/core/src";
 
 
@@ -80,6 +81,7 @@ export type ButtonComponentPropsType = {
   preset?: string;
   clipPath?: number;
   hoverOffset?: number;
+  callback?: MouseEventHandler<HTMLButtonElement>;
 };
 
 export type SwipeCheckboxComponentType = {

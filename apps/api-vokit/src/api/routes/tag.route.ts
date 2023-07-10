@@ -12,5 +12,7 @@ export const TagRouter = (app: Router): Router => {
 
   route.post('', auth, tagController.createTag);
 
+  route.delete('', auth, tagController.deleteTag);
+
   return route;
 };

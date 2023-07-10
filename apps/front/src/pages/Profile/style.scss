@@ -2,6 +2,222 @@
 
 .Profile {
   width: 100%;
+  margin: auto;
+  padding: 10px 0;
   display: flex;
-  height: calc(100vh - 56px);
+  gap: 10px;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  gap: 10px;
+
+  svg {
+    color: $white;
+    cursor: pointer;
+    width: 20px;
+    height: 20px;
+  }
+
+  &-data,
+  &-buttons,
+  &-tags {
+    background-color: $primary-bg;
+    height: fit-content;
+    padding: 10px;
+    border: 1px solid $primary-border;
+    width: 90%;
+    max-width: 800px;
+    box-sizing: border-box;
+  }
+
+  &-profilePicture {
+    display: flex;
+    align-items: center;
+
+    &Container {
+      border-radius: 100%;
+
+      &:hover::before {
+        background-color: rgba(0, 0, 0, 0.353);
+        position: absolute;
+        content: "Modifier";
+        color: $white;
+        width: 80px;
+        height: 80px;
+        border-radius: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        cursor: pointer;
+      }
+    }
+
+    img {
+      width: 80px;
+      border-radius: 100%;
+      min-width: 80px;
+      cursor: pointer;
+    }
+
+    span {
+      color: $white;
+      font-size: 25px;
+      margin-left: 20px;
+      overflow: hidden;
+      max-width: 180px;
+      text-overflow: ellipsis;
+      margin-right: 5px;
+    }
+  }
+
+  &-data-infos {
+    color: $white;
+
+    span {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      max-width: 95%;
+      display: flex;
+    }
+
+    h3 {
+      margin-bottom: 5px;
+    }
+  }
+
+  &-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    justify-content: center;
+    align-items: center;
+  }
+
+  &-tags {
+    h3 {
+      color: $white;
+      margin-top: 0;
+      margin-bottom: 10px;
+    }
+
+    table {
+      width: 100%;
+      border: 1px solid $primary-border;
+    }
+
+    thead {
+      background-color: $primary-border;
+      color: $white;
+      display: flex;
+      padding-left: 5px;
+      border: 1px solid $primary-border;
+    }
+  }
+
+  &-tableContainer {
+    max-height: 200px;
+    overflow: auto;
+
+    tbody {
+      color: $white;
+    }
+
+    td {
+      padding-left: 5px;
+      display: flex;
+      align-items: center;
+      height: 25px;
+
+
+    }
+
+    tr {
+      &:nth-child(even) {
+        background-color: $dark;
+      }
+    }
+
+    div {
+      margin-left: auto;
+      display: flex;
+    }
+  }
+
+  &-modale {
+    background: $primary-bg;
+    max-width: 95%;
+    max-height: calc(100% - 86px);
+    position: absolute !important;
+    left: 50%;
+    top: calc(43px + 50%);
+    outline: none !important;
+    overflow: auto;
+    width: 98%;
+    max-width: 400px;
+
+    &-paddingContainer {
+      padding: 10px;
+      display: flex;
+      overflow: hidden auto;
+      max-height: calc(100vh - 136px);
+      box-sizing: border-box;
+      width: 100%;
+    }
+
+    &-content {
+      width: 100%;
+      color: $white;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+
+      &.password {
+        input {
+          margin: 10px;
+        }
+      }
+    }
+
+    &-pictureList {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1px;
+      max-height: 200px;
+      overflow: auto;
+      margin-bottom: 10px;
+    }
+
+    &-link {
+      transform: translateY(-20px);
+      font-size: 12px;
+
+      & a {
+        color: $primary;
+      }
+    }
+
+    &-tagWarning {
+      margin-bottom: 10px;
+    }
+
+    &-picture {
+      width: 40px;
+      height: 40px;
+      cursor: pointer;
+
+      & img {
+        width: 100%;
+        height: 100%;
+        filter: grayscale(0.8);
+      }
+
+      &.selected {
+        img {
+          filter: grayscale(0);
+        }
+      }
+    }
+  }
+
 }

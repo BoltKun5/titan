@@ -4,7 +4,7 @@ import React, {
   useEffect,
   useState,
 } from "react";
-import { ClickAwayListener, Grow, Slide, Tooltip, Zoom } from "@mui/material";
+import { ClickAwayListener, Fade, Grow, Slide, Tooltip, Zoom } from "@mui/material";
 import { CategorizedAutocompleteChecklist } from "../CategorizedAutocompleteChecklist/CategorizedAutocompleteChecklist";
 import "./style.scss";
 import { frontRarity, isUnloggedPage, isUserConnected } from "../../general.utils";
@@ -29,7 +29,7 @@ export const CardManagerFilterComponent: React.FC<{
 }> = ({ hidePagination = false }) => {
   const { order, setOrder, pagination, setPage, page } =
     useContext(StoreContext);
-
+  const connected = isUserConnected();
   const {
     setCardSetFilter,
     setNameFilter,
@@ -45,7 +45,7 @@ export const CardManagerFilterComponent: React.FC<{
   } = useContext(StoreContext);
 
   const [isFilterPanelOpen, setIsFilterPanelOpen] = useState(false);
-  // const [isOptionOpen, setIsOptionOpen] = useState(false);
+  const [listenToClose, setListenToClose] = useState(false);
 
   const { width } = useWindowDimensions();
 
@@ -188,13 +188,23 @@ export const CardManagerFilterComponent: React.FC<{
     <Loader />
   ) : (
     <>
-      <div className={"CardManagerFilter"}>
+      <div className={"CardManagerFilter" + (hidePagination ? ' hidePagination' : '')} style={hidePagination ? { maxWidth: 'calc(100vw - 20px)', position: 'relative' } : {}}>
         <div className="CardManagerFilter-top">
-          <div className="CardManagerFilter-topElements">
+          <div className="CardManagerFilter-topElements" style={hidePagination ? { maxWidth: 'none' } : {}}>
             {(
               <div
                 className="CardManagerFilter-openFilters" style={{ marginLeft: 10 }}
-                onClick={() => setIsFilterPanelOpen(!isFilterPanelOpen)}
+                onClick={() => {
+                  if (!isFilterPanelOpen) {
+                    setIsFilterPanelOpen(true);
+                    setTimeout(() => {
+                      setListenToClose(true)
+                    }, 100)
+                  } else {
+                    setIsFilterPanelOpen(false)
+                    setListenToClose(false)
+                  }
+                }}
               >
                 <FilterAltIcon />
               </div>
@@ -297,68 +307,73 @@ export const CardManagerFilterComponent: React.FC<{
             </div>
           </div>)}
         </div>
-        {isFilterPanelOpen &&
-          <Zoom in={isFilterPanelOpen}>
-            <div className="CardManagerFilter-bottom">
-              <div className="CardManagerFilter-fixedWidthContainer" style={{ width: 250 }}>
-                <div className="CardManagerFilter-selectInput">
-                  <label>Trier par</label>
-                  <div className="CardManagerFilter-selectInputOptions-container">
-                    <SwipeCheckboxComponent
-                      callback={setOrder}
-                      elements={[
-                        {
-                          name: "Set",
-                          value: "default",
-                        },
-                        {
-                          name: "Nom",
-                          value: "name",
-                        },
-                        {
-                          name: "Type",
-                          value: "type",
-                        },
-                      ]}
-                      preset='filter'
-                      value={order}
-                      width={80}
-                    />
+        <Fade in={isFilterPanelOpen}>
+          <div>
+            <ClickAwayListener onClickAway={() => { if (listenToClose) { setIsFilterPanelOpen(false); setListenToClose(false) } }}>
+              <div className="CardManagerFilter-bottom">
+                <>
+                  <div className="CardManagerFilter-fixedWidthContainer" style={{ width: 250 }}>
+                    <div className="CardManagerFilter-selectInput">
+                      <label>Trier par</label>
+                      <div className="CardManagerFilter-selectInputOptions-container">
+                        <SwipeCheckboxComponent
+                          callback={setOrder}
+                          elements={[
+                            {
+                              name: "Set",
+                              value: "default",
+                            },
+                            {
+                              name: "Nom",
+                              value: "name",
+                            },
+                            {
+                              name: "Type",
+                              value: "type",
+                            },
+                          ]}
+                          preset='filter'
+                          value={order}
+                          width={80}
+                        />
+                      </div>
+                    </div>
                   </div>
-                </div>
+                  {(connected || id) && <div className="CardManagerFilter-fixedWidthContainer">
+                    <div className="CardManagerFilter-htmlSelectInput">
+                      <label>Possession</label>
+                      <div className="CardManagerFilter-htmlSelectInput-container">
+                        <select
+                          value={possessionFilter ?? "null"}
+                          onChange={(ev) =>
+                            setPossessionFilter(
+                              ev.target.value !== "null"
+                                ? (ev.target.value as any)
+                                : null
+                            )
+                          }
+                        >
+                          <option value={"null"}>Toutes</option>
+                          <option value={"partial_owned"}>1+ version possédée</option>
+                          <option value={"partial_unowned"}>
+                            1+ version non possédée
+                          </option>
+                          <option value={"fully_owned"}>
+                            Toutes versions possédées
+                          </option>
+                          <option value={"unowned"}>Aucune version possédée</option>
+                          <option value={"multiple_owned"}>
+                            Exemplaires multiples
+                          </option>
+                        </select>
+                      </div>
+                    </div>
+                  </div>}
+                </>
               </div>
-              {(isUserConnected() || id) && <div className="CardManagerFilter-fixedWidthContainer">
-                <div className="CardManagerFilter-htmlSelectInput">
-                  <label>Possession</label>
-                  <div className="CardManagerFilter-htmlSelectInput-container">
-                    <select
-                      value={possessionFilter ?? "null"}
-                      onChange={(ev) =>
-                        setPossessionFilter(
-                          ev.target.value !== "null"
-                            ? (ev.target.value as any)
-                            : null
-                        )
-                      }
-                    >
-                      <option value={"null"}>Toutes</option>
-                      <option value={"partial_owned"}>1+ version possédée</option>
-                      <option value={"partial_unowned"}>
-                        1+ version non possédée
-                      </option>
-                      <option value={"fully_owned"}>
-                        Toutes versions possédées
-                      </option>
-                      <option value={"unowned"}>Aucune version possédée</option>
-                      <option value={"multiple_owned"}>
-                        Exemplaires multiples
-                      </option>
-                    </select>
-                  </div>
-                </div>
-              </div>}
-            </div>
-          </Zoom>}
+            </ClickAwayListener>
+          </div>
+        </Fade>
       </div >
     </>
   );

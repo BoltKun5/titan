@@ -4,7 +4,7 @@ import { User } from '../database';
 import AppConfig from '../modules/app-config.module';
 import UserService from './user.service';
 import bcrypt from 'bcryptjs';
-import { PreSignedTypeEnum, SessionTokenPayload } from 'vokit_core';
+import { IUser, PreSignedTypeEnum, SessionTokenPayload } from 'vokit_core';
 import { Service } from '../core';
 import mailService from './mail.service';
 
@@ -20,7 +20,7 @@ type ParamsLogin = {
 };
 
 type ResultLogin = {
-  user: User;
+  user: IUser;
   token: string;
 };
 
@@ -36,7 +36,7 @@ class AuthService extends Service {
   }
 
   public async login({ mail, password }: ParamsLogin): Promise<ResultLogin> {
-    const user = await User.findOne({
+    const user: Partial<User> | null = await User.findOne({
       where: { mail },
     });
 
@@ -65,12 +65,16 @@ class AuthService extends Service {
       throw HttpResponseError.createInactiveAccountError();
     }
 
-    const isCorrect = bcrypt.compareSync(password, user.password);
+    const isCorrect = bcrypt.compareSync(password, user?.password as string);
 
     if (!isCorrect) throw HttpResponseError.createWrongPasswordError();
 
+    delete user.password;
+    delete user.createdAt;
+    delete user.updatedAt;
+
     return {
-      user,
+      user: user as IUser,
       token: this.token({ UUID: user.id }),
     };
   }

@@ -15,7 +15,8 @@ export const ButtonComponent: React.FC<ButtonComponentPropsType> = ({
   fontSize = 20,
   preset = 'primary',
   clipPath = 18,
-  hoverOffset = 3
+  hoverOffset = 3,
+  callback = () => {}
 }) => {
   const externalClipPath = clipPath + hoverOffset
   return (
@@ -31,10 +32,11 @@ export const ButtonComponent: React.FC<ButtonComponentPropsType> = ({
           style={{ width: size, height: h, ...style, fontWeight: weight, fontSize, '--clipPathValue': clipPath + 'px' }}
           type={type}
           className={className ?? ''}
+          onClick={callback}
         >
           {label}
         </button>
-      </div>
+      </div >
     </>
   );
 };

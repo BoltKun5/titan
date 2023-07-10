@@ -36,11 +36,7 @@ class AuthController implements Controller {
     res.json({
       data: {
         token: token,
-        user: {
-          shownName: user.shownName,
-          id: user.id,
-          role: user.role,
-        },
+        user,
       },
     });
   }
@@ -92,11 +88,7 @@ class AuthController implements Controller {
     res.json({
       data: {
         token: authService.token({ UUID: user.id }),
-        user: {
-          shownName: user.shownName,
-          id: user.id,
-          role: user.role,
-        },
+        user,
       },
     });
   }

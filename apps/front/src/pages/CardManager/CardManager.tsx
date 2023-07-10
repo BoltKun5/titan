@@ -36,6 +36,8 @@ export const CardManager: React.FC = () => {
     id = undefined;
   }
 
+  console.log(id)
+
   const fetchCards = useCallback(async () => {
     if (!cardSetFilter) return;
     const params = getFilterQuery(
@@ -58,6 +60,7 @@ export const CardManager: React.FC = () => {
     possessionFilter,
     order,
     page,
+    id
   ]);
 
   useEffect(() => {
@@ -85,7 +88,7 @@ export const CardManager: React.FC = () => {
   ]);
 
   const fetchTags = useCallback(async () => {
-    if (user.id === '') return;
+    if (user.id === '' && !id) return;
     const response = await fetch(`/tag`, {
       ...(id ? { userId: id } : {}),
     });

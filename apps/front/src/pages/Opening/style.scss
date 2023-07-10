@@ -1,7 +1,7 @@
 @import "../../scss/variables.scss";
 
 .OpeningPage {
-  height: calc(100% - 76px);
+  height: calc(100% - 56px);
   display: flex;
   flex-direction: column;
 
@@ -34,15 +34,17 @@
   &-swippingArea {
     flex: 1 1 auto;
     display: flex;
-    overflow: hidden;
+    overflow: auto;
   }
 
   &-swippingContent {
     width: calc(100% - 40px);
-    margin: 0 auto;
+    margin: auto;
     background-color: $primary-bg;
-    height: calc(100% - 20px);
     overflow: hidden;
+    min-height: calc(100% - 40px);
+    margin: 20px;
+
 
     &.swipping2 {
       display: flex;
@@ -58,6 +60,7 @@
     margin-bottom: 5px;
     display: grid;
     gap: 10px 0;
+    min-height: 200px;
     grid-template-columns: repeat(auto-fit, minmax(325px, 1fr));
     padding: 20px 10px;
   }
@@ -91,11 +94,12 @@
   }
 
   &-setChoice {
-    height: 100%;
+    flex: 1 1 auto;
+    min-height: 100%;
     color: $white;
     display: flex;
     flex-direction: column;
-    overflow: hidden;
+    overflow: hidden auto;
 
     & h2 {
       margin-left: 20px;
@@ -128,6 +132,7 @@
       clip-path: clipPath(8px);
       border: none;
       z-index: 1;
+      width: 210px;
 
       &Container {
         margin-left: 20px;
@@ -136,6 +141,7 @@
         height: 35px;
         display: flex;
         justify-content: center;
+        width: 210px;
 
         &::before {
           content: "";
@@ -176,9 +182,6 @@
   }
 
   &-boosterContent {
-    width: calc(100% - 20px);
-    height: 120px;
-    margin-left: 20px;
     background: $primary-bg;
     display: flex;
     justify-content: center;
@@ -187,30 +190,29 @@
 
     &Input {
       display: flex;
-      height: 100%;
       width: fit-content;
-      min-height: 600px;
+      width: 100%;
+      justify-content: center;
+      padding: 0 10px;
     }
 
     &-features {
       display: flex;
       flex-direction: column;
       background-color: $primary-bg;
-      padding-right: 5px;
-      height: 100%;
     }
 
     &-validate {
       background: $primary-radiant;
-      width: 40px;
-      height: 40px;
+      width: 30px;
+      height: 30px;
       padding: 4px;
       clip-path: clipPath(7px);
       margin-left: 9px;
       cursor: pointer;
 
       & svg {
-        color: $primary-bg;
+        color: $white;
         width: 100%;
         height: 100%;
       }
@@ -218,9 +220,9 @@
 
     &-textInput {
       position: relative;
-      width: 270px;
+      width: 250px;
       height: 40px;
-      margin: auto auto 5px auto;
+      margin: 10px auto;
       display: flex;
       justify-content: center;
       flex: 0 0 auto;
@@ -293,8 +295,8 @@
   }
 
   &-preselected {
-    flex: 1 1 auto;
     display: flex;
+    margin-top: 10px;
 
     &ImgContainer {
       height: 350px;
@@ -316,13 +318,15 @@
   }
 
   &-possibleCards {
-    display: flex;
-    flex-wrap: wrap;
+    display: grid;
     background-color: $primary-bg;
+    gap: 3px;
+    grid-template-columns: repeat(auto-fit, minmax(69px, 1fr));
 
     &Container {
+      flex: 1 1 auto;
+      border: 1px solid $primary;
       height: 500px;
-      margin-top: 20px;
       overflow-y: auto;
       margin-left: 20px;
     }
@@ -354,6 +358,7 @@
     height: 100%;
     display: flex;
     flex-direction: column;
+    max-width: calc(100%);
 
     & h2 {
       color: $white;
@@ -363,10 +368,12 @@
     &-buttonContainer {
       display: flex;
       width: fit-content;
-      margin: auto auto 0 auto;
+      margin: 10px auto;
+      flex-wrap: wrap;
+      justify-content: center;
 
       &>* {
-        margin: 20px;
+        margin: 5px;
       }
     }
   }
@@ -374,13 +381,20 @@
   &-addedCards {
     display: flex;
     width: calc(100% - 40px);
+    max-width: calc(100% - 40px);
     margin: auto;
+    gap: 5px;
+    overflow: auto;
   }
 
   &-addedCard {
-    width: calc(10% - 10px);
+    width: 10%;
+    min-width: 80px;
     margin: auto;
     aspect-ratio: 116/160;
+    overflow: hidden;
+    border-radius: 5px;
+    margin-bottom: 5px;
 
     & img {
       width: 100%;
@@ -405,24 +419,47 @@
   &.step2 {
     overflow: auto;
 
-    .OpeningPage-swippingArea {
-      min-height: auto;
-      overflow: initial;
-      margin-bottom: 10px;
-    }
-  }
+    .OpeningPage {
+      &-tabsContainer {
+        flex: 1 1 auto;
+        display: flex;
+        flex-direction: column;
+        background-color: $primary-bg;
+        align-items: center;
+        margin-bottom: 20px;
+        justify-content: center;
+        padding: 10px;
+      }
 
-  &-swippingContent.swipping2 {
-    overflow: auto;
-    height: auto;
+      &-tabSelector {
+        margin: 10px auto;
+      }
+
+      &-swippingContent {
+        display: flex;
+        flex-direction: column;
+      }
+    }
   }
 
   &.step3 {
     overflow: auto;
 
-    .OpeningPage-swippingArea {
-      min-height: auto;
-      overflow: initial;
+    .OpeningPage {
+      &-swippingArea {
+        min-height: auto;
+        overflow: initial;
+      }
+
+      &-swippingContent {
+        background-color: transparent;
+        display: flex;
+      }
+
+      &-end {
+        background-color: $primary-bg;
+        margin: auto;
+      }
     }
   }
 }
@@ -438,119 +475,15 @@
 }
 
 @media (max-width: 955px) {
-
-  .step2,
-  .step3 {
+  .step2 {
     .OpeningPage {
-      &-swippingContent.swipping2 {
+      &-boosterContent {
         flex-direction: column;
-        align-items: center;
-        width: 100%;
-      }
-
-      &-description {
-        position: absolute !important;
-        left: 0px;
-        // display: none;
-        z-index: 10;
-        top: 56px;
-        width: 100%;
-        height: calc(100vh - 76px);
       }
 
       &-boosterCards {
-        width: 100%;
-        align-items: center;
-        flex: none;
-        padding: 5px;
-        box-sizing: border-box;
+        max-width: 100%;
       }
-
-      &-possibleCards {
-        justify-content: center;
-
-        &Container {
-          margin: 20px auto 10px;
-          padding: 1px 0;
-          max-height: 35vh;
-        }
-      }
-
-      &-boosterContent {
-        margin: auto;
-        margin-top: 20px;
-        width: 100%;
-        padding: 0 !important;
-        overflow: hidden;
-        flex-wrap: wrap;
-        height: auto;
-
-        &Input {
-          height: 600px;
-        }
-
-        &Others {
-          width: calc(100% - 20px);
-          height: fit-content;
-          flex: none;
-        }
-
-        &-features {
-          min-height: 600px;
-        }
-      }
-
-      &swippingArea {
-        overflow: auto;
-      }
-
-      &-nextButton2 {
-        padding: 15px;
-      }
-    }
-  }
-
-  .step3 {
-    .OpeningPage {
-      &-swippingArea {
-        margin-top: 20px;
-      }
-
-      &-addedCards {
-        flex: 1 1 auto;
-        flex-wrap: wrap;
-        overflow-y: auto;
-      }
-
-      &-addedCard {
-        min-width: 100px;
-      }
-
-      &-end {
-        &-buttonContainer {
-          justify-content: center;
-          flex-wrap: wrap;
-          margin: 0;
-          width: 100%;
-          margin-bottom: 10px;
-
-          &>div {
-            margin: 3px;
-
-            & * {
-              width: 320px !important;
-            }
-          }
-        }
-      }
-    }
-  }
-
-  .step2 {
-    overflow: auto;
-
-    & .OpeningPage-swippingArea {
-      flex: none
     }
   }
 
@@ -558,6 +491,10 @@
     &-set {
       width: 220px;
       font-size: 13px;
+    }
+
+    &-addedCard {
+      border-radius: 1px;
     }
 
     &-setList {
@@ -576,22 +513,6 @@
         margin-left: 20px;
         margin-top: 10px;
       }
-    }
-  }
-}
-
-@media (max-width: 380px) {
-  .step3 button {
-    font-size: 17px;
-  }
-
-  .step3 .ButtonComponent {
-    width: 300px !important;
-    justify-content: center;
-    display: flex;
-
-    & button {
-      width: 300px !important;
     }
   }
 }

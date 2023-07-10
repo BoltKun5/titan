@@ -12,7 +12,7 @@ import "./style.scss";
 import StoreContext from "../../hook/contexts/StoreContext";
 import { CardRarityEnum, CardRarityEnumFrench, CardTypeEnum, CardTypeEnumFrench, ICard } from "vokit_core";
 import { SingleCardComponentPropsType } from "../../local-core";
-import { getImageSource } from "../../general.utils";
+import { getImageSource, isUserConnected } from "../../general.utils";
 import { Tooltip } from "@mui/material";
 
 export const SingleCardComponent: React.FC<SingleCardComponentPropsType> = ({
@@ -25,11 +25,8 @@ export const SingleCardComponent: React.FC<SingleCardComponentPropsType> = ({
 }) => {
   const { collectionMode, separateReverse } = useContext(StoreContext);
   const imageElement = useRef(null)
-
   const elementRef = createRef<HTMLDivElement>();
-
   const [show, setShow] = useState(false);
-
   const [parent, setParent] = useState<HTMLElement | null | undefined>(null);
 
   const isElementInViewport = useCallback(() => {

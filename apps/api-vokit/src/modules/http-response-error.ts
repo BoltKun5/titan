@@ -28,6 +28,13 @@ export class HttpResponseError {
     });
   }
 
+  public static createExpiredToken(): createError.HttpError {
+    return createError(401, {
+      code: HttpErrorCode.expired,
+      message: 'Expired token',
+    });
+  }
+
   public static createSignUpValidationError(): createError.HttpError {
     return createError(400, {
       code: HttpErrorCode.signupvalidation,

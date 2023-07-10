@@ -211,6 +211,7 @@ importers:
       '@tcgdex/sdk': ^2.4.6
       '@types/react': ^18.0.0
       '@types/react-dom': ^18.0.0
+      '@types/recharts': ^1.8.24
       '@vitejs/plugin-react': ^1.3.0
       axios: ^0.27.2
       dayjs: ^1.11.5
@@ -231,6 +232,7 @@ importers:
       '@mui/icons-material': 5.11.0_iq6n432hogcf75rdfmlkzd4zne
       '@mui/material': 5.11.2_lskpmcsdi7ipu6qpuapyu56ihm
       '@tcgdex/sdk': 2.4.8
+      '@types/recharts': 1.8.24
       axios: 0.27.2
       dayjs: 1.11.7
       dotenv: 16.0.3
@@ -1789,7 +1791,7 @@ packages:
         optional: true
     dependencies:
       '@babel/runtime': 7.20.7
-      '@mui/material': 5.11.2_ib3m5ricvtkl2cll7qpr2f6lvq
+      '@mui/material': 5.11.2_lskpmcsdi7ipu6qpuapyu56ihm
       '@types/react': 18.0.26
       react: 18.2.0
     dev: false
@@ -2254,6 +2256,10 @@ packages:
       '@types/d3-color': 2.0.3
     dev: false
 
+  /@types/d3-path/1.0.9:
+    resolution: {integrity: sha512-NaIeSIBiFgSC6IGUBjZWcscUJEq7vpVu7KthHN8eieTV9d9MqkSOZLH4chq1PmcKy06PNe3axLeKmRIyxJ+PZQ==}
+    dev: false
+
   /@types/d3-path/2.0.2:
     resolution: {integrity: sha512-3YHpvDw9LzONaJzejXLOwZ3LqwwkoXb9LI2YN7Hbd6pkGo5nIlJ09ul4bQhBN4hQZJKmUpX8HkVqbzgUKY48cg==}
     dev: false
@@ -2262,6 +2268,12 @@ packages:
     resolution: {integrity: sha512-gGqr7x1ost9px3FvIfUMi5XA/F/yAf4UkUDtdQhpH92XCT0Oa7zkkRzY61gPVJq+DxpHn/btouw5ohWkbBsCzQ==}
     dependencies:
       '@types/d3-time': 2.1.1
+    dev: false
+
+  /@types/d3-shape/1.3.8:
+    resolution: {integrity: sha512-gqfnMz6Fd5H6GOLYixOZP/xlrMtJms9BaS+6oWxTKHNqPGZ93BkWWupQSCYm6YHqx6h9wjRupuJb90bun6ZaYg==}
+    dependencies:
+      '@types/d3-path': 1.0.9
     dev: false
 
   /@types/d3-shape/2.1.3:
@@ -2426,6 +2438,13 @@ packages:
     resolution: {integrity: sha512-ImM6TmoF8bgOwvehGviEj3tRdRBbQujr1N+0ypaln/GWjaerOB26jb93vsRHmdMtvVQZQebOlqt2HROark87mQ==}
     dependencies:
       '@types/node': 20.3.1
+    dev: false
+
+  /@types/recharts/1.8.24:
+    resolution: {integrity: sha512-PGugStujgxjMOUUJuGIrw71MIhTtl/FeNzuWZVDTS7Kq8NdiQfMrlC6GXJIvlQcrsUIn9IcXbi6sZJjK+6kfLQ==}
+    dependencies:
+      '@types/d3-shape': 1.3.8
+      '@types/react': 18.0.26
     dev: false
 
   /@types/scheduler/0.16.2:

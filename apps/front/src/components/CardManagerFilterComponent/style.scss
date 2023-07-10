@@ -442,6 +442,11 @@
 
 @media (max-width: 700px) {
   .CardManagerFilter {
+    &.hidePagination {
+      margin: auto;
+      width: calc(100vw - 20px);
+    }
+
     &-top {
       gap: 10px;
 

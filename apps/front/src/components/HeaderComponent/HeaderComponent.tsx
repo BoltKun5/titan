@@ -39,14 +39,7 @@ export const HeaderComponent: React.FC<{
     );
   };
 
-  const copyShareLink = () => {
-    navigator.clipboard.writeText(
-      import.meta.env.VITE_BASE_URL + "/collection/" + user.id
-    );
-    enqueueSnackbar(
-      "Le lien de partage de votre collection a été copié dans le presse-papier."
-    );
-  };
+
 
   return (
     <header className="HeaderComponent">
@@ -101,7 +94,7 @@ export const HeaderComponent: React.FC<{
             >
               <div className="HeaderComponent-profilePicture">
                 <img
-                  src={`/assets/profile_picture/${user?.options?.profilePictureId ?? 1}.png`}
+                  src={`/assets/profile_picture/${user?.options?.profilePicture ?? 1}.png`}
                 />
               </div>
             </div>
@@ -114,7 +107,6 @@ export const HeaderComponent: React.FC<{
                   <Link to={'/profile'} onClick={() => { setIsProfileDropdownOpen(false); setListenToClose(false) }}>
                     <div
                       className="HeaderComponent-profileButtons"
-                      onClick={() => copyShareLink()}
                     >
                       Mon profil
                     </div>

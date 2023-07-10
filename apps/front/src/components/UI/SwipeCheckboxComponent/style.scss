@@ -4,6 +4,7 @@
   position: relative;
   height: fit-content;
   display: flex;
+  width: fit-content;
 
   &-optionSelected {
     color: black !important;
@@ -15,15 +16,27 @@
   }
 
   &-container {
-    background-color: $primary-bg;
+    background-color: $primary;
     clip-path: clipPath(10px);
+    position: relative;
+
+    &::before {
+      content: "";
+      position: absolute;
+      width: calc(100% - 2px);
+      height: calc(100% - 2px);
+      left: 1px;
+      top: 1px;
+      clip-path: clipPath(10px);
+      background-color: $primary-bg;
+      z-index: 0;
+    }
   }
 
   &-elements {
     padding: 3px;
     display: flex;
     clip-path: clipPath(10px);
-    background-color: #161827;
 
     & span {
       display: flex;
@@ -43,14 +56,14 @@
   }
 
   & label {
+    padding: 5px;
     z-index: 1;
     position: absolute;
-    left: -5px;
     top: -20px;
-    color: $secondary;
+    left: -3px;
+    color: $white;
     background: $primary-radiant;
-    padding: 10px;
-    clip-path: clipPath(10px);
+    clip-path: clipPath(5px);
     font-size: 15px;
   }
 
@@ -61,7 +74,7 @@
     width: 80px;
     position: absolute;
     height: 34px;
-    clip-path: clipPath(10px);
+    clip-path: clipPath(9px);
     background-color: $white;
   }
 }
