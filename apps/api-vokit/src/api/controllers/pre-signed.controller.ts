@@ -26,6 +26,8 @@ class PreSignedController implements Controller {
   ): Promise<void> {
     req.query = PreSignedValidation.getQuery(req.query);
 
+    PreSignedController.logger.log(`Getting presigned URL ${req.query.token}`);
+
     try {
       const usedToken = await PreSignedUrl.findOne({
         where: {
@@ -92,6 +94,8 @@ class PreSignedController implements Controller {
     res: Response<IResponse<void>, IResponseUnloggedLocals>,
   ): Promise<void> {
     req.body = PreSignedValidation.updatePasswordBody(req.body);
+
+    PreSignedController.logger.log(`Updating password with token ${req.query.token}`);
 
     try {
       const usedToken = await PreSignedUrl.findOne({

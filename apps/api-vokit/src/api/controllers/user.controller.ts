@@ -20,6 +20,8 @@ class UserController implements Controller {
     _req: Request<Record<string, never>, IMeUserResponse, void>,
     res: Response<IMeUserResponse, ILocals>,
   ): Promise<void> {
+    UserController.logger.log(`Connected ${res.locals.currentUser.id}`);
+
     const user = await userService.getUser({ user: { id: res.locals.currentUser.id } }, undefined, {
       attributes: {
         exclude: ['createdAt', 'password', 'updatedAt', 'username'],

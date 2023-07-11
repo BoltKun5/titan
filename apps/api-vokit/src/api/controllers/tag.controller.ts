@@ -22,6 +22,8 @@ class TagController implements Controller {
   ): Promise<void> {
     req.query = TagValidation.getTags(req.query);
 
+    TagController.logger.log(`Fetching tags for user ${req.query.userId}`);
+
     let user;
     if (req.query?.userId) {
       user = await User.findOne({
@@ -52,6 +54,8 @@ class TagController implements Controller {
   ): Promise<void> {
     req.body = TagValidation.createTag(req.body);
 
+    TagController.logger.log(`User ${res.locals.currentUser.id} is creating tag ${req.body.name}`);
+
     await Tag.create({
       userId: res.locals.currentUser.id,
       name: req.body.name,
@@ -70,6 +74,8 @@ class TagController implements Controller {
     res: Response<IResponse<ICreateTagResponse>, ILocals>,
   ): Promise<void> {
     req.query = TagValidation.deleteTag(req.query);
+
+    TagController.logger.log(`User ${res.locals.currentUser.id} is deleting tag ${req.query.id}`);
 
     const tag = await Tag.findOne({
       where: {

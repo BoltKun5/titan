@@ -44,6 +44,8 @@ class AuthService extends Service {
       throw HttpResponseError.createWrongUsernameError();
     }
 
+    this.logger.log(`User ${user?.id} is logging in`);
+
     if (!user.isActive) {
       const token = jws.sign(
         {
@@ -62,6 +64,9 @@ class AuthService extends Service {
         PreSignedTypeEnum.CREATE_ACCOUNT,
         `${process.env.FRONT_URL ?? ''}pre-signed?token=${token}`,
       );
+
+      this.logger.log(`User ${user?.id} is not active, mail sent`);
+
       throw HttpResponseError.createInactiveAccountError();
     }
 

@@ -33,6 +33,11 @@ class PossessionController implements Controller {
     res: Response<IResponse<IUpdatePossessionResponse>, ILocals>,
   ): Promise<void> {
     req.body = PossessionValidation.update(req.body);
+
+    PossessionController.logger.log(
+      `User ${res.locals.currentUser.id} is updating a card possession`,
+    );
+
     const newPossessions = await userCardPossessionService.updatePossession(
       { ...req.body },
       res.locals.currentUser,
@@ -50,6 +55,11 @@ class PossessionController implements Controller {
     res: Response<IResponse<ICreatePossessionResponse>, ILocals>,
   ): Promise<void> {
     req.body = PossessionValidation.create(req.body);
+
+    PossessionController.logger.log(
+      `User ${res.locals.currentUser.id} is creating a card possession`,
+    );
+
     const newPossession = await userCardPossessionService.createPossession(
       { ...req.body },
       res.locals.currentUser,
@@ -70,6 +80,10 @@ class PossessionController implements Controller {
     const deletedId = await userCardPossessionService.simpleDelete(
       { ...req.body },
       res.locals.currentUser,
+    );
+
+    PossessionController.logger.log(
+      `User ${res.locals.currentUser.id} is simple-deleting a card possession`,
     );
 
     if (!deletedId) {
@@ -93,6 +107,10 @@ class PossessionController implements Controller {
       res.locals.currentUser,
     );
 
+    PossessionController.logger.log(
+      `User ${res.locals.currentUser.id} is force-deleting a card possession`,
+    );
+
     if (!deletedId) {
       throw HttpResponseError.createNotFoundError();
     }
@@ -108,6 +126,11 @@ class PossessionController implements Controller {
     res: Response<IResponse<ICreateMultiplePossessionResponse>, ILocals>,
   ): Promise<void> {
     req.body = PossessionValidation.multipleCreate(req.body);
+
+    PossessionController.logger.log(
+      `User ${res.locals.currentUser.id} is creating possession through booster`,
+    );
+
     const results = await userCardPossessionService.createWithBoosterId(
       { ...req.body },
       res.locals.currentUser,
@@ -121,6 +144,11 @@ class PossessionController implements Controller {
     res: Response<IResponse<ISetQuantityResponse>, ILocals>,
   ): Promise<void> {
     req.body = PossessionValidation.setQuantity(req.body);
+
+    PossessionController.logger.log(
+      `User ${res.locals.currentUser.id} is creating possession with quantity set`,
+    );
+
     const data = await userCardPossessionService.setQuantity(
       { ...req.body },
       res.locals.currentUser,

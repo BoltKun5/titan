@@ -67,6 +67,7 @@ class CardController implements Controller {
     req.query = CardValidation.cardQuery(req.query);
     req.query.page = -1;
 
+    CardController.logger.log(`Getting stats for user ${res.locals.currentUser.id} collection`);
     // console.time('a');
     try {
       const stats = await cardService.getStats({ ...req.query }, res.locals.currentUser);

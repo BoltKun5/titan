@@ -99,9 +99,11 @@ class AuthController implements Controller {
   ): Promise<void> {
     req.body = AuthValidation.renewPasswordBody(req.body);
 
-    const user = User.findOne({ where: { mail: req.body.mail } });
+    const user = await User.findOne({ where: { mail: req.body.mail } });
 
     if (!user) throw HttpResponseError.createNotFoundError();
+
+    AuthController.logger.log(`Sending renew password mail for user ${user?.id}`);
 
     const token = jws.sign(
       {
