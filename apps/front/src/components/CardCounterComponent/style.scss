@@ -140,7 +140,7 @@
       clip-path: clipPath(7px);
 
       &::after {
-        content: "N'existe pas en reverse";
+        content: "/";
         position: absolute;
         top: 1px;
         left: 1px;

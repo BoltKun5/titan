@@ -299,7 +299,7 @@ export const CardCounterComponent: React.FC<CardCounterComponentPropsType> = ({
   ) : (
     <div className="CardCounter-unusable">
       <div className="CardCounter-name">{label}</div>
-      <div className="CardCounter-unusableMessage">N'existe pas en reverse</div>
+      <div className="CardCounter-unusableMessage">/</div>
     </div>
   );
 };

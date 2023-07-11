@@ -11,9 +11,13 @@ import {
   isUserConnected,
 } from "../../general.utils";
 import { useParams } from "react-router-dom";
+import { IUser } from "vokit_core";
+import { api } from "../../axios";
+import { useSnackbar } from "notistack";
 
 export const CardManager: React.FC = () => {
   const { isLoading, fetch } = useFetchData(isUnloggedPage());
+  const { enqueueSnackbar } = useSnackbar();
   const {
     cardSetFilter,
     nameFilter,
@@ -30,13 +34,11 @@ export const CardManager: React.FC = () => {
     setTags,
     user
   } = useContext(StoreContext);
-
+  const [associatedUser, setAssociatedUser] = useState<null | IUser>(null);
   let id: string | undefined = useParams().id;
   if (!isUnloggedPage()) {
     id = undefined;
   }
-
-  console.log(id)
 
   const fetchCards = useCallback(async () => {
     if (!cardSetFilter) return;
@@ -88,16 +90,32 @@ export const CardManager: React.FC = () => {
   ]);
 
   const fetchTags = useCallback(async () => {
-    if (user.id === '' && !id) return;
-    const response = await fetch(`/tag`, {
-      ...(id ? { userId: id } : {}),
-    });
-    setTags(response.data.tags);
+    try {
+      if (user.id === '' && !id) return;
+      const response = await fetch(`/tag`, {
+        ...(id ? { userId: id } : {}),
+      });
+      setTags(response.data.tags);
+    } catch (e) {
+      enqueueSnackbar('Une erreur est survenue');
+    }
   }, []);
+
+  const fetchAssociatedUser = async () => {
+    try {
+      const response = await api.get(`/user/get-by-id?id=${id}`)
+      setAssociatedUser(response.data.user)
+    } catch (e) {
+      enqueueSnackbar('Une erreur est survenue');
+    }
+  }
 
   useEffect(() => {
     if (!tags) {
       fetchTags();
+    }
+    if (!associatedUser) {
+      fetchAssociatedUser();
     }
   }, []);
 
@@ -110,6 +128,15 @@ export const CardManager: React.FC = () => {
       <div className="CardManager">
         <div className="CardManager-mainContent">
           <CardManagerFilterComponent />
+          <div className="CardManager-collection">
+            <span>Collection de</span>
+            <div className="CardManager-collection-container">
+              <img
+                src={`/assets/profile_picture/${associatedUser?.options?.profilePicture ?? 1}.png`}
+              />
+              <div className="span">{associatedUser?.shownName}</div>
+            </div>
+          </div>
           {isLoading ? <Loader /> : <CardManagerCardListComponent />}
         </div>
       </div>

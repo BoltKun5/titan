@@ -9,3 +9,7 @@ export interface IUpdateUserPasswordBody {
 export interface IUpdateOptionBody {
   profilePicture?: string;
 }
+
+export interface IGetUserByIdQuery {
+  id?: string;
+}

@@ -9,6 +9,8 @@ export const UserRouter = (app: Router): Router => {
 
   route.get('/me', auth, userController.me);
 
+  route.get('/get-by-id', userController.getById);
+
   route.post('/update-options', auth, userController.updateOption);
 
   route.post('/update-password', auth, userController.updatePassword);

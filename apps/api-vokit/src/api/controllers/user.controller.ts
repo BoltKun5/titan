@@ -1,4 +1,5 @@
 import {
+  IGetUserByIdQuery,
   IUpdateOptionBody,
   IUpdateShownNameBody,
   IUpdateUserPasswordBody,
@@ -26,6 +27,32 @@ class UserController implements Controller {
     });
 
     res.status(200).json({
+      user: user,
+    });
+  }
+
+  async getById(
+    req: Request<Record<string, never>, IUserResponse, void, IGetUserByIdQuery>,
+    res: Response<IUserResponse, ILocals>,
+  ): Promise<void> {
+    req.query = UserValidation.getByIdQuery(req.query);
+
+    UserController.logger.log(`Getting ${req.query.id} profile by Id`);
+
+    const user = await User.findOne({
+      where: {
+        id: req.query.id,
+      },
+      attributes: {
+        exclude: ['createdAt', 'password', 'updatedAt', 'mail', 'role'],
+      },
+    });
+
+    if (!user) {
+      throw HttpResponseError.createNotFoundError();
+    }
+
+    res.json({
       user: user,
     });
   }

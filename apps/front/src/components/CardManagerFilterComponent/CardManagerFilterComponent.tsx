@@ -109,37 +109,6 @@ export const CardManagerFilterComponent: React.FC<{
     }, 300);
   };
 
-  const getActiveFiltersList = () => {
-    let allFilters = [];
-    if (nameFilter && nameFilter !== "") {
-      allFilters.push({
-        text: "Nom : " + nameFilter,
-        color: "$primary",
-      });
-    }
-    if (cardSetFilter) {
-      cardSetFilter.map((cardSet) => {
-        if (cardSet.status) {
-          allFilters.push({
-            text: "Set : " + cardSet.name,
-            color: "$primary",
-          });
-        }
-      });
-    }
-    if (rarityFilter) {
-      rarityFilter.map((rarityFilterElement) => {
-        if (rarityFilterElement.value) {
-          allFilters.push({
-            text: "Rareté : " + frontRarity[rarityFilterElement.rarity],
-            color: "$primary",
-          });
-        }
-      });
-    }
-    return allFilters;
-  };
-
   useEffect(() => {
     setPageNewValue(page);
   }, [page]);
@@ -175,12 +144,10 @@ export const CardManagerFilterComponent: React.FC<{
     setPage(page - 1);
   };
 
-  // @ts-ignore
   const handleKeyDown: KeyboardEventHandler<HTMLInputElement> = (
-    event: KeyboardEvent
+    event: any
   ) => {
     if (event.key === "Enter")
-      // @ts-ignore
       event.currentTarget?.blur();
   };
 
@@ -209,33 +176,36 @@ export const CardManagerFilterComponent: React.FC<{
                 <FilterAltIcon />
               </div>
             )}
-            <div className="CardManagerFilter-fixedWidthContainer" style={{ width: 150 }}>
+            {width > 500 && <div className="CardManagerFilter-fixedWidthContainer" style={{ width: 150 }}>
               <div
                 className="CardManagerFilter-resetContainer"
                 onClick={resetAllFilters}
               >
                 <ButtonComponent label={"Réinitialiser"} size={150} height={40} clipPath={10} />
               </div>
-            </div>
-            <div className="CardManagerFilter-fixedWidthContainer" style={{ width: 250 }}>
-              <TextInputComponent
-                label={"Nom"}
-                id={"nameFilter"}
-                onKeyUpCallback={startCountdown}
-                onKeyDownCallback={() => clearTimeout(nameInputTimer)}
-                height={40}
-                preset={'filter'}
-              />
-            </div>
-            <div className="CardManagerFilter-fixedWidthContainer" style={{ width: 300 }}>
+            </div>}
+            {
+              width > 800 && <div className="CardManagerFilter-fixedWidthContainer" style={{ width: 250 }}>
+                <TextInputComponent
+                  label={"Nom"}
+                  id={"nameFilter"}
+                  onKeyUpCallback={startCountdown}
+                  onKeyDownCallback={() => clearTimeout(nameInputTimer)}
+                  height={40}
+                  preset={'filter'}
+                />
+              </div>
+            }
+
+            {width > 1030 && <div className="CardManagerFilter-fixedWidthContainer" style={{ width: 300 }}>
               <CategorizedAutocompleteChecklist
                 items={cardSetFilter}
                 placeholder={"Filtrer par sets"}
                 onFilterChange={updateSetFilters}
                 width={300}
               />
-            </div>
-            <div className="CardManagerFilter-fixedWidthContainer" style={{ width: 'auto', marginRight: 20 }}>
+            </div>}
+            {width > 1430 && <div className="CardManagerFilter-fixedWidthContainer" style={{ width: 'auto' }}>
               <div className="CardManagerFilter-rarityFilter">
                 <label>Filtrer par rareté</label>
                 <div className="CardManagerFilter-rarityList">
@@ -262,7 +232,7 @@ export const CardManagerFilterComponent: React.FC<{
                   ))}
                 </div>
               </div>
-            </div>
+            </div>}
           </div>
           {pagination && !hidePagination && (<div className="CardManagerFilter-topPagination">
             <div className="CardManagerFilter-pagination">
@@ -367,6 +337,63 @@ export const CardManagerFilterComponent: React.FC<{
                           </option>
                         </select>
                       </div>
+                    </div>
+                  </div>}
+
+                  {width <= 800 && <div className="CardManagerFilter-fixedWidthContainer" style={{ width: 250, height: 40  }}>
+                    <TextInputComponent
+                      label={"Nom"}
+                      id={"nameFilter"}
+                      onKeyUpCallback={startCountdown}
+                      onKeyDownCallback={() => clearTimeout(nameInputTimer)}
+                      height={40}
+                      preset={'filter'}
+                    />
+                  </div>
+                  }
+
+                  {width <= 1030 && <div className="CardManagerFilter-fixedWidthContainer" style={{ width: 250, height: 40 }}>
+                    <CategorizedAutocompleteChecklist
+                      items={cardSetFilter}
+                      placeholder={"Filtrer par sets"}
+                      onFilterChange={updateSetFilters}
+                      width={250}
+                    />
+                  </div>}
+                  {width <= 1430 && <div className="CardManagerFilter-fixedWidthContainer CardManagerFilter-rarityFilterContainer" style={{ width: 'auto', height: 40 }}>
+                    <div className="CardManagerFilter-rarityFilter">
+                      <label>Filtrer par rareté</label>
+                      <div className="CardManagerFilter-rarityList">
+                        {rarityFilter.map((filter: any) => (
+                          <Tooltip
+                            title={frontRarity[filter.rarity]}
+                            key={"rarity" + filter.rarity}
+                          >
+                            <div
+                              className={
+                                "CardManagerFilter-rarityContainer " +
+                                (filter.value ? "selected" : "")
+                              }
+                              onClick={() => {
+                                updateRarityFilter(filter.rarity);
+                              }}
+                            >
+                              <img
+                                className="CardManagerFilter-rarityImg"
+                                src={"/assets/icons/" + filter.rarity + ".png"}
+                              />
+                            </div>
+                          </Tooltip>
+                        ))}
+                      </div>
+                    </div>
+                  </div>}
+                  {width <= 500 && <div className="CardManagerFilter-fixedWidthContainer" style={{ width: 150 }}>
+                    <div
+                      className="CardManagerFilter-resetContainer"
+                      onClick={resetAllFilters}
+                    >
+                      <ButtonComponent label={"Réinitialiser"} size={150} height={40} clipPath={10} />
                     </div>
                   </div>}
                 </>
