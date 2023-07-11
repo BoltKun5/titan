@@ -65,6 +65,7 @@ export type TextInputComponentType = {
   labelAsPlaceholder?: boolean;
   preset?: string;
   tooltip?: string;
+  placeholder?: string;
 };
 
 export type ButtonComponentPropsType = {

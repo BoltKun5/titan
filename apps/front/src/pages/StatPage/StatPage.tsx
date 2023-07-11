@@ -127,7 +127,7 @@ export const StatPage: React.FC = () => {
                 <div className="StatPage-chart">
                   {localChartRadialData.length == 0 && <div className='StatPage-noCard'>Aucune carte possédée !</div>}
 
-                  <ResponsiveContainer
+                  {localChartRadialData.length == 0 && <ResponsiveContainer
                     width="100%"
                     height={
                       (chartMode === "total"
@@ -166,7 +166,7 @@ export const StatPage: React.FC = () => {
                       <Bar dataKey="Normal" fill="#FFF" />
                       <Bar dataKey="Reverse" fill="#3b99f1" />
                     </BarChart>
-                  </ResponsiveContainer>
+                  </ResponsiveContainer>}
                 </div>
               </div>
             </div>

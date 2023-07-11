@@ -24,7 +24,6 @@ export const CardManager: React.FC = () => {
     order,
     rarityFilter,
     page,
-    collectionMode,
     possessionFilter,
     setCards,
     setPagination,
@@ -58,7 +57,6 @@ export const CardManager: React.FC = () => {
   }, [
     cardSetFilter,
     nameFilter,
-    collectionMode,
     possessionFilter,
     order,
     page,
@@ -70,7 +68,6 @@ export const CardManager: React.FC = () => {
   }, [
     cardSetFilter,
     nameFilter,
-    collectionMode,
     possessionFilter,
     order,
     rarityFilter,
@@ -84,7 +81,6 @@ export const CardManager: React.FC = () => {
   }, [
     cardSetFilter,
     nameFilter,
-    collectionMode,
     possessionFilter,
     rarityFilter,
   ]);
@@ -114,9 +110,11 @@ export const CardManager: React.FC = () => {
     if (!tags) {
       fetchTags();
     }
-    if (!associatedUser) {
+    if (!associatedUser && id) {
       fetchAssociatedUser();
     }
+
+
   }, []);
 
   if (!series) {
@@ -128,7 +126,7 @@ export const CardManager: React.FC = () => {
       <div className="CardManager">
         <div className="CardManager-mainContent">
           <CardManagerFilterComponent />
-          <div className="CardManager-collection">
+          {id && <div className="CardManager-collection">
             <span>Collection de</span>
             <div className="CardManager-collection-container">
               <img
@@ -136,7 +134,7 @@ export const CardManager: React.FC = () => {
               />
               <div className="span">{associatedUser?.shownName}</div>
             </div>
-          </div>
+          </div>}
           {isLoading ? <Loader /> : <CardManagerCardListComponent />}
         </div>
       </div>

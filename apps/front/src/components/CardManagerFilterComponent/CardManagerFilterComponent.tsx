@@ -4,10 +4,10 @@ import React, {
   useEffect,
   useState,
 } from "react";
-import { ClickAwayListener, Fade, Grow, Slide, Tooltip, Zoom } from "@mui/material";
+import { ClickAwayListener, Fade, Tooltip } from "@mui/material";
 import { CategorizedAutocompleteChecklist } from "../CategorizedAutocompleteChecklist/CategorizedAutocompleteChecklist";
 import "./style.scss";
-import { frontRarity, isUnloggedPage, isUserConnected } from "../../general.utils";
+import { frontRarity, getFilterQuery, isUnloggedPage, isUserConnected } from "../../general.utils";
 import FilterAltIcon from "@mui/icons-material/FilterAlt";
 import { TextInputComponent } from "../UI/TextInputComponent/TextInputComponent";
 import { ButtonComponent } from "../UI/Button/ButtonComponent";
@@ -21,8 +21,9 @@ import { SwipeCheckboxComponent } from "../UI/SwipeCheckboxComponent/SwipeCheckb
 import { Loader } from "../UI/Loader/LoaderComponent";
 import { ICardSetFilter } from "../../local-core";
 import useWindowDimensions from "../../hook/utils/useWindowDimensions";
-import { useParams } from "react-router-dom";
+import { useParams, useSearchParams } from "react-router-dom";
 import { SwitchInputComponent } from "../SwitchInputComponent/SwitchInputComponent";
+import axios, { AxiosRequestTransformer } from "axios"
 
 export const CardManagerFilterComponent: React.FC<{
   hidePagination?: boolean;
@@ -43,10 +44,10 @@ export const CardManagerFilterComponent: React.FC<{
     setListDisplay,
     listDisplay
   } = useContext(StoreContext);
-
+  let [searchParams, setSearchParams] = useSearchParams();
   const [isFilterPanelOpen, setIsFilterPanelOpen] = useState(false);
   const [listenToClose, setListenToClose] = useState(false);
-
+  const [localNameFilter, setLocalNameFilter] = useState(nameFilter ?? '');
   const { width } = useWindowDimensions();
 
   let id: string | undefined = useParams().id;
@@ -112,6 +113,33 @@ export const CardManagerFilterComponent: React.FC<{
   useEffect(() => {
     setPageNewValue(page);
   }, [page]);
+
+  useEffect(() => {
+    const params = getFilterQuery(
+      false,
+      cardSetFilter ?? [],
+      nameFilter,
+      page,
+      rarityFilter,
+      possessionFilter,
+      order,
+      null
+    );
+    if (params.order === 'default') {
+      delete params.order;
+    }
+    if (params.page === 1) {
+      delete params.page;
+    }
+    setSearchParams(params)
+  }, [
+    cardSetFilter,
+    nameFilter,
+    page,
+    rarityFilter,
+    possessionFilter,
+    order
+  ])
 
   const [pageNewValue, setPageNewValue] = useState<any>(0);
 
@@ -189,6 +217,8 @@ export const CardManagerFilterComponent: React.FC<{
                 <TextInputComponent
                   label={"Nom"}
                   id={"nameFilter"}
+                  value={localNameFilter}
+                  modifyValue={setLocalNameFilter}
                   onKeyUpCallback={startCountdown}
                   onKeyDownCallback={() => clearTimeout(nameInputTimer)}
                   height={40}
@@ -340,10 +370,12 @@ export const CardManagerFilterComponent: React.FC<{
                     </div>
                   </div>}
 
-                  {width <= 800 && <div className="CardManagerFilter-fixedWidthContainer" style={{ width: 250, height: 40  }}>
+                  {width <= 800 && <div className="CardManagerFilter-fixedWidthContainer" style={{ width: 250, height: 40 }}>
                     <TextInputComponent
                       label={"Nom"}
                       id={"nameFilter"}
+                      value={localNameFilter}
+                      modifyValue={setLocalNameFilter}
                       onKeyUpCallback={startCountdown}
                       onKeyDownCallback={() => clearTimeout(nameInputTimer)}
                       height={40}

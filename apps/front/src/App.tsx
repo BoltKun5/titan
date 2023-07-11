@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from "react";
-import { Route, Routes, useNavigate } from "react-router-dom";
+import { Route, Routes, useNavigate, useSearchParams } from "react-router-dom";
 import { Login } from "./pages/Login/Login";
 import { CardManager } from "./pages/CardManager/CardManager";
 import { HistoricPage } from "./pages/HistoricPage/HistoricPage";
@@ -7,7 +7,6 @@ import { SignUp } from "./pages/SignUp/SignUp";
 import { Opening } from "./pages/Opening/Opening";
 import { HeaderComponent } from "./components/HeaderComponent/HeaderComponent";
 import StoreContext from "./hook/contexts/StoreContext";
-
 import { api, loggedApi } from "./axios";
 import { StatPage } from "./pages/StatPage/StatPage";
 import { initialRarityFilter, isUnloggedPage } from "./general.utils";
@@ -25,6 +24,7 @@ import {
   ITag,
   ICardSet,
   IUser,
+  CardRarityEnum,
 } from "vokit_core";
 import { Profile } from "./pages/Profile/Profile";
 import { PreSigned } from "./pages/PreSigned/PreSigned";
@@ -78,6 +78,7 @@ export const App: React.FC = () => {
     shownName: "",
   });
 
+  let [searchParams] = useSearchParams();
   const navigate = useNavigate();
 
   const fetchUser = useCallback(async () => {
@@ -119,10 +120,28 @@ export const App: React.FC = () => {
       })
     );
     setPossessionFilter(null);
+    setOrder('default');
   };
 
   useEffect(() => {
     fetchUser();
+    setNameFilter(searchParams?.get('namefilter') ?? '')
+    setOrder(searchParams?.get('order') ?? 'default')
+    setPossessionFilter((searchParams?.get('possession') as "partial_owned"
+      | "partial_unowned"
+      | "fully_owned"
+      | "multiple_owned"
+      | "unowned") ?? null)
+    setRarityFilter(initialRarityFilter.map((e) => {
+      e.value = (searchParams?.getAll('rarity') ?? []).includes(String(CardRarityEnum[e.rarity as keyof typeof CardRarityEnum]));
+      return e;
+    }));
+
+
+    setCardSetFilter(cardSetFilter?.map((e) => {
+      e.status = (searchParams?.getAll('setFilter') ?? []).includes(e?.code ?? '');
+      return e;
+    }) ?? []);
   }, []);
 
   useEffect(() => {
@@ -178,7 +197,7 @@ export const App: React.FC = () => {
             id: set.id,
             category: serie.name,
             categoryCode: serie.code,
-            status: false,
+            status: (searchParams?.getAll('setFilter') ?? []).includes(set.code ?? ''),
             code: set.code,
             logoId: set.logoId
           });
@@ -207,7 +226,7 @@ export const App: React.FC = () => {
               )}
               <Routes>
                 <Route path="/login" element={<Login />} />
-                <Route path="/" element={<CardManager />} />
+                <Route path="" element={<CardManager />} />
                 <Route path="/opening" element={<Opening />} />
                 <Route path="/stats" element={<StatPage />} />
                 <Route path="/historic" element={<HistoricPage />} />

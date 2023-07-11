@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import {
   ClickAwayListener,
   Modal,
@@ -12,6 +12,7 @@ import { TextInputComponent } from "../UI/TextInputComponent/TextInputComponent"
 import ListIcon from "@mui/icons-material/List";
 import { SetListComponent } from "../SetListComponent/SetListComponent";
 import { ICardSetFilter } from "../../local-core";
+import StoreContext from "../../hook/contexts/StoreContext";
 
 type Props = {
   items: ICardSetFilter[];
@@ -32,6 +33,7 @@ export const CategorizedAutocompleteChecklist: React.FC<Props> = ({
   const [anchorEl, setAnchorEl] = React.useState<
     null | (HTMLElement | null | undefined)
   >(null);
+  const { cardSetFilter } = useContext(StoreContext);
   const isFastFilterOpen = Boolean(anchorEl);
 
   useEffect(() => {
@@ -148,6 +150,7 @@ export const CategorizedAutocompleteChecklist: React.FC<Props> = ({
                 value={searchTerm}
                 modifyValue={setSearchTerm}
                 label="Filtrer par extension"
+                placeholder={cardSetFilter?.filter(e => e.status).map((e) => e.name).join(', ')}
                 width={width}
                 preset="filter"
                 height={40}

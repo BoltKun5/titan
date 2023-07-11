@@ -114,16 +114,17 @@
   }
 
   &-rarityContainer {
-    width: 20px;
+    width: 30px;
     margin: 5px;
-    height: 20px;
+    height: 30px;
     padding: 5px;
     background: $white;
     border-radius: 10000px;
     cursor: pointer;
+    box-sizing: border-box;
 
     &.selected {
-      background: $secondary;
+      border: 2px solid $primary;
     }
   }
 
@@ -458,7 +459,7 @@
       }
 
       &-rarityContainer {
-        min-width: 20px;
+        min-width: 30px;
       }
     }
   }

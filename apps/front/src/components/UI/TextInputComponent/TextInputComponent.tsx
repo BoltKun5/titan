@@ -5,7 +5,7 @@ import { Info } from "@mui/icons-material";
 import { Tooltip } from "@mui/material";
 
 export const TextInputComponent: React.FC<TextInputComponentType> = (
-  { value = null, modifyValue = () => { }, label = "", id = "", type = 'text', onKeyUpCallback = () => { }, onKeyDownCallback = () => { }, width = 250, height = 59, labelAsPlaceholder = false, preset = '', tooltip }) => {
+  { value = null, modifyValue = () => { }, label = "", id = "", type = 'text', onKeyUpCallback = () => { }, onKeyDownCallback = () => { }, width = 250, height = 59, labelAsPlaceholder = false, preset = '', tooltip, placeholder = '' }) => {
   return (
     <div className={"TextInputComponent" + (' ' + preset)}>
 
@@ -21,7 +21,7 @@ export const TextInputComponent: React.FC<TextInputComponentType> = (
             id={id} onKeyDown={onKeyDownCallback}
             onKeyUp={onKeyUpCallback}
             style={{ width, height, boxSizing: 'border-box' }}
-            placeholder={labelAsPlaceholder ? label : ''}
+            placeholder={labelAsPlaceholder ? label : placeholder}
           />
         ) : (
           <input
@@ -32,7 +32,7 @@ export const TextInputComponent: React.FC<TextInputComponentType> = (
             onKeyDown={onKeyDownCallback}
             onKeyUp={onKeyUpCallback}
             style={{ width, height, boxSizing: 'border-box' }}
-            placeholder={labelAsPlaceholder ? label : ''}
+            placeholder={labelAsPlaceholder ? label : placeholder}
           />
         )
       }
