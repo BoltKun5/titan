@@ -11,6 +11,7 @@ import {
   BelongsTo,
   ForeignKey,
   HasMany,
+  Index,
 } from 'sequelize-typescript';
 import { v4 as uuidv4 } from 'uuid';
 import { CustomModel } from '../custom/custom-model.model';
@@ -38,6 +39,7 @@ export class CardSet extends CustomModel<ICardSet, CreationModelCardSet> impleme
   @Column
   id: string;
 
+  @Index
   @Column({
     type: DataType.STRING,
   })
@@ -56,6 +58,7 @@ export class CardSet extends CustomModel<ICardSet, CreationModelCardSet> impleme
   })
   releaseDate: Date;
 
+  @Index
   @Column({
     type: DataType.STRING,
   })
@@ -71,6 +74,7 @@ export class CardSet extends CustomModel<ICardSet, CreationModelCardSet> impleme
   })
   logoId: string;
 
+  @Index
   @ForeignKey(() => CardSerie)
   @Column({
     type: DataType.STRING,

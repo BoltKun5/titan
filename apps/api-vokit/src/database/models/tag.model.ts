@@ -13,6 +13,7 @@ import {
   BelongsTo,
   ForeignKey,
   BelongsToMany,
+  Index,
 } from 'sequelize-typescript';
 import { v4 as uuidv4 } from 'uuid';
 import { CustomModel } from '../custom/custom-model.model';
@@ -44,11 +45,13 @@ export class Tag extends CustomModel<ITag, CreationModelTag> implements ModelTag
   })
   type: TagTypeEnum;
 
+  @Index
   @Column({
     type: DataType.STRING,
   })
   name: string;
 
+  @Index
   @ForeignKey(() => User)
   @Column({
     type: DataType.STRING,

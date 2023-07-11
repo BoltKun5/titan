@@ -8,6 +8,7 @@ import {
   Scopes,
   Default,
   ForeignKey,
+  Index,
 } from 'sequelize-typescript';
 import { v4 as uuidv4 } from 'uuid';
 import { CustomModel } from '../custom/custom-model.model';
@@ -40,11 +41,13 @@ export class CardTag
   @Column
   id: string;
 
+  @Index
   @ForeignKey(() => Tag)
   @PrimaryKey
   @Column
   tagId: string;
 
+  @Index
   @ForeignKey(() => UserCardPossession)
   @PrimaryKey
   @Column

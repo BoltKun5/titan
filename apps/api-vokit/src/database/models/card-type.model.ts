@@ -10,6 +10,7 @@ import {
   Default,
   ForeignKey,
   BelongsTo,
+  Index,
 } from 'sequelize-typescript';
 import { v4 as uuidv4 } from 'uuid';
 import { CustomModel } from '../custom/custom-model.model';
@@ -38,6 +39,7 @@ export class CardType
   @Column
   id: string;
 
+  @Index
   @ForeignKey(() => Card)
   @Column({
     type: DataType.STRING,

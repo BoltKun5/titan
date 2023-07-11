@@ -10,6 +10,7 @@ import {
   ForeignKey,
   BelongsTo,
   HasMany,
+  Index,
 } from 'sequelize-typescript';
 import { Overwrite, ICard, CardRarityEnum, CardCategoryEnum } from 'vokit_core';
 import { WithRequired } from '../../core';
@@ -42,11 +43,13 @@ export class Card extends CustomModel<ICard, CreationModelCard> implements Model
   @Column
   id: string;
 
+  @Index
   @Column({
     type: DataType.STRING,
   })
   name: string;
 
+  @Index
   @Column({
     type: DataType.INTEGER,
   })
@@ -57,6 +60,7 @@ export class Card extends CustomModel<ICard, CreationModelCard> implements Model
   })
   category: CardCategoryEnum;
 
+  @Index
   @ForeignKey(() => CardSet)
   @Column({
     type: DataType.STRING,
@@ -73,6 +77,7 @@ export class Card extends CustomModel<ICard, CreationModelCard> implements Model
   })
   canBeReverse: boolean;
 
+  @Index
   @Column({
     type: DataType.STRING,
   })

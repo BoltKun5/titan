@@ -8,6 +8,7 @@ import {
   Scopes,
   Default,
   AllowNull,
+  Index,
 } from 'sequelize-typescript';
 import { v4 as uuidv4 } from 'uuid';
 import { IPreSignedUrl, Overwrite, PreSignedTypeEnum } from 'vokit_core';
@@ -42,6 +43,7 @@ export class PreSignedUrl
   })
   type: PreSignedTypeEnum;
 
+  @Index
   @Column({
     type: DataType.STRING,
   })

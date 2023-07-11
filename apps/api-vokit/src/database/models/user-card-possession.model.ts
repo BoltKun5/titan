@@ -12,6 +12,7 @@ import {
   ForeignKey,
   BelongsTo,
   BelongsToMany,
+  Index,
 } from 'sequelize-typescript';
 import { v4 as uuidv4 } from 'uuid';
 import { CustomModel } from '../custom/custom-model.model';
@@ -56,6 +57,7 @@ export class UserCardPossession
   @Column
   id: string;
 
+  @Index
   @ForeignKey(() => User)
   @Column({
     type: DataType.STRING,
@@ -65,6 +67,7 @@ export class UserCardPossession
   @BelongsTo(() => User)
   user: User;
 
+  @Index
   @ForeignKey(() => Card)
   @Column({
     type: DataType.STRING,
@@ -84,6 +87,7 @@ export class UserCardPossession
   })
   grade: CardPossessionGradeCompanyEnum;
 
+  @Index
   @ForeignKey(() => CardAdditionalPrinting)
   @Column({
     type: DataType.STRING,
