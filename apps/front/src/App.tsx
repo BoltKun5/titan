@@ -19,7 +19,6 @@ import { Loader } from "./components/UI/Loader/LoaderComponent";
 import {
   ICard,
   PaginationData,
-  CardTypeEnum,
   ICardSerie,
   ITag,
   ICardSet,
@@ -29,6 +28,7 @@ import {
 import { Profile } from "./pages/Profile/Profile";
 import { PreSigned } from "./pages/PreSigned/PreSigned";
 import { RenewPassword } from "./pages/RenewPassword/RenewPassword";
+import { useSnackbar } from "notistack";
 
 export const App: React.FC = () => {
   // Données de la base
@@ -95,9 +95,15 @@ export const App: React.FC = () => {
     }
   }, []);
 
+  const { enqueueSnackbar } = useSnackbar();
+
   const fetchSeries = useCallback(async () => {
-    const response = await api.get(`/series/all-series`);
-    setSeries(response.data.data);
+    try {
+      const response = await api.get(`/series/all-series`);
+      setSeries(response.data.data);
+    } catch (e) {
+      enqueueSnackbar('Impossible de se connecter au serveur. Il est peut être innaccessible.', { autoHideDuration: null })
+    }
   }, []);
 
   const resetAllFilters = () => {
@@ -240,9 +246,7 @@ export const App: React.FC = () => {
           </div>
         </div>
       ) : (
-        <div>
-          <Loader />
-        </div>
+        <Loader />
       )}
     </>
   );

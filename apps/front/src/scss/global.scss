@@ -131,6 +131,31 @@ body {
   }
 }
 
+.SnackbarItem-contentRoot {
+  display: flex !important;
+  flex-direction: row !important;
+  flex-wrap: nowrap !important;
+  border-radius: 0 !important;
+  clip-path: clipPath(10px);
+  background-color: $primary !important;
+  position: relative;
+
+  &>* {
+    z-index: 1;
+  }
+
+  &::after {
+    content: "";
+    width: calc(100% - 2px);
+    left: 1px;
+    height: calc(100% - 2px);
+    top: 1px;
+    clip-path: clipPath(10px);
+    position: absolute;
+    background-color: $primary-bg;
+  }
+}
+
 @keyframes reverseShimmer {
   0% {
     top: -200%;

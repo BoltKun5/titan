@@ -11,19 +11,18 @@
     width: 40px;
     height: 40px;
     margin: auto;
+    display: flex;
 
     &::after {
       transform-origin: center;
+      display: flex;
       content: "";
+      margin: auto;
       width: 25px;
       height: 25px;
-      background: white;
-      border-radius: 100%;
-      animation: loaderAnimation infinite 0.5s alternate;
-      margin: auto;
-      position: absolute;
-      top: 0;
-      left: 0;
+      background: $white;
+      animation: loaderAnimation infinite 0.5s alternate forwards;
+      clip-path: clipPath(6px);
     }
   }
 

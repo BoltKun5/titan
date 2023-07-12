@@ -7,10 +7,8 @@ import CloseIcon from "@mui/icons-material/Close";
 export const DismissNotification: React.FC<{ id: SnackbarKey }> = ({ id }) => {
   const { closeSnackbar } = useSnackbar();
   return (
-    <Fragment>
-      <div onClick={() => closeSnackbar(id)}>
-        <CloseIcon />
-      </div>
-    </Fragment>
+    <div onClick={() => closeSnackbar(id)} style={{ alignItems: 'center', display: 'flex' }}>
+      <CloseIcon style={{ cursor: 'pointer' }} />
+    </div>
   );
 };
