@@ -2,32 +2,6 @@ import { StoreType } from "../../local-core/context";
 import React from "react";
 
 export default React.createContext<StoreType>({
-  series: null,
-  cardSetFilter: null,
-  setCardSetFilter: () => {},
-  nameFilter: "",
-  setNameFilter: () => {},
-  resetAllFilters: () => {},
-  rarityFilter: [],
-  setRarityFilter: () => {},
-  order: "",
-  setOrder: () => {},
-  collectionMode: false,
-  setCollectionMode: () => {},
-  separateReverse: false,
-  setSeparateReverse: () => {},
-  possessionFilter: null,
-  setPossessionFilter: () => {},
-  cards: [],
-  setCards: () => {},
-  showOptionCards: false,
-  setShowOptionCards: () => {},
-  page: 1,
-  setPage: () => {},
-  pagination: null,
-  setPagination: () => {},
-  massInput: false,
-  setMassInput: () => {},
   user: {
     id: "",
     role: 0,
@@ -36,8 +10,4 @@ export default React.createContext<StoreType>({
   setUser: () => {},
   notifications: [],
   setNotifications: () => {},
-  tags: null,
-  setTags: () => {},
-  listDisplay: false,
-  setListDisplay: () => {}
 });

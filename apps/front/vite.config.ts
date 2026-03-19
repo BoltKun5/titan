@@ -11,14 +11,14 @@ export default defineConfig({
   plugins: [react()],
   optimizeDeps: {
     include: [
-      './../../packages/vokit_core/src',
-      './../../packages/vokit_core/dist',
+      './../../packages/titan_core/src',
+      './../../packages/titan_core/dist',
     ],
   },
   build: {
     outDir: './dist',
     commonjsOptions: {
-      include: [/vokit_core/, /node_modules/],
+      include: [/titan_core/, /node_modules/],
     },
   },
 });

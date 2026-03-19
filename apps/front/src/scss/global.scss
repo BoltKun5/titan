@@ -115,23 +115,7 @@ body {
   }
 }
 
-.reverseShining {
-  overflow: hidden;
-  position: relative;
 
-  &::after {
-    content: "";
-    width: 100%;
-    left: -50%;
-    height: 200%;
-    top: 0;
-    position: absolute;
-    background: linear-gradient(to right, transparent 20%, rgb(224, 219, 140) 50%, transparent 70%);
-    animation: reverseShimmer 2s infinite linear;
-    transition: 0.5s;
-    transform: rotateZ(-45deg);
-  }
-}
 
 .SnackbarItem-contentRoot {
   display: flex !important;
@@ -158,22 +142,7 @@ body {
   }
 }
 
-@keyframes reverseShimmer {
-  0% {
-    top: -200%;
-    left: 80%;
-  }
 
-  20% {
-    top: 10%;
-    left: -70%;
-  }
-
-  100% {
-    top: 10%;
-    left: -70%;
-  }
-}
 
 @media (max-width: 600px) {
   body *::-webkit-scrollbar {

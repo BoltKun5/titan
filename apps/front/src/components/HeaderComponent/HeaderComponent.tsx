@@ -60,19 +60,9 @@ export const HeaderComponent: React.FC = () => {
           >
             <Link to={'/'} onClick={() => setIsMobileMenuOpen(false)}>
               <div className={getButtonClassName('/')}>
-                <img src="/assets/logo.png" className="Logo"></img>
-                CARTES
+                ACCUEIL
               </div>
             </Link>
-            <Link to={'/stats'} onClick={() => setIsMobileMenuOpen(false)}>
-              <div className={getButtonClassName('/stats')}>STATISTIQUES</div>
-            </Link>
-            <Link to={'/opening'} onClick={() => setIsMobileMenuOpen(false)}>
-              <div className={getButtonClassName('/opening')}>OUVERTURE</div>
-            </Link>
-            {/* <Link to={'/historic'}>
-          <div className={getButtonClassName('/historic')}>HISTORIQUE</div>
-        </Link> */}
           </nav>
           <div className="HeaderComponent-misc">
             <div
@@ -85,11 +75,7 @@ export const HeaderComponent: React.FC = () => {
               }}
             >
               <div className="HeaderComponent-profilePicture">
-                <img
-                  src={`/assets/profile_picture/${
-                    user?.options?.profilePicture ?? 1
-                  }.png`}
-                />
+                {user?.shownName?.charAt(0)?.toUpperCase() ?? 'U'}
               </div>
             </div>
           </div>
@@ -105,17 +91,6 @@ export const HeaderComponent: React.FC = () => {
                 }}
               >
                 <div className="HeaderComponent-profileOptions">
-                  <Link
-                    to={'/profile'}
-                    onClick={() => {
-                      setIsProfileDropdownOpen(false);
-                      setListenToClose(false);
-                    }}
-                  >
-                    <div className="HeaderComponent-profileButtons">
-                      Mon profil
-                    </div>
-                  </Link>
                   <div
                     className="HeaderComponent-profileButtons"
                     onClick={() => disconnect()}
@@ -131,7 +106,7 @@ export const HeaderComponent: React.FC = () => {
         <div className="HeaderComponent-disconnectedHeader">
           <div className="HeaderComponent-fullLogo">
             <Link to={'/'}>
-              <img src={'/assets/logo_full_big.png'} />
+              <span className="HeaderComponent-title">Titan</span>
             </Link>
           </div>
           <div className="HeaderComponent-loginLinks">

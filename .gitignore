@@ -1,9 +1,6 @@
 api/src/data
-front/src/assets/cards/*
-front/src/assets/setIcons/*
-front/src/assets/setLogos/*
 .idea
-api-vokit/img
+api-titan/img
 **/node_modules/
 logs
 */.env.production

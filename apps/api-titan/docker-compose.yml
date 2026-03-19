@@ -1,0 +1,18 @@
+version: '3.3'
+
+services:
+  postgres:
+    restart: unless-stopped
+    image: postgres:latest
+    container_name: "postgres"
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: root
+      POSTGRES_PASSWORD: WWxX26SVWhr29
+      POSTGRES_DB: titan
+      PGDATA: /var/lib/postgresql/data
+    volumes:
+      - data-postgres:/var/lib/postgresql/data
+volumes:
+  data-postgres:

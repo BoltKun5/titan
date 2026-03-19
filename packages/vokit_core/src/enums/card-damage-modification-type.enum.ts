@@ -1,4 +1,0 @@
-export enum CardDamageModificationType {
-  'weakness',
-  'resistance',
-}

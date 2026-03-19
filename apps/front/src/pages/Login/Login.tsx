@@ -9,7 +9,7 @@ import {
   ISigninAuthBody,
   ISigninAuthResponse,
   HttpErrorCode,
-} from "vokit_core";
+} from "titan_core";
 import StoreContext from "../../hook/contexts/StoreContext";
 import { api } from "../../axios";
 import { useSnackbar } from "notistack";
