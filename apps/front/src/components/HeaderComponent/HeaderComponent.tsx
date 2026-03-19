@@ -1,31 +1,24 @@
-import React, { useContext, useState } from "react";
-import { Link, useLocation, useNavigate } from "react-router-dom";
-import StoreContext from "../../hook/contexts/StoreContext";
-import "./style.scss";
-import { UserRoleEnum } from "vokit_core";
-import { Close, Menu } from "@mui/icons-material";
-import { ClickAwayListener, Grow, Slide } from "@mui/material";
-import { isUnloggedPage, isUserConnected } from "../../general.utils";
-import { useSnackbar } from "notistack";
-import { ButtonComponent } from "../UI/Button/ButtonComponent";
+import React, { useContext, useState } from 'react';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
+import StoreContext from '../../hook/contexts/StoreContext';
+import './style.scss';
+import { Close, Menu } from '@mui/icons-material';
+import { ClickAwayListener, Grow } from '@mui/material';
+import { isUserConnected } from '../../general.utils';
+import { ButtonComponent } from '../UI/Button/ButtonComponent';
 
-export const HeaderComponent: React.FC<{
-  forceRender: boolean;
-  setForceRender: Function;
-}> = ({ forceRender, setForceRender }) => {
+export const HeaderComponent: React.FC = () => {
   const [isProfileDropdownOpen, setIsProfileDropdownOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [listenToClose, setListenToClose] = useState(false);
 
   const navigate = useNavigate();
-  const { enqueueSnackbar } = useSnackbar();
 
   const disconnect = () => {
-    localStorage.removeItem("token");
-    localStorage.removeItem("user");
-    setUser({ id: "" });
-    navigate("/");
-    // setForceRender(!forceRender);
+    localStorage.removeItem('token');
+    localStorage.removeItem('user');
+    setUser({ id: '' });
+    navigate('/');
   };
 
   const { user, setUser } = useContext(StoreContext);
@@ -34,12 +27,10 @@ export const HeaderComponent: React.FC<{
 
   const getButtonClassName = (path: string) => {
     return (
-      "HeaderComponent-navButton" +
-      (location.pathname === path ? " HeaderComponent-selectedButton" : "")
+      'HeaderComponent-navButton' +
+      (location.pathname === path ? ' HeaderComponent-selectedButton' : '')
     );
   };
-
-
 
   return (
     <header className="HeaderComponent">
@@ -64,20 +55,20 @@ export const HeaderComponent: React.FC<{
           </div>
           <nav
             className={
-              "HeaderComponent-navButtons " + (isMobileMenuOpen ? "isOpen" : "")
+              'HeaderComponent-navButtons ' + (isMobileMenuOpen ? 'isOpen' : '')
             }
           >
-            <Link to={"/"} onClick={() => setIsMobileMenuOpen(false)}>
-              <div className={getButtonClassName("/")}>
+            <Link to={'/'} onClick={() => setIsMobileMenuOpen(false)}>
+              <div className={getButtonClassName('/')}>
                 <img src="/assets/logo.png" className="Logo"></img>
                 CARTES
               </div>
             </Link>
-            <Link to={"/stats"} onClick={() => setIsMobileMenuOpen(false)}>
-              <div className={getButtonClassName("/stats")}>STATISTIQUES</div>
+            <Link to={'/stats'} onClick={() => setIsMobileMenuOpen(false)}>
+              <div className={getButtonClassName('/stats')}>STATISTIQUES</div>
             </Link>
-            <Link to={"/opening"} onClick={() => setIsMobileMenuOpen(false)}>
-              <div className={getButtonClassName("/opening")}>OUVERTURE</div>
+            <Link to={'/opening'} onClick={() => setIsMobileMenuOpen(false)}>
+              <div className={getButtonClassName('/opening')}>OUVERTURE</div>
             </Link>
             {/* <Link to={'/historic'}>
           <div className={getButtonClassName('/historic')}>HISTORIQUE</div>
@@ -87,14 +78,17 @@ export const HeaderComponent: React.FC<{
             <div
               className="HeaderComponent-profile"
               onClick={() => {
-                setIsProfileDropdownOpen(true); setTimeout(() => {
-                  setListenToClose(true)
-                }, 500)
+                setIsProfileDropdownOpen(true);
+                setTimeout(() => {
+                  setListenToClose(true);
+                }, 500);
               }}
             >
               <div className="HeaderComponent-profilePicture">
                 <img
-                  src={`/assets/profile_picture/${user?.options?.profilePicture ?? 1}.png`}
+                  src={`/assets/profile_picture/${
+                    user?.options?.profilePicture ?? 1
+                  }.png`}
                 />
               </div>
             </div>
@@ -102,12 +96,23 @@ export const HeaderComponent: React.FC<{
 
           <Grow in={isProfileDropdownOpen}>
             <div>
-              <ClickAwayListener onClickAway={() => { if (listenToClose) { setIsProfileDropdownOpen(false); setListenToClose(false) } }}>
+              <ClickAwayListener
+                onClickAway={() => {
+                  if (listenToClose) {
+                    setIsProfileDropdownOpen(false);
+                    setListenToClose(false);
+                  }
+                }}
+              >
                 <div className="HeaderComponent-profileOptions">
-                  <Link to={'/profile'} onClick={() => { setIsProfileDropdownOpen(false); setListenToClose(false) }}>
-                    <div
-                      className="HeaderComponent-profileButtons"
-                    >
+                  <Link
+                    to={'/profile'}
+                    onClick={() => {
+                      setIsProfileDropdownOpen(false);
+                      setListenToClose(false);
+                    }}
+                  >
+                    <div className="HeaderComponent-profileButtons">
                       Mon profil
                     </div>
                   </Link>
@@ -126,15 +131,31 @@ export const HeaderComponent: React.FC<{
         <div className="HeaderComponent-disconnectedHeader">
           <div className="HeaderComponent-fullLogo">
             <Link to={'/'}>
-              <img src={"/assets/logo_full_big.png"} />
+              <img src={'/assets/logo_full_big.png'} />
             </Link>
           </div>
           <div className="HeaderComponent-loginLinks">
             <Link to="/login">
-              <ButtonComponent label={"Se connecter"} weight={'normal'} fontSize={15} size={120} height={40} preset='secondary' hoverOffset={3} clipPath={10} />
+              <ButtonComponent
+                label={'Se connecter'}
+                weight={'normal'}
+                fontSize={15}
+                size={105}
+                height={35}
+                hoverOffset={3}
+                clipPath={6}
+              />
             </Link>
             <Link to="/signup">
-              <ButtonComponent label={"S'inscrire"} weight={'normal'} fontSize={15} size={120} height={40} preset='secondary' color="secondary" hoverOffset={3} clipPath={10} />
+              <ButtonComponent
+                label={"S'inscrire"}
+                weight={'normal'}
+                fontSize={15}
+                size={100}
+                height={35}
+                hoverOffset={3}
+                clipPath={6}
+              />
             </Link>
           </div>
         </div>

@@ -1,72 +1,72 @@
-import { useContext } from "react";
-import { ICardSetFilter, ICardRarityFilter } from "./local-core/interface";
-import { CardRarityEnum, ICard, ICardSet } from "vokit_core";
-import StoreContext from "./hook/contexts/StoreContext";
+import { useContext } from 'react';
+import { ICardSetFilter, ICardRarityFilter } from './local-core/interface';
+import { CardRarityEnum, ICard, ICardSet } from 'vokit_core';
+import StoreContext from './hook/contexts/StoreContext';
 
 export const initialRarityFilter = [
   {
-    rarity: "Common",
+    rarity: 'Common',
     value: false,
   },
   {
-    rarity: "Uncommon",
+    rarity: 'Uncommon',
     value: false,
   },
   {
-    rarity: "Rare",
+    rarity: 'Rare',
     value: false,
   },
   {
-    rarity: "Holo",
+    rarity: 'Holo',
     value: false,
   },
   {
-    rarity: "Ultra-rare",
+    rarity: 'Ultra-rare',
     value: false,
   },
   {
-    rarity: "Secret Rare",
+    rarity: 'Secret Rare',
     value: false,
   },
   {
-    rarity: "None",
+    rarity: 'None',
     value: false,
   },
   {
-    rarity: "Amazing",
+    rarity: 'Amazing',
     value: false,
   },
   {
-    rarity: "Double Rare",
+    rarity: 'Double Rare',
     value: false,
   },
   {
-    rarity: "Ultra Rare",
+    rarity: 'Ultra Rare',
     value: false,
   },
   {
-    rarity: "Illustration Rare",
+    rarity: 'Illustration Rare',
     value: false,
   },
   {
-    rarity: "Illustration Spéciale Rare",
+    rarity: 'Illustration Spéciale Rare',
     value: false,
   },
   {
-    rarity: "Hyper Rare",
+    rarity: 'Hyper Rare',
     value: false,
   },
 ];
 
 export const frontRarity: frontRarityType = {
-  Common: "Commune",
-  Uncommon: "Peu commune",
-  Rare: "Rare",
-  Holo: "Holographique",
-  "Secret Rare": "Secrète",
-  "Ultra Rare": "Ultra Rare",
-  None: "Promotionnelle",
-  Amazing: "Magnifique",
+  Common: 'Commune',
+  Uncommon: 'Peu commune',
+  Rare: 'Rare',
+  Holo: 'Holographique',
+  'Secret Rare': 'Secrète',
+  'Ultra Rare': 'Ultra Rare',
+  None: 'Promotionnelle',
+  Amazing: 'Magnifique',
   'Ultra-rare': 'Ultra-rare',
   'Double Rare': 'Double Rare',
   'Illustration Rare': 'Illustration Rare',
@@ -113,44 +113,47 @@ export const initialCardList = [
 
 export type CardListElement = {
   card: ICard | null;
-  type?: "normal" | "reverse";
+  type?: 'normal' | 'reverse';
   error?: string;
 };
 
-export const getImageSource = (
-  card: ICard,
-  highQuality: boolean = false
-): string => {
-  if (highQuality)
-    return `${import.meta.env.VITE_ASSETS_URL}/user-application-file/file/download/public-access/${card.imageId}`;
-  return `${import.meta.env.VITE_ASSETS_URL}/user-application-file-thumbnail/file-thumbnail/${card.thumbnailId}/download`
+export const getImageSource = (card: ICard, highQuality = false): string => {
+  if (highQuality) {
+    return `${
+      import.meta.env.VITE_ASSETS_URL
+    }/application-file/file/download/public-access/${card.imageId}`;
+  }
+  return `${
+    import.meta.env.VITE_ASSETS_URL
+  }/application-file-thumbnail/file-thumbnail/${card.thumbnailId}/download`;
 };
 
 export const getImageFromSeparatedInfos = (
   card: { name: string; localId: string },
-  cardSet: ICardSet
+  cardSet: ICardSet,
 ): string => {
   const isValid = !isNaN(Number(card.localId));
-  if (isValid)
-    return "/src/assets/cards/" + cardSet.code + "/" + card.localId + ".jpg";
-  return "/src/assets/cards/" + cardSet.code + "/" + card.localId + ".jpg";
+  if (isValid) {
+    return '/src/assets/cards/' + cardSet.code + '/' + card.localId + '.jpg';
+  }
+  return '/src/assets/cards/' + cardSet.code + '/' + card.localId + '.jpg';
 };
 
 export const getFilterQuery = (
-  isStats: boolean = false,
+  isStats = false,
   cardSetFilter: ICardSetFilter[],
   nameFilter: string,
   page: number,
   rarityFilter: ICardRarityFilter[],
   possessionFilter:
-    | "partial_owned"
-    | "partial_unowned"
-    | "fully_owned"
-    | "multiple_owned"
-    | "unowned"
+    | 'partial_owned'
+    | 'partial_unowned'
+    | 'fully_owned'
+    | 'multiple_owned'
+    | 'unowned'
     | null,
-  order: string = "",
-  forcedId: string | null = null
+  order = '',
+  forcedId: string | null = null,
 ) => {
   const setFilter = cardSetFilter.filter((setFilter) => setFilter.status);
   const params: Record<string, any> = {};
@@ -162,13 +165,13 @@ export const getFilterQuery = (
     });
   }
 
-  if (nameFilter !== "") {
+  if (nameFilter !== '') {
     params.namefilter = nameFilter;
   }
 
   if (!isStats) {
-    if (order === "" || order === null) {
-      params.order = "default";
+    if (order === '' || order === null) {
+      params.order = 'default';
     } else {
       params.order = order;
     }
@@ -187,25 +190,35 @@ export const getFilterQuery = (
     rarityFilter.forEach((filter) => {
       if (filter.value) {
         params.rarity.push(
-          CardRarityEnum[filter.rarity as keyof typeof CardRarityEnum]
+          CardRarityEnum[filter.rarity as keyof typeof CardRarityEnum],
         );
       }
     });
   }
 
-  if (isStats) params.stats = true;
+  if (isStats) {
+    params.stats = true;
+  }
 
-  if (forcedId) params.userId = forcedId;
+  if (forcedId) {
+    params.userId = forcedId;
+  }
 
   return params;
 };
 
 export const isUserConnected = () => {
   const { user } = useContext(StoreContext);
-  return user?.id !== "";
+  return user?.id !== '';
 };
 
 export const isUnloggedPage = () => {
-  const unloggedPaged = ["collection", "login", "signup", "pre-signed", "renew-password"];
-  return unloggedPaged.includes(window.location.pathname.split("/")[1]);
+  const unloggedPaged = [
+    'collection',
+    'login',
+    'signup',
+    'pre-signed',
+    'renew-password',
+  ];
+  return unloggedPaged.includes(window.location.pathname.split('/')[1]);
 };

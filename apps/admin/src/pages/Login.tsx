@@ -16,7 +16,7 @@ export const Login: React.FC = () => {
   const handleSubmit = async (event: React.SyntheticEvent) => {
     event.preventDefault();
     const result = {
-      username: username,
+      mail: username,
       password: password,
     };
 

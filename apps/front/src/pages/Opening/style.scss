@@ -49,6 +49,7 @@
     &.swipping2 {
       display: flex;
       background: none;
+      height: calc(100% - 40px);
     }
   }
 
@@ -60,7 +61,7 @@
     margin-bottom: 5px;
     display: grid;
     gap: 10px 0;
-    min-height: 200px;
+    min-height: 100px;
     grid-template-columns: repeat(auto-fit, minmax(325px, 1fr));
     padding: 20px 10px;
   }
@@ -83,19 +84,19 @@
     }
 
     &:not(.selected):hover {
-      box-shadow: inset $primary 0 0 20px 1px;
       cursor: pointer;
+      border: 1px solid $gray;
     }
 
     &.selected {
-      box-shadow: inset $primary 0 0 20px 10px;
-
+      border: 1px solid $gray;
     }
   }
 
   &-setChoice {
-    flex: 1 1 auto;
     min-height: 100%;
+    max-height: 100%;
+    overflow: auto hidden;
     color: $white;
     display: flex;
     flex-direction: column;
@@ -187,19 +188,23 @@
     justify-content: center;
     align-items: center;
     padding-left: 10px !important;
+    min-height: fit-content;
 
     &Input {
       display: flex;
       width: fit-content;
       width: 100%;
+      height: 100%;
       justify-content: center;
       padding: 0 10px;
+      flex: 1 1 auto;
     }
 
     &-features {
       display: flex;
       flex-direction: column;
       background-color: $primary-bg;
+      flex: 0 1 auto;
     }
 
     &-validate {
@@ -255,6 +260,7 @@
 
     &Others {
       flex: 1 1 auto;
+      height: calc(100% - 10px);
       overflow: hidden;
     }
 
@@ -297,12 +303,14 @@
   &-preselected {
     display: flex;
     margin-top: 10px;
+    flex: 1 1 auto;
 
     &ImgContainer {
-      height: 350px;
-      width: 251px;
+      aspect-ratio: 251 / 350;
       margin: auto;
       border: 1px dashed $primary;
+      height: 100%;
+      max-height: 350px;
     }
 
     & img {
@@ -324,10 +332,11 @@
     grid-template-columns: repeat(auto-fit, minmax(69px, 1fr));
 
     &Container {
-      flex: 1 1 auto;
       border: 1px solid $primary;
-      height: 500px;
+      box-sizing: border-box;
+      height: 100%;
       overflow-y: auto;
+      overflow-x: hidden;
       margin-left: 20px;
     }
   }
@@ -421,6 +430,7 @@
 
     .OpeningPage {
       &-tabsContainer {
+        overflow: hidden;
         flex: 1 1 auto;
         display: flex;
         flex-direction: column;
@@ -478,12 +488,14 @@
   .step2 {
     .OpeningPage {
       &-boosterContent {
-        flex-direction: column;
+        flex-wrap: wrap;
       }
 
       &-boosterCards {
         max-width: 100%;
+        width: 100%;
       }
+
     }
   }
 
@@ -498,7 +510,7 @@
     }
 
     &-setList {
-      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
       margin-top: 5px;
     }
 

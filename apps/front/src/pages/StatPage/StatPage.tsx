@@ -1,5 +1,5 @@
-import "./style.scss";
-import { frontRarity, getFilterQuery } from "../../general.utils";
+import './style.scss';
+import { frontRarity, getFilterQuery } from '../../general.utils';
 import {
   ResponsiveContainer,
   BarChart,
@@ -7,15 +7,16 @@ import {
   Bar,
   YAxis,
   Tooltip,
-} from "recharts";
-import StoreContext from "../../hook/contexts/StoreContext";
-import { StatCardComponent } from "../../components/StatCardComponent/StatCardComponent";
-import { CardManagerFilterComponent } from "../../components/CardManagerFilterComponent/CardManagerFilterComponent";
-import { SwipeCheckboxComponent } from "../../components/UI/SwipeCheckboxComponent/SwipeCheckboxComponent";
-import { useState, useContext, useCallback, useEffect } from "react";
-import { useFetchData } from "../../hook/api/cards";
-import { CardRarityEnum, StatisticsDataType } from "vokit_core";
-import useWindowDimensions from "../../hook/utils/useWindowDimensions";
+} from 'recharts';
+import StoreContext from '../../hook/contexts/StoreContext';
+import { StatCardComponent } from '../../components/StatCardComponent/StatCardComponent';
+import { CardManagerFilterComponent } from '../../components/CardManagerFilterComponent/CardManagerFilterComponent';
+import { SwipeCheckboxComponent } from '../../components/UI/SwipeCheckboxComponent/SwipeCheckboxComponent';
+import { useState, useContext, useCallback, useEffect } from 'react';
+import { useFetchData } from '../../hook/api/cards';
+import { StatisticsDataType } from 'vokit_core';
+import useWindowDimensions from '../../hook/utils/useWindowDimensions';
+import { Loader } from '../../components/UI/Loader/LoaderComponent';
 
 export const StatPage: React.FC = () => {
   const [stats, setStats] = useState<StatisticsDataType | null>(null);
@@ -29,22 +30,24 @@ export const StatPage: React.FC = () => {
     page,
   } = useContext(StoreContext);
   const { width } = useWindowDimensions();
-  const { isLoading, fetch } = useFetchData();
-  const [chartMode, setChartMode] = useState<"distinct" | "total" | string>(
-    "total"
+  const { fetch } = useFetchData();
+  const [chartMode, setChartMode] = useState<'distinct' | 'total' | string>(
+    'total',
   );
 
   const fetchStats = useCallback(async () => {
-    if (!cardSetFilter) return;
+    if (!cardSetFilter) {
+      return;
+    }
     const params = getFilterQuery(
       true,
       cardSetFilter,
       nameFilter,
       page,
       rarityFilter,
-      possessionFilter
+      possessionFilter,
     );
-    const response = await fetch("/card/stats", params);
+    const response = await fetch('/card/stats', params);
     setStats((response as any).data.stats);
   }, [
     cardSetFilter,
@@ -67,26 +70,34 @@ export const StatPage: React.FC = () => {
   ]);
 
   const data = stats;
-  if (!data) return <></>;
+  if (!data) {
+    return (
+      <>
+        <Loader />
+      </>
+    );
+  }
 
-  let localChartData: any[] = [];
-  let localChartDistinctData: any[] = [];
-  let localChartRadialData: any[] = [];
+  const localChartData: any[] = [];
+  const localChartDistinctData: any[] = [];
+  const localChartRadialData: any[] = [];
 
-  for (let [key, value] of Object.entries(data.countBySet)) {
-    if (value.totalNormal !== 0 || value.totalReverse !== 0)
+  for (const [key, value] of Object.entries(data.countBySet)) {
+    if (value.totalNormal !== 0 || value.totalReverse !== 0) {
       localChartData.push({
         Reverse: value.totalReverse,
         Normal: value.totalNormal,
         name: cardSetFilter?.find((filter) => filter.code === key)?.name,
       });
+    }
 
-    if (value.distinctReverse !== 0 || value.distinctNormal !== 0)
+    if (value.distinctReverse !== 0 || value.distinctNormal !== 0) {
       localChartDistinctData.push({
         Reverse: value.distinctReverse,
         Normal: value.distinctNormal,
         name: cardSetFilter?.find((filter) => filter.code === key)?.name,
       });
+    }
 
     if (value.distinctOwned !== 0 && value.distinctPossible !== 0) {
       localChartRadialData.push({
@@ -112,12 +123,12 @@ export const StatPage: React.FC = () => {
                     callback={setChartMode}
                     elements={[
                       {
-                        value: "total",
-                        name: "Toutes les cartes",
+                        value: 'total',
+                        name: 'Toutes les cartes',
                       },
                       {
-                        value: "distinct",
-                        name: "Cartes distinctes",
+                        value: 'distinct',
+                        name: 'Cartes distinctes',
                       },
                     ]}
                     value={chartMode}
@@ -125,72 +136,81 @@ export const StatPage: React.FC = () => {
                   />
                 </div>
                 <div className="StatPage-chart">
-                  {localChartRadialData.length == 0 && <div className='StatPage-noCard'>Aucune carte possédée !</div>}
+                  {localChartRadialData.length == 0 && (
+                    <div className="StatPage-noCard">
+                      Aucune carte possédée !
+                    </div>
+                  )}
 
-                  {localChartRadialData.length == 0 && <ResponsiveContainer
-                    width="100%"
-                    height={
-                      (chartMode === "total"
-                        ? localChartData.length
-                        : localChartDistinctData.length) *
-                      50 +
-                      30
-                    }
-                  >
-                    <BarChart
-                      layout={"vertical"}
-                      width={200}
-                      height={300}
-                      data={
-                        chartMode === "total"
-                          ? localChartData
-                          : localChartDistinctData
+                  {localChartRadialData.length !== 0 && (
+                    <ResponsiveContainer
+                      width="100%"
+                      height={
+                        (chartMode === 'total'
+                          ? localChartData.length
+                          : localChartDistinctData.length) *
+                          50 +
+                        30
                       }
                     >
-                      <XAxis type="number" />
-                      <YAxis
-                        type="category"
-                        dataKey="name"
-                        style={{
-                          fontSize: "12px",
-                        }}
-                        width={width > 500 ? 150 : 90}
-                      />
-                      <Tooltip
-                        contentStyle={{
-                          backgroundColor: "#161827",
-                          border: "1px solid #292929",
-                        }}
-                        labelStyle={{ color: "#c9c9c9" }}
-                      />
-                      <Bar dataKey="Normal" fill="#FFF" />
-                      <Bar dataKey="Reverse" fill="#3b99f1" />
-                    </BarChart>
-                  </ResponsiveContainer>}
+                      <BarChart
+                        layout={'vertical'}
+                        width={200}
+                        height={300}
+                        data={
+                          chartMode === 'total'
+                            ? localChartData
+                            : localChartDistinctData
+                        }
+                      >
+                        <XAxis type="number" />
+                        <YAxis
+                          type="category"
+                          dataKey="name"
+                          style={{
+                            fontSize: '12px',
+                          }}
+                          width={width > 500 ? 150 : 90}
+                        />
+                        <Tooltip
+                          contentStyle={{
+                            backgroundColor: '#161827',
+                            border: '1px solid #292929',
+                          }}
+                          labelStyle={{ color: '#c9c9c9' }}
+                        />
+                        <Bar dataKey="Normal" fill="#FFF" />
+                        <Bar dataKey="Reverse" fill="#3b99f1" />
+                      </BarChart>
+                    </ResponsiveContainer>
+                  )}
                 </div>
               </div>
             </div>
             <div className="StatPage-radialChartsContainer coloredCorner">
-              <div className={"StatPage-radialCharts"}>
+              <div className={'StatPage-radialCharts'}>
                 {localChartRadialData.map((data) => (
                   <div
-                    className={"StatPage-radialContainer"}
-                    key={"radialChart" + data.name}
+                    className={'StatPage-radialContainer'}
+                    key={'radialChart' + data.name}
                   >
                     <div className="radial-graph">
                       <div className="shape">
                         <div
                           className="mask full-mask"
                           style={{
-                            transform: `rotate(${((data.values.value / data.values.max) * 360) / 2
-                              }deg)`,
+                            transform: `rotate(${
+                              ((data.values.value / data.values.max) * 360) / 2
+                            }deg)`,
                           }}
                         >
                           <div
                             className="fill"
                             style={{
-                              transform: `rotate(${((data.values.value / data.values.max) * 360) / 2
-                                }deg)`,
+                              transform: `rotate(${
+                                ((data.values.value / data.values.max) * 360) /
+                                2
+                              }deg)`,
                             }}
                           />
                         </div>
@@ -198,32 +218,45 @@ export const StatPage: React.FC = () => {
                           <div
                             className="fill"
                             style={{
-                              transform: `rotate(${((data.values.value / data.values.max) * 360) / 2
-                                }deg)`,
+                              transform: `rotate(${
+                                ((data.values.value / data.values.max) * 360) /
+                                2
+                              }deg)`,
                             }}
                           />
                           <div
                             className="fill shim"
                             style={{
-                              transform: `rotate(${(data.values.value / data.values.max) * 360
-                                }deg)`,
+                              transform: `rotate(${
+                                (data.values.value / data.values.max) * 360
+                              }deg)`,
                             }}
                           />
                         </div>
                       </div>
                       <div className="cutout"></div>
                     </div>
-                    <div className={"StatPage-radialData"}>
+                    <div className={'StatPage-radialData'}>
                       <b>
-                        {Math.floor((data.values.value / data.values.max) * 100)}%
-                      </b>{" "}
+                        {Math.floor(
+                          (data.values.value / data.values.max) * 100,
+                        )}
+                        %
+                      </b>{' '}
                       <br />
                       {data.values.value} / {data.values.max}
                     </div>
-                    <div className={"StatPage-radialName"}>{data.name}</div>
+                    <div className={'StatPage-radialName'}>{data.name}</div>
                   </div>
                 ))}
-                {localChartRadialData.length == 0 && <div className='StatPage-noCard' style={{ transform: 'translateY(20px)' }}>Aucune carte possédée !</div>}
+                {localChartRadialData.length == 0 && (
+                  <div
+                    className="StatPage-noCard"
+                    style={{ transform: 'translateY(20px)' }}
+                  >
+                    Aucune carte possédée !
+                  </div>
+                )}
               </div>
             </div>
           </div>
@@ -231,44 +264,44 @@ export const StatPage: React.FC = () => {
             <div className="StatPage-rightDatas">
               <StatCardComponent
                 data={{
-                  label: "Toutes possédées",
+                  label: 'Toutes possédées',
                   distinctQuantity: data.distinctOwned,
                   ownedQuantity: data.totalOwned,
                   possibleQuantity: data.distinctPossible,
-                  icon: "/assets/icons/collection.png",
+                  icon: '/assets/icons/collection.png',
                 }}
               />
               <StatCardComponent
                 data={{
-                  label: "Normales possédées",
+                  label: 'Normales possédées',
                   distinctQuantity: data.distinctNormal,
                   ownedQuantity: data.totalNormal,
                   possibleQuantity: data.distinctNormalPossible,
-                  icon: "/assets/icons/normales.png",
+                  icon: '/assets/icons/normales.png',
                 }}
               />
               <StatCardComponent
                 data={{
-                  label: "Reverse possédées",
+                  label: 'Reverse possédées',
                   distinctQuantity: data.distinctReverse,
                   ownedQuantity: data.totalReverse,
                   possibleQuantity: data.distinctReversePossible,
-                  icon: "/assets/icons/reverses.png",
+                  icon: '/assets/icons/reverses.png',
                 }}
               />
               {Object.entries(data.countByRarity).map(
                 ([rarity, rarityValues]) => (
                   <StatCardComponent
-                    key={"statCard" + rarity}
+                    key={'statCard' + rarity}
                     data={{
-                      label: frontRarity[rarity] + "s",
+                      label: frontRarity[rarity] + 's',
                       distinctQuantity: rarityValues.distinctOwned,
                       ownedQuantity: rarityValues.totalOwned,
                       possibleQuantity: rarityValues.distinctPossible,
-                      icon: "/assets/icons/" + rarity + ".png",
+                      icon: '/assets/icons/' + rarity + '.png',
                     }}
                   />
-                )
+                ),
               )}
             </div>
           </div>

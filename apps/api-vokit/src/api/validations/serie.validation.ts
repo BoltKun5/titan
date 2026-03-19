@@ -10,11 +10,12 @@ export default class SerieValidation {
       id: Joi.string(),
       releaseDate: Joi.date(),
       cardSerieId: Joi.string(),
-      imageId: Joi.string(),
-      logoId: Joi.string(),
+      imageId: Joi.string().optional().allow(''),
+      logoId: Joi.string().optional().allow(''),
     }).options({ presence: 'required' });
 
     const result = querySchema.validate(data);
+    console.log(result.error);
     if (result.error) throw HttpResponseError.createWrongValuesError();
 
     return { ...result.value };
@@ -45,6 +46,19 @@ export default class SerieValidation {
   }
 
   static importData(data: IImportDataBody): IImportDataBody {
+    const querySchema = Joi.object<IImportDataBody>({
+      data: Joi.array(),
+      id: Joi.string(),
+      ignoreDuplicate: Joi.boolean().optional(),
+    }).options({ presence: 'required' });
+
+    const result = querySchema.validate(data);
+    if (result.error) throw HttpResponseError.createWrongValuesError();
+
+    return { ...result.value };
+  }
+
+  static importSerieData(data: IImportDataBody): IImportDataBody {
     const querySchema = Joi.object<IImportDataBody>({
       data: Joi.array(),
       id: Joi.string(),

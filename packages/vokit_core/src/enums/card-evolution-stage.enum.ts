@@ -1,0 +1,13 @@
+export enum CardEvolutionStageEnum {
+  'Basic' = 1,
+  'BREAK',
+  'LEVEL-UP',
+  'MEGA',
+  'RESTORED',
+  'Stage1',
+  'Stage2',
+  'VMAX',
+  'V-UNION',
+  'Baby',
+  'VSTAR',
+}

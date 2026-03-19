@@ -3,7 +3,7 @@
 .CardManager {
   width: 100%;
   display: flex;
-  height: calc(100vh - 56px);
+  height: calc(trueHeight() - 56px);
   transition: 0.5s;
 
 

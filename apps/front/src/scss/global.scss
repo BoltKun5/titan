@@ -42,13 +42,13 @@ body {
 
 #root {
   width: 100vw;
-  height: 100vh;
+  height: trueHeight();
   overflow: hidden;
 }
 
 .content {
   width: calc(100vw);
-  height: calc(100vh);
+  height: calc(trueHeight());
 }
 
 
@@ -74,17 +74,19 @@ body {
 }
 
 .coloredCorner {
-  --mc-r: 59;
-  --mc-g: 153;
-  --mc-b: 241;
-  --c: radial-gradient(circle at bottom left, rgba(var(--mc-r), var(--mc-g), var(--mc-b)) 0, rgba(var(--mc-r), var(--mc-g), var(--mc-b)) 20px, rgba(var(--mc-r), var(--mc-g), var(--mc-b), 0) 30px),
-    radial-gradient(circle at bottom right, rgba(var(--mc-r), var(--mc-g), var(--mc-b)) 0, rgba(var(--mc-r), var(--mc-g), var(--mc-b)) 20px, rgba(var(--mc-r), var(--mc-g), var(--mc-b), 0) 30px),
-    radial-gradient(circle at top left, rgba(var(--mc-r), var(--mc-g), var(--mc-b)) 0, rgba(var(--mc-r), var(--mc-g), var(--mc-b)) 20px, rgba(var(--mc-r), var(--mc-g), var(--mc-b), 0) 30px),
-    radial-gradient(circle at top right, rgba(var(--mc-r), var(--mc-g), var(--mc-b)) 0, rgba(var(--mc-r), var(--mc-g), var(--mc-b)) 20px, rgba(var(--mc-r), var(--mc-g), var(--mc-b), 0) 30px),
-    rgb(41, 41, 41);
-  --w: calc(50%);
-  --b: 1px;
-  /* space for the border */
+  // --mc-r: 59;
+  // --mc-g: 153;
+  // --mc-b: 241;
+  // --c: radial-gradient(circle at bottom left, rgba(var(--mc-r), var(--mc-g), var(--mc-b)) 0, rgba(var(--mc-r), var(--mc-g), var(--mc-b)) 20px, rgba(var(--mc-r), var(--mc-g), var(--mc-b), 0) 30px),
+  //   radial-gradient(circle at bottom right, rgba(var(--mc-r), var(--mc-g), var(--mc-b)) 0, rgba(var(--mc-r), var(--mc-g), var(--mc-b)) 20px, rgba(var(--mc-r), var(--mc-g), var(--mc-b), 0) 30px),
+  //   radial-gradient(circle at top left, rgba(var(--mc-r), var(--mc-g), var(--mc-b)) 0, rgba(var(--mc-r), var(--mc-g), var(--mc-b)) 20px, rgba(var(--mc-r), var(--mc-g), var(--mc-b), 0) 30px),
+  //   radial-gradient(circle at top right, rgba(var(--mc-r), var(--mc-g), var(--mc-b)) 0, rgba(var(--mc-r), var(--mc-g), var(--mc-b)) 20px, rgba(var(--mc-r), var(--mc-g), var(--mc-b), 0) 30px),
+  //   rgb(41, 41, 41);
+  // --w: calc(50%);
+  // --b: 1px;
+  // /* space for the border */
+
+  border: 1px solid $primary-border;
 
   padding: var(--b);
   position: relative;
@@ -95,21 +97,21 @@ body {
   }
 
   &:after {
-    content: "";
-    pointer-events: none;
-    position: absolute;
-    z-index: 0;
-    inset: 0;
-    background: var(--c, red);
-    --_g: #0000 90deg, #000 0;
-    --_p: var(--w) var(--w) no-repeat;
-    --mask:
-      conic-gradient(from 90deg at top var(--b) left var(--b), var(--_g)) 0 0 / var(--_p),
-      conic-gradient(from 180deg at top var(--b) right var(--b), var(--_g)) 100% 0 / var(--_p),
-      conic-gradient(from 0deg at bottom var(--b) left var(--b), var(--_g)) 0 100% / var(--_p),
-      conic-gradient(from -90deg at bottom var(--b) right var(--b), var(--_g)) 100% 100% / var(--_p);
-    -webkit-mask: var(--mask);
-    mask: var(--mask);
+    // content: "";
+    // pointer-events: none;
+    // position: absolute;
+    // z-index: 0;
+    // inset: 0;
+    // background: var(--c, red);
+    // --_g: #0000 90deg, #000 0;
+    // --_p: var(--w) var(--w) no-repeat;
+    // --mask:
+    //   conic-gradient(from 90deg at top var(--b) left var(--b), var(--_g)) 0 0 / var(--_p),
+    //   conic-gradient(from 180deg at top var(--b) right var(--b), var(--_g)) 100% 0 / var(--_p),
+    //   conic-gradient(from 0deg at bottom var(--b) left var(--b), var(--_g)) 0 100% / var(--_p),
+    //   conic-gradient(from -90deg at bottom var(--b) right var(--b), var(--_g)) 100% 100% / var(--_p);
+    // -webkit-mask: var(--mask);
+    // mask: var(--mask);
   }
 }
 

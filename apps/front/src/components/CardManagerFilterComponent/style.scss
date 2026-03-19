@@ -119,12 +119,12 @@
     height: 30px;
     padding: 5px;
     background: $white;
-    border-radius: 10000px;
+    clip-path: clipPath(6px);
     cursor: pointer;
     box-sizing: border-box;
 
     &.selected {
-      border: 2px solid $primary;
+      background: $primary-radiant;
     }
   }
 
@@ -176,7 +176,7 @@
     z-index: 10;
     box-shadow: #000000 1px 1px 10px 1px;
     animation: fadeIn 0.3s;
-    max-height: calc(100vh - 200px);
+    max-height: calc(trueHeight() - 200px);
     overflow: auto;
 
     & span {
@@ -343,7 +343,7 @@
 
   &-blurFilter {
     width: 100vw;
-    height: 100vh;
+    height: trueHeight();
     position: absolute;
     top: 0px;
     left: 0;
@@ -472,11 +472,29 @@
       width: calc(100vw - 20px);
     }
 
+    &-topElements {
+      height: 50px;
+      gap: 5px;
+    }
+
+    &-openFilters {
+      width: 32px;
+
+      svg {
+        width: 32px;
+        height: 32px;
+      }
+    }
+
+    &-listMod {
+      flex-direction: row-reverse;
+    }
+
     flex-wrap: wrap;
   }
 }
 
-@media (max-width: 500px) {
+@media (max-width: 800px) {
   .CardManagerFilter {
     &-top {
       gap: 5px;
@@ -484,7 +502,7 @@
       &Elements {
         margin-left: 5px;
         padding-right: 0;
-        min-width: 72px;
+        min-width: 40px;
         max-width: calc(100% - 290px);
       }
 

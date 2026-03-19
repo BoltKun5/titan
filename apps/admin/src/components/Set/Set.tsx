@@ -7,9 +7,11 @@ import {
 import {
   Button,
   FormControl,
+  FormControlLabel,
   InputLabel,
   MenuItem,
   Select,
+  Switch,
   TextField,
   TextareaAutosize,
 } from "@mui/material";
@@ -33,13 +35,15 @@ export const SetComponent: React.FC<{
   const [logoId, setLogoId] = useState(set.logoId ?? '');
   const [imageId, setImageId] = useState(set.imageId ?? '');
   const [code, setCode] = useState(set.code ?? '');
-  const [data, setData] = useState('')
+  const [data, setData] = useState('');
+  const [ignoreDuplicate, setIgnoreDuplicate] = useState(false);
 
   useEffect(() => {
     setName(set.name ?? '');
     setCardSerieId(set.cardSerieId ?? '');
     setReleaseDate(set.releaseDate ?? null);
     setCode(set.code ?? '');
+    setData('')
   }, [set])
 
   const handleSubmit = async () => {
@@ -67,7 +71,8 @@ export const SetComponent: React.FC<{
     try {
       const params: any = {
         id: set.id,
-        data: JSON.parse(data)
+        data: JSON.parse(data),
+        ignoreDuplicate
       };
 
       await loggedApi.post("/series/import-data", params)
@@ -142,6 +147,7 @@ export const SetComponent: React.FC<{
           maxRows={10}
           minRows={10}
           InputLabelProps={{ shrink: true }} />
+        <FormControlLabel control={<Switch value={ignoreDuplicate} onChange={(e: any) => setIgnoreDuplicate(e.target.checked)} />} label="Ignore les duplicats" />
       </div>
       <div className="d-flex flex-column mx-auto" style={{ width: 300 }}>
         <Button

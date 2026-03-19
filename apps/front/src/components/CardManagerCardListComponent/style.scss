@@ -17,7 +17,7 @@
     margin: auto;
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
     padding-bottom: 20px;
-    gap: 30px 1px;
+    gap: 10px 1px;
   }
 
   &-optionCard *,
@@ -146,28 +146,6 @@
 
 @media (max-width: 1100px) {
   .CardManagerCardList-grid {
-    grid-template-columns: repeat(auto-fit, minmax(265px, 1fr));
-  }
-
-  .CardManagerCardList-optionCardContent {
-    width: 210px;
-  }
-
-  .CardManagerCardList-optionCard {
-    height: 455px;
-  }
-
-  .CardManagerCardList-optionCardOpened .CardManagerCardList-optionCardLogo {
-    width: 190px;
-    height: 350px;
-  }
-
-  .CardManagerCardList-optionCardName {
-    font-size: 13px;
-    margin-bottom: 0 !important;
-  }
-
-  .CardManagerCardList-optionCardDesc {
-    font-size: 13px;
+    grid-template-columns: repeat(auto-fit, minmax(195px, 1fr));
   }
 }

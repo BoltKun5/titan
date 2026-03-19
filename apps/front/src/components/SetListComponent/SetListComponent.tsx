@@ -1,15 +1,17 @@
-import React, { useContext } from "react";
-import { Tooltip } from "@mui/material";
-import "./style.scss";
-import StoreContext from "../../hook/contexts/StoreContext";
-import { ICardSerie, ICardSet } from "vokit_core";
-import { Loader } from "../UI/Loader/LoaderComponent";
+import React, { useContext } from 'react';
+import { Tooltip } from '@mui/material';
+import './style.scss';
+import StoreContext from '../../hook/contexts/StoreContext';
+import { ICardSerie, ICardSet } from 'vokit_core';
+import { Loader } from '../UI/Loader/LoaderComponent';
 
 export const SetListComponent: React.FC = () => {
   const { cardSetFilter, setCardSetFilter, resetAllFilters } =
     useContext(StoreContext);
 
-  if (!cardSetFilter) return <Loader />;
+  if (!cardSetFilter) {
+    return <Loader />;
+  }
 
   const { series } = useContext(StoreContext);
 
@@ -19,7 +21,7 @@ export const SetListComponent: React.FC = () => {
       cardSetFilter.map((setFilter) => {
         setFilter.status = setFilter.code === setCode;
         return setFilter;
-      })
+      }),
     );
   };
 
@@ -27,22 +29,23 @@ export const SetListComponent: React.FC = () => {
     if (
       cardSetFilter.filter(
         (filteredElement: { categoryCode: string; status: any }) =>
-          serie.code === filteredElement.categoryCode && !filteredElement.status
+          serie.code === filteredElement.categoryCode &&
+          !filteredElement.status,
       ).length === 0
     ) {
-      return "SetList-serie selected";
+      return 'SetList-serie selected';
     }
-    return "SetList-serie";
+    return 'SetList-serie';
   };
 
   const getSetClassname = (set: ICardSet) => {
     const localCardSetFilter = cardSetFilter.find(
-      (filteredElement: { id: string }) => set.code === filteredElement.id
+      (filteredElement: { id: string }) => set.code === filteredElement.id,
     );
     if (localCardSetFilter?.status) {
-      return "SetList-setElement selected";
+      return 'SetList-setElement selected';
     }
-    return "SetList-setElement";
+    return 'SetList-setElement';
   };
 
   return (
@@ -64,7 +67,11 @@ export const SetListComponent: React.FC = () => {
                   >
                     <Tooltip title={set.name}>
                       <img
-                        src={`${import.meta.env.VITE_ASSETS_URL}/user-application-file/file/download/public-access/${set.logoId}`}
+                        src={`${
+                          import.meta.env.VITE_ASSETS_URL
+                        }/application-file/file/download/public-access/${
+                          set.logoId
+                        }`}
                       />
                     </Tooltip>
                   </div>

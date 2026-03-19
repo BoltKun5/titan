@@ -1,21 +1,21 @@
-import React, { useCallback, useEffect, useState } from "react";
-import { Route, Routes, useNavigate, useSearchParams } from "react-router-dom";
-import { Login } from "./pages/Login/Login";
-import { CardManager } from "./pages/CardManager/CardManager";
-import { HistoricPage } from "./pages/HistoricPage/HistoricPage";
-import { SignUp } from "./pages/SignUp/SignUp";
-import { Opening } from "./pages/Opening/Opening";
-import { HeaderComponent } from "./components/HeaderComponent/HeaderComponent";
-import StoreContext from "./hook/contexts/StoreContext";
-import { api, loggedApi } from "./axios";
-import { StatPage } from "./pages/StatPage/StatPage";
-import { initialRarityFilter, isUnloggedPage } from "./general.utils";
+import React, { useCallback, useEffect, useState } from 'react';
+import { Route, Routes, useNavigate, useSearchParams } from 'react-router-dom';
+import { Login } from './pages/Login/Login';
+import { CardManager } from './pages/CardManager/CardManager';
+import { HistoricPage } from './pages/HistoricPage/HistoricPage';
+import { SignUp } from './pages/SignUp/SignUp';
+import { Opening } from './pages/Opening/Opening';
+import { HeaderComponent } from './components/HeaderComponent/HeaderComponent';
+import StoreContext from './hook/contexts/StoreContext';
+import { api, loggedApi } from './axios';
+import { StatPage } from './pages/StatPage/StatPage';
+import { initialRarityFilter, isUnloggedPage } from './general.utils';
 import {
   ICardRarityFilter,
   ICardSetFilter,
   INotificationElement,
-} from "./local-core/interface";
-import { Loader } from "./components/UI/Loader/LoaderComponent";
+} from './local-core/interface';
+import { Loader } from './components/UI/Loader/LoaderComponent';
 import {
   ICard,
   PaginationData,
@@ -24,28 +24,28 @@ import {
   ICardSet,
   IUser,
   CardRarityEnum,
-} from "vokit_core";
-import { Profile } from "./pages/Profile/Profile";
-import { PreSigned } from "./pages/PreSigned/PreSigned";
-import { RenewPassword } from "./pages/RenewPassword/RenewPassword";
-import { useSnackbar } from "notistack";
+} from 'vokit_core';
+import { Profile } from './pages/Profile/Profile';
+import { PreSigned } from './pages/PreSigned/PreSigned';
+import { RenewPassword } from './pages/RenewPassword/RenewPassword';
+import { useSnackbar } from 'notistack';
 
 export const App: React.FC = () => {
   // Données de la base
   const [cards, setCards] = useState<ICard[]>([]);
 
   // Tris
-  const [order, setOrder] = useState<string>("default");
+  const [order, setOrder] = useState<string>('default');
 
   // Autres
   const [collectionMode, setCollectionMode] = useState<boolean>(true);
   const [separateReverse, setSeparateReverse] = useState<boolean>(false);
   const [possessionFilter, setPossessionFilter] = useState<
-    | "partial_owned"
-    | "partial_unowned"
-    | "fully_owned"
-    | "multiple_owned"
-    | "unowned"
+    | 'partial_owned'
+    | 'partial_unowned'
+    | 'fully_owned'
+    | 'multiple_owned'
+    | 'unowned'
     | null
   >(null);
 
@@ -58,39 +58,39 @@ export const App: React.FC = () => {
 
   // Filtres
   const [cardSetFilter, setCardSetFilter] = useState<ICardSetFilter[] | null>(
-    null
+    null,
   );
-  const [nameFilter, setNameFilter] = useState<string>("");
+  const [nameFilter, setNameFilter] = useState<string>('');
   const [rarityFilter, setRarityFilter] =
     useState<ICardRarityFilter[]>(initialRarityFilter);
 
   const [series, setSeries] = useState<ICardSerie[] | null>(null);
   const [tags, setTags] = useState<ITag[] | null>(null);
 
-  const [forceRender, setForceRender] = useState(false);
-
   const [notifications, setNotifications] = useState<INotificationElement[]>(
-    []
+    [],
   );
   const [user, setUser] = useState<Partial<IUser>>({
-    id: "",
+    id: '',
     role: 0,
-    shownName: "",
+    shownName: '',
   });
 
-  let [searchParams] = useSearchParams();
+  const [searchParams] = useSearchParams();
   const navigate = useNavigate();
 
   const fetchUser = useCallback(async () => {
     try {
-      if (!localStorage.getItem("token")) throw null;
+      if (!localStorage.getItem('token')) {
+        throw null;
+      }
       const response = await loggedApi.get(`/user/me`);
       setUser(response.data.user);
     } catch (e) {
       if (!isUnloggedPage()) {
-        localStorage.removeItem("token");
-        localStorage.removeItem("user");
-        navigate("/");
+        localStorage.removeItem('token');
+        localStorage.removeItem('user');
+        navigate('/');
       }
     }
   }, []);
@@ -102,52 +102,69 @@ export const App: React.FC = () => {
       const response = await api.get(`/series/all-series`);
       setSeries(response.data.data);
     } catch (e) {
-      enqueueSnackbar('Impossible de se connecter au serveur. Il est peut être innaccessible.', { autoHideDuration: null })
+      enqueueSnackbar(
+        'Impossible de se connecter au serveur. Il est peut être inaccessible.',
+        { autoHideDuration: null },
+      );
     }
   }, []);
 
   const resetAllFilters = () => {
-    if (!cardSetFilter) return;
+    if (!cardSetFilter) {
+      return;
+    }
     setCardSetFilter(
       cardSetFilter.map((element) => {
         element.status = false;
         return element;
-      })
+      }),
     );
-    const nameFilterElement = document.querySelector("#nameFilter");
+    const nameFilterElement = document.querySelector('#nameFilter');
     if (nameFilterElement) {
-      (nameFilterElement as HTMLInputElement).value = "";
+      (nameFilterElement as HTMLInputElement).value = '';
     }
-    setNameFilter("");
+    setNameFilter('');
     setRarityFilter(
       rarityFilter.map((filter) => {
         filter.value = false;
         return filter;
-      })
+      }),
     );
     setPossessionFilter(null);
     setOrder('default');
   };
 
+  const { search } = window.location;
+  const initialSetFilter =
+    new URLSearchParams(search).getAll('setFilter') ?? [];
+
   useEffect(() => {
     fetchUser();
-    setNameFilter(searchParams?.get('namefilter') ?? '')
-    setOrder(searchParams?.get('order') ?? 'default')
-    setPossessionFilter((searchParams?.get('possession') as "partial_owned"
-      | "partial_unowned"
-      | "fully_owned"
-      | "multiple_owned"
-      | "unowned") ?? null)
-    setRarityFilter(initialRarityFilter.map((e) => {
-      e.value = (searchParams?.getAll('rarity') ?? []).includes(String(CardRarityEnum[e.rarity as keyof typeof CardRarityEnum]));
-      return e;
-    }));
+    setNameFilter(searchParams?.get('namefilter') ?? '');
+    setOrder(searchParams?.get('order') ?? 'default');
+    setPossessionFilter(
+      (searchParams?.get('possession') as
+        | 'partial_owned'
+        | 'partial_unowned'
+        | 'fully_owned'
+        | 'multiple_owned'
+        | 'unowned') ?? null,
+    );
+    setRarityFilter(
+      initialRarityFilter.map((e) => {
+        e.value = (searchParams?.getAll('rarity') ?? []).includes(
+          String(CardRarityEnum[e.rarity as keyof typeof CardRarityEnum]),
+        );
+        return e;
+      }),
+    );
 
-
-    setCardSetFilter(cardSetFilter?.map((e) => {
-      e.status = (searchParams?.getAll('setFilter') ?? []).includes(e?.code ?? '');
-      return e;
-    }) ?? []);
+    setCardSetFilter(
+      cardSetFilter?.map((e) => {
+        e.status = initialSetFilter.includes(e?.code ?? '');
+        return e;
+      }) ?? null,
+    );
   }, []);
 
   useEffect(() => {
@@ -190,12 +207,12 @@ export const App: React.FC = () => {
     tags,
     setTags,
     listDisplay,
-    setListDisplay
+    setListDisplay,
   };
 
   useEffect(() => {
     if (series) {
-      let setFilterList: ICardSetFilter[] = [];
+      const setFilterList: ICardSetFilter[] = [];
       series.forEach((serie: ICardSerie) => {
         serie.cardSets?.forEach((set: ICardSet) => {
           setFilterList.push({
@@ -203,9 +220,9 @@ export const App: React.FC = () => {
             id: set.id,
             category: serie.name,
             categoryCode: serie.code,
-            status: (searchParams?.getAll('setFilter') ?? []).includes(set.code ?? ''),
+            status: initialSetFilter.includes(set.code ?? ''),
             code: set.code,
-            logoId: set.logoId
+            logoId: set.logoId,
           });
         });
       });
@@ -214,9 +231,28 @@ export const App: React.FC = () => {
   }, [series]);
 
   const showHeader = () => {
-    const hideHeaderPaths = ["/login", "/signup", "/devtool", "/renew-password", "/pre-signed"];
+    const hideHeaderPaths = [
+      '/login',
+      '/signup',
+      '/devtool',
+      '/renew-password',
+      '/pre-signed',
+    ];
     return !hideHeaderPaths.includes(window.location.pathname);
   };
+
+  const handleResizeForMobile = () => {
+    const vh = window.innerHeight * 0.01;
+    document.querySelector('body')?.style.setProperty('--vh', `${vh}px`);
+  };
+
+  // Pour gérer la hauteur sur mobile
+  useEffect(() => {
+    window.addEventListener('resize', handleResizeForMobile);
+    return () => window.removeEventListener('resize', handleResizeForMobile);
+  }, []);
+
+  handleResizeForMobile();
 
   return (
     <>
@@ -224,12 +260,7 @@ export const App: React.FC = () => {
         <div className="main">
           <div className="content">
             <StoreContext.Provider value={store}>
-              {showHeader() && (
-                <HeaderComponent
-                  forceRender={forceRender}
-                  setForceRender={setForceRender}
-                />
-              )}
+              {showHeader() && <HeaderComponent />}
               <Routes>
                 <Route path="/login" element={<Login />} />
                 <Route path="" element={<CardManager />} />

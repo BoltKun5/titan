@@ -1,19 +1,15 @@
-import React, { useCallback, useContext, useEffect, useState } from "react";
-import { CardManagerFilterComponent } from "../../components/CardManagerFilterComponent/CardManagerFilterComponent";
-import { CardManagerCardListComponent } from "../../components/CardManagerCardListComponent/CardManagerCardListComponent";
-import "./style.scss";
-import StoreContext from "../../hook/contexts/StoreContext";
-import { useFetchData } from "../../hook/api/cards";
-import { Loader } from "../../components/UI/Loader/LoaderComponent";
-import {
-  getFilterQuery,
-  isUnloggedPage,
-  isUserConnected,
-} from "../../general.utils";
-import { useParams } from "react-router-dom";
-import { IUser } from "vokit_core";
-import { api } from "../../axios";
-import { useSnackbar } from "notistack";
+import React, { useCallback, useContext, useEffect, useState } from 'react';
+import { CardManagerFilterComponent } from '../../components/CardManagerFilterComponent/CardManagerFilterComponent';
+import { CardManagerCardListComponent } from '../../components/CardManagerCardListComponent/CardManagerCardListComponent';
+import './style.scss';
+import StoreContext from '../../hook/contexts/StoreContext';
+import { useFetchData } from '../../hook/api/cards';
+import { Loader } from '../../components/UI/Loader/LoaderComponent';
+import { getFilterQuery, isUnloggedPage } from '../../general.utils';
+import { useParams, useSearchParams } from 'react-router-dom';
+import { IUser } from 'vokit_core';
+import { api } from '../../axios';
+import { useSnackbar } from 'notistack';
 
 export const CardManager: React.FC = () => {
   const { isLoading, fetch } = useFetchData(isUnloggedPage());
@@ -31,7 +27,7 @@ export const CardManager: React.FC = () => {
     setPage,
     tags,
     setTags,
-    user
+    user,
   } = useContext(StoreContext);
   const [associatedUser, setAssociatedUser] = useState<null | IUser>(null);
   let id: string | undefined = useParams().id;
@@ -40,7 +36,10 @@ export const CardManager: React.FC = () => {
   }
 
   const fetchCards = useCallback(async () => {
-    if (!cardSetFilter) return;
+    if (!cardSetFilter || cardSetFilter.length === 0) {
+      return;
+    }
+
     const params = getFilterQuery(
       false,
       cardSetFilter,
@@ -49,19 +48,12 @@ export const CardManager: React.FC = () => {
       rarityFilter,
       possessionFilter,
       order,
-      id ?? null
+      id ?? null,
     );
-    const response = await fetch("/card/list", params);
+    const response = await fetch('/card/list', params);
     setCards(response.data.cards);
     setPagination(response.data.pagination);
-  }, [
-    cardSetFilter,
-    nameFilter,
-    possessionFilter,
-    order,
-    page,
-    id
-  ]);
+  }, [cardSetFilter, nameFilter, possessionFilter, order, page, id]);
 
   useEffect(() => {
     fetchCards();
@@ -73,21 +65,18 @@ export const CardManager: React.FC = () => {
     rarityFilter,
     page,
     id,
-    user
+    user,
   ]);
 
   useEffect(() => {
     setPage(1);
-  }, [
-    cardSetFilter,
-    nameFilter,
-    possessionFilter,
-    rarityFilter,
-  ]);
+  }, [cardSetFilter, nameFilter, possessionFilter, rarityFilter]);
 
   const fetchTags = useCallback(async () => {
     try {
-      if (user.id === '' && !id) return;
+      if (user.id === '' && !id) {
+        return;
+      }
       const response = await fetch(`/tag`, {
         ...(id ? { userId: id } : {}),
       });
@@ -99,12 +88,12 @@ export const CardManager: React.FC = () => {
 
   const fetchAssociatedUser = async () => {
     try {
-      const response = await api.get(`/user/get-by-id?id=${id}`)
-      setAssociatedUser(response.data.user)
+      const response = await api.get(`/user/get-by-id?id=${id}`);
+      setAssociatedUser(response.data.user);
     } catch (e) {
       enqueueSnackbar('Une erreur est survenue');
     }
-  }
+  };
 
   useEffect(() => {
     if (!tags) {
@@ -113,8 +102,6 @@ export const CardManager: React.FC = () => {
     if (!associatedUser && id) {
       fetchAssociatedUser();
     }
-
-
   }, []);
 
   if (!series) {
@@ -126,15 +113,19 @@ export const CardManager: React.FC = () => {
       <div className="CardManager">
         <div className="CardManager-mainContent">
           <CardManagerFilterComponent />
-          {id && <div className="CardManager-collection">
-            <span>Collection de</span>
-            <div className="CardManager-collection-container">
-              <img
-                src={`/assets/profile_picture/${associatedUser?.options?.profilePicture ?? 1}.png`}
-              />
-              <div className="span">{associatedUser?.shownName}</div>
+          {id && (
+            <div className="CardManager-collection">
+              <span>Collection de</span>
+              <div className="CardManager-collection-container">
+                <img
+                  src={`/assets/profile_picture/${
+                    associatedUser?.options?.profilePicture ?? 1
+                  }.png`}
+                />
+                <div className="span">{associatedUser?.shownName}</div>
+              </div>
             </div>
-          </div>}
+          )}
           {isLoading ? <Loader /> : <CardManagerCardListComponent />}
         </div>
       </div>

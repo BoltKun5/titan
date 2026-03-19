@@ -50,15 +50,16 @@
     padding: 0 0 20px 0;
     font-size: 30px;
     width: 400px;
+    max-width: calc(100% - 10px);
     min-height: 300px;
-    justify-content: center;
     align-items: center;
     margin: auto;
     display: flex;
     flex-direction: column;
     background-color: #181526;
     color: #f1f5fe;
-    max-height: 100vh;
+    overflow: auto;
+    max-height: calc(trueHeight() - 10px);
   }
 
   &-toSignIn {

@@ -96,6 +96,8 @@ export const CardComponent: React.FC<{
         types,
         canBeReverse,
         cardAdditionalPrinting,
+        ...((imageId && imageId !== '') ? { imageId } : {}),
+        ...((thumbnailId && thumbnailId !== '') ? { thumbnailId } : {})
       };
 
       const newCard = (await loggedApi.post("/card/update", params)).data.data
@@ -113,7 +115,7 @@ export const CardComponent: React.FC<{
         <img width={230} height={275} src={getImageSource(card)} />
       </div>
       <div className="Card-inputs">
-      <TextField
+        <TextField
           value={card.id}
           label={"uniqueID"}
           InputLabelProps={{ shrink: true }}
@@ -229,7 +231,7 @@ export const CardComponent: React.FC<{
             <TextField
               disabled={index === null}
               value={_name}
-              InputLabelProps={{ shrink: true }} 
+              InputLabelProps={{ shrink: true }}
               onChange={(ev) => {
                 if (index !== null) {
                   const _array = [...cardAdditionalPrinting];
@@ -244,7 +246,7 @@ export const CardComponent: React.FC<{
               disabled={index === null}
               value={type}
               type={"number"}
-              InputLabelProps={{ shrink: true }} 
+              InputLabelProps={{ shrink: true }}
               onChange={(ev) => {
                 if (index !== null) {
                   const _array = [...cardAdditionalPrinting];

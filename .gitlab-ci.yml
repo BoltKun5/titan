@@ -1,42 +1,33 @@
-# This file is a template, and might need editing before it works on your project.
-# To contribute improvements to CI/CD templates, please follow the Development guide at:
-# https://docs.gitlab.com/ee/development/cicd/templates.html
-# This specific template is located at:
-# https://gitlab.com/gitlab-org/gitlab/-/blob/master/lib/gitlab/ci/templates/Getting-Started.gitlab-ci.yml
-
-# This is a sample GitLab CI/CD configuration file that should run without any modifications.
-# It demonstrates a basic 3 stage CI/CD pipeline. Instead of real tests or scripts,
-# it uses echo commands to simulate the pipeline execution.
-#
-# A pipeline is composed of independent jobs that run scripts, grouped into stages.
-# Stages run in sequential order, but jobs within stages run in parallel.
-#
-# For more information, see: https://docs.gitlab.com/ee/ci/yaml/index.html#stages
-
 image: node:16.14.0
 
 variables:
-  RULES_CHANGES_PATH: "**/*"
+  DEVELOP_BRANCH: "develop"
+  PROD_BRANCH: "prod"
+  APP_API: "vokit-api"
+  APP_CORE: "vokit_core"
+  DEVELOP_WEBHOOK_URL: $CI_DEVELOP_WEBHOOK_URL
+  PROD_WEBHOOK_URL: $CI_PROD_WEBHOOK_URL
 
 .base-rules:
   rules:
-    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
-      when: always
     - if: '$CI_PIPELINE_SOURCE == "push"'
+      when: always
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
       when: never
-    - if: $CI_COMMIT_TAG
-      when: never
-    - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
-      changes:
-        - $RULES_CHANGES_PATH
     - when: manual
       allow_failure: true
+  retry:
+    max: 2
+    when:
+      - runner_system_failure
+      - stuck_or_timeout_failure
 
 stages:
-  - cache
+  - cache-install
+  - build-core
+  - lint
   - build
-  - test
-  - start
+  - publish
   - deploy
 
 default:
@@ -53,89 +44,113 @@ cache:
     - node_modules/
     - "packages/**/node_modules/"
     - "apps/**/node_modules/"
-    - "**/dist/"
+    - "packages/$APP_CORE/dist/"
+    - "apps/api-vokit/dist/"
+    - "apps/**/dist/"
+    - "packages/**/dist/"
 
 # Apps
-
 .api:
   extends: .base-rules
   variables:
-    RULES_CHANGES_PATH: "apps/api/**/*"
-  retry:
-    max: 2
-    when:
-      - runner_system_failure
-      - stuck_or_timeout_failure
+    RULES_CHANGES_PATH: "apps/api-vokit/**/*"
 
 .core:
   extends: .base-rules
   variables:
-    RULES_CHANGES_PATH: "packages/vokit_core/**/*"
-  retry:
-    max: 2
-    when:
-      - runner_system_failure
-      - stuck_or_timeout_failure
+    RULES_CHANGES_PATH: "packages/$APP_CORE/**/*"
+
+.prod-develop:
+  rules:
+    - if: $CI_COMMIT_BRANCH == $DEVELOP_BRANCH || $CI_COMMIT_BRANCH == $PROD_BRANCH
+      when: always
 
 # Steps
-
-caching:
-  stage: cache
+cache-install:
+  stage: cache-install
+  extends: .base-rules
   script:
     - echo "Installing dependencies..."
-    - pnpm install --frozen-lockfile
+    - pnpm -r install --frozen-lockfile
 
-api-build:
-  stage: build
-  extends: .api
-  needs: ["caching"]
-  script:
-    - echo "Compiling the api code..."
-    - pnpm --filter vokit-api tsc
-
-core-build:
-  stage: build
-  extends: .core
-  needs: ["caching"]
-  script:
-    - echo "Compiling the core code..."
-    - pnpm --filter vokit_core tsc
-
-api-test-lint:
-  stage: test
-  extends: .api
-  needs: ["caching"]
+lint-api:
+  stage: lint
+  extends:
+    - .api
+  needs: ["cache-install"]
   script:
     - echo "Checking the api lint..."
-    - pnpm --filter vokit-api lint:check
+    - pnpm --filter $APP_API lint:check
 
-core-test-lint:
-  stage: test
-  extends: .core
-  needs: ["caching"]
+lint-core:
+  stage: lint
+  extends:
+    - .core
+  needs: ["cache-install"]
   script:
     - echo "Checking the core lint..."
-    - pnpm --filter vokit_core lint:check
+    - pnpm --filter $APP_CORE lint:check
 
-api-start:
-  stage: start
-  extends: .api
-  needs: ["api-build"]
+build-core:
+  stage: build-core
+  extends:
+    - .core
+  needs: ["cache-install"]
   script:
+    - echo "Compiling the core code..."
+    - pnpm --filter $APP_CORE build
+
+build-api:
+  stage: build
+  extends:
+    - .api
+  needs: ["build-core"]
+  script:
+    - echo "Compiling the api code..."
+    - pnpm --filter $APP_API build
     - echo "starting the api in ci mode..."
-    - pnpm --filter vokit-api start:ci
+    - pnpm --filter $APP_API start:ci
 
-api-deploy:
-  stage: deploy
-  extends: .api
-  needs: ["api-start"]
+publish-api:
+  image: docker:latest
+  stage: publish
+  extends:
+    - .api
+    - .prod-develop
+  needs: ["build-api"]
+  services:
+    - name: docker:dind
+  before_script:
+    - ""
   script:
-    - echo "Deploying application..."
-    - echo "Application successfully deployed."
+    - |-
+      if [ $CI_COMMIT_BRANCH == $PROD_BRANCH ]; then REGISTRY_PATH="$CI_REGISTRY_IMAGE/prod/api"; else REGISTRY_PATH="$CI_REGISTRY_IMAGE/develop/api"; fi
+    - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" $CI_REGISTRY
+    - echo "Creating the API Docker image..."
+    - docker build -f "./apps/api-vokit/Dockerfile" --pull
+      --cache-from "$REGISTRY_PATH:latest"
+      --label "org.opencontainers.image.title=$CI_PROJECT_TITLE"
+      --label "org.opencontainers.image.url=$CI_PROJECT_URL"
+      --label "org.opencontainers.image.created=$CI_JOB_STARTED_AT"
+      --label "org.opencontainers.image.revision=$CI_COMMIT_SHA"
+      --label "org.opencontainers.image.version=$CI_COMMIT_REF_NAME" -t "$REGISTRY_PATH" .
+    - echo "Publishing the API Docker image to GitLab Container Registry..."
+    - docker push "$REGISTRY_PATH"
 
-core-publish:
+deploy:
   stage: deploy
-  extends: .core
-  needs: ["core-build"]
+  cache: []
+  before_script:
+    - ""
+  extends: 
+    - .prod-develop
+  variables:
+    GIT_STRATEGY: none
   script:
-    - echo "Deploying new core version..."
+    - |-
+        if [ $CI_COMMIT_BRANCH == $PROD_BRANCH ]; then DEPLOY_URL="$PROD_WEBHOOK_URL"; else DEPLOY_URL="$DEVELOP_WEBHOOK_URL"; fi
+    - |-
+        DEPLOY_CURL_COMMAND='curl -X POST -H "Content-Type: application/json" $DEPLOY_URL'
+    - echo "Deploying API"
+    - echo $DEPLOY_CURL_COMMAND
+    - 'eval "$DEPLOY_CURL_COMMAND"'

@@ -18,7 +18,7 @@ export enum CardRarityEnum {
 export enum CardRarityEnumFrench {
   'Magnifique' = 1,
   'Commune',
-  'Sans Rareté',
+  'Promotionnelle',
   'Rare',
   'Secrète',
   'Ultra-rare',

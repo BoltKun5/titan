@@ -8,6 +8,7 @@ $primary-border: #292929;
 $red: #7a1c1c;
 $green: #096e06;
 $dark: #0d0e16;
+$gray: #bdbdbd;
 
 @function clipPath($offset) {
   @return polygon($offset 0%,
@@ -16,6 +17,10 @@ $dark: #0d0e16;
     calc(100% - $offset) 100%,
     0% 100%,
     0% $offset);
+}
+
+@function trueHeight() {
+  @return calc(var(--vh, 1vh) * 100)
 }
 
 $primary-radiant: radial-gradient(hsl(209, 61%, 50%), $primary)

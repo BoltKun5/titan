@@ -3,7 +3,7 @@
 .CardCounter {
   &-name {
     text-align: center;
-    margin: 0 0 8px;
+    margin: 4px auto 4px;
     color: $white;
   }
 
@@ -95,7 +95,7 @@
       }
 
       &:hover::after {
-        box-shadow: inset $primary 0 0 10px 1px;
+        background-color: $primary;
       }
     }
   }
@@ -138,6 +138,9 @@
       position: relative;
       padding: 7px;
       clip-path: clipPath(7px);
+      max-width: 100px;
+      margin: auto;
+      box-sizing: border-box;
 
       &::after {
         content: "/";

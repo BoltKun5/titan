@@ -1,13 +1,5 @@
-require('express-async-errors');
 import * as dotenv from 'dotenv';
-import path from 'path';
-if (process.env.NODE_ENV === 'PRODUCTION') {
-  dotenv.config({ path: path.resolve('.env.production') });
-} else if (process.env.NODE_ENV === 'STAGING') {
-  dotenv.config({ path: path.resolve('.env.staging') });
-} else {
-  dotenv.config();
-}
+dotenv.config();
 
 if (process.env.NODE_ENV === 'CI') {
   process.exit(0);

@@ -1,10 +1,10 @@
-import { AxiosResponse } from "axios";
-import { useSnackbar } from "notistack";
-import React, { useContext, useEffect, useState } from "react";
-import { loggedApi } from "../../axios";
+import { AxiosResponse } from 'axios';
+import { useSnackbar } from 'notistack';
+import React, { useContext, useEffect, useState } from 'react';
+import { loggedApi } from '../../axios';
 
-import StoreContext from "../../hook/contexts/StoreContext";
-import "./style.scss";
+import StoreContext from '../../hook/contexts/StoreContext';
+import './style.scss';
 import {
   ICard,
   IResponse,
@@ -13,9 +13,9 @@ import {
   IUserCardPossession,
   ISetQuantityResponse,
   ISimpleDeletePossessionResponse,
-} from "vokit_core";
-import { CardCounterComponentPropsType } from "../../local-core";
-import { isUnloggedPage } from "../../general.utils";
+} from 'vokit_core';
+import { CardCounterComponentPropsType } from '../../local-core';
+import { isUnloggedPage } from '../../general.utils';
 
 export const CardCounterComponent: React.FC<CardCounterComponentPropsType> = ({
   card,
@@ -26,11 +26,11 @@ export const CardCounterComponent: React.FC<CardCounterComponentPropsType> = ({
   const { setCards, cards, notifications, setNotifications } =
     useContext(StoreContext);
   const [isDisabled, setIsDisabled] = useState<boolean>(false);
-  const [value, setValue] = useState<string>("");
+  const [value, setValue] = useState<string>('');
   const [changeNotificationValue, setChangeNotificationValue] = useState<
     number | null
   >(null);
-  const [notifTimer, setNotifTimer] = useState<number | undefined>(undefined);
+  const [notifTimer, setNotifTimer] = useState<any | undefined>(undefined);
   const { enqueueSnackbar } = useSnackbar();
 
   useEffect(() => {
@@ -39,7 +39,7 @@ export const CardCounterComponent: React.FC<CardCounterComponentPropsType> = ({
 
   const createPossession = async (
     card: ICard,
-    cardType: "classic" | "reverse"
+    cardType: 'classic' | 'reverse',
   ) => {
     try {
       setIsDisabled(true);
@@ -48,12 +48,13 @@ export const CardCounterComponent: React.FC<CardCounterComponentPropsType> = ({
         any
       > = await loggedApi.post(`/possession/create`, {
         cardId: card.id,
-        ...(cardType === "reverse"
+        ...(cardType === 'reverse'
           ? {
-            cardPrintingId: card.cardAdditionalPrinting.find(
-              (print) => print.type === CardAdditionalPrintingTypeEnum.REVERSE
-            )?.id,
-          }
+              cardPrintingId: card.cardAdditionalPrinting.find(
+                (print) =>
+                  print.type === CardAdditionalPrintingTypeEnum.REVERSE,
+              )?.id,
+            }
           : {}),
       });
       setIsDisabled(false);
@@ -61,11 +62,11 @@ export const CardCounterComponent: React.FC<CardCounterComponentPropsType> = ({
         cards.map((localCard) => {
           if (card.id === localCard.id) {
             localCard.userCardPossessions.push(
-              response.data.data?.possession as unknown as IUserCardPossession
+              response.data.data?.possession as unknown as IUserCardPossession,
             );
           }
           return localCard;
-        })
+        }),
       );
       triggerChangeNotification(0, 1);
     } catch (e) {
@@ -75,21 +76,24 @@ export const CardCounterComponent: React.FC<CardCounterComponentPropsType> = ({
 
   const deletePossession = async (
     card: ICard,
-    cardType: "classic" | "reverse"
+    cardType: 'classic' | 'reverse',
   ) => {
-    if (getValue(card) === "0") return;
+    if (getValue(card) === '0') {
+      return;
+    }
     try {
       setIsDisabled(true);
       const response: AxiosResponse<
         IResponse<ISimpleDeletePossessionResponse>
       > = await loggedApi.post(`/possession/simple-delete`, {
         cardId: card.id,
-        ...(cardType === "reverse"
+        ...(cardType === 'reverse'
           ? {
-            cardPrintingId: card.cardAdditionalPrinting.find(
-              (print) => print.type === CardAdditionalPrintingTypeEnum.REVERSE
-            )?.id,
-          }
+              cardPrintingId: card.cardAdditionalPrinting.find(
+                (print) =>
+                  print.type === CardAdditionalPrintingTypeEnum.REVERSE,
+              )?.id,
+            }
           : {}),
       });
       setIsDisabled(false);
@@ -107,14 +111,14 @@ export const CardCounterComponent: React.FC<CardCounterComponentPropsType> = ({
             }
           }
           return localCard;
-        })
+        }),
       );
       triggerChangeNotification(1, 0);
     } catch (e: any) {
       console.log(e.response.data.error.code);
-      if (e.response.data.error.code === "UNDELETABLE_POSSESSIONS") {
+      if (e.response.data.error.code === 'UNDELETABLE_POSSESSIONS') {
         enqueueSnackbar(
-          "Toutes vos cartes ont des informations sauvegardées. Pour les supprimer, ouvrez le gestionnaire de la carte."
+          'Toutes vos cartes ont des informations sauvegardées. Pour les supprimer, ouvrez le gestionnaire de la carte.',
         );
         setIsDisabled(false);
       }
@@ -126,13 +130,13 @@ export const CardCounterComponent: React.FC<CardCounterComponentPropsType> = ({
     setNotifTimer(
       setTimeout(() => {
         setChangeNotificationValue(null);
-      }, 3000)
+      }, 3000),
     );
   };
 
   const triggerChangeNotification = async (
     oldValue: number,
-    newValue: number
+    newValue: number,
   ) => {
     if (changeNotificationValue !== null) {
       setChangeNotificationValue(newValue - oldValue + changeNotificationValue);
@@ -144,29 +148,27 @@ export const CardCounterComponent: React.FC<CardCounterComponentPropsType> = ({
 
   const setQuantity = async (
     card: ICard,
-    cardType: "classic" | "reverse",
-    element: EventTarget & HTMLInputElement
+    cardType: 'classic' | 'reverse',
+    element: EventTarget & HTMLInputElement,
   ) => {
     setIsDisabled(true);
-    const regex = new RegExp("^[0-9]+$");
+    const regex = new RegExp('^[0-9]+$');
     if (!regex.test(element.value)) {
-      element.style.color = "rgb(122, 28, 28)";
+      element.style.color = 'rgb(122, 28, 28)';
       setIsDisabled(false);
       return;
     }
-    element.style.color = "rgb(201, 201, 201)";
-    let oldValue;
-    let possessions = card.userCardPossessions.filter((possession) =>
-      cardType === "classic"
+    element.style.color = 'rgb(201, 201, 201)';
+    const possessions = card.userCardPossessions.filter((possession) =>
+      cardType === 'classic'
         ? possession.printing === null
-        : possession.printing?.type === CardAdditionalPrintingTypeEnum.REVERSE
+        : possession.printing?.type === CardAdditionalPrintingTypeEnum.REVERSE,
     );
 
     if (possessions.length === Number(element.value)) {
       setIsDisabled(false);
       return;
     }
-    oldValue = possessions.length;
 
     try {
       const response: AxiosResponse<
@@ -175,35 +177,37 @@ export const CardCounterComponent: React.FC<CardCounterComponentPropsType> = ({
       > = await loggedApi.post(`/possession/set-quantity`, {
         cardId: card.id,
         cardPrintingId:
-          cardType === "classic"
+          cardType === 'classic'
             ? null
             : card.cardAdditionalPrinting.find(
-              (print) => print.type === CardAdditionalPrintingTypeEnum.REVERSE
-            )?.id,
+                (print) =>
+                  print.type === CardAdditionalPrintingTypeEnum.REVERSE,
+              )?.id,
         quantity: element.value,
       });
 
-      if (response.data.data?.code === "CARDS_CREATED") {
+      if (response.data.data?.code === 'CARDS_CREATED') {
         triggerChangeNotification(0, response.data.data?.result?.length ?? 0);
         setCards(
           cards.map((localCard) => {
             if (card.id === localCard.id) {
               localCard.userCardPossessions =
                 localCard.userCardPossessions.concat(
-                  response.data.data?.result as unknown as IUserCardPossession
+                  response.data.data?.result as unknown as IUserCardPossession,
                 );
             }
             return localCard;
-          })
+          }),
         );
         return;
       }
       if (
-        response.data.data?.code === "CARDS_DELETED" ||
-        response.data.data?.code === "NOT_ENOUGH_DELETABLE"
+        response.data.data?.code === 'CARDS_DELETED' ||
+        response.data.data?.code === 'NOT_ENOUGH_DELETABLE'
       ) {
-        if (response.data.data?.code === "NOT_ENOUGH_DELETABLE")
+        if (response.data.data?.code === 'NOT_ENOUGH_DELETABLE') {
           enqueueSnackbar("Impossible de supprimer suffisament d'éléments.");
+        }
         triggerChangeNotification(response.data.data?.result?.length ?? 0, 0);
         setCards(
           cards.map((localCard) => {
@@ -214,11 +218,11 @@ export const CardCounterComponent: React.FC<CardCounterComponentPropsType> = ({
                     .map((e: IUserCardPossession) => e.id)
                     .indexOf(id);
                   localCard.userCardPossessions.splice(index, 1);
-                }
+                },
               );
             }
             return localCard;
-          })
+          }),
         );
         return;
       }
@@ -231,15 +235,15 @@ export const CardCounterComponent: React.FC<CardCounterComponentPropsType> = ({
 
   const getValue = (card: ICard) => {
     return String(
-      type === "classic"
+      type === 'classic'
         ? card?.userCardPossessions?.filter(
-          (possession) => possession?.printing === null
-        ).length
+            (possession) => possession?.printing === null,
+          ).length
         : card?.userCardPossessions?.filter(
-          (possession) =>
-            possession.printing?.type ===
-            CardAdditionalPrintingTypeEnum.REVERSE
-        ).length
+            (possession) =>
+              possession.printing?.type ===
+              CardAdditionalPrintingTypeEnum.REVERSE,
+          ).length,
     );
   };
 
@@ -247,8 +251,8 @@ export const CardCounterComponent: React.FC<CardCounterComponentPropsType> = ({
     setValue(element.value);
   };
 
-  return (canBeReverse && type === "reverse") || type !== "reverse" ? (
-    <div className={"CardCounter"}>
+  return (canBeReverse && type === 'reverse') || type !== 'reverse' ? (
+    <div className={'CardCounter' + (isUnloggedPage() ? ' unlogged' : '')}>
       <div className="CardCounter-name">{label}</div>
       <div className="CardCounter-buttons">
         {!isUnloggedPage() && (
@@ -269,8 +273,9 @@ export const CardCounterComponent: React.FC<CardCounterComponentPropsType> = ({
             value={value}
             type="number"
             onChange={(ev) => {
-              if (!isUnloggedPage())
-                changeHandler(ev.currentTarget)
+              if (!isUnloggedPage()) {
+                changeHandler(ev.currentTarget);
+              }
             }}
           />
         </div>
@@ -286,18 +291,20 @@ export const CardCounterComponent: React.FC<CardCounterComponentPropsType> = ({
         {changeNotificationValue !== 0 && changeNotificationValue && (
           <div
             className={
-              "CardCounter-diffNotif " +
-              (changeNotificationValue > 0 ? "isPositive" : "isNegative")
+              'CardCounter-diffNotif ' +
+              (changeNotificationValue > 0 ? 'isPositive' : 'isNegative')
             }
           >
-            {changeNotificationValue > 0 ? "+" : ""}
+            {changeNotificationValue > 0 ? '+' : ''}
             {changeNotificationValue}
           </div>
         )}
       </div>
     </div>
   ) : (
-    <div className="CardCounter-unusable">
+    <div
+      className={'CardCounter-unusable' + (isUnloggedPage() ? ' unlogged' : '')}
+    >
       <div className="CardCounter-name">{label}</div>
       <div className="CardCounter-unusableMessage">/</div>
     </div>

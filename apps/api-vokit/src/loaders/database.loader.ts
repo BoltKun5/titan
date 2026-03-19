@@ -27,7 +27,7 @@ export const databaseLoader = async (): Promise<Sequelize> => {
     });
     await connection.authenticate();
 
-    await connection.sync({ alter: true, force: false });
+    // await connection.sync({ alter: true, force: false });
 
     await Promise.all([
       connection.query('CREATE TABLE IF NOT EXISTS "SequelizeData" (name VARCHAR(255));'),
@@ -36,7 +36,7 @@ export const databaseLoader = async (): Promise<Sequelize> => {
 
     AppConfig.sequelize = connection;
 
-    // await customMigrations(connection);
+    await customMigrations(connection);
     // await customSeeders(connection);
 
     AppConfig.process.sequelizeReady = true;

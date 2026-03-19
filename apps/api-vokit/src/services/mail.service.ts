@@ -91,7 +91,7 @@ class MailService extends Service {
                                             "
                                           >
                                             <img
-                                              src="https://storage-staging-api.abyss-project.fr/api/user-application-file/file/download/public-access/d14188f6-68e2-4149-bd65-62830d57c71d"
+                                              src="https://storage-api.abyss-project.fr/api/application-file/file/download/public-access/97ba8673-1802-4c15-9b5b-92bb5bf73355"
                                               alt="Logo Vokit"
                                               style="height: 50px; margin: auto"
                                             />
@@ -447,7 +447,7 @@ class MailService extends Service {
                                             "
                                           >
                                             <img
-                                              src="https://storage-staging-api.abyss-project.fr/api/user-application-file/file/download/public-access/d14188f6-68e2-4149-bd65-62830d57c71d"
+                                              src="https://storage-api.abyss-project.fr/api/application-file/file/download/public-access/97ba8673-1802-4c15-9b5b-92bb5bf73355"
                                               alt="Logo Vokit"
                                               style="height: 50px; margin: auto"
                                             />

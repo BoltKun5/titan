@@ -7,8 +7,8 @@ export interface ISetUpdateBody {
   // cardCount: CardCountType;
   releaseDate: Date;
   code: string;
-  logoId: string;
-  imageId: string;
+  logoId?: string;
+  imageId?: string;
 }
 
 export interface ISerieUpdateBody {
@@ -23,5 +23,6 @@ export interface ICreateSetBody {
 
 export interface IImportDataBody {
   data: any[];
+  ignoreDuplicate?: boolean;
   id: string;
 }

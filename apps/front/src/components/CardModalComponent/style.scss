@@ -3,10 +3,9 @@
 .CardModal {
   background: $primary-bg;
   max-width: 95%;
-  max-height: calc(100% - 86px);
   position: absolute !important;
   left: 50%;
-  top: calc(43px + 50%);
+  top: calc(38px + 50%);
   outline: none !important;
   overflow: auto;
 
@@ -15,8 +14,8 @@
     display: flex;
     padding-top: 40px;
     overflow: hidden auto;
-    max-height: calc(100vh - 136px);
     box-sizing: border-box;
+    max-height: calc(trueHeight() - 76px);
   }
 
   & img {
@@ -371,7 +370,7 @@
 
 @media (max-width: 730px) {
   .CardModal {
-    max-width: 100%;
+    max-width: calc(100% - 20px);
     width: 100%;
     box-sizing: border-box;
 
@@ -388,11 +387,14 @@
 
     &-possessions {
       min-width: 95%;
+      padding-bottom: 10px;
     }
 
     &-cardInfos {
       flex-direction: column;
       width: 95%;
+      margin: auto;
+      align-items: center;
     }
 
     &-cardMisc {

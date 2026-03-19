@@ -36,13 +36,10 @@ export class CardService extends EntityService<Card, ICard> {
   public getOptions(params: ICardQuery, user: IUser): FindOptions | IncludeOptions {
     return {
       where: {
-        ...(params?.hidden
-          ? {}
-          : {
-              name: {
-                [Op.iLike]: `%${params?.namefilter ?? ''}%`,
-              },
-            }),
+        name: {
+          [Op.iLike]: `%${params?.namefilter ?? ''}%`,
+        },
+
         ...(params?.rarity && {
           rarity: {
             [Op.in]: params.rarity,
@@ -151,7 +148,7 @@ export class CardService extends EntityService<Card, ICard> {
         case 'default':
           mainOrder = [
             [{ model: CardSet, as: 'cardSet' }, 'releaseDate', 'desc'],
-            [Sequelize.fn('lpad', Sequelize.col('localId'), 5, '00'), 'asc'],
+            [Sequelize.fn('lpad', Sequelize.col('localId'), 9, '00'), 'asc'],
           ];
           break;
         case 'name':
@@ -693,10 +690,15 @@ export class CardService extends EntityService<Card, ICard> {
         Uncommon: 2,
         Rare: 3,
         Holo: 4,
-        'Ultra Rare': 5,
+        'Ultra-rare': 5,
         'Secret Rare': 6,
         Amazing: 7,
         None: 8,
+        'Double Rare': 9,
+        'Ultra Rare': 10,
+        'Illustration Rare': 11,
+        'Illustration Spéciale Rare': 12,
+        'Hyper Rare': 13,
       };
 
       const distinctCountBySet: any = await Card.count({

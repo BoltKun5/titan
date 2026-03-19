@@ -1,9 +1,9 @@
-import React, { useContext } from "react";
+import React, { useContext } from 'react';
 
-import StoreContext from "../../hook/contexts/StoreContext";
-import { CardCounterComponent } from "../CardCounterComponent/CardCounterComponent";
-import "./style.scss";
-import { SingleCardOverlayComponentPropsType } from "../../local-core";
+import StoreContext from '../../hook/contexts/StoreContext';
+import { CardCounterComponent } from '../CardCounterComponent/CardCounterComponent';
+import './style.scss';
+import { SingleCardOverlayComponentPropsType } from '../../local-core';
 
 export const SingleCardOverlayComponent: React.FC<SingleCardOverlayComponentPropsType> =
   ({ card, index, firstType }) => {
@@ -12,13 +12,13 @@ export const SingleCardOverlayComponent: React.FC<SingleCardOverlayComponentProp
     return (
       <>
         <div
-          key={"overlay" + card.localId + index}
+          key={'overlay' + card.localId + index}
           className="SingleCardOverlay"
         >
           <div className="SingleCardOverlay-content">
             <CardCounterComponent
               label={
-                firstType === "classic" ? "Carte normale" : "Carte reverse"
+                firstType === 'classic' ? 'Carte normale' : 'Carte reverse'
               }
               type={firstType}
               card={card}
@@ -28,8 +28,8 @@ export const SingleCardOverlayComponent: React.FC<SingleCardOverlayComponentProp
               <CardCounterComponent
                 canBeReverse={card.canBeReverse}
                 card={card}
-                label={"Carte reverse"}
-                type={"reverse"}
+                label={'Carte reverse'}
+                type={'reverse'}
               />
             )}
           </div>

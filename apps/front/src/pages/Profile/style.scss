@@ -159,7 +159,7 @@
       padding: 10px;
       display: flex;
       overflow: hidden auto;
-      max-height: calc(100vh - 136px);
+      max-height: calc(trueHeight() - 136px);
       box-sizing: border-box;
       width: 100%;
     }

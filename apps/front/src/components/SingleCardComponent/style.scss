@@ -11,7 +11,6 @@
   background-color: $primary-bg;
   border: 1px solid $primary-border;
   max-width: 300px;
-  min-height: 300px;
 
   &-hoverHandler {
     width: 100%;
@@ -65,16 +64,17 @@
         display: flex;
         gap: 10px;
         justify-content: start;
+        align-items: center;
 
         &-name {
           font-size: 15px;
           color: $white;
-          width: 200px;
           display: flex;
           align-items: center;
 
           & span {
-            width: 20px;
+            width: 60px;
+            min-width: 60px;
             margin-right: 5px;
             justify-content: center;
             display: flex;
@@ -85,11 +85,12 @@
         &-type {
           height: 30px;
           width: 30px;
-          background-color: $white;
+          min-width: 30px;
+          background-color: $primary;
           display: flex;
           justify-content: center;
           align-items: center;
-          border-radius: 100%;
+          border-radius: 1000px;
 
           & img {
             width: 80%;
@@ -104,11 +105,12 @@
       &-setLogo {
         height: 30px;
         width: 30px;
+        min-width: 30px;
         background-color: $white;
         display: flex;
         justify-content: center;
         align-items: center;
-        border-radius: 100%;
+        clip-path: clipPath(5px);
 
         & img {
           width: 80%;
@@ -129,8 +131,30 @@
       }
 
       & .CardCounter-unusable {
+        width: 200px;
+
+        &Message {
+          width: 100px;
+          margin: auto;
+          box-sizing: border-box;
+        }
+      }
+    }
+
+    & .CardCounter {
+      &-name {
         width: 120px;
       }
+
+      &-unusable {
+        width: 196px !important;
+
+        &.unlogged {
+          width: 120px !important;
+        }
+      }
+
+
     }
   }
 
@@ -258,22 +282,92 @@
     border-radius: 12px;
     opacity: 0;
     transition: .3s;
-    // transform: rotateY(180deg);
 
     &.show {
       opacity: 1;
-      // transform: rotateY(0deg);
     }
   }
 }
 
-@media (max-width: 1000px) {
+@media (max-width: 1100px) {
+  #root {
+    & .SingleCard:not(.line) {
+
+      .SingleCard {
+        &-imgContainer:hover::after {
+          border-radius: 6px;
+        }
+
+        &-img {
+          border-radius: 6px;
+        }
+      }
+
+      .CardCounter {
+        &-name {
+          font-size: 12px;
+        }
+
+        &-minus,
+        &-plus {
+          width: 25px;
+          height: 25px;
+          clip-path: clipPath(3px);
+          font-size: 18px;
+
+          &::after {
+            clip-path: clipPath(3px);
+          }
+        }
+
+        &-inputContainer {
+          width: 70px;
+          height: 25px;
+
+          input {
+            width: 70px;
+            height: 25px;
+          }
+        }
+
+        &-unusable {
+          font-size: 12px;
+          width: 140px !important;
+
+          &Message {
+            max-width: 70px;
+            height: 25px;
+          }
+        }
+      }
+    }
+  }
+
+  .SingleCard {
+    &Overlay {
+      clip-path: clipPath(10px);
+
+      &::before {
+        clip-path: clipPath(10px);
+      }
+    }
+  }
+
   .SingleCard.line {
     min-height: 60px;
+
+    & .SingleCard-img {
+      border-radius: 3px;
+
+      &Container {
+        min-width: 44px;
+      }
+    }
 
     .CardCounter {
       &-name {
         font-size: 12px;
+        width: 90px;
       }
 
       &-minus,
@@ -290,15 +384,30 @@
 
       &-inputContainer {
         width: 70px;
+        height: 25px;
+
+        &::before {
+          clip-path: clipPath(3px);
+
+        }
 
         input {
           width: 70px;
+          clip-path: clipPath(3px);
         }
       }
 
       &-unusable {
         font-size: 12px;
         width: 140px !important;
+
+        &.unlogged {
+          width: 90px !important
+        }
+
+        &Message {
+          width: 70px !important;
+        }
       }
     }
   }
@@ -306,17 +415,36 @@
 
 @media (max-width: 800px) {
   .SingleCard.line {
-    flex-wrap: wrap;
     min-width: calc(100% - 70px);
-    width: fit-content;
     max-width: 100%;
+    width: calc(100% - 10px);
     box-sizing: border-box;
+    flex-wrap: wrap;
+    gap: 2px 10px;
+    padding: 10px 3px !important;
 
-    .SingleCard-lineInfo-name {
-      width: auto;
-      flex: 1 1 auto;
-      overflow: hidden;
-      max-width: 145px;
+    & .SingleCardOverlay {
+      margin: auto;
+    }
+
+    & .SingleCard-setLogo {
+      margin-left: 10px;
+    }
+
+    .SingleCard-lineInfo {
+      max-width: calc(100% - 110px);
+
+      &-name {
+        width: auto;
+        flex: 1 1 auto;
+        overflow: hidden;
+      }
+    }
+  }
+
+  .SingleCard {
+    &-cardCounterAround {
+      min-width: calc(100% - 340px / 2);
     }
   }
 }

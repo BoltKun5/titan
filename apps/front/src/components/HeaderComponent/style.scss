@@ -268,7 +268,7 @@
 
     &-navButtons {
       position: absolute;
-      height: calc(100vh - 57px);
+      height: calc(trueHeight() - 57px);
       top: 55px;
       width: 250px;
       border: 1px solid $primary-border;

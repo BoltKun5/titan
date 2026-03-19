@@ -4,7 +4,8 @@
   "version": "0.0.0",
   "scripts": {
     "dev": "vite",
-    "build": "vite build"
+    "build": "vite build",
+    "build-staging": "vite build --mode staging"
   },
   "dependencies": {
     "@mui/icons-material": "^5.10.9",

@@ -1,4 +1,0 @@
-export enum AdminPageTabEnum {
-  'NONE',
-  DATA_IMPORT,
-}

@@ -5,4 +5,5 @@ export enum CardAdditionalPrintingCreatorEnum {
 
 export enum CardAdditionalPrintingTypeEnum {
   'REVERSE' = 0,
+  'FIRST_EDITION' = 1,
 }

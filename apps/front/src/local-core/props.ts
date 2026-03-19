@@ -1,5 +1,5 @@
 import { MouseEventHandler } from "react";
-import { ICardSerie, ICard, IUserCardPossession } from "../../../../packages/core/src";
+import { ICard, ICardSerie, IUserCardPossession } from "vokit_core";
 
 
 export type SideBarComponentPropsType = {

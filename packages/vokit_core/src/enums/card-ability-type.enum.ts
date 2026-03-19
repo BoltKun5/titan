@@ -1,0 +1,7 @@
+export enum CardAbilityTypeEnum {
+  'Pokemon Power',
+  'Poke-BODY',
+  'Poke-POWER',
+  'Ability',
+  'Ancient Trait',
+}

@@ -1,0 +1,4 @@
+export enum CardEnergyTypeEnum {
+  'Normal',
+  'Special',
+}

@@ -1,5 +1,4 @@
 import { Router } from 'express';
-require('express-async-errors');
 
 const route = Router();
 

@@ -3,7 +3,7 @@ import {
   IUpdateOptionBody,
   IUpdateShownNameBody,
   IUpdateUserPasswordBody,
-} from './../../../../../packages/core/src/types/interface/api/requests/user.request';
+} from 'vokit_core';
 import { Request, Response } from 'express';
 import bcrypt from 'bcryptjs';
 import userService from '../../services/user.service';

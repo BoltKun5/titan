@@ -105,6 +105,8 @@ export const Home: React.FC = () => {
         </div>
       </div>
 
+      <div className="Reload" onClick={() => { fetchSeries(); fetchCards() }}>Reload</div>
+
       <div className="UpdateData-container">
         {currentCard && <CardComponent
           card={currentCard}
@@ -114,7 +116,7 @@ export const Home: React.FC = () => {
         {!currentCard && currentSet && <SetComponent
           set={currentSet}
           series={(series ?? [])}
-          update={() => {fetchSeries(); fetchCards()}}
+          update={() => { fetchSeries(); fetchCards() }}
         />}
         {!currentCard && !currentSet && series?.find(e => e.id === selectedSerieId) && <SerieComponent
           serie={series?.find(e => e.id === selectedSerieId) as ICardSerie}

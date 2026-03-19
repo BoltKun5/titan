@@ -4,7 +4,9 @@
   "version": "0.0.0",
   "scripts": {
     "dev": "vite",
-    "build": "vite build"
+    "dev-host": "vite --host",
+    "build": "vite build",
+    "build-staging": "vite build --mode staging"
   },
   "dependencies": {
     "@emotion/react": "^11.9.0",

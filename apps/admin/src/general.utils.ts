@@ -20,6 +20,6 @@ export const getImageSource = (
   highQuality: boolean = false
 ): string => {
   if (highQuality)
-    return `${import.meta.env.VITE_ASSETS_URL}/user-application-file/file/download/public-access/${card.imageId}`;
-  return `${import.meta.env.VITE_ASSETS_URL}/user-application-file-thumbnail/file-thumbnail/${card.thumbnailId}/download`
+    return `${import.meta.env.VITE_ASSETS_URL}/application-file/file/download/public-access/${card.imageId}`;
+  return `${import.meta.env.VITE_ASSETS_URL}/application-file-thumbnail/file-thumbnail/${card.thumbnailId}/download`
 };

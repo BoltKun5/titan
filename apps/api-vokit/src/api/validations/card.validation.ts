@@ -49,6 +49,8 @@ export default class CardValidation {
       rarity: Joi.number(),
       setId: Joi.string(),
       types: Joi.array().items(Joi.number().valid(...Object.values(CardTypeEnum))),
+      imageId: Joi.string().optional(),
+      thumbnailId: Joi.string().optional(),
     }).options({ presence: 'required' });
 
     const result = querySchema.validate(data);
