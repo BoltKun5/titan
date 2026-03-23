@@ -2,6 +2,7 @@ import * as config from '../config/index';
 import { Sequelize } from 'sequelize-typescript';
 import { Logger } from 'abyss_monitor_core';
 import { v4 } from 'uuid';
+import { Server as SocketIOServer } from 'socket.io';
 
 export default class AppConfig {
   public static process = {
@@ -13,6 +14,7 @@ export default class AppConfig {
 
   public static sequelize: Sequelize;
   public static config = config.default;
+  public static io: SocketIOServer;
 
   public static logger: Logger;
 

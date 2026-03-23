@@ -5,6 +5,8 @@ export interface ISigninAuthBody {
 
 export interface ISignupAuthBody {
   password: string;
+  firstName: string;
+  lastName: string;
   shownName: string;
   id: string;
   mail: string;

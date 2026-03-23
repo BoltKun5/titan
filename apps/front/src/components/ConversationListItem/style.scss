@@ -1,0 +1,90 @@
+@import "../../scss/variables.scss";
+
+.ConversationListItem {
+  display: flex;
+  align-items: center;
+  padding: 12px 20px;
+  cursor: pointer;
+  transition: background-color 0.15s;
+  border-bottom: 1px solid rgba($primary-border, 0.5);
+
+  &:hover {
+    background-color: rgba($white-bg, 0.5);
+  }
+
+  &:active {
+    background-color: $white-bg;
+  }
+}
+
+.ConversationListItem-avatar {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background-color: $secondary;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  margin-right: 14px;
+
+  span {
+    color: $white;
+    font-size: 16px;
+    font-weight: 600;
+  }
+}
+
+.ConversationListItem-content {
+  flex: 1;
+  min-width: 0;
+}
+
+.ConversationListItem-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 4px;
+}
+
+.ConversationListItem-name {
+  font-weight: 600;
+  color: $white;
+  font-size: 15px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.ConversationListItem-time {
+  font-size: 12px;
+  color: $gray;
+  flex-shrink: 0;
+  margin-left: 8px;
+}
+
+.ConversationListItem-bottom {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.ConversationListItem-preview {
+  font-size: 13px;
+  color: $gray;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  flex: 1;
+}
+
+.ConversationListItem-badge {
+  background-color: $primary;
+  color: #fff;
+  border-radius: 12px;
+  padding: 2px 8px;
+  font-size: 12px;
+  font-weight: 600;
+  margin-left: 8px;
+  flex-shrink: 0;
+}

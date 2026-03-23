@@ -18,6 +18,8 @@ export default class AuthValidation {
   static signupBody(data: ISignupAuthBody): ISignupAuthBody {
     const querySchema = Joi.object<ISignupAuthBody>({
       password: Joi.string().min(5),
+      firstName: Joi.string().min(1).max(50),
+      lastName: Joi.string().min(1).max(50),
       shownName: Joi.string().min(3).max(30),
       mail: Joi.string().email({ tlds: { allow: false } }),
     }).options({ presence: 'required' });
@@ -27,5 +29,4 @@ export default class AuthValidation {
 
     return { ...result.value };
   }
-
 }

@@ -3,6 +3,7 @@ import { json, urlencoded } from 'body-parser';
 import cors from 'cors';
 import cookieParser from 'cookie-parser';
 import createError from 'http-errors';
+import http from 'http';
 import routes from '../api';
 import { ILocals } from '../core';
 import AppConfig from '../modules/app-config.module';
@@ -14,14 +15,16 @@ import {
   loggerSetupMiddleware,
 } from 'abyss_monitor_core';
 import { HttpResponseError } from '../modules/http-response-error';
+import { initializeSocketGateway } from '../gateway/socket.gateway';
 import 'express-async-errors';
 import helmet from 'helmet';
 import compression from 'compression';
 
 const PREFIX = '/api';
 
-export const apiLoader = (): express.Application => {
+export const apiLoader = (): http.Server => {
   const app = express();
+  const httpServer = http.createServer(app);
 
   app.use(contextMiddleware);
 
@@ -34,8 +37,14 @@ export const apiLoader = (): express.Application => {
       'Access-Control-Allow-Headers',
       'Origin, X-Requested-With, Content, Accept, Content-Type, Authorization',
     );
-    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, PATCH, OPTIONS');
-    res.setHeader('Access-Control-Expose-Headers', 'Content-disposition, filename');
+    res.setHeader(
+      'Access-Control-Allow-Methods',
+      'GET, POST, PUT, DELETE, PATCH, OPTIONS',
+    );
+    res.setHeader(
+      'Access-Control-Expose-Headers',
+      'Content-disposition, filename',
+    );
     next();
   });
 
@@ -52,13 +61,24 @@ export const apiLoader = (): express.Application => {
   });
 
   app.use(loggerSetupMiddleware);
-  app.use((req, res, next) => loggerEndpointMiddleware(AppConfig.logger, req, res as any, next));
+  app.use((req, res, next) =>
+    loggerEndpointMiddleware(AppConfig.logger, req, res as any, next),
+  );
 
   app.use(PREFIX, routes());
 
   const endpoints = listEndpoints(app);
-  const numberOfRoutes = endpoints.reduce((acc, endpoint) => acc + endpoint.methods.length, 0);
+  const numberOfRoutes = endpoints.reduce(
+    (acc, endpoint) => acc + endpoint.methods.length,
+    0,
+  );
   AppConfig.logger.log(`${numberOfRoutes} Routes loaded !`, {
+    scenario: LogScenario.SYSTEM_STARTUP,
+  });
+
+  // Initialize Socket.IO on the same HTTP server
+  initializeSocketGateway(httpServer);
+  AppConfig.logger.log('Socket.IO gateway initialized', {
     scenario: LogScenario.SYSTEM_STARTUP,
   });
 
@@ -74,16 +94,19 @@ export const apiLoader = (): express.Application => {
     },
   );
 
-  app
+  httpServer
     .listen(AppConfig.config.app.port, () => {
-      AppConfig.logger.log(`API Server listening on port: ${AppConfig.config.app.port}`, {
-        scenario: LogScenario.SYSTEM_STARTUP,
-      });
+      AppConfig.logger.log(
+        `API Server listening on port: ${AppConfig.config.app.port}`,
+        {
+          scenario: LogScenario.SYSTEM_STARTUP,
+        },
+      );
     })
     .on('error', (err) => {
       AppConfig.logger.error(err, { scenario: LogScenario.SYSTEM_STARTUP });
       process.exit(1);
     });
 
-  return app;
+  return httpServer;
 };

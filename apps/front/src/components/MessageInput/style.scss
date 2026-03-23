@@ -1,0 +1,33 @@
+@import "../../scss/variables.scss";
+
+.MessageInput {
+  display: flex;
+  align-items: flex-end;
+  padding: 8px 12px;
+  background-color: $dark;
+  border-top: 1px solid $primary-border;
+  gap: 8px;
+}
+
+.MessageInput-field {
+  flex: 1;
+  background-color: $white-bg;
+  border: none;
+  border-radius: 20px;
+  padding: 10px 16px;
+  color: $white;
+  font-size: 14px;
+  font-family: inherit;
+  resize: none;
+  max-height: 120px;
+  outline: none;
+
+  &::placeholder {
+    color: $gray;
+  }
+}
+
+.MessageInput-send {
+  flex-shrink: 0;
+  padding: 8px !important;
+}

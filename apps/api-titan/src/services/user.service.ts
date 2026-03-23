@@ -8,6 +8,8 @@ import { IncludeOptionsWithModel } from '../database/custom/custom-model.model';
 interface ParamsCreate {
   mail: string;
   password: string;
+  firstName: string;
+  lastName: string;
   shownName: string;
 }
 
@@ -44,7 +46,7 @@ export class UserService extends EntityService<User, IUser> {
 
   public async create(params: ParamsCreate): Promise<User> {
     try {
-      const { mail, password, shownName } = params;
+      const { mail, password, firstName, lastName, shownName } = params;
       const hash = bcrypt.hashSync(password, 12);
 
       this.logger.log(`User has been created with mail ${mail}`);
@@ -52,7 +54,9 @@ export class UserService extends EntityService<User, IUser> {
       const user = await User.create({
         mail,
         password: hash,
-        shownName: shownName,
+        firstName,
+        lastName,
+        shownName,
         role: 0,
       });
       return user;

@@ -1,5 +1,6 @@
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
+import path from 'path';
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -9,16 +10,15 @@ export default defineConfig({
     'process.env.NODE_DEBUG': JSON.stringify(''),
   },
   plugins: [react()],
-  optimizeDeps: {
-    include: [
-      './../../packages/titan_core/src',
-      './../../packages/titan_core/dist',
-    ],
+  resolve: {
+    alias: {
+      titan_core: path.resolve(__dirname, '../../packages/titan_core/src'),
+    },
   },
   build: {
     outDir: './dist',
     commonjsOptions: {
-      include: [/titan_core/, /node_modules/],
+      include: [/node_modules/],
     },
   },
 });

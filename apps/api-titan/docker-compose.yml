@@ -4,9 +4,9 @@ services:
   postgres:
     restart: unless-stopped
     image: postgres:latest
-    container_name: "postgres"
+    container_name: 'titan-postgres-main'
     ports:
-      - "5432:5432"
+      - '5432:5432'
     environment:
       POSTGRES_USER: root
       POSTGRES_PASSWORD: WWxX26SVWhr29

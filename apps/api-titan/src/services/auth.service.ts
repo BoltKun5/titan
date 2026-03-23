@@ -10,6 +10,8 @@ import { Service } from '../core';
 type ParamsSignup = {
   mail: string;
   password: string;
+  firstName: string;
+  lastName: string;
   shownName: string;
 };
 
@@ -24,12 +26,20 @@ type ResultLogin = {
 };
 
 class AuthService extends Service {
-  public async signup({ mail, password, shownName }: ParamsSignup): Promise<User> {
+  public async signup({
+    mail,
+    password,
+    firstName,
+    lastName,
+    shownName,
+  }: ParamsSignup): Promise<User> {
     this.logger.log(`New user **${mail}** registered`);
 
     return UserService.create({
       mail,
       password,
+      firstName,
+      lastName,
       shownName,
     });
   }
@@ -63,9 +73,14 @@ class AuthService extends Service {
     };
   }
 
-  public token(payload: Partial<SessionTokenPayload>, unlimited?: boolean): string {
+  public token(
+    payload: Partial<SessionTokenPayload>,
+    unlimited?: boolean,
+  ): string {
     return jws.sign({ ...payload }, AppConfig.config.app.auth.secretToken, {
-      ...(!unlimited ? { expiresIn: AppConfig.config.app.auth.expiration } : {}),
+      ...(!unlimited
+        ? { expiresIn: AppConfig.config.app.auth.expiration }
+        : {}),
     });
   }
 }

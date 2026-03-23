@@ -1,7 +1,9 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { Route, Routes, useNavigate } from 'react-router-dom';
+import { Navigate, Route, Routes, useNavigate } from 'react-router-dom';
 import { Login } from './pages/Login/Login';
 import { SignUp } from './pages/SignUp/SignUp';
+import { Conversations } from './pages/Conversations/Conversations';
+import { Chat } from './pages/Chat/Chat';
 import { HeaderComponent } from './components/HeaderComponent/HeaderComponent';
 import StoreContext from './hook/contexts/StoreContext';
 import { loggedApi } from './axios';
@@ -36,7 +38,7 @@ export const App: React.FC = () => {
       if (!isUnloggedPage()) {
         localStorage.removeItem('token');
         localStorage.removeItem('user');
-        navigate('/');
+        navigate('/login');
       }
     } finally {
       setIsReady(true);
@@ -57,8 +59,9 @@ export const App: React.FC = () => {
   };
 
   const showHeader = () => {
-    const hideHeaderPaths = ['/login', '/signup'];
-    return !hideHeaderPaths.includes(window.location.pathname);
+    const hideHeaderPaths = ['/login', '/signup', '/chat', '/conversations'];
+    const path = window.location.pathname;
+    return !hideHeaderPaths.some((p) => path.startsWith(p));
   };
 
   const handleResizeForMobile = () => {
@@ -83,7 +86,18 @@ export const App: React.FC = () => {
               <Routes>
                 <Route path="/login" element={<Login />} />
                 <Route path="/signup" element={<SignUp />} />
-                <Route path="" element={<div>Titan - Accueil</div>} />
+                <Route path="/conversations" element={<Conversations />} />
+                <Route path="/chat/:conversationId" element={<Chat />} />
+                <Route
+                  path="*"
+                  element={
+                    user.id ? (
+                      <Navigate to="/conversations" replace />
+                    ) : (
+                      <Navigate to="/login" replace />
+                    )
+                  }
+                />
               </Routes>
             </StoreContext.Provider>
           </div>

@@ -1,0 +1,68 @@
+@import "../../scss/variables.scss";
+
+.MessageBubble {
+  display: flex;
+  flex-direction: column;
+  max-width: 75%;
+  margin-bottom: 2px;
+
+  &--own {
+    align-self: flex-end;
+
+    .MessageBubble-content {
+      background-color: $secondary;
+      border-radius: 12px 12px 4px 12px;
+    }
+  }
+
+  &--other {
+    align-self: flex-start;
+
+    .MessageBubble-content {
+      background-color: $white-bg;
+      border-radius: 12px 12px 12px 4px;
+    }
+  }
+
+  &--system {
+    align-self: center;
+    max-width: 85%;
+    margin: 8px 0;
+
+    span {
+      font-size: 12px;
+      color: $gray;
+      font-style: italic;
+      text-align: center;
+    }
+  }
+}
+
+.MessageBubble-sender {
+  font-size: 12px;
+  color: $primary;
+  font-weight: 600;
+  margin-bottom: 2px;
+  padding-left: 8px;
+}
+
+.MessageBubble-content {
+  padding: 8px 12px;
+  position: relative;
+}
+
+.MessageBubble-text {
+  margin: 0;
+  color: $white;
+  font-size: 14px;
+  line-height: 1.4;
+  word-wrap: break-word;
+}
+
+.MessageBubble-time {
+  font-size: 11px;
+  color: rgba($gray, 0.7);
+  float: right;
+  margin-left: 8px;
+  margin-top: 2px;
+}

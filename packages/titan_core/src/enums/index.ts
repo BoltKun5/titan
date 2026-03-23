@@ -4,3 +4,7 @@ export * from './log-type.enum';
 export * from './api-method.enum';
 export * from './http-response-error.enum';
 export * from './user-role.enum';
+
+// Messaging
+export * from './message-type.enum';
+export * from './conversation-type.enum';

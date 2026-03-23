@@ -17,7 +17,11 @@ class AuthController implements Controller {
   private static readonly logger = new LoggerModel(AuthController.name);
 
   async signIn(
-    req: Request<Record<string, never>, IResponse<ISigninAuthResponse>, ISigninAuthBody>,
+    req: Request<
+      Record<string, never>,
+      IResponse<ISigninAuthResponse>,
+      ISigninAuthBody
+    >,
     res: Response<IResponse<ISigninAuthResponse>, IResponseUnloggedLocals>,
   ): Promise<void> {
     req.body = AuthValidation.signinBody(req.body);
@@ -36,7 +40,11 @@ class AuthController implements Controller {
   }
 
   async signUp(
-    req: Request<Record<string, never>, IResponse<ISignupAuthResponse>, ISignupAuthBody>,
+    req: Request<
+      Record<string, never>,
+      IResponse<ISignupAuthResponse>,
+      ISignupAuthBody
+    >,
     res: Response<IResponse<ISignupAuthResponse>, IResponseUnloggedLocals>,
   ): Promise<void> {
     req.body = AuthValidation.signupBody(req.body);
@@ -56,6 +64,8 @@ class AuthController implements Controller {
     }
 
     const user = await authService.signup({
+      firstName: req.body.firstName,
+      lastName: req.body.lastName,
       shownName: req.body.shownName,
       mail: req.body.mail,
       password: req.body.password,

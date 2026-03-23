@@ -1,0 +1,49 @@
+@import "../../scss/variables.scss";
+
+.NewConversationModal {
+  .MuiDialog-paper {
+    background-color: $primary-bg;
+    color: $white;
+  }
+
+  .MuiDialogTitle-root {
+    color: $white;
+    border-bottom: 1px solid $primary-border;
+  }
+
+  .MuiTextField-root {
+    .MuiInputBase-root {
+      color: $white;
+      background-color: $white-bg;
+      border-radius: 8px;
+    }
+
+    .MuiInputBase-input::placeholder {
+      color: $gray;
+    }
+  }
+}
+
+.NewConversationModal-results {
+  max-height: 300px;
+  overflow-y: auto;
+  margin-top: 8px;
+
+  .MuiListItemText-primary {
+    color: $white;
+  }
+
+  .MuiCheckbox-root {
+    color: $gray;
+
+    &.Mui-checked {
+      color: $primary;
+    }
+  }
+}
+
+.NewConversationModal-loader {
+  display: flex;
+  justify-content: center;
+  padding: 20px;
+}

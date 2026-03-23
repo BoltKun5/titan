@@ -3,7 +3,6 @@ import { Response, Request } from 'express';
 import { ServiceException } from '../utils/error.utils';
 import { HttpErrorCode } from 'titan_core';
 import { ILocals } from '../core';
-import AppConfig from './app-config.module';
 
 export class HttpResponseError {
   public static createInternalServerError(): createError.HttpError {
@@ -90,13 +89,10 @@ export class HttpResponseError {
 
     if (error instanceof ServiceException) {
       return createError(
-        
-       
-          error.getCode() === HttpErrorCode.notFound ? 404 : 400,
-          {
-            code: error.getCode(),
-         ,
-         type: error.getType(),
+        error.getCode() === HttpErrorCode.notFound ? 404 : 400,
+        {
+          code: error.getCode(),
+          type: error.getType(),
           message: error.message,
         },
       );
@@ -109,7 +105,8 @@ export class HttpResponseError {
     error: Error | createError.HttpError,
     req: Request,
     res: Response<any, ILocals>,
-  ): void {    const errorToUse = HttpResponseError.generateError(error);
+  ): void {
+    const errorToUse = HttpResponseError.generateError(error);
 
     if (errorToUse.status >= 500) {
     }

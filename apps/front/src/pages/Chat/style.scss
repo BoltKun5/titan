@@ -1,0 +1,49 @@
+@use '../../scss/variables' as *;
+
+.Chat-Page {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  background-color: $primary-bg;
+}
+
+.Chat-header {
+  display: flex;
+  align-items: center;
+  padding: 10px 16px;
+  background-color: $secondary;
+  color: #fff;
+  gap: 10px;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+
+  .Chat-backButton {
+    padding: 6px;
+  }
+
+  .Chat-headerInfo {
+    flex: 1;
+
+    h3 {
+      margin: 0;
+      font-size: 1.1rem;
+      font-weight: 500;
+    }
+
+    .Chat-typing {
+      font-size: 0.75rem;
+      color: rgba(255, 255, 255, 0.7);
+      font-style: italic;
+    }
+  }
+}
+
+.Chat-messages {
+  flex: 1;
+  overflow-y: auto;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
