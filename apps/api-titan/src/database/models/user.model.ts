@@ -83,6 +83,26 @@ export class User
   })
   isActive: boolean;
 
+  @AllowNull(true)
+  @Column({
+    type: DataType.DATE,
+  })
+  lastSeenAt: string | null;
+
+  @AllowNull(true)
+  @Default(null)
+  @Column({
+    type: DataType.STRING(500),
+  })
+  bio: string | null;
+
+  @AllowNull(true)
+  @Default(null)
+  @Column({
+    type: DataType.STRING,
+  })
+  avatarUrl: string | null;
+
   @HasMany(() => ConversationParticipant)
   participations: ConversationParticipant[];
 }

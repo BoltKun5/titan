@@ -36,6 +36,15 @@
       color: rgba(255, 255, 255, 0.7);
       font-style: italic;
     }
+
+    .Chat-subtitle {
+      font-size: 0.75rem;
+      display: block;
+    }
+
+    .Chat-presence {
+      color: rgba(255, 255, 255, 0.6);
+    }
   }
 }
 
@@ -46,4 +55,101 @@
   display: flex;
   flex-direction: column;
   gap: 4px;
+}
+
+.Chat-replyBar {
+  display: flex;
+  align-items: center;
+  padding: 8px 16px;
+  background-color: rgba($secondary, 0.9);
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  gap: 8px;
+
+  &-icon {
+    color: $primary;
+    font-size: 20px;
+  }
+
+  &-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+
+  &-sender {
+    font-size: 12px;
+    color: $primary;
+    font-weight: 600;
+  }
+
+  &-text {
+    font-size: 13px;
+    color: rgba(255, 255, 255, 0.7);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+}
+
+.Chat-searchBar {
+  padding: 8px 16px;
+  background-color: rgba($secondary, 0.95);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+
+  .MuiTextField-root {
+    .MuiOutlinedInput-root {
+      color: $white;
+      background-color: rgba($white, 0.05);
+      border-radius: 20px;
+      font-size: 14px;
+
+      fieldset {
+        border-color: rgba($white, 0.1);
+      }
+
+      &.Mui-focused fieldset {
+        border-color: $primary;
+      }
+    }
+  }
+}
+
+.Chat-searchResults {
+  max-height: 200px;
+  overflow-y: auto;
+  margin-top: 8px;
+}
+
+.Chat-searchResult {
+  display: flex;
+  flex-direction: column;
+  padding: 6px 8px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.15s;
+
+  &:hover {
+    background-color: rgba(255, 255, 255, 0.05);
+  }
+
+  &-sender {
+    font-size: 12px;
+    color: $primary;
+    font-weight: 600;
+  }
+
+  &-text {
+    font-size: 13px;
+    color: rgba(255, 255, 255, 0.8);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  &-time {
+    font-size: 11px;
+    color: rgba(255, 255, 255, 0.4);
+    align-self: flex-end;
+  }
 }

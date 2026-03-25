@@ -7,4 +7,6 @@ export * from './user-role.enum';
 
 // Messaging
 export * from './message-type.enum';
+export * from './message-status.enum';
 export * from './conversation-type.enum';
+export * from './participant-role.enum';

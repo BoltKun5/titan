@@ -11,6 +11,8 @@ export const SignUp: React.FC = () => {
   const [mail, setMail] = useState('');
   const [password, setPassword] = useState('');
   const [passwordValidation, setPasswordValidation] = useState('');
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
   const [shownName, setShownName] = useState('');
   const [validation, setValidation] = useState(false);
   const { enqueueSnackbar } = useSnackbar();
@@ -20,6 +22,8 @@ export const SignUp: React.FC = () => {
       .email({ tlds: { allow: false } })
       .required(),
     password: Joi.string().min(5).required(),
+    firstName: Joi.string().min(1).max(50).required(),
+    lastName: Joi.string().min(1).max(50).required(),
     shownName: Joi.string().min(3).max(30).required(),
     passwordValidation: Joi.string().equal(password).required(),
   });
@@ -31,6 +35,8 @@ export const SignUp: React.FC = () => {
       mail,
       password,
       passwordValidation,
+      firstName,
+      lastName,
       shownName,
     });
 
@@ -86,6 +92,20 @@ export const SignUp: React.FC = () => {
           <>
             <div className="SignUp-inputs">
               <TextInputComponent
+                value={firstName}
+                modifyValue={setFirstName}
+                label={'Prénom'}
+                id={'firstname'}
+                tooltip={'Entre 1 et 50 caractères'}
+              />
+              <TextInputComponent
+                value={lastName}
+                modifyValue={setLastName}
+                label={'Nom'}
+                id={'lastname'}
+                tooltip={'Entre 1 et 50 caractères'}
+              />
+              <TextInputComponent
                 value={mail}
                 modifyValue={setMail}
                 label={'Adresse mail'}
@@ -120,6 +140,8 @@ export const SignUp: React.FC = () => {
                     mail,
                     password,
                     passwordValidation,
+                    firstName,
+                    lastName,
                     shownName,
                   })?.error
                 }

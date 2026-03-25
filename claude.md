@@ -32,45 +32,45 @@ Application de **messagerie instantanée** disponible en **web et mobile** (via 
 
 ### Conversations
 
-- [ ] Conversations privées (1-to-1)
-- [ ] Conversations de groupe
-- [ ] Nom et photo de groupe personnalisables
-- [ ] Description de groupe
-- [ ] Ajouter / retirer des participants d'un groupe
-- [ ] Rôles dans les groupes (admin, membre)
-- [ ] Quitter un groupe
-- [ ] Archiver une conversation
-- [ ] Épingler une conversation en haut de la liste
-- [ ] Supprimer une conversation
-- [ ] Muet (couper les notifications d'une conversation)
+- [x] Conversations privées (1-to-1)
+- [x] Conversations de groupe
+- [x] Nom et photo de groupe personnalisables
+- [x] Description de groupe
+- [x] Ajouter / retirer des participants d'un groupe
+- [x] Rôles dans les groupes (admin, membre)
+- [x] Quitter un groupe
+- [x] Archiver une conversation
+- [x] Épingler une conversation en haut de la liste
+- [x] Supprimer une conversation
+- [x] Muet (couper les notifications d'une conversation)
 
 ### Messages
 
-- [ ] Messages texte
+- [x] Messages texte
 - [ ] Envoi de photos / images
 - [ ] Envoi de vidéos
 - [ ] Envoi de fichiers / documents
 - [ ] Messages vocaux (enregistrement audio)
-- [ ] Emojis et réactions aux messages
-- [ ] Répondre à un message spécifique (quote / reply)
-- [ ] Transférer un message
-- [ ] Supprimer un message (pour moi / pour tous)
-- [ ] Modifier un message envoyé
+- [x] Emojis et réactions aux messages
+- [x] Répondre à un message spécifique (quote / reply)
+- [x] Transférer un message
+- [x] Supprimer un message (pour moi / pour tous)
+- [x] Modifier un message envoyé
 - [ ] Messages éphémères (disparition automatique)
 
 ### Statuts et indicateurs
 
-- [ ] Indicateur "en train d'écrire…"
-- [ ] Accusés de réception (envoyé ✓, reçu ✓✓, lu ✓✓ bleu)
-- [ ] "En ligne" / "Vu à …" (statut de présence)
-- [ ] Compteur de messages non lus par conversation
+- [x] Indicateur "en train d'écrire…"
+- [x] Accusés de réception (envoyé ✓, reçu ✓✓, lu ✓✓ bleu)
+- [x] "En ligne" / "Vu à …" (statut de présence)
+- [x] Compteur de messages non lus par conversation
 - [ ] Badge global de messages non lus
 
 ### Recherche
 
-- [ ] Recherche de conversations
-- [ ] Recherche de messages dans une conversation
-- [ ] Recherche globale dans toutes les conversations
+- [x] Recherche de conversations
+- [x] Recherche de messages dans une conversation
+- [x] Recherche globale dans toutes les conversations
 
 ### Notifications
 
@@ -82,7 +82,7 @@ Application de **messagerie instantanée** disponible en **web et mobile** (via 
 ### Profil utilisateur
 
 - [ ] Photo de profil
-- [ ] Nom affiché (shownName)
+- [x] Nom affiché (shownName)
 - [ ] Statut / bio personnalisé
 - [ ] Paramètres de confidentialité (qui voit ma photo, mon statut, etc.)
 

@@ -1,4 +1,4 @@
-@import "../../scss/variables.scss";
+@use "../../scss/variables.scss" as *;
 
 .Conversations-Page {
   height: calc(trueHeight() - 60px);
@@ -17,6 +17,31 @@
     color: $white;
     font-size: 22px;
     font-weight: 700;
+  }
+}
+
+.Conversations-search {
+  padding: 8px 16px;
+
+  .MuiTextField-root {
+    .MuiOutlinedInput-root {
+      color: $white;
+      background-color: rgba($white, 0.05);
+      border-radius: 20px;
+      font-size: 14px;
+
+      fieldset {
+        border-color: rgba($white, 0.1);
+      }
+
+      &:hover fieldset {
+        border-color: rgba($white, 0.2);
+      }
+
+      &.Mui-focused fieldset {
+        border-color: $primary;
+      }
+    }
   }
 }
 
@@ -43,4 +68,39 @@
   bottom: 20px;
   right: 20px;
   background-color: $primary !important;
+}
+
+.Conversations-messageResult {
+  display: flex;
+  flex-direction: column;
+  padding: 10px 20px;
+  cursor: pointer;
+  border-bottom: 1px solid rgba($primary-border, 0.3);
+  transition: background-color 0.15s;
+
+  &:hover {
+    background-color: rgba($white-bg, 0.5);
+  }
+
+  &-sender {
+    font-size: 13px;
+    color: $primary;
+    font-weight: 600;
+  }
+
+  &-text {
+    font-size: 13px;
+    color: rgba($white, 0.8);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    margin-top: 2px;
+  }
+
+  &-time {
+    font-size: 11px;
+    color: $gray;
+    align-self: flex-end;
+    margin-top: 2px;
+  }
 }

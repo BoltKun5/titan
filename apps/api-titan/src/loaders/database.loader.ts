@@ -91,7 +91,8 @@ export const customSeeders = async (sequelize: Sequelize): Promise<void> => {
         });
         await seed.up(sequelize.getQueryInterface());
         await sequelize.query(
-          `INSERT INTO "SequelizeData" (name) VALUES ('${file.toString()}');`,
+          'INSERT INTO "SequelizeData" (name) VALUES (?);',
+          { replacements: [file.toString()] },
         );
       } catch (error: any) {
         console.error(error);
@@ -147,7 +148,8 @@ export const customMigrations = async (sequelize: Sequelize): Promise<void> => {
         });
         await migration.up(sequelize.getQueryInterface());
         await sequelize.query(
-          `INSERT INTO "SequelizeMeta" (name) VALUES ('${file.toString()}');`,
+          'INSERT INTO "SequelizeMeta" (name) VALUES (?);',
+          { replacements: [file.toString()] },
         );
       } catch (error: any) {
         console.error(error);

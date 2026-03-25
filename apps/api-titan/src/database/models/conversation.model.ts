@@ -35,10 +35,19 @@ export class Conversation extends CustomModel<
   @Column({ type: DataType.STRING })
   name: string | null;
 
+  @AllowNull(true)
+  @Column({ type: DataType.STRING(500) })
+  description: string | null;
+
   @AllowNull(false)
   @Default(ConversationType.DIRECT)
   @Column({ type: DataType.ENUM(...Object.values(ConversationType)) })
   type: ConversationType;
+
+  @AllowNull(true)
+  @Default(null)
+  @Column({ type: DataType.INTEGER })
+  ephemeralDuration: number | null;
 
   @HasMany(() => ConversationParticipant)
   participants: ConversationParticipant[];

@@ -4,6 +4,7 @@ import cors from 'cors';
 import cookieParser from 'cookie-parser';
 import createError from 'http-errors';
 import http from 'http';
+import path from 'path';
 import routes from '../api';
 import { ILocals } from '../core';
 import AppConfig from '../modules/app-config.module';
@@ -19,6 +20,7 @@ import { initializeSocketGateway } from '../gateway/socket.gateway';
 import 'express-async-errors';
 import helmet from 'helmet';
 import compression from 'compression';
+import generalSetupMiddleware from '../api/middlewares/general-setup.middleware';
 
 const PREFIX = '/api';
 
@@ -54,6 +56,12 @@ export const apiLoader = (): http.Server => {
   app.use(helmet());
   app.use(compression());
 
+  // Serve uploaded files
+  app.use(
+    '/uploads',
+    express.static(path.join(__dirname, '..', '..', 'uploads')),
+  );
+
   app.get('/', (req, res, next) => {
     res.locals.shouldNotPublishLog = true;
     res.send();
@@ -61,6 +69,7 @@ export const apiLoader = (): http.Server => {
   });
 
   app.use(loggerSetupMiddleware);
+  app.use(generalSetupMiddleware);
   app.use((req, res, next) =>
     loggerEndpointMiddleware(AppConfig.logger, req, res as any, next),
   );

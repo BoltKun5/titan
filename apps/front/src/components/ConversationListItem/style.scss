@@ -1,4 +1,4 @@
-@import "../../scss/variables.scss";
+@use "../../scss/variables.scss" as *;
 
 .ConversationListItem {
   display: flex;
@@ -14,6 +14,10 @@
 
   &:active {
     background-color: $white-bg;
+  }
+
+  &--pinned {
+    background-color: rgba($white-bg, 0.3);
   }
 }
 

@@ -1,4 +1,4 @@
-@import "../../scss/variables.scss";
+@use "../../scss/variables.scss" as *;
 
 .MessageInput {
   display: flex;
@@ -30,4 +30,9 @@
 .MessageInput-send {
   flex-shrink: 0;
   padding: 8px !important;
+}
+
+.MessageInput-attach {
+  flex-shrink: 0;
+  padding: 6px !important;
 }

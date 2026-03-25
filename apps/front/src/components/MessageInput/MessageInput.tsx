@@ -1,19 +1,25 @@
 import React, { useState, useRef, useCallback } from 'react';
 import SendIcon from '@mui/icons-material/Send';
+import AttachFileIcon from '@mui/icons-material/AttachFile';
+import ImageIcon from '@mui/icons-material/Image';
 import { IconButton } from '@mui/material';
 import './style.scss';
 
 interface MessageInputProps {
   onSend: (content: string) => void;
   onTyping: (isTyping: boolean) => void;
+  onFileUpload?: (file: File) => void;
 }
 
 export const MessageInput: React.FC<MessageInputProps> = ({
   onSend,
   onTyping,
+  onFileUpload,
 }) => {
   const [value, setValue] = useState('');
   const typingTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const imageInputRef = useRef<HTMLInputElement>(null);
 
   const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setValue(e.target.value);
@@ -45,8 +51,43 @@ export const MessageInput: React.FC<MessageInputProps> = ({
     }
   };
 
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file && onFileUpload) {
+      onFileUpload(file);
+    }
+    if (e.target) e.target.value = '';
+  };
+
   return (
     <div className="MessageInput">
+      <input
+        type="file"
+        ref={imageInputRef}
+        hidden
+        accept="image/*"
+        onChange={handleFileChange}
+      />
+      <input
+        type="file"
+        ref={fileInputRef}
+        hidden
+        onChange={handleFileChange}
+      />
+      <IconButton
+        className="MessageInput-attach"
+        onClick={() => imageInputRef.current?.click()}
+        title="Envoyer une image"
+      >
+        <ImageIcon sx={{ color: '#888' }} />
+      </IconButton>
+      <IconButton
+        className="MessageInput-attach"
+        onClick={() => fileInputRef.current?.click()}
+        title="Envoyer un fichier"
+      >
+        <AttachFileIcon sx={{ color: '#888' }} />
+      </IconButton>
       <textarea
         className="MessageInput-field"
         value={value}

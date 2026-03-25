@@ -15,6 +15,13 @@ export default defineConfig({
       titan_core: path.resolve(__dirname, '../../packages/titan_core/src'),
     },
   },
+  css: {
+    preprocessorOptions: {
+      scss: {
+        api: 'modern-compiler',
+      },
+    },
+  },
   build: {
     outDir: './dist',
     commonjsOptions: {

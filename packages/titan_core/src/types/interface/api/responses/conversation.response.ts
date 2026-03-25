@@ -6,6 +6,9 @@ export interface IConversationWithLastMessage extends IConversation {
   lastMessage: IMessage | null;
   participants: Partial<IUser>[];
   unreadCount: number;
+  isPinned: boolean;
+  isArchived: boolean;
+  isMuted: boolean;
 }
 
 export interface IConversationListResponse {

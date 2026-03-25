@@ -3,6 +3,7 @@ import {
   IUpdateOptionBody,
   IUpdateShownNameBody,
   IUpdateUserPasswordBody,
+  IUpdateBioBody,
 } from 'titan_core';
 import { Request, Response } from 'express';
 import bcrypt from 'bcryptjs';
@@ -211,6 +212,56 @@ class UserController implements Controller {
     res.json({
       user: user,
     });
+  }
+
+  async updateBio(
+    req: Request<Record<string, never>, IUserResponse, IUpdateBioBody>,
+    res: Response<IUserResponse, ILocals>,
+  ): Promise<void> {
+    req.body = UserValidation.updateBioBody(req.body);
+
+    const user = await User.findOne({
+      where: { id: res.locals.currentUser.id },
+      attributes: { exclude: ['createdAt', 'password', 'updatedAt'] },
+    });
+
+    if (!user) {
+      throw HttpResponseError.createNotFoundError();
+    }
+
+    user.bio = req.body.bio || null;
+    await user.save();
+    await user.reload({
+      attributes: { exclude: ['createdAt', 'password', 'updatedAt'] },
+    });
+
+    res.json({ user });
+  }
+
+  async uploadAvatar(
+    req: Request,
+    res: Response<IUserResponse, ILocals>,
+  ): Promise<void> {
+    if (!req.file) {
+      throw HttpResponseError.createValidationError();
+    }
+
+    const user = await User.findOne({
+      where: { id: res.locals.currentUser.id },
+      attributes: { exclude: ['createdAt', 'password', 'updatedAt'] },
+    });
+
+    if (!user) {
+      throw HttpResponseError.createNotFoundError();
+    }
+
+    user.avatarUrl = `/uploads/avatars/${req.file.filename}`;
+    await user.save();
+    await user.reload({
+      attributes: { exclude: ['createdAt', 'password', 'updatedAt'] },
+    });
+
+    res.json({ user });
   }
 }
 

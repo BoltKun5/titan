@@ -19,11 +19,18 @@ export class LoggerModel {
     this.name = name;
   }
 
-  private getCurrentRequestId(): string {
-    return getRequestContext().requestId;
+  private getCurrentRequestId(): string | undefined {
+    try {
+      return getRequestContext()?.requestId;
+    } catch {
+      return undefined;
+    }
   }
 
-  public async error(error: Error | string, options?: ParamsError): Promise<void> {
+  public async error(
+    error: Error | string,
+    options?: ParamsError,
+  ): Promise<void> {
     AppConfig.logger.error(error, {
       context: this.name,
       scenario: LogScenario.API,

@@ -1,4 +1,4 @@
-@import "../../scss/variables.scss";
+@use "../../scss/variables.scss" as *;
 
 .MessageBubble {
   display: flex;
@@ -65,4 +65,155 @@
   float: right;
   margin-left: 8px;
   margin-top: 2px;
+}
+
+.MessageBubble-edited {
+  font-size: 10px;
+  font-style: italic;
+  opacity: 0.7;
+}
+
+.MessageBubble-content--deleted {
+  opacity: 0.6;
+}
+
+.MessageBubble-text--deleted {
+  font-style: italic;
+  font-size: 13px;
+}
+
+.MessageBubble-menuBtn {
+  position: absolute;
+  top: 2px;
+  right: 2px;
+  opacity: 0;
+  transition: opacity 0.15s;
+
+  .MessageBubble-content:hover & {
+    opacity: 1;
+  }
+}
+
+.MessageBubble-actions {
+  position: absolute;
+  top: 2px;
+  right: 2px;
+  display: flex;
+  gap: 0;
+  opacity: 0;
+  transition: opacity 0.15s;
+
+  .MessageBubble-content:hover & {
+    opacity: 1;
+  }
+}
+
+.MessageBubble-emojiPicker {
+  display: flex;
+  gap: 4px;
+  padding: 4px 8px;
+}
+
+.MessageBubble-emojiOption {
+  font-size: 22px;
+  cursor: pointer;
+  padding: 2px 4px;
+  border-radius: 4px;
+  transition: background-color 0.15s;
+
+  &:hover {
+    background-color: rgba($white, 0.1);
+  }
+}
+
+.MessageBubble-reactions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  padding: 2px 4px;
+}
+
+.MessageBubble-reactionBadge {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  font-size: 14px;
+  padding: 1px 6px;
+  border-radius: 10px;
+  background-color: rgba($white, 0.1);
+  cursor: pointer;
+  transition: background-color 0.15s;
+
+  &:hover {
+    background-color: rgba($white, 0.2);
+  }
+
+  &--own {
+    background-color: rgba($primary, 0.3);
+  }
+}
+
+.MessageBubble-editing {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 200px;
+
+  .MuiTextField-root {
+    .MuiOutlinedInput-root {
+      color: $white;
+      font-size: 14px;
+
+      fieldset {
+        border-color: rgba($white, 0.3);
+      }
+    }
+  }
+}
+
+.MessageBubble-editActions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 2px;
+
+  .MuiIconButton-root {
+    color: $white;
+    padding: 2px;
+  }
+}
+
+.MessageBubble-statusIcon {
+  margin-left: 4px;
+  vertical-align: middle;
+  color: rgba($gray, 0.7);
+
+  &--read {
+    color: #53bdeb;
+  }
+}
+
+.MessageBubble-replyPreview {
+  background-color: rgba(0, 0, 0, 0.15);
+  border-left: 3px solid $primary;
+  border-radius: 4px;
+  padding: 4px 8px;
+  margin: 0 4px 4px 4px;
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  cursor: pointer;
+
+  &-sender {
+    font-size: 11px;
+    color: $primary;
+    font-weight: 600;
+  }
+
+  &-text {
+    font-size: 12px;
+    color: rgba($white, 0.7);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
 }

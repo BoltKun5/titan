@@ -15,6 +15,7 @@ export default class AppConfig {
   public static sequelize: Sequelize;
   public static config = config.default;
   public static io: SocketIOServer;
+  public static onlineUsers: Map<string, Set<string>> = new Map();
 
   public static logger: Logger;
 

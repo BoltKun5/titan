@@ -8,4 +8,7 @@ export type IUser = {
   options: Record<string, string> | null;
   password: string;
   isActive: boolean;
+  lastSeenAt?: string | null;
+  bio?: string | null;
+  avatarUrl?: string | null;
 };

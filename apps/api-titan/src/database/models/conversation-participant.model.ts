@@ -10,7 +10,7 @@ import {
   BelongsTo,
 } from 'sequelize-typescript';
 import { v4 as uuidv4 } from 'uuid';
-import { IConversationParticipant } from 'titan_core';
+import { IConversationParticipant, ParticipantRole } from 'titan_core';
 import { WithRequired } from '../../core';
 import { CustomModel } from '../custom/custom-model.model';
 import { Conversation } from './conversation.model';
@@ -45,6 +45,26 @@ export class ConversationParticipant extends CustomModel<
   @ForeignKey(() => User)
   @Column({ type: DataType.UUID })
   userId: string;
+
+  @AllowNull(false)
+  @Default(ParticipantRole.MEMBER)
+  @Column({ type: DataType.ENUM(...Object.values(ParticipantRole)) })
+  role: ParticipantRole;
+
+  @AllowNull(false)
+  @Default(false)
+  @Column({ type: DataType.BOOLEAN })
+  isPinned: boolean;
+
+  @AllowNull(false)
+  @Default(false)
+  @Column({ type: DataType.BOOLEAN })
+  isArchived: boolean;
+
+  @AllowNull(false)
+  @Default(false)
+  @Column({ type: DataType.BOOLEAN })
+  isMuted: boolean;
 
   @Default(() => new Date())
   @Column({ type: DataType.DATE })
