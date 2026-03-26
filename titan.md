@@ -10,23 +10,23 @@
 
 ### Structure du club
 
-- [ ] Fiche d'identité du club (nom, logo, couleurs, adresse, contact, numéro d'affiliation fédéral)
-- [ ] Configuration du sport du club (handball, football, basket, etc.) — détermine le module sport chargé
-- [ ] Gestion multi-sections (masculin, féminin, loisir, école de hand / école du sport)
-- [ ] Organigramme du bureau / staff (président, trésorier, secrétaire, etc.)
-- [ ] Gestion des salles / gymnases (nom, adresse, capacité, créneaux)
-- [ ] Gestion des saisons sportives (création, archivage, bascule de saison)
+- [x] Fiche d'identité du club (nom, logo, couleurs, adresse, contact, numéro d'affiliation fédéral)
+- [x] Configuration du sport du club (handball, football, basket, etc.) — détermine le module sport chargé
+- [x] Gestion multi-sections (masculin, féminin, loisir, école de hand / école du sport)
+- [x] Organigramme du bureau / staff (président, trésorier, secrétaire, etc.)
+- [x] Gestion des salles / gymnases (nom, adresse, capacité, créneaux)
+- [x] Gestion des saisons sportives (création, archivage, bascule de saison)
 
 ### Membres
 
 - [ ] Inscription / réinscription des membres (formulaire en ligne)
-- [ ] Fiche membre complète (état civil, coordonnées, photo, numéro de licence fédéral)
-- [ ] Gestion des statuts (joueur, entraîneur, dirigeant, arbitre, bénévole, supporter)
-- [ ] Suivi des licences (numéro, type, date d'expiration, statut de renouvellement)
+- [x] Fiche membre complète (état civil, coordonnées, photo, numéro de licence fédéral)
+- [x] Gestion des statuts (joueur, entraîneur, dirigeant, arbitre, bénévole, supporter)
+- [x] Suivi des licences (numéro, type, date d'expiration, statut de renouvellement)
 - [ ] Import / export de la liste des membres (CSV, Excel)
-- [ ] Gestion des parents / contacts d'urgence (catégories jeunes)
+- [x] Gestion des parents / contacts d'urgence (catégories jeunes)
 - [ ] Historique d'un membre au sein du club (saisons, équipes, postes)
-- [ ] Certificats médicaux : suivi de validité et alertes d'expiration
+- [x] Certificats médicaux : suivi de validité et alertes d'expiration
 - [ ] Consentements RGPD et droit à l'image
 
 ---
@@ -35,13 +35,13 @@
 
 ### Composition
 
-- [ ] Création et gestion des équipes par saison
-- [ ] Attribution des joueurs aux équipes
-- [ ] Affectation des entraîneurs et adjoints
-- [ ] Gestion des postes de jeu — configurable par sport :
+- [x] Création et gestion des équipes par saison
+- [x] Attribution des joueurs aux équipes
+- [x] Affectation des entraîneurs et adjoints
+- [x] Gestion des postes de jeu — configurable par sport :
   - 🏐 Handball : pivot, ailier gauche/droit, arrière gauche/droit, demi-centre, gardien
   - _(Autres sports : à définir dans le module sport correspondant)_
-- [ ] Fiche d'équipe (catégorie, division, poule, numéro d'engagement fédéral)
+- [x] Fiche d'équipe (catégorie, division, poule, numéro d'engagement fédéral)
 
 ### Effectifs
 
@@ -56,32 +56,32 @@
 
 ### Calendrier
 
-- [ ] Calendrier des matchs par équipe et global
+- [x] Calendrier des matchs par équipe et global
 - [ ] 🏐 Import automatique du calendrier depuis la FFHB (scrapping — _intégration ultérieure, voir section 5_)
-- [ ] Création manuelle de matchs (amicaux, tournois)
-- [ ] Gestion des reports et modifications de date
+- [x] Création manuelle de matchs (amicaux, tournois)
+- [x] Gestion des reports et modifications de date
 - [ ] Vue agenda (jour, semaine, mois) avec filtres par équipe
 
 ### Feuille de match
 
-- [ ] Composition d'avant-match (titulaires, remplaçants)
-- [ ] Saisie du score en temps réel ou a posteriori
-- [ ] Saisie des événements de match — configurable par sport :
+- [x] Composition d'avant-match (titulaires, remplaçants)
+- [x] Saisie du score en temps réel ou a posteriori
+- [x] Saisie des événements de match — configurable par sport :
   - 🏐 Handball : buts, arrêts, 2 minutes, cartons, temps morts
   - _(Autres sports : types d'événements définis dans le module sport)_
-- [ ] Attribution des points/buts aux joueurs — types configurables :
+- [x] Attribution des points/buts aux joueurs — types configurables :
   - 🏐 Handball : 6m, 9m, aile, contre-attaque, 7m
-- [ ] Saisie des arrêts du gardien (si applicable au sport — 🏐 avec zone de tir)
-- [ ] Gestion des sanctions — configurables par sport :
+- [x] Saisie des arrêts du gardien (si applicable au sport — 🏐 avec zone de tir)
+- [x] Gestion des sanctions — configurables par sport :
   - 🏐 Handball : avertissement, exclusion 2 min, disqualification, rapport
-- [ ] Temps de jeu par joueur
-- [ ] Notes / commentaires d'après-match
+- [x] Temps de jeu par joueur
+- [x] Notes / commentaires d'après-match
 
 ### Résultats
 
 - [ ] 🏐 Import automatique des résultats depuis la FFHB (scrapping — _intégration ultérieure, voir section 5_)
 - [ ] Classement de la poule (récupération automatique ou calcul local)
-- [ ] Historique des résultats par équipe et par saison
+- [x] Historique des résultats par équipe et par saison
 - [ ] Bilan victoires / nuls / défaites
 
 ---
@@ -162,14 +162,14 @@
 
 ### Planification
 
-- [ ] Calendrier des entraînements par équipe
-- [ ] Récurrence (ex : mardi et jeudi 19h-21h)
-- [ ] Gestion des créneaux par gymnase / salle
-- [ ] Gestion des annulations et changements de créneau
+- [x] Calendrier des entraînements par équipe
+- [x] Récurrence (ex : mardi et jeudi 19h-21h)
+- [x] Gestion des créneaux par gymnase / salle
+- [x] Gestion des annulations et changements de créneau
 
 ### Suivi de présence
 
-- [ ] Pointage de présence (par l'entraîneur ou auto-pointage joueur)
+- [x] Pointage de présence (par l'entraîneur ou auto-pointage joueur)
 - [ ] Taux de présence individuel et par équipe
 - [ ] Historique des présences sur la saison
 - [ ] Alertes en cas de nombreuses absences consécutives
@@ -187,17 +187,17 @@
 
 ### Cotisations
 
-- [ ] Définition des tarifs par catégorie et par saison
-- [ ] Suivi des paiements par membre (payé, en cours, impayé)
-- [ ] Gestion des modalités de paiement (1x, 2x, 3x, chèques vacances)
+- [x] Définition des tarifs par catégorie et par saison
+- [x] Suivi des paiements par membre (payé, en cours, impayé)
+- [x] Gestion des modalités de paiement (1x, 2x, 3x, chèques vacances)
 - [ ] Relances automatiques par email pour les impayés
 - [ ] Export des états de paiement
 
 ### Budget du club
 
-- [ ] Saisie des recettes et dépenses
-- [ ] Catégorisation (cotisations, subventions, sponsors, buvette, déplacements, équipements)
-- [ ] Suivi du budget prévisionnel vs réel
+- [x] Saisie des recettes et dépenses
+- [x] Catégorisation (cotisations, subventions, sponsors, buvette, déplacements, équipements)
+- [x] Suivi du budget prévisionnel vs réel
 - [ ] Bilan financier par saison
 
 ---
@@ -258,18 +258,18 @@
 ### Configuration
 
 - [ ] Paramètres généraux du club
-- [ ] Sélection du sport du club (charge le module sport correspondant)
+- [x] Sélection du sport du club (charge le module sport correspondant)
 - [ ] Personnalisation des catégories d'âge
-- [ ] Personnalisation des postes de jeu (pré-remplis par le module sport, modifiables)
-- [ ] Configuration des types d'événements de match (pré-remplis par le module sport)
-- [ ] Configuration des types de sanctions (pré-remplis par le module sport)
+- [x] Personnalisation des postes de jeu (pré-remplis par le module sport, modifiables)
+- [x] Configuration des types d'événements de match (pré-remplis par le module sport)
+- [x] Configuration des types de sanctions (pré-remplis par le module sport)
 - [ ] Paramétrage des saisons et compétitions
 
 ### Modules sport
 
-- [ ] Architecture de plugin sport : interface commune `SportModule`
-- [ ] Chaque module définit : postes, événements de match, sanctions, périodes de jeu, règles de classement
-- [ ] 🏐 Module Handball (MVP) : postes, types de tir, sanctions (2min, carton), mi-temps, connecteur FFHB
+- [x] Architecture de plugin sport : interface commune `SportModule`
+- [x] Chaque module définit : postes, événements de match, sanctions, périodes de jeu, règles de classement
+- [x] 🏐 Module Handball (MVP) : postes, types de tir, sanctions (2min, carton), mi-temps, connecteur FFHB
 - [ ] _(Futurs modules : Football, Basketball, Rugby, Volley, etc.)_
 
 ### Données

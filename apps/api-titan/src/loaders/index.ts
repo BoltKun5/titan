@@ -4,7 +4,8 @@ import { apiLoader } from './api.loader';
 import { databaseLoader } from './database.loader';
 import { Sequelize } from 'sequelize-typescript';
 import { User } from '../database';
-import { UserRoleEnum } from 'titan_core';
+import { SportConfig } from '../database';
+import { UserRoleEnum, SportType } from 'titan_core';
 import bcrypt from 'bcryptjs';
 
 export const appLoader = async (): Promise<Sequelize> => {
@@ -14,6 +15,7 @@ export const appLoader = async (): Promise<Sequelize> => {
   });
 
   await seedDevUsers();
+  await seedSportConfigs();
 
   apiLoader();
   AppConfig.logger.log('Express loaded', {
@@ -121,6 +123,61 @@ const seedDevUsers = async (): Promise<void> => {
 
   if (created > 0) {
     AppConfig.logger.log(`${created} dev user(s) created`, {
+      scenario: LogScenario.SYSTEM_STARTUP,
+    });
+  }
+};
+
+const SPORT_CONFIGS = [
+  {
+    sport: SportType.HANDBALL,
+    positions: [
+      'Gardien',
+      'Pivot',
+      'Ailier gauche',
+      'Ailier droit',
+      'Arrière gauche',
+      'Arrière droit',
+      'Demi-centre',
+    ],
+    goalSubtypes: ['6m', '9m', 'Aile', 'Contre-attaque', '7m'],
+    sanctionTypes: [
+      'Avertissement',
+      'Exclusion 2min',
+      'Disqualification',
+      'Rapport',
+    ],
+    periods: ['1ère MT', '2ème MT'],
+    rankingRules: {
+      win: 3,
+      draw: 1,
+      loss: 0,
+    },
+  },
+];
+
+const seedSportConfigs = async (): Promise<void> => {
+  let created = 0;
+
+  for (const config of SPORT_CONFIGS) {
+    const existing = await SportConfig.findOne({
+      where: { sport: config.sport },
+    });
+    if (existing) continue;
+
+    await SportConfig.create({
+      sport: config.sport,
+      positions: config.positions,
+      goalSubtypes: config.goalSubtypes,
+      sanctionTypes: config.sanctionTypes,
+      periods: config.periods,
+      rankingRules: config.rankingRules,
+    });
+    created++;
+  }
+
+  if (created > 0) {
+    AppConfig.logger.log(`${created} sport config(s) seeded`, {
       scenario: LogScenario.SYSTEM_STARTUP,
     });
   }

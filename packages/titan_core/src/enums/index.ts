@@ -10,3 +10,6 @@ export * from './message-type.enum';
 export * from './message-status.enum';
 export * from './conversation-type.enum';
 export * from './participant-role.enum';
+
+// Titan (club management)
+export * from './titan';
