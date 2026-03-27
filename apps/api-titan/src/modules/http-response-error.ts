@@ -82,6 +82,13 @@ export class HttpResponseError {
     });
   }
 
+  public static createForbidden(): createError.HttpError {
+    return createError(403, {
+      code: HttpErrorCode.forbidden,
+      message: 'Forbidden: insufficient permissions',
+    });
+  }
+
   public static generateError(error: Error): createError.HttpError {
     if (error instanceof createError.HttpError) {
       return error;

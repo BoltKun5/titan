@@ -225,25 +225,25 @@
 
 ### Dashboard dirigeant
 
-- [ ] Vue d'ensemble : nombre de membres, licences à jour, cotisations recouvrées
-- [ ] Prochains matchs toutes équipes
-- [ ] Résultats récents
-- [ ] Alertes (documents manquants, impayés, absences répétées)
+- [x] Vue d'ensemble : nombre de membres, licences à jour, cotisations recouvrées
+- [x] Prochains matchs toutes équipes
+- [x] Résultats récents
+- [x] Alertes (documents manquants, impayés, absences répétées)
 - [ ] Indicateurs clés (taux de réinscription, nombre de licenciés vs année précédente)
 
 ### Dashboard entraîneur
 
-- [ ] Mon équipe : effectif, prochains matchs et entraînements
-- [ ] Stats rapides de l'équipe (derniers résultats, meilleur buteur)
-- [ ] Taux de présence à l'entraînement
+- [x] Mon équipe : effectif, prochains matchs et entraînements
+- [x] Stats rapides de l'équipe (derniers résultats, meilleur buteur)
+- [x] Taux de présence à l'entraînement
 - [ ] Joueurs blessés / indisponibles
 
 ### Dashboard joueur
 
-- [ ] Mes prochains matchs et entraînements
-- [ ] Mes statistiques personnelles
+- [x] Mes prochains matchs et entraînements
+- [x] Mes statistiques personnelles
 - [ ] Mon historique au club
-- [ ] Documents à fournir (certificat médical, cotisation)
+- [x] Documents à fournir (certificat médical, cotisation)
 
 ---
 
@@ -251,19 +251,19 @@
 
 ### Gestion des accès
 
-- [ ] Rôles et permissions (admin, dirigeant, entraîneur, joueur, parent)
-- [ ] Invitation de nouveaux membres par email ou lien
+- [x] Rôles et permissions (admin, dirigeant, entraîneur, joueur, parent)
+- [x] Invitation de nouveaux membres par lien
 - [ ] Gestion des comptes utilisateurs (activation, désactivation)
 
 ### Configuration
 
-- [ ] Paramètres généraux du club
+- [x] Paramètres généraux du club
 - [x] Sélection du sport du club (charge le module sport correspondant)
 - [ ] Personnalisation des catégories d'âge
 - [x] Personnalisation des postes de jeu (pré-remplis par le module sport, modifiables)
 - [x] Configuration des types d'événements de match (pré-remplis par le module sport)
 - [x] Configuration des types de sanctions (pré-remplis par le module sport)
-- [ ] Paramétrage des saisons et compétitions
+- [x] Paramétrage des saisons et compétitions
 
 ### Modules sport
 

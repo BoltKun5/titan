@@ -12,3 +12,4 @@ export * from './titan/training.route';
 export * from './titan/finance.route';
 export * from './titan/player.route';
 export * from './titan/stats.route';
+export * from './titan/dashboard.route';

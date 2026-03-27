@@ -20,3 +20,4 @@ export * from './player.model';
 export * from './player-match-stats.model';
 export * from './player-season-stats.model';
 export * from './team-season-stats.model';
+export * from './club-invitation.model';

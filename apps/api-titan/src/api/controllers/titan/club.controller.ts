@@ -129,6 +129,75 @@ class ClubController implements Controller {
     await clubService.deleteVenue(req.params.venueId, req.params.clubId);
     res.json({ data: null });
   }
+
+  // --- Staff Roles ---
+
+  async getStaffRoles(
+    req: Request<{ clubId: string }>,
+    res: Response<IResponse<any>, ILocals>,
+  ): Promise<void> {
+    const staff = await clubService.getStaffRoles(req.params.clubId);
+    res.json({ data: staff });
+  }
+
+  async assignStaffRole(
+    req: Request<{ clubId: string }>,
+    res: Response<IResponse<any>, ILocals>,
+  ): Promise<void> {
+    const { userId, role, seasonId } = req.body;
+    const staffRole = await clubService.assignStaffRole(
+      req.params.clubId,
+      userId,
+      role,
+      seasonId,
+    );
+    res.json({ data: staffRole });
+  }
+
+  async removeStaffRole(
+    req: Request<{ clubId: string; staffRoleId: string }>,
+    res: Response<IResponse<any>, ILocals>,
+  ): Promise<void> {
+    await clubService.removeStaffRole(req.params.staffRoleId);
+    res.json({ data: null });
+  }
+
+  async getMyRole(
+    req: Request<{ clubId: string }>,
+    res: Response<IResponse<any>, ILocals>,
+  ): Promise<void> {
+    const role = await clubService.getUserClubRole(
+      res.locals.currentUser.id,
+      req.params.clubId,
+    );
+    res.json({ data: { role } });
+  }
+
+  // --- Invitations ---
+
+  async createInvitation(
+    req: Request<{ clubId: string }>,
+    res: Response<IResponse<any>, ILocals>,
+  ): Promise<void> {
+    const { role } = req.body;
+    const invitation = await clubService.createInvitation(
+      req.params.clubId,
+      role,
+      res.locals.currentUser.id,
+    );
+    res.json({ data: invitation });
+  }
+
+  async acceptInvitation(
+    req: Request<{ code: string }>,
+    res: Response<IResponse<any>, ILocals>,
+  ): Promise<void> {
+    const result = await clubService.acceptInvitation(
+      req.params.code,
+      res.locals.currentUser.id,
+    );
+    res.json({ data: result });
+  }
 }
 
 export default new ClubController();

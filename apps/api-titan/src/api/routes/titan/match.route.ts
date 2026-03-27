@@ -1,6 +1,8 @@
 import { Router } from 'express';
 import matchController from '../../controllers/titan/match.controller';
 import auth from '../../middlewares/auth';
+import { requireClubRole } from '../../middlewares/require-club-role';
+import { TitanRole } from 'titan_core';
 
 const route = Router();
 
@@ -9,7 +11,12 @@ export const TitanMatchRouter = (app: Router): Router => {
 
   // Matches (scoped to club)
   route.get('/clubs/:clubId/matches', auth, matchController.list);
-  route.post('/clubs/:clubId/matches', auth, matchController.create);
+  route.post(
+    '/clubs/:clubId/matches',
+    auth,
+    requireClubRole(TitanRole.ADMIN, TitanRole.MANAGER, TitanRole.COACH),
+    matchController.create,
+  );
 
   // Match operations
   route.get('/matches/:matchId', auth, matchController.get);

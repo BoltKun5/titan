@@ -3,6 +3,7 @@ export enum HttpErrorCode {
   internalServerError = 'INTERNAL_SERVER_ERROR',
   unknown = 'UNKNOWN_ERROR',
   unauthorized = 'UNAUTHORIZED',
+  forbidden = 'FORBIDDEN',
   signupvalidation = 'BAD_SIGNUP_VALUES',
   signinvalidation = 'BAD_SIGNIN_VALUES',
   invaliduser = 'USER_NOT_FOUND',

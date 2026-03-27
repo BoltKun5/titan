@@ -8,6 +8,7 @@ import {
   License,
   MedicalCertificate,
   SportConfig,
+  ClubInvitation,
 } from '../../database';
 import { User } from '../../database';
 import {
@@ -18,8 +19,11 @@ import {
   ICreateVenueBody,
   IUpdateVenueBody,
   SportType,
+  TitanRole,
 } from 'titan_core';
 import createError from 'http-errors';
+import { randomBytes } from 'crypto';
+import { Op } from 'sequelize';
 
 class ClubService extends Service {
   async createClub(body: ICreateClubBody, userId: string): Promise<Club> {
@@ -156,6 +160,90 @@ class ClubService extends Service {
 
   async getSportConfig(sport: SportType): Promise<SportConfig | null> {
     return SportConfig.findOne({ where: { sport } });
+  }
+
+  // --- Staff Roles ---
+
+  async getStaffRoles(clubId: string): Promise<StaffRole[]> {
+    return StaffRole.findAll({
+      where: { clubId },
+      include: [
+        {
+          model: User,
+          attributes: ['id', 'firstName', 'lastName', 'shownName', 'mail'],
+        },
+      ],
+      order: [['createdAt', 'ASC']],
+    });
+  }
+
+  async assignStaffRole(
+    clubId: string,
+    userId: string,
+    role: TitanRole,
+    seasonId?: string,
+  ): Promise<StaffRole> {
+    const existing = await StaffRole.findOne({ where: { clubId, userId } });
+    if (existing) {
+      await existing.update({ role, seasonId: seasonId ?? null });
+      return existing;
+    }
+    return StaffRole.create({
+      clubId,
+      userId,
+      role,
+      seasonId: seasonId ?? null,
+    });
+  }
+
+  async removeStaffRole(staffRoleId: string): Promise<void> {
+    const staffRole = await StaffRole.findByPk(staffRoleId);
+    if (!staffRole) throw createError(404, 'Staff role not found');
+    await staffRole.destroy();
+  }
+
+  async getUserClubRole(
+    userId: string,
+    clubId: string,
+  ): Promise<string | null> {
+    const staffRole = await StaffRole.findOne({ where: { userId, clubId } });
+    if (staffRole) return staffRole.role;
+
+    const member = await ClubMember.findOne({ where: { userId, clubId } });
+    if (member) return member.role;
+
+    return null;
+  }
+
+  // --- Invitations ---
+
+  async createInvitation(
+    clubId: string,
+    role: TitanRole,
+    createdBy: string,
+  ): Promise<ClubInvitation> {
+    const code = randomBytes(16).toString('hex');
+    const expiresAt = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000); // 7 days
+    return ClubInvitation.create({ clubId, code, role, expiresAt, createdBy });
+  }
+
+  async acceptInvitation(
+    code: string,
+    userId: string,
+  ): Promise<{ clubId: string; role: string }> {
+    const invitation = await ClubInvitation.findOne({
+      where: { code, usedBy: null, expiresAt: { [Op.gt]: new Date() } },
+    });
+    if (!invitation) throw createError(404, 'Invitation not found or expired');
+
+    await this.assignStaffRole(
+      invitation.clubId,
+      userId,
+      invitation.role as TitanRole,
+    );
+
+    await invitation.update({ usedBy: userId, usedAt: new Date() });
+    return { clubId: invitation.clubId, role: invitation.role };
   }
 }
 

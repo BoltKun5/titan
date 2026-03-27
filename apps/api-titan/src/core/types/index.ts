@@ -1,10 +1,11 @@
-import { IResponse } from 'titan_core';
+import { IResponse, TitanRole } from 'titan_core';
 import { User } from '../../database';
 export * from './abstract';
 export * from './database.utils';
 
 export type ILocals = {
   currentUser: User;
+  clubRole?: TitanRole;
 } & ILocalLogger;
 
 export type IResponseUnloggedLocals = ILocalLogger;
