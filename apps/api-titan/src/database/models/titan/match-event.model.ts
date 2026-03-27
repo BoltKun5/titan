@@ -23,9 +23,6 @@ export type CreationModelMatchEvent = WithRequired<
 
 @Table({ tableName: 'titan_match_event', paranoid: false, timestamps: true })
 export class MatchEvent extends CustomModel<
-  
- 
-
   IMatchEvent,
   CreationModelMatchEvent
 > {

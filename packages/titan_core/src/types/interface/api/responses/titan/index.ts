@@ -8,3 +8,5 @@ export * from './training.response';
 export * from './finance.response';
 export * from './sport-config.response';
 export * from './dashboard.response';
+export * from './player.response';
+export * from './stats.response';

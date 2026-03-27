@@ -23,9 +23,6 @@ export type CreationModelTeamPlayer = WithRequired<
 
 @Table({ tableName: 'titan_team_player', paranoid: false, timestamps: true })
 export class TeamPlayer extends CustomModel<
-  
- 
-
   ITeamPlayer,
   CreationModelTeamPlayer
 > {

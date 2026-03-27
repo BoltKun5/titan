@@ -19,8 +19,6 @@ export default class MatchValidation {
       opponent: Joi.string().min(1).max(100).required(),
       date: Joi.string().isoDate().required(),
       location: Joi.string()
-        
-        
         .valid(...Object.values(MatchLocation))
         .required(),
       isFriendly: Joi.boolean().optional(),
@@ -34,12 +32,8 @@ export default class MatchValidation {
   static updateMatchBody(data: IUpdateMatchBody): IUpdateMatchBody {
     const schema = Joi.object<IUpdateMatchBody>({
       venueId: Joi.string().uuid().allow(null).optional(),
-      opponent: Joi.string
-        ().min(1).max(100).optional(),
-        
-      date: Joi.string().iso
-        Date().optional(),
-        
+      opponent: Joi.string().min(1).max(100).optional(),
+      date: Joi.string().isoDate().optional(),
       status: Joi.string()
         .valid(...Object.values(MatchStatus))
         .optional(),
@@ -76,8 +70,6 @@ export default class MatchValidation {
     const result = schema.validate(data);
     if (result.error) throw HttpResponseError.createWrongValuesError();
     return result.value;
-        
-        
   }
 
   static addEventBody(data: IAddMatchEventBody): IAddMatchEventBody {

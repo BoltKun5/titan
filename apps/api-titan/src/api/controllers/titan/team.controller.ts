@@ -65,7 +65,7 @@ class TeamController implements Controller {
     req: Request<{ teamId: string; playerId: string }>,
     res: Response<IResponse<any>, ILocals>,
   ): Promise<void> {
-    await teamService.removePlayer(req.params.playerId);
+    await teamService.removePlayer(req.params.teamId, req.params.playerId);
     res.json({ data: null });
   }
 }

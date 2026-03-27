@@ -16,8 +16,6 @@ export default class TeamValidation {
       division: Joi.string().allow('').optional(),
       pool: Joi.string().allow('').optional(),
       genderSection: Joi.string()
-        
-        
         .valid(...Object.values(GenderSection))
         .required(),
       federationTeamId: Joi.string().allow('').optional(),
@@ -34,9 +32,7 @@ export default class TeamValidation {
     const schema = Joi.object<IUpdateTeamBody>({
       name: Joi.string().min(1).max(100).optional(),
       category: Joi.string().allow('').optional(),
-      division: Joi.string().allo
-        w('').optional(),
-        
+      division: Joi.string().allow('').optional(),
       pool: Joi.string().allow('').optional(),
       genderSection: Joi.string()
         .valid(...Object.values(GenderSection))

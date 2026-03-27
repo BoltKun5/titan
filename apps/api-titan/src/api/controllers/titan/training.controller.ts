@@ -17,11 +17,16 @@ class TrainingController implements Controller {
   }
 
   async list(
-    req: Request<{ clubId: string }, any, any, { teamId: string }>,
+    req: Request<{ clubId: string }, any, any, { teamId?: string }>,
     res: Response<IResponse<any>, ILocals>,
   ): Promise<void> {
-    const trainings = await trainingService.getByTeam(req.query.teamId);
-    res.json({ data: trainings });
+    if (req.query.teamId) {
+      const trainings = await trainingService.getByTeam(req.query.teamId);
+      res.json({ data: trainings });
+    } else {
+      const trainings = await trainingService.getByClub(req.params.clubId);
+      res.json({ data: trainings });
+    }
   }
 
   async get(

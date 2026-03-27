@@ -18,11 +18,6 @@ class MatchController implements Controller {
 
   async list(
     req: Request<
-      
-     
-     
-     
-    
       { clubId: string },
       any,
       any,
@@ -30,11 +25,19 @@ class MatchController implements Controller {
     >,
     res: Response<IResponse<any>, ILocals>,
   ): Promise<void> {
-    const matches = await matchService.getMatches(
-      req.query.teamId!,
-      req.query.seasonId,
-    );
-    res.json({ data: matches });
+    if (req.query.teamId) {
+      const matches = await matchService.getMatches(
+        req.query.teamId,
+        req.query.seasonId,
+      );
+      res.json({ data: matches });
+    } else {
+      const matches = await matchService.getMatchesByClub(
+        req.params.clubId,
+        req.query.seasonId,
+      );
+      res.json({ data: matches });
+    }
   }
 
   async get(

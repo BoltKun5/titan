@@ -14,14 +14,8 @@ export default class TrainingValidation {
       venueId: Joi.string().uuid().allow(null).optional(),
       date: Joi.string().isoDate().required(),
       startTime: Joi.string()
-        
-        
-        .pattern(/^\d{2}:\d
-        {2}(:\d{2})?$/)
-        
+        .pattern(/^\d{2}:\d{2}(:\d{2})?$/)
         .required(),
-        
-        
       endTime: Joi.string()
         .pattern(/^\d{2}:\d{2}(:\d{2})?$/)
         .required(),
@@ -35,14 +29,8 @@ export default class TrainingValidation {
     if (result.error) throw HttpResponseError.createWrongValuesError();
     return result.value;
   }
-        
-        
 
-        
-        
-  static updateBody(data: IUpd
-        ateTrainingBody): IUpdateTrainingBody {
-        
+  static updateBody(data: IUpdateTrainingBody): IUpdateTrainingBody {
     const schema = Joi.object<IUpdateTrainingBody>({
       venueId: Joi.string().uuid().allow(null).optional(),
       date: Joi.string().isoDate().optional(),

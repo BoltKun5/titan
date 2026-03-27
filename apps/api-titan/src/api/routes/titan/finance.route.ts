@@ -11,10 +11,6 @@ export const TitanFinanceRouter = (app: Router): Router => {
   route.get('/:clubId/fee-plans', auth, financeController.getFeePlans);
   route.post('/:clubId/fee-plans', auth, financeController.createFeePlan);
   route.delete(
-    
-   
-   ,
-  
     '/:clubId/fee-plans/:planId',
     auth,
     financeController.deleteFeePlan,
@@ -24,10 +20,6 @@ export const TitanFinanceRouter = (app: Router): Router => {
   route.get('/:clubId/payments', auth, financeController.getPayments);
   route.post('/:clubId/payments', auth, financeController.recordPayment);
 
-    
-   
-   ,
-  
   // Budget
   route.get('/:clubId/budget', auth, financeController.getBudgetSummary);
   route.post('/:clubId/budget', auth, financeController.createBudgetEntry);

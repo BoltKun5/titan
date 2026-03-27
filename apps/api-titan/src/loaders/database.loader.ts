@@ -19,7 +19,10 @@ export const databaseLoader = async (): Promise<Sequelize> => {
         password: database.password,
         port: database.port,
         dialect: database.dialect,
-        models: requireModules(path.join(__dirname, '../database/models')),
+        models: [
+          ...requireModules(path.join(__dirname, '../database/models')),
+          ...requireModules(path.join(__dirname, '../database/models/titan')),
+        ],
         logging: false,
         logQueryParameters: false,
         pool: {

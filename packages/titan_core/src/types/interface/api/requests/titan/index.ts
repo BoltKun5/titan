@@ -6,3 +6,5 @@ export * from './team.request';
 export * from './match.request';
 export * from './training.request';
 export * from './finance.request';
+export * from './player.request';
+export * from './stats.request';

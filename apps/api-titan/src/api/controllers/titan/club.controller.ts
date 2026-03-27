@@ -3,7 +3,6 @@ import { IResponse } from 'titan_core';
 import { Controller, LoggerModel, ILocals } from '../../../core';
 import { clubService } from '../../../services/titan';
 import ClubValidation from '../../validations/titan/club.validation';
-import { HttpResponseError } from '../../../modules/http-response-error';
 
 class ClubController implements Controller {
   private static readonly logger = new LoggerModel(ClubController.name);
@@ -13,7 +12,7 @@ class ClubController implements Controller {
     res: Response<IResponse<any>, ILocals>,
   ): Promise<void> {
     const body = ClubValidation.createClubBody(req.body);
-    const club = await clubService.createClub(body);
+    const club = await clubService.createClub(body, res.locals.currentUser.id);
     res.json({ data: club });
   }
 

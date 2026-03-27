@@ -2,10 +2,6 @@ import { Service } from '../../core';
 import { Team, TeamPlayer, ClubMember } from '../../database';
 import { User } from '../../database';
 import {
- 
- 
- ,
-
   ICreateTeamBody,
   IUpdateTeamBody,
   IAddTeamPlayerBody,
@@ -40,16 +36,7 @@ class TeamService extends Service {
       include: [
         {
           model: TeamPlayer,
-          include
-:                  [
-                 
-                    
-                   
-                   
-                   
-                   ,
-                  ,
-               
+          include: [
             {
               model: ClubMember,
               include: [
@@ -75,10 +62,7 @@ class TeamService extends Service {
 
   async updateTeam(teamId: string, body: IUpdateTeamBody): Promise<Team> {
     const team = await Team.findByPk(teamId);
-    if (!team) thr
-    ow createError(
-   404, 'Team not found');,
-  
+    if (!team) throw createError(404, 'Team not found');
     await team.update(body);
     return team;
   }

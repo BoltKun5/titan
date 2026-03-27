@@ -23,9 +23,6 @@ export type CreationModelMatchLineup = WithRequired<
 
 @Table({ tableName: 'titan_match_lineup', paranoid: false, timestamps: true })
 export class MatchLineup extends CustomModel<
-  
- 
-
   IMatchLineup,
   CreationModelMatchLineup
 > {

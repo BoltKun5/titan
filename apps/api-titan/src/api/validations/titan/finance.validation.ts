@@ -29,8 +29,6 @@ export default class FinanceValidation {
       feePlanId: Joi.string().uuid().required(),
       amount: Joi.number().min(0).required(),
       method: Joi.string()
-        
-        
         .valid(...Object.values(PaymentMethod))
         .optional(),
       dueDate: Joi.string().isoDate().optional(),
@@ -41,16 +39,10 @@ export default class FinanceValidation {
     if (result.error) throw HttpResponseError.createWrongValuesError();
     return result.value;
   }
-    ,
-  
 
   static createBudgetEntryBody(
-    data: ICreateBudgetE
-        ntryBody,
-        
-  ): ICreateBudgetEntryBody 
-        {
-        
+    data: ICreateBudgetEntryBody,
+  ): ICreateBudgetEntryBody {
     const schema = Joi.object<ICreateBudgetEntryBody>({
       seasonId: Joi.string().uuid().required(),
       type: Joi.string()

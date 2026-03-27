@@ -46,11 +46,6 @@ class FinanceController implements Controller {
 
   async getPayments(
     req: Request<
-      
-     
-     
-     
-    
       { clubId: string },
       any,
       any,
@@ -67,9 +62,6 @@ class FinanceController implements Controller {
   }
 
   async createBudgetEntry(
-      
-     ,
-    
     req: Request<{ clubId: string }>,
     res: Response<IResponse<any>, ILocals>,
   ): Promise<void> {

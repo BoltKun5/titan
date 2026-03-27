@@ -15,8 +15,6 @@ export default class MemberValidation {
       userId: Joi.string().uuid().required(),
       seasonId: Joi.string().uuid().required(),
       role: Joi.string()
-        
-        
         .valid(...Object.values(ClubMemberRole))
         .required(),
       position: Joi.string().allow('').optional(),
@@ -30,12 +28,8 @@ export default class MemberValidation {
     return result.value;
   }
 
-  static updateMemberBod
-        y(data: IUpdateClubMemberBody): IUpdateC
-        lubMemberBody {
-    const schema = Joi.obj
-        ect<IUpdateClubMemberBody>({
-        
+  static updateMemberBody(data: IUpdateClubMemberBody): IUpdateClubMemberBody {
+    const schema = Joi.object<IUpdateClubMemberBody>({
       role: Joi.string()
         .valid(...Object.values(ClubMemberRole))
         .optional(),
@@ -62,8 +56,6 @@ export default class MemberValidation {
       expirationDate: Joi.string().isoDate().required(),
     });
 
-    ,
-  
     const result = schema.validate(data);
     if (result.error) throw HttpResponseError.createWrongValuesError();
     return result.value;

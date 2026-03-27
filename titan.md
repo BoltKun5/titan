@@ -90,33 +90,33 @@
 
 ### Statistiques individuelles (joueur)
 
-- [ ] Points / buts marqués (total, par match, par type)
+- [x] Points / buts marqués (total, par match, par type)
   - 🏐 Handball : par type de tir (6m, 9m, aile, contre-attaque, 7m)
-- [ ] Pourcentage de réussite au tir (global, par zone, par type)
-- [ ] Arrêts (gardiens, si applicable au sport) : total, pourcentage, par zone
-- [ ] Passes décisives
-- [ ] Sanctions reçues — selon le sport :
+- [x] Pourcentage de réussite au tir (global, par zone, par type)
+- [x] Arrêts (gardiens, si applicable au sport) : total, pourcentage, par zone
+- [x] Passes décisives
+- [x] Sanctions reçues — selon le sport :
   - 🏐 Handball : 2 min, cartons
-- [ ] Temps de jeu total et moyen
+- [x] Temps de jeu total et moyen
 - [ ] Évolution des performances sur la saison (graphiques)
 - [ ] Comparaison entre joueurs
-- [ ] Fiche stats complète par joueur (résumé de saison)
+- [x] Fiche stats complète par joueur (résumé de saison)
 
 ### Statistiques d'équipe
 
-- [ ] Buts marqués / encaissés par match et cumulés
-- [ ] Différence de buts
-- [ ] Pourcentage de victoires / nuls / défaites
-- [ ] Tendance domicile / extérieur
+- [x] Buts marqués / encaissés par match et cumulés
+- [x] Différence de buts
+- [x] Pourcentage de victoires / nuls / défaites
+- [x] Tendance domicile / extérieur
 - [ ] Statistiques par période (mi-temps, quart-temps, etc. — configurable par sport)
   - 🏐 Handball : 1ère MT vs 2ème MT
-- [ ] Meilleurs buteurs / passeurs / gardiens (classement interne)
+- [x] Meilleurs buteurs / passeurs / gardiens (classement interne)
 - [ ] Répartition des buts/points par poste
-- [ ] Séries en cours (victoires / défaites consécutives)
+- [x] Séries en cours (victoires / défaites consécutives)
 
 ### Statistiques de club
 
-- [ ] Vue globale multi-équipes
+- [x] Vue globale multi-équipes
 - [ ] Palmarès du club par saison
 - [ ] Records du club (meilleur buteur historique, plus large victoire, etc.)
 

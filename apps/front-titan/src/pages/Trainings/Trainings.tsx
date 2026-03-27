@@ -12,10 +12,17 @@ import {
   Paper,
   Chip,
   Button,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
+  TextField,
+  MenuItem,
 } from "@mui/material";
 import { loggedApi } from "../../axios";
 import AddIcon from "@mui/icons-material/Add";
 import dayjs from "dayjs";
+import { TrainingRecurrence } from "titan_core";
 
 interface TrainingRow {
   id: string;
@@ -28,17 +35,81 @@ interface TrainingRow {
   team?: { name: string };
 }
 
+interface TeamOption {
+  id: string;
+  name: string;
+}
+
 export const Trainings: React.FC = () => {
   const { clubId } = useParams<{ clubId: string }>();
   const [trainings, setTrainings] = useState<TrainingRow[]>([]);
 
-  useEffect(() => {
+  // Dialog state
+  const [open, setOpen] = useState(false);
+  const [teamsList, setTeamsList] = useState<TeamOption[]>([]);
+  const [teamId, setTeamId] = useState("");
+  const [date, setDate] = useState("");
+  const [startTime, setStartTime] = useState("");
+  const [endTime, setEndTime] = useState("");
+  const [recurrence, setRecurrence] = useState<TrainingRecurrence>(
+    TrainingRecurrence.ONCE,
+  );
+  const [notes, setNotes] = useState("");
+  const [creating, setCreating] = useState(false);
+
+  const fetchTrainings = () => {
     if (clubId) {
       loggedApi.get(`/titan/clubs/${clubId}/trainings`).then((res) => {
         setTrainings(res.data.data);
       });
     }
+  };
+
+  useEffect(() => {
+    fetchTrainings();
   }, [clubId]);
+
+  const handleOpen = () => {
+    loggedApi.get(`/titan/clubs/${clubId}/teams`).then((res) => {
+      setTeamsList(res.data.data);
+    });
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+    setTeamId("");
+    setDate("");
+    setStartTime("");
+    setEndTime("");
+    setRecurrence(TrainingRecurrence.ONCE);
+    setNotes("");
+  };
+
+  const handleCreate = async () => {
+    if (!teamId || !date || !startTime || !endTime) return;
+    setCreating(true);
+    try {
+      await loggedApi.post(`/titan/clubs/${clubId}/trainings`, {
+        teamId,
+        date,
+        startTime,
+        endTime,
+        recurrence,
+        notes: notes || undefined,
+      });
+      handleClose();
+      fetchTrainings();
+    } finally {
+      setCreating(false);
+    }
+  };
+
+  const recurrenceLabel: Record<string, string> = {
+    once: "Unique",
+    weekly: "Hebdomadaire",
+    biweekly: "Bimensuel",
+  };
 
   return (
     <Box>
@@ -49,7 +120,11 @@ export const Trainings: React.FC = () => {
         mb={2}
       >
         <Typography variant="h5">Entraînements</Typography>
-        <Button variant="contained" startIcon={<AddIcon />}>
+        <Button
+          variant="contained"
+          startIcon={<AddIcon />}
+          onClick={handleOpen}
+        >
           Planifier un entraînement
         </Button>
       </Box>
@@ -59,6 +134,7 @@ export const Trainings: React.FC = () => {
           <TableHead>
             <TableRow>
               <TableCell>Date</TableCell>
+              <TableCell>Équipe</TableCell>
               <TableCell>Horaires</TableCell>
               <TableCell>Lieu</TableCell>
               <TableCell>Récurrence</TableCell>
@@ -69,11 +145,14 @@ export const Trainings: React.FC = () => {
             {trainings.map((t) => (
               <TableRow key={t.id}>
                 <TableCell>{dayjs(t.date).format("DD/MM/YYYY")}</TableCell>
+                <TableCell>{t.team?.name ?? "—"}</TableCell>
                 <TableCell>
                   {t.startTime} – {t.endTime}
                 </TableCell>
                 <TableCell>{t.venue?.name ?? "—"}</TableCell>
-                <TableCell>{t.recurrence}</TableCell>
+                <TableCell>
+                  {recurrenceLabel[t.recurrence] ?? t.recurrence}
+                </TableCell>
                 <TableCell>
                   <Chip
                     label={t.isCancelled ? "Annulé" : "Programmé"}
@@ -85,7 +164,7 @@ export const Trainings: React.FC = () => {
             ))}
             {trainings.length === 0 && (
               <TableRow>
-                <TableCell colSpan={5} align="center">
+                <TableCell colSpan={6} align="center">
                   Aucun entraînement planifié
                 </TableCell>
               </TableRow>
@@ -93,6 +172,88 @@ export const Trainings: React.FC = () => {
           </TableBody>
         </Table>
       </TableContainer>
+
+      <Dialog open={open} onClose={handleClose} fullWidth maxWidth="sm">
+        <DialogTitle>Planifier un entraînement</DialogTitle>
+        <DialogContent>
+          <TextField
+            select
+            margin="dense"
+            label="Équipe"
+            fullWidth
+            value={teamId}
+            onChange={(e) => setTeamId(e.target.value)}
+          >
+            {teamsList.map((t) => (
+              <MenuItem key={t.id} value={t.id}>
+                {t.name}
+              </MenuItem>
+            ))}
+          </TextField>
+          <TextField
+            margin="dense"
+            label="Date"
+            type="date"
+            fullWidth
+            value={date}
+            onChange={(e) => setDate(e.target.value)}
+            InputLabelProps={{ shrink: true }}
+          />
+          <Box display="flex" gap={2}>
+            <TextField
+              margin="dense"
+              label="Début"
+              type="time"
+              fullWidth
+              value={startTime}
+              onChange={(e) => setStartTime(e.target.value)}
+              InputLabelProps={{ shrink: true }}
+            />
+            <TextField
+              margin="dense"
+              label="Fin"
+              type="time"
+              fullWidth
+              value={endTime}
+              onChange={(e) => setEndTime(e.target.value)}
+              InputLabelProps={{ shrink: true }}
+            />
+          </Box>
+          <TextField
+            select
+            margin="dense"
+            label="Récurrence"
+            fullWidth
+            value={recurrence}
+            onChange={(e) =>
+              setRecurrence(e.target.value as TrainingRecurrence)
+            }
+          >
+            <MenuItem value={TrainingRecurrence.ONCE}>Unique</MenuItem>
+            <MenuItem value={TrainingRecurrence.WEEKLY}>Hebdomadaire</MenuItem>
+            <MenuItem value={TrainingRecurrence.BIWEEKLY}>Bimensuel</MenuItem>
+          </TextField>
+          <TextField
+            margin="dense"
+            label="Notes (optionnel)"
+            fullWidth
+            multiline
+            rows={2}
+            value={notes}
+            onChange={(e) => setNotes(e.target.value)}
+          />
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleClose}>Annuler</Button>
+          <Button
+            variant="contained"
+            onClick={handleCreate}
+            disabled={creating || !teamId || !date || !startTime || !endTime}
+          >
+            Planifier
+          </Button>
+        </DialogActions>
+      </Dialog>
     </Box>
   );
 };

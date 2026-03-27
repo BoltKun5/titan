@@ -1,0 +1,28 @@
+export type ITeamSeasonStats = {
+  id: string;
+  teamId: string;
+  seasonId: string;
+  gamesPlayed: number;
+  wins: number;
+  draws: number;
+  losses: number;
+  goalsFor: number;
+  goalsAgainst: number;
+  goalDifference: number;
+  points: number;
+  rank: number | null;
+  homeWins: number;
+  homeDraws: number;
+  homeLosses: number;
+  awayWins: number;
+  awayDraws: number;
+  awayLosses: number;
+  longestWinStreak: number;
+  longestUnbeatenStreak: number;
+  longestLossStreak: number;
+  currentStreakType: string | null;
+  currentStreakCount: number;
+  customStats: Record<string, any> | null;
+  createdAt?: string;
+  updatedAt?: string;
+};

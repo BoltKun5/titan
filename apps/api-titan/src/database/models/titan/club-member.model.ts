@@ -27,9 +27,6 @@ export type CreationModelClubMember = WithRequired<
 
 @Table({ tableName: 'titan_club_member', paranoid: false, timestamps: true })
 export class ClubMember extends CustomModel<
-  
- 
-
   IClubMember,
   CreationModelClubMember
 > {

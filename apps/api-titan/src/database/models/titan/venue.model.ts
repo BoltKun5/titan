@@ -16,9 +16,6 @@ import { CustomModel } from '../../custom/custom-model.model';
 import { Club } from './club.model';
 
 export type CreationModelVenue = WithRequired<
-  
- 
-
   Partial<IVenue>,
   'clubId' | 'name'
 >;

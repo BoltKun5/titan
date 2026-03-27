@@ -1,5 +1,11 @@
 import { Service } from '../../core';
-import { Match, MatchLineup, MatchEvent, ClubMember } from '../../database';
+import {
+  Match,
+  MatchLineup,
+  MatchEvent,
+  ClubMember,
+  Team,
+} from '../../database';
 import { User } from '../../database';
 import {
   ICreateMatchBody,
@@ -29,6 +35,21 @@ class MatchService extends Service {
     return Match.findAll({ where, order: [['date', 'ASC']] });
   }
 
+  async getMatchesByClub(clubId: string, seasonId?: string): Promise<Match[]> {
+    const teams = await Team.findAll({ where: { clubId }, attributes: ['id'] });
+    const teamIds = teams.map((t) => t.id);
+    if (teamIds.length === 0) return [];
+
+    const where: any = { teamId: teamIds };
+    if (seasonId) where.seasonId = seasonId;
+
+    return Match.findAll({
+      where,
+      include: [{ model: Team, attributes: ['id', 'name'] }],
+      order: [['date', 'ASC']],
+    });
+  }
+
   async getMatch(matchId: string): Promise<Match> {
     const match = await Match.findByPk(matchId, {
       include: [
@@ -39,9 +60,6 @@ class MatchService extends Service {
               model: ClubMember,
               include: [
                 {
-                 
-                 ,
-               
                   model: User,
                   attributes: ['id', 'firstName', 'lastName', 'shownName'],
                 },
@@ -53,9 +71,6 @@ class MatchService extends Service {
           model: MatchEvent,
           include: [
             {
-                 
-                 ,
-               
               model: ClubMember,
               include: [
                 {
@@ -81,10 +96,7 @@ class MatchService extends Service {
 
   async deleteMatch(matchId: string): Promise<void> {
     const match = await Match.findByPk(matchId);
-    if (!match) th
-    row createError(
-4   04, 'Match not found');,
-  
+    if (!match) throw createError(404, 'Match not found');
     await match.destroy();
   }
 
@@ -99,10 +111,7 @@ class MatchService extends Service {
     const entries = body.lineup.map((p) => ({
       matchId,
       clubMemberId: p.clubMemberId,
-      position: p
-    .position ?? nul
-   l,,
-  
+      position: p.position ?? null,
       isStarter: p.isStarter,
     }));
 

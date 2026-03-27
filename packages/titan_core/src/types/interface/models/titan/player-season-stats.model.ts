@@ -1,0 +1,23 @@
+export type IPlayerSeasonStats = {
+  id: string;
+  playerId: string;
+  seasonId: string;
+  teamId: string | null;
+  gamesPlayed: number;
+  gamesStarted: number;
+  minutesPlayed: number;
+  goals: number;
+  goalDetails: Record<string, number> | null;
+  assists: number;
+  saves: number;
+  saveDetails: Record<string, number> | null;
+  sanctions: Record<string, number> | null;
+  shotsAttempted: number;
+  shootingPercentage: number | null;
+  savePercentage: number | null;
+  penaltiesAttempted: number;
+  penaltiesScored: number;
+  customStats: Record<string, any> | null;
+  createdAt?: string;
+  updatedAt?: string;
+};

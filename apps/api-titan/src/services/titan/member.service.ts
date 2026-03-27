@@ -1,5 +1,9 @@
 import { Service } from '../../core';
-import {iport { Useriport { ICreateClubMemberB   IUpdateClubMemberBody,
+import { ClubMember, License, MedicalCertificate } from '../../database';
+import { User } from '../../database';
+import {
+  ICreateClubMemberBody,
+  IUpdateClubMemberBody,
   ICreateLicenseBody,
   ICreateMedicalCertificateBody,
   ClubMemberStatus,
@@ -12,15 +16,11 @@ class MemberService extends Service {
     clubId: string,
     body: ICreateClubMemberBody,
   ): Promise<ClubMember> {
-    const existing = 
-    await ClubMembe
-   r.findOne({,
-  
+    const existing = await ClubMember.findOne({
       where: { clubId, userId: body.userId, seasonId: body.seasonId },
     });
     if (existing)
-      throw creat
-     eError(409, 'Member already exists for this season');
+      throw createError(409, 'Member already exists for this season');
 
     return ClubMember.create({
       clubId,
@@ -42,16 +42,6 @@ class MemberService extends Service {
       where,
       include: [
         {
-         
-         
-            
-           
-           
-           
-           
-           ,
-          ,
-       
           model: User,
           attributes: [
             'id',
@@ -62,17 +52,7 @@ class MemberService extends Service {
             'avatarUrl',
           ],
         },
-        {
-          model: Licen
-s         e },
-            
-           
-           
-           
-           
-           ,
-          ,
-       
+        { model: License },
         { model: MedicalCertificate },
       ],
       order: [['joinedAt', 'ASC']],
@@ -82,9 +62,6 @@ s         e },
   async getMember(memberId: string): Promise<ClubMember> {
     const member = await ClubMember.findByPk(memberId, {
       include: [
-    
-   ,
-  
         {
           model: User,
           attributes: [
@@ -112,8 +89,6 @@ s         e },
     if (!member) throw createError(404, 'Member not found');
     await member.update(body);
     return member;
-    ,
-  
   }
 
   async deleteMember(memberId: string): Promise<void> {

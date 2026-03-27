@@ -15,16 +15,11 @@ export default class ClubValidation {
     const schema = Joi.object<ICreateClubBody>({
       name: Joi.string().min(1).max(100).required(),
       sport: Joi.string()
-        
-        
         .valid(...Object.values(SportType))
         .required(),
       logo: Joi.string().allow(null).optional(),
       colors: Joi.array().items(Joi.string()).optional(),
-      address: Joi.string
-        ().allow('').optional(),
-        
-        
+      address: Joi.string().allow('').optional(),
       phone: Joi.string().allow('').optional(),
       email: Joi.string()
         .email({ tlds: { allow: false } })
@@ -41,10 +36,7 @@ export default class ClubValidation {
 
   static updateClubBody(data: IUpdateClubBody): IUpdateClubBody {
     const schema = Joi.object<IUpdateClubBody>({
-      name: Joi.string().
-        min(1).max(100).optional(),
-        
-        
+      name: Joi.string().min(1).max(100).optional(),
       logo: Joi.string().allow(null).optional(),
       colors: Joi.array().items(Joi.string()).optional(),
       address: Joi.string().allow('').optional(),

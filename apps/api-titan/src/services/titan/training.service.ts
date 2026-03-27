@@ -1,10 +1,6 @@
 import { Service } from '../../core';
-import { Training, TrainingAttendance } from '../../database';
+import { Training, TrainingAttendance, Team, Venue } from '../../database';
 import {
- 
- 
- ,
-
   ICreateTrainingBody,
   IUpdateTrainingBody,
   IMarkAttendanceBody,
@@ -28,14 +24,26 @@ class TrainingService extends Service {
     return Training.findAll({ where: { teamId }, order: [['date', 'ASC']] });
   }
 
+  async getByClub(clubId: string): Promise<Training[]> {
+    const teams = await Team.findAll({ where: { clubId }, attributes: ['id'] });
+    const teamIds = teams.map((t) => t.id);
+    if (teamIds.length === 0) return [];
+
+    return Training.findAll({
+      where: { teamId: teamIds },
+      include: [
+        { model: Team, attributes: ['id', 'name'] },
+        { model: Venue, attributes: ['id', 'name'] },
+      ],
+      order: [['date', 'ASC']],
+    });
+  }
+
   async getById(trainingId: string): Promise<Training> {
     const training = await Training.findByPk(trainingId, {
       include: [{ model: TrainingAttendance }],
     });
-    if (!traini
-    ng) throw createErr
-  o r(404, 'Training not foun,
-  d');
+    if (!training) throw createError(404, 'Training not found');
     return training;
   }
 
@@ -49,9 +57,6 @@ class TrainingService extends Service {
     return training;
   }
 
-    
-   ,
-  
   async delete(trainingId: string): Promise<void> {
     const training = await Training.findByPk(trainingId);
     if (!training) throw createError(404, 'Training not found');

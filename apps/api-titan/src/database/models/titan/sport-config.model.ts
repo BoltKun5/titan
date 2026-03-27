@@ -13,15 +13,9 @@ import { WithRequired } from '../../../core';
 import { CustomModel } from '../../custom/custom-model.model';
 
 export type CreationModelSportConfig = WithRequired<
-  
- 
-
   Partial<ISportConfig>,
   'sport'
 >;
-  
- 
-
 
 @Table({ tableName: 'titan_sport_config', paranoid: false, timestamps: true })
 export class SportConfig extends CustomModel<

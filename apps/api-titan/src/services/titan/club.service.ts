@@ -22,7 +22,7 @@ import {
 import createError from 'http-errors';
 
 class ClubService extends Service {
-  async createClub(body: ICreateClubBody): Promise<Club> {
+  async createClub(body: ICreateClubBody, userId: string): Promise<Club> {
     const club = await Club.create({
       name: body.name,
       sport: body.sport,
@@ -35,13 +35,24 @@ class ClubService extends Service {
       federationId: body.federationId ?? null,
     });
 
-    this.logger.log(`Club "${club.name}" created (${club.id})`);
+    await StaffRole.create({
+      clubId: club.id,
+      userId,
+      role: 'admin',
+    });
+
+    this.logger.log(
+      `Club "${club.name}" created (${club.id}) by user ${userId}`,
+    );
     return club;
   }
 
   async getClub(clubId: string): Promise<Club> {
     const club = await Club.findByPk(clubId, {
-      include: [ !club) throw creturn club;
+      include: [{ model: Season }, { model: Venue }],
+    });
+    if (!club) throw createError(404, 'Club not found');
+    return club;
   }
 
   async updateClub(clubId: string, body: IUpdateClubBody): Promise<Club> {
@@ -86,16 +97,9 @@ class ClubService extends Service {
       where: { clubId },
       order: [['startDate', 'DESC']],
     });
-     
-     ,
-   
   }
 
   async updateSeason(
-    
-   
-   ,
-  
     seasonId: string,
     clubId: string,
     body: IUpdateSeasonBody,
@@ -127,11 +131,7 @@ class ClubService extends Service {
     });
   }
 
-  async getVenues(cl
-    ubId: string): P
-   romise<Venue[]> 
-   {,
-  
+  async getVenues(clubId: string): Promise<Venue[]> {
     return Venue.findAll({ where: { clubId }, order: [['name', 'ASC']] });
   }
 

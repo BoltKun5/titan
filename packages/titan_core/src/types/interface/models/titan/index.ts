@@ -16,3 +16,7 @@ export * from './training-attendance.model';
 export * from './fee-plan.model';
 export * from './payment.model';
 export * from './budget-entry.model';
+export * from './player.model';
+export * from './player-match-stats.model';
+export * from './player-season-stats.model';
+export * from './team-season-stats.model';

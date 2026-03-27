@@ -13,9 +13,6 @@ class FinanceService extends Service {
   // --- Fee Plans ---
 
   async createFeePlan(
-    
-   ,
-  
     clubId: string,
     body: ICreateFeePlanBody,
   ): Promise<FeePlan> {
@@ -54,17 +51,24 @@ class FinanceService extends Service {
       notes: body.notes ?? null,
     });
   }
-     
-     ,
-   
 
-  async getPayments(clubMemberId: string): Promise<Payment[]> {
+  async getPayments(
+    clubId: string,
+    memberId?: string,
+    seasonId?: string,
+  ): Promise<Payment[]> {
+    const where: any = {};
+    if (memberId) where.clubMemberId = memberId;
+    const include: any[] = [];
+    if (!memberId || seasonId) {
+      const feePlanWhere: any = { clubId };
+      if (seasonId) feePlanWhere.seasonId = seasonId;
+      include.push({ model: FeePlan, where: feePlanWhere, attributes: [] });
+    }
     return Payment.findAll({
-      where: { clubMemberId },
-      order: [['createdAt'
-    , 'DESC']],
-   ,
-  
+      where,
+      include,
+      order: [['createdAt', 'DESC']],
     });
   }
 
@@ -80,12 +84,7 @@ class FinanceService extends Service {
       type: body.type,
       category: body.category,
       label: body.label,
-      amount: 
- b  ody.amount,
-   
-   
-   ;
- 
+      amount: body.amount,
       date: body.date,
       notes: body.notes ?? null,
     });
@@ -101,12 +100,7 @@ class FinanceService extends Service {
     balance: number;
   }> {
     const entries = await BudgetEntry.findAll({
-      where:
-      { clubId
-,      seasonId },
-     
-     ,
-   
+      where: { clubId, seasonId },
       order: [['date', 'DESC']],
     });
 

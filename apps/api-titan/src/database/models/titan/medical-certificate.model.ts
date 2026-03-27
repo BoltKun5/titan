@@ -21,10 +21,6 @@ export type CreationModelMedicalCertificate = WithRequired<
 >;
 
 @Table({
- 
- 
- ,
-
   tableName: 'titan_medical_certificate',
   paranoid: false,
   timestamps: true,

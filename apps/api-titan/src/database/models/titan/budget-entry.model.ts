@@ -23,9 +23,6 @@ export type CreationModelBudgetEntry = WithRequired<
 
 @Table({ tableName: 'titan_budget_entry', paranoid: false, timestamps: true })
 export class BudgetEntry extends CustomModel<
-  
- 
-
   IBudgetEntry,
   CreationModelBudgetEntry
 > {

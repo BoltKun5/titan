@@ -22,11 +22,6 @@ export type CreationModelTrainingAttendance = WithRequired<
 >;
 
 @Table({
- 
- 
- 
- ,
-
   tableName: 'titan_training_attendance',
   paranoid: false,
   timestamps: true,
