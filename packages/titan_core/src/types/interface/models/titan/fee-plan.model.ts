@@ -1,6 +1,6 @@
 export type IFeePlan = {
   id: string;
-  clubId: string;
+  clubAccountId: string;
   seasonId: string;
   category: string;
   amount: number;

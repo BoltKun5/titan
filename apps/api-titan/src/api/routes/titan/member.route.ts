@@ -10,22 +10,22 @@ export const TitanMemberRouter = (app: Router): Router => {
   app.use('/titan/clubs', route);
 
   // Members
-  route.get('/:clubId/members', auth, memberController.list);
+  route.get('/:clubAccountId/members', auth, memberController.list);
   route.post(
-    '/:clubId/members',
+    '/:clubAccountId/members',
     auth,
     requireClubRole(TitanRole.ADMIN, TitanRole.MANAGER, TitanRole.COACH),
     memberController.create,
   );
-  route.get('/:clubId/members/:memberId', auth, memberController.get);
+  route.get('/:clubAccountId/members/:memberId', auth, memberController.get);
   route.put(
-    '/:clubId/members/:memberId',
+    '/:clubAccountId/members/:memberId',
     auth,
     requireClubRole(TitanRole.ADMIN, TitanRole.MANAGER, TitanRole.COACH),
     memberController.update,
   );
   route.delete(
-    '/:clubId/members/:memberId',
+    '/:clubAccountId/members/:memberId',
     auth,
     requireClubRole(TitanRole.ADMIN, TitanRole.MANAGER),
     memberController.remove,
@@ -33,13 +33,13 @@ export const TitanMemberRouter = (app: Router): Router => {
 
   // Licenses & Medical Certificates
   route.post(
-    '/:clubId/licenses',
+    '/:clubAccountId/licenses',
     auth,
     requireClubRole(TitanRole.ADMIN, TitanRole.MANAGER, TitanRole.COACH),
     memberController.createLicense,
   );
   route.post(
-    '/:clubId/medical-certificates',
+    '/:clubAccountId/medical-certificates',
     auth,
     requireClubRole(TitanRole.ADMIN, TitanRole.MANAGER, TitanRole.COACH),
     memberController.createMedicalCertificate,

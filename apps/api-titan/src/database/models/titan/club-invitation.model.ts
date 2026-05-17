@@ -1,23 +1,15 @@
 import {
-  DataType,
-  Column,
-  IsUUID,
-  PrimaryKey,
-  Table,
-  Default,
-  AllowNull,
-  ForeignKey,
-  BelongsTo,
-  Unique,
+  DataType, Column, IsUUID, PrimaryKey, Table, Default,
+  AllowNull, ForeignKey, BelongsTo, Unique,
 } from 'sequelize-typescript';
 import { v4 as uuidv4 } from 'uuid';
 import { CustomModel } from '../../custom/custom-model.model';
-import { Club } from './club.model';
+import { TitanClubAccount } from './club-account.model';
 import { User } from '../user.model';
 
 export interface IClubInvitation {
   id: string;
-  clubId: string;
+  clubAccountId: string;
   code: string;
   role: string;
   expiresAt: Date;
@@ -29,13 +21,9 @@ export interface IClubInvitation {
 }
 
 type CreationModelClubInvitation = Partial<IClubInvitation> &
-  Pick<IClubInvitation, 'clubId' | 'code' | 'role' | 'expiresAt' | 'createdBy'>;
+  Pick<IClubInvitation, 'clubAccountId' | 'code' | 'role' | 'expiresAt' | 'createdBy'>;
 
 @Table({
- 
- 
- ,
-
   tableName: 'titan_club_invitation',
   paranoid: false,
   timestamps: true,
@@ -44,46 +32,37 @@ export class ClubInvitation extends CustomModel<
   IClubInvitation,
   CreationModelClubInvitation
 > {
-  @IsUUID(4)
-  @PrimaryKey
-  @Default(() => uuidv4())
+  @IsUUID(4) @PrimaryKey @Default(() => uuidv4())
   @Column({ type: DataType.UUID })
   id: string;
 
-  @AllowNull(false)
-  @ForeignKey(() => Club)
+  @AllowNull(false) @ForeignKey(() => TitanClubAccount)
   @Column({ type: DataType.UUID })
-  clubId: string;
+  clubAccountId: string;
 
-  @AllowNull(false)
-  @Unique
+  @AllowNull(false) @Unique
   @Column({ type: DataType.STRING })
   code: string;
 
-  @AllowNull(false)
-  @Column({ type: DataType.STRING })
+  @AllowNull(false) @Column({ type: DataType.STRING })
   role: string;
 
-  @AllowNull(false)
-  @Column({ type: DataType.DATE })
+  @AllowNull(false) @Column({ type: DataType.DATE })
   expiresAt: Date;
 
-  @AllowNull(false)
-  @ForeignKey(() => User)
+  @AllowNull(false) @ForeignKey(() => User)
   @Column({ type: DataType.UUID })
   createdBy: string;
 
-  @AllowNull(true)
-  @Default(null)
+  @AllowNull(true) @Default(null)
   @ForeignKey(() => User)
   @Column({ type: DataType.UUID })
   usedBy: string | null;
 
-  @AllowNull(true)
-  @Default(null)
+  @AllowNull(true) @Default(null)
   @Column({ type: DataType.DATE })
   usedAt: Date | null;
 
-  @BelongsTo(() => Club)
-  club: Club;
+  @BelongsTo(() => TitanClubAccount)
+  clubAccount: TitanClubAccount;
 }

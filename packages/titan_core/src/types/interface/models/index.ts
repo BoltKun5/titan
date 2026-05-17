@@ -6,3 +6,6 @@ export * from './message-reaction.model';
 
 // Titan (club management)
 export * from './titan';
+
+// Federation referential
+export * from './federation';

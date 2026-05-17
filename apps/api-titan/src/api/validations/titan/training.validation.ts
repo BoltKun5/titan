@@ -10,7 +10,7 @@ import {
 export default class TrainingValidation {
   static createBody(data: ICreateTrainingBody): ICreateTrainingBody {
     const schema = Joi.object<ICreateTrainingBody>({
-      teamId: Joi.string().uuid().required(),
+      federationTeamId: Joi.string().uuid().required(),
       venueId: Joi.string().uuid().allow(null).optional(),
       date: Joi.string().isoDate().required(),
       startTime: Joi.string()

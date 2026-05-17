@@ -1,0 +1,25 @@
+export type IFederationPlayerMatchStatsHandball = {
+  matchStatsId: string;
+  shotsAttempted6m: number;
+  shotsMade6m: number;
+  shotsAttempted7m: number;
+  shotsMade7m: number;
+  shotsAttempted9m: number;
+  shotsMade9m: number;
+  shotsAttemptedWing: number;
+  shotsMadeWing: number;
+  shotsAttemptedFastbreak: number;
+  shotsMadeFastbreak: number;
+  savesTotal: number | null;
+  savesByZone: Record<string, number> | null;
+  twoMinutesCount: number;
+  yellowCard: boolean;
+  redCard: boolean;
+  blueCard: boolean;
+  disqualified: boolean;
+  assists: number;
+  technicalFaults: number;
+  steals: number;
+  createdAt?: string;
+  updatedAt?: string;
+};

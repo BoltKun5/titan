@@ -2,7 +2,7 @@ import { BudgetEntryType, BudgetCategory } from '../../../../enums';
 
 export type IBudgetEntry = {
   id: string;
-  clubId: string;
+  clubAccountId: string;
   seasonId: string;
   type: BudgetEntryType;
   category: BudgetCategory;

@@ -1,0 +1,24 @@
+export type IFederationPlayerSeasonStatsHandball = {
+  seasonStatsId: string;
+  shotsAttempted6m: number;
+  shotsMade6m: number;
+  shotsAttempted7m: number;
+  shotsMade7m: number;
+  shotsAttempted9m: number;
+  shotsMade9m: number;
+  shotsAttemptedWing: number;
+  shotsMadeWing: number;
+  shotsAttemptedFastbreak: number;
+  shotsMadeFastbreak: number;
+  savesTotal: number | null;
+  twoMinutesCount: number;
+  yellowCards: number;
+  redCards: number;
+  blueCards: number;
+  disqualifications: number;
+  assists: number;
+  technicalFaults: number;
+  steals: number;
+  createdAt?: string;
+  updatedAt?: string;
+};

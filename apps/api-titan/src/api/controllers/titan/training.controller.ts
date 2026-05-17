@@ -8,7 +8,7 @@ class TrainingController implements Controller {
   private static readonly logger = new LoggerModel(TrainingController.name);
 
   async create(
-    req: Request<{ clubId: string }>,
+    req: Request<{ clubAccountId: string }>,
     res: Response<IResponse<any>, ILocals>,
   ): Promise<void> {
     const body = TrainingValidation.createBody(req.body);
@@ -17,14 +17,19 @@ class TrainingController implements Controller {
   }
 
   async list(
-    req: Request<{ clubId: string }, any, any, { teamId?: string }>,
+    req: Request<
+      { clubAccountId: string },
+      any,
+      any,
+      { federationTeamId?: string }
+    >,
     res: Response<IResponse<any>, ILocals>,
   ): Promise<void> {
-    if (req.query.teamId) {
-      const trainings = await trainingService.getByTeam(req.query.teamId);
+    if (req.query.federationTeamId) {
+      const trainings = await trainingService.getByTeam(req.query.federationTeamId);
       res.json({ data: trainings });
     } else {
-      const trainings = await trainingService.getByClub(req.params.clubId);
+      const trainings = await trainingService.getByClub(req.params.clubAccountId);
       res.json({ data: trainings });
     }
   }

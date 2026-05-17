@@ -5,11 +5,11 @@ import { TitanRole } from 'titan_core';
 
 class DashboardController {
   get = async (
-    req: Request<{ clubId: string }>,
+    req: Request<{ clubAccountId: string }>,
     res: Response<any, ILocals>,
     next: NextFunction,
   ) => {
-    const { clubId } = req.params;
+    const { clubAccountId } = req.params;
     const seasonId = req.query.seasonId as string;
     const userId = res.locals.currentUser.id;
     const role = res.locals.clubRole!;
@@ -25,11 +25,14 @@ class DashboardController {
     switch (role) {
       case TitanRole.ADMIN:
       case TitanRole.MANAGER:
-        data = await dashboardService.getDirigeantDashboard(clubId, seasonId);
+        data = await dashboardService.getDirigeantDashboard(
+          clubAccountId,
+          seasonId,
+        );
         break;
       case TitanRole.COACH:
         data = await dashboardService.getEntraineurDashboard(
-          clubId,
+          clubAccountId,
           userId,
           seasonId,
         );
@@ -38,7 +41,7 @@ class DashboardController {
       case TitanRole.VIEWER:
       default:
         data = await dashboardService.getJoueurDashboard(
-          clubId,
+          clubAccountId,
           userId,
           seasonId,
         );

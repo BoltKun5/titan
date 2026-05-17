@@ -1,0 +1,20 @@
+export type IFederationClub = {
+  id: string;
+  externalId: string;
+  federationId: string;
+  name: string;
+  shortName: string | null;
+  city: string | null;
+  logoUrl: string | null;
+  colors: string[] | null;
+  website: string | null;
+  phone: string | null;
+  email: string | null;
+  foundingYear: number | null;
+  lastScrapedAt: string | null;
+  lastScrapeRunId: string | null;
+  sourceUrl: string | null;
+  isManual: boolean;
+  createdAt?: string;
+  updatedAt?: string;
+};

@@ -13,11 +13,11 @@ class FinanceService extends Service {
   // --- Fee Plans ---
 
   async createFeePlan(
-    clubId: string,
+    clubAccountId: string,
     body: ICreateFeePlanBody,
   ): Promise<FeePlan> {
     return FeePlan.create({
-      clubId,
+      clubAccountId,
       seasonId: body.seasonId,
       category: body.category,
       amount: body.amount,
@@ -25,8 +25,11 @@ class FinanceService extends Service {
     });
   }
 
-  async getFeePlans(clubId: string, seasonId?: string): Promise<FeePlan[]> {
-    const where: any = { clubId };
+  async getFeePlans(
+    clubAccountId: string,
+    seasonId?: string,
+  ): Promise<FeePlan[]> {
+    const where: any = { clubAccountId };
     if (seasonId) where.seasonId = seasonId;
     return FeePlan.findAll({ where });
   }
@@ -53,7 +56,7 @@ class FinanceService extends Service {
   }
 
   async getPayments(
-    clubId: string,
+    clubAccountId: string,
     memberId?: string,
     seasonId?: string,
   ): Promise<Payment[]> {
@@ -61,7 +64,7 @@ class FinanceService extends Service {
     if (memberId) where.clubMemberId = memberId;
     const include: any[] = [];
     if (!memberId || seasonId) {
-      const feePlanWhere: any = { clubId };
+      const feePlanWhere: any = { clubAccountId };
       if (seasonId) feePlanWhere.seasonId = seasonId;
       include.push({ model: FeePlan, where: feePlanWhere, attributes: [] });
     }
@@ -75,11 +78,11 @@ class FinanceService extends Service {
   // --- Budget ---
 
   async createBudgetEntry(
-    clubId: string,
+    clubAccountId: string,
     body: ICreateBudgetEntryBody,
   ): Promise<BudgetEntry> {
     return BudgetEntry.create({
-      clubId,
+      clubAccountId,
       seasonId: body.seasonId,
       type: body.type,
       category: body.category,
@@ -91,7 +94,7 @@ class FinanceService extends Service {
   }
 
   async getBudgetSummary(
-    clubId: string,
+    clubAccountId: string,
     seasonId: string,
   ): Promise<{
     entries: BudgetEntry[];
@@ -100,7 +103,7 @@ class FinanceService extends Service {
     balance: number;
   }> {
     const entries = await BudgetEntry.findAll({
-      where: { clubId, seasonId },
+      where: { clubAccountId, seasonId },
       order: [['date', 'DESC']],
     });
 

@@ -13,3 +13,6 @@ export * from './participant-role.enum';
 
 // Titan (club management)
 export * from './titan';
+
+// Federation referential (multi-sport)
+export * from './federation';

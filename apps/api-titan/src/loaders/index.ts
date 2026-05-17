@@ -4,8 +4,8 @@ import { apiLoader } from './api.loader';
 import { databaseLoader } from './database.loader';
 import { Sequelize } from 'sequelize-typescript';
 import { User } from '../database';
-import { SportConfig } from '../database';
-import { UserRoleEnum, SportType } from 'titan_core';
+import { Federation } from '../database';
+import { UserRoleEnum, SportType, FederationCode } from 'titan_core';
 import bcrypt from 'bcryptjs';
 
 export const appLoader = async (): Promise<Sequelize> => {
@@ -15,7 +15,7 @@ export const appLoader = async (): Promise<Sequelize> => {
   });
 
   await seedDevUsers();
-  await seedSportConfigs();
+  await seedFederations();
 
   apiLoader();
   AppConfig.logger.log('Express loaded', {
@@ -128,56 +128,26 @@ const seedDevUsers = async (): Promise<void> => {
   }
 };
 
-const SPORT_CONFIGS = [
+const FEDERATIONS = [
   {
+    code: FederationCode.FFHB,
+    name: 'Fédération Française de Handball',
     sport: SportType.HANDBALL,
-    positions: [
-      'Gardien',
-      'Pivot',
-      'Ailier gauche',
-      'Ailier droit',
-      'Arrière gauche',
-      'Arrière droit',
-      'Demi-centre',
-    ],
-    goalSubtypes: ['6m', '9m', 'Aile', 'Contre-attaque', '7m'],
-    sanctionTypes: [
-      'Avertissement',
-      'Exclusion 2min',
-      'Disqualification',
-      'Rapport',
-    ],
-    periods: ['1ère MT', '2ème MT'],
-    rankingRules: {
-      win: 3,
-      draw: 1,
-      loss: 0,
-    },
+    country: 'FR',
+    baseUrl: 'https://www.ffhandball.fr',
   },
 ];
 
-const seedSportConfigs = async (): Promise<void> => {
+const seedFederations = async (): Promise<void> => {
   let created = 0;
-
-  for (const config of SPORT_CONFIGS) {
-    const existing = await SportConfig.findOne({
-      where: { sport: config.sport },
-    });
+  for (const fed of FEDERATIONS) {
+    const existing = await Federation.findOne({ where: { code: fed.code } });
     if (existing) continue;
-
-    await SportConfig.create({
-      sport: config.sport,
-      positions: config.positions,
-      goalSubtypes: config.goalSubtypes,
-      sanctionTypes: config.sanctionTypes,
-      periods: config.periods,
-      rankingRules: config.rankingRules,
-    });
+    await Federation.create(fed);
     created++;
   }
-
   if (created > 0) {
-    AppConfig.logger.log(`${created} sport config(s) seeded`, {
+    AppConfig.logger.log(`${created} federation(s) seeded`, {
       scenario: LogScenario.SYSTEM_STARTUP,
     });
   }

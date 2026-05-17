@@ -2,7 +2,7 @@ import { ClubMemberRole, ClubMemberStatus } from '../../../../enums';
 
 export type IClubMember = {
   id: string;
-  clubId: string;
+  clubAccountId: string;
   userId: string;
   seasonId: string;
   role: ClubMemberRole;

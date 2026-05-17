@@ -8,27 +8,30 @@ class MemberController implements Controller {
   private static readonly logger = new LoggerModel(MemberController.name);
 
   async create(
-    req: Request<{ clubId: string }>,
+    req: Request<{ clubAccountId: string }>,
     res: Response<IResponse<any>, ILocals>,
   ): Promise<void> {
     const body = MemberValidation.createMemberBody(req.body);
-    const member = await memberService.createMember(req.params.clubId, body);
+    const member = await memberService.createMember(
+      req.params.clubAccountId,
+      body,
+    );
     res.json({ data: member });
   }
 
   async list(
-    req: Request<{ clubId: string }, any, any, { seasonId?: string }>,
+    req: Request<{ clubAccountId: string }, any, any, { seasonId?: string }>,
     res: Response<IResponse<any>, ILocals>,
   ): Promise<void> {
     const members = await memberService.getMembers(
-      req.params.clubId,
+      req.params.clubAccountId,
       req.query.seasonId,
     );
     res.json({ data: members });
   }
 
   async get(
-    req: Request<{ clubId: string; memberId: string }>,
+    req: Request<{ clubAccountId: string; memberId: string }>,
     res: Response<IResponse<any>, ILocals>,
   ): Promise<void> {
     const member = await memberService.getMember(req.params.memberId);
@@ -36,7 +39,7 @@ class MemberController implements Controller {
   }
 
   async update(
-    req: Request<{ clubId: string; memberId: string }>,
+    req: Request<{ clubAccountId: string; memberId: string }>,
     res: Response<IResponse<any>, ILocals>,
   ): Promise<void> {
     const body = MemberValidation.updateMemberBody(req.body);
@@ -45,7 +48,7 @@ class MemberController implements Controller {
   }
 
   async remove(
-    req: Request<{ clubId: string; memberId: string }>,
+    req: Request<{ clubAccountId: string; memberId: string }>,
     res: Response<IResponse<any>, ILocals>,
   ): Promise<void> {
     await memberService.deleteMember(req.params.memberId);
@@ -53,7 +56,7 @@ class MemberController implements Controller {
   }
 
   async createLicense(
-    req: Request<{ clubId: string }>,
+    req: Request<{ clubAccountId: string }>,
     res: Response<IResponse<any>, ILocals>,
   ): Promise<void> {
     const body = MemberValidation.createLicenseBody(req.body);
@@ -62,7 +65,7 @@ class MemberController implements Controller {
   }
 
   async createMedicalCertificate(
-    req: Request<{ clubId: string }>,
+    req: Request<{ clubAccountId: string }>,
     res: Response<IResponse<any>, ILocals>,
   ): Promise<void> {
     const body = MemberValidation.createMedicalCertificateBody(req.body);

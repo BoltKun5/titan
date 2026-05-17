@@ -3,84 +3,94 @@ import {
   ClubMember,
   License,
   MedicalCertificate,
-  Match,
   Training,
   TrainingAttendance,
-  Team,
-  TeamPlayer,
   Payment,
-  PlayerSeasonStats,
-  Player,
-  Season,
   User,
+  TitanClubAccount,
+  TitanPlayerProfile,
+  FederationTeam,
+  FederationTeamMember,
+  FederationMatch,
+  FederationPlayer,
+  FederationPlayerSeasonStats,
 } from '../../database';
 import {
-  MatchStatus,
+  FederationMatchStatus,
   ClubMemberStatus,
   LicenseStatus,
   PaymentStatus,
 } from 'titan_core';
-import { Op, fn, col, literal } from 'sequelize';
-import statsService from './stats.service';
+import { Op } from 'sequelize';
 
 class DashboardService extends Service {
   // ---- Shared helpers ----
 
-  private async getUpcomingMatches(teamIds: string[], limit = 5) {
-    const matches = await Match.findAll({
+  private async getUpcomingMatchesForTeams(teamIds: string[], limit = 5) {
+    if (teamIds.length === 0) return [];
+    const matches = await FederationMatch.findAll({
       where: {
-        teamId: { [Op.in]: teamIds },
-        status: MatchStatus.SCHEDULED,
-        date: { [Op.gte]: new Date() },
+        [Op.or]: [
+          { homeTeamId: { [Op.in]: teamIds } },
+          { awayTeamId: { [Op.in]: teamIds } },
+        ],
+        status: FederationMatchStatus.SCHEDULED,
+        dateUtc: { [Op.gte]: new Date() },
       },
-      include: [{ model: Team, attributes: ['id', 'name'] }],
-      order: [['date', 'ASC']],
+      include: [
+        { model: FederationTeam, as: 'homeTeam', attributes: ['id', 'name'] },
+        { model: FederationTeam, as: 'awayTeam', attributes: ['id', 'name'] },
+      ],
+      order: [['dateUtc', 'ASC']],
       limit,
     });
     return matches.map((m: any) => ({
       id: m.id,
-      date: m.date,
-      opponent: m.opponent,
-      teamName: m.team?.name ?? '',
-      location: m.location,
-      venueLabel: undefined,
+      dateUtc: m.dateUtc,
+      homeTeam: m.homeTeam?.name ?? '',
+      awayTeam: m.awayTeam?.name ?? '',
+      status: m.status,
     }));
   }
 
-  private async getRecentResults(teamIds: string[], limit = 5) {
-    const matches = await Match.findAll({
+  private async getRecentResultsForTeams(teamIds: string[], limit = 5) {
+    if (teamIds.length === 0) return [];
+    const matches = await FederationMatch.findAll({
       where: {
-        teamId: { [Op.in]: teamIds },
-        status: MatchStatus.COMPLETED,
+        [Op.or]: [
+          { homeTeamId: { [Op.in]: teamIds } },
+          { awayTeamId: { [Op.in]: teamIds } },
+        ],
+        status: FederationMatchStatus.FINISHED,
       },
-      include: [{ model: Team, attributes: ['id', 'name'] }],
-      order: [['date', 'DESC']],
+      include: [
+        { model: FederationTeam, as: 'homeTeam', attributes: ['id', 'name'] },
+        { model: FederationTeam, as: 'awayTeam', attributes: ['id', 'name'] },
+      ],
+      order: [['dateUtc', 'DESC']],
       limit,
     });
     return matches.map((m: any) => ({
       id: m.id,
-      date: m.date,
-      opponent: m.opponent,
-      teamName: m.team?.name ?? '',
+      dateUtc: m.dateUtc,
+      homeTeam: m.homeTeam?.name ?? '',
+      awayTeam: m.awayTeam?.name ?? '',
       scoreHome: m.scoreHome,
       scoreAway: m.scoreAway,
-      location: m.location,
     }));
   }
 
-  private async getUpcomingTrainings(teamIds: string[], limit = 5) {
+  private async getUpcomingTrainingsForTeams(teamIds: string[], limit = 5) {
+    if (teamIds.length === 0) return [];
     const today = new Date().toISOString().split('T')[0];
     const trainings = await Training.findAll({
       where: {
-        teamId: { [Op.in]: teamIds },
+        federationTeamId: { [Op.in]: teamIds },
         date: { [Op.gte]: today },
         isCancelled: false,
       },
-      include: [{ model: Team, attributes: ['id', 'name'] }],
+      include: [{ model: FederationTeam, attributes: ['id', 'name'] }],
       order: [
-        
-       ,
-      
         ['date', 'ASC'],
         ['startTime', 'ASC'],
       ],
@@ -95,12 +105,24 @@ class DashboardService extends Service {
     }));
   }
 
+  private async getFederationTeamIdsForClubAccount(
+    clubAccountId: string,
+    seasonId?: string,
+  ): Promise<string[]> {
+    const account = await TitanClubAccount.findByPk(clubAccountId);
+    if (!account) return [];
+    const where: any = { clubId: account.federationClubId };
+    if (seasonId) where.seasonId = seasonId;
+    const teams = await FederationTeam.findAll({ where, attributes: ['id'] });
+    return teams.map((t) => t.id);
+  }
+
   // ---- Dirigeant (Manager/Admin) Dashboard ----
 
-  async getDirigeantDashboard(clubId: string, seasonId: string) {
+  async getDirigeantDashboard(clubAccountId: string, seasonId: string) {
     // Members
     const members = await ClubMember.findAll({
-      where: { clubId, seasonId, status: ClubMemberStatus.ACTIVE },
+      where: { clubAccountId, seasonId, status: ClubMemberStatus.ACTIVE },
     });
     const memberIds = members.map((m) => m.id);
 
@@ -120,41 +142,28 @@ class DashboardService extends Service {
       where: { clubMemberId: { [Op.in]: memberIds } },
     });
     const cotisationsPaid = payments.filter(
-      (p) =>
-        p.status === PaymentStatus.PAID,
+      (p) => p.status === PaymentStatus.PAID,
     ).length;
     const cotisationsUnpaid = payments.filter(
       (p) =>
-     
         p.status === PaymentStatus.UNPAID || p.status === PaymentStatus.OVERDUE,
     ).length;
-    const totalCot = cotisationsPaid +
-      cotisationsUnpaid;
-     ,
-   
+    const totalCot = cotisationsPaid + cotisationsUnpaid;
     const subscriptionRate =
       totalCot > 0 ? Math.round((cotisationsPaid / totalCot) * 100) : 100;
 
     // Teams for this season
-    const teams = await Team.findAll({
-      where: { clubId, seasonId },
-      attributes: ['id'],
-    });
-    const teamIds = teams.map((t) => t.id);
+    const teamIds = await this.getFederationTeamIdsForClubAccount(
+      clubAccountId,
+      seasonId,
+    );
 
-    const upcomingMatches = await this.getUpcomingMatches(teamIds);
-    const recentResults = await this.getRecentResults(teamIds);
+    const upcomingMatches = await this.getUpcomingMatchesForTeams(teamIds);
+    const recentResults = await this.getRecentResultsForTeams(teamIds);
 
     // Alerts
     const alerts: any[] = [];
-    const today 
-        =
-          new Date().toISOSt
-r         ing().spli
-            t('T')[0];,
-          ,
-       ,
-      
+    const today = new Date().toISOString().split('T')[0];
 
     // Expired medical certs
     const expiredCerts = await MedicalCertificate.findAll({
@@ -172,17 +181,10 @@ r         ing().spli
       ],
     });
     for (const cert of expiredCerts as any[]) {
-      const user
-         
-=          cert.clubMember?.
-u         ser;
-            ,
-          ,
-       ,
-      
+      const user = cert.clubMember?.user;
       alerts.push({
         type: 'missing_certificate',
-        message: `Certificat médical expiré`,
+        message: 'Certificat médical expiré',
         memberId: cert.clubMemberId,
         memberName: user ? `${user.firstName} ${user.lastName}` : '',
       });
@@ -197,14 +199,7 @@ u         ser;
       include: [
         {
           model: ClubMember,
-          includ
-        e
-:          [
-         
-            ,
-          ,
-       ,
-      
+          include: [
             { model: User, attributes: ['id', 'firstName', 'lastName'] },
           ],
         },
@@ -214,18 +209,13 @@ u         ser;
       const user = lic.clubMember?.user;
       alerts.push({
         type: 'expired_license',
-        message: `Licence expirée`,
+        message: 'Licence expirée',
         memberId: lic.clubMemberId,
         memberName: user ? `${user.firstName} ${user.lastName}` : '',
       });
     }
 
-        
-       ,
-      
-    // Unpaid fee
-     s
-   
+    // Unpaid fees
     const overduePayments = await Payment.findAll({
       where: {
         clubMemberId: { [Op.in]: memberIds },
@@ -244,25 +234,10 @@ u         ser;
       const user = pay.clubMember?.user;
       alerts.push({
         type: 'unpaid_fee',
-    
-   
-   ,
-  
-        message: `Cotisation impayée`,
+        message: 'Cotisation impayée',
         memberId: pay.clubMemberId,
         memberName: user ? `${user.firstName} ${user.lastName}` : '',
       });
-    }
-
-    // Club stats overview
-    let clubStatsOverview = null;
-    try {
-      clubStatsOverview = await statsService.getClubStatsOverview(
-        clubId,
-        seasonId,
-      );
-    } catch (_) {
-      /* stats may be empty */
     }
 
     return {
@@ -275,46 +250,58 @@ u         ser;
       upcomingMatches,
       recentResults,
       alerts,
-      clubStatsOverview,
     };
   }
 
   // ---- Entraîneur (Coach) Dashboard ----
 
   async getEntraineurDashboard(
-    clubId: string,
+    clubAccountId: string,
     userId: string,
     seasonId: string,
-         
-    ) {
-      // Find teams where user is coach
-    const teams = await Team.findAll({
-      where: {
-        clubId,
-        seasonId,
-        [Op.or]: [{ coachId: userId }, { assistantCoachId: userId }],
-      },
-      include: [{ model: TeamPlayer, attributes: ['id'] }],
-    });
+  ) {
+    // Find teams where user is coach (via titan_team_settings)
+    // Note: simpler version — return all teams for this club_account for now
+    // (per-coach filtering can be added when titan_team_settings.coachUserId is populated)
+    const teamIds = await this.getFederationTeamIdsForClubAccount(
+      clubAccountId,
+      seasonId,
+    );
 
-    const teamIds = teams.map((t) => t.id);
+    const teams = await FederationTeam.findAll({
+      where: { id: { [Op.in]: teamIds } },
+      attributes: ['id', 'name'],
+    });
     const teamsSummary = teams.map((t: any) => ({
       id: t.id,
       name: t.name,
-      playerCount: t.teamPlayers?.length ?? 0,
+      playerCount: 0, // computed below if needed
     }));
 
-            
-          
-    const upcomingMatches = await this.getUpcomingMatches(teamIds, 10);
-    const upcomingTrainings = await this.getUpcomingTrainings(teamIds, 10);
-    const recentResults = await this.getRecentResults(teamIds, 5);
+    // Compute player counts via federation_team_member
+    if (teamIds.length > 0) {
+      const memberCounts = await FederationTeamMember.findAll({
+        where: { teamId: { [Op.in]: teamIds } },
+        attributes: ['teamId'],
+      });
+      const countsMap: Record<string, number> = {};
+      for (const m of memberCounts) {
+        countsMap[m.teamId] = (countsMap[m.teamId] ?? 0) + 1;
+      }
+      for (const t of teamsSummary) {
+        t.playerCount = countsMap[t.id] ?? 0;
+      }
+    }
+
+    const upcomingMatches = await this.getUpcomingMatchesForTeams(teamIds, 10);
+    const upcomingTrainings = await this.getUpcomingTrainingsForTeams(teamIds, 10);
+    const recentResults = await this.getRecentResultsForTeams(teamIds, 5);
 
     // Training attendance rate for coach's teams
     let trainingAttendanceRate = 0;
     if (teamIds.length > 0) {
       const trainings = await Training.findAll({
-        where: { teamId: { [Op.in]: teamIds } },
+        where: { federationTeamId: { [Op.in]: teamIds } },
         attributes: ['id'],
       });
       const trainingIds = trainings.map((t) => t.id);
@@ -332,27 +319,21 @@ u         ser;
       }
     }
 
-    // Top scorer among coach's teams
+    // Top scorer among club federation players for this season
     let topScorer: { playerName: string; goals: number } | null = null;
     if (teamIds.length > 0) {
-      const topStats = await PlayerSeasonStats.findAll({
-        where: { seasonId, teamId: { [Op.in]: teamIds } },
-        include: [{ model: Player, attributes: ['firstName', 'lastName'] }],
+      const topStats = await FederationPlayerSeasonStats.findAll({
+        where: { seasonId },
+        include: [
+          { model: FederationPlayer, attributes: ['firstName', 'lastName'] },
+        ],
         order: [['goals', 'DESC']],
         limit: 1,
       });
       if (topStats.length > 0) {
-        const s = topStat
-     s[0] as an
-     y;
-     
-     
-     ,
-   
+        const s = topStats[0] as any;
         topScorer = {
-          playerName: `${s.player?.firstName ?? ''} ${
-            s.player?.lastName ?? ''
-          }`,
+          playerName: `${s.player?.firstName ?? ''} ${s.player?.lastName ?? ''}`.trim(),
           goals: s.goals,
         };
       }
@@ -368,62 +349,51 @@ u         ser;
     };
   }
 
-     
-     ;
-   
   // ---- Joueur (Player) Dashboard ----
 
-  async getJoueurDashboard(clubId: string, userId: string, seasonId: string) {
-    // Find user's club member, then team assignments
+  async getJoueurDashboard(
+    clubAccountId: string,
+    userId: string,
+    seasonId: string,
+  ) {
+    // Find user's club member + their federation player via profile link
     const member = await ClubMember.findOne({
-      where: { clubId, userId, seasonId },
+      where: { clubAccountId, userId, seasonId },
     });
 
+    // Resolve federation_team ids the user plays in (via federation_team_member)
     let teamIds: string[] = [];
-    if (member) {
-      const teamPlayers = await
-          TeamPlayer.findA
-         ll({,
-       
-        where: { clubMemberId: member.id },
-        include: [{ model: Team
-         , attributes: ['i
-         d'], where: { seasonId } }],,
-       
+    const profile = await TitanPlayerProfile.findOne({
+      where: { clubAccountId, userId },
+    });
+    if (profile) {
+      const memberships = await FederationTeamMember.findAll({
+        where: { playerId: profile.federationPlayerId },
+        attributes: ['teamId'],
       });
-      teamIds = teamPlayers.map((tp: any) => tp.team?.id).filter(Boolean);
+      teamIds = memberships.map((m) => m.teamId);
     }
 
-    const upcomingMatches = await this.getUpcomingMatches(teamIds, 10);
-    const upcomingTrainings = await this.getUpcomingTrainings(teamIds, 10);
+    const upcomingMatches = await this.getUpcomingMatchesForTeams(teamIds, 10);
+    const upcomingTrainings = await this.getUpcomingTrainingsForTeams(teamIds, 10);
 
-    // Personal stats
+    // Personal stats from federation_player_season_stats
     let personalStats = {
       goals: 0,
-         
-         ,
-       
       assists: 0,
       saves: 0,
-      minutesPlayed: 0,
       matchesPlayed: 0,
     };
-    // Find player linked to this user
-    const player = await Player.findOne({ where: { userId, clubId } });
-    if (player) {
-      const seasonStats = await PlayerSeasonStats.findOne({
-        where: { playerId: player.id, seasonId },
+    if (profile) {
+      const seasonStats = await FederationPlayerSeasonStats.findOne({
+        where: { playerId: profile.federationPlayerId, seasonId },
       });
       if (seasonStats) {
         personalStats = {
-         
-         ,
-       
           goals: seasonStats.goals,
           assists: seasonStats.assists,
-          saves: seasonStats.saves,
-          minutesPlayed: seasonStats.minutesPlayed,
-          matchesPlayed: seasonStats.gamesPlayed,
+          saves: seasonStats.saves ?? 0,
+          matchesPlayed: seasonStats.matchesPlayed,
         };
       }
     }
@@ -436,7 +406,6 @@ u         ser;
     if (member) {
       const today = new Date().toISOString().split('T')[0];
 
-      // Medical cert check
       const certs = await MedicalCertificate.findAll({
         where: { clubMemberId: member.id },
         order: [['expirationDate', 'DESC']],
@@ -454,7 +423,6 @@ u         ser;
         });
       }
 
-      // License check
       const lics = await License.findAll({
         where: { clubMemberId: member.id },
         order: [['expirationDate', 'DESC']],
@@ -469,7 +437,6 @@ u         ser;
         pendingDocuments.push({ type: 'license', message: 'Licence expirée' });
       }
 
-      // Payment check
       const unpaidPayments = await Payment.findAll({
         where: {
           clubMemberId: member.id,

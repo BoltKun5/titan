@@ -22,6 +22,8 @@ export const databaseLoader = async (): Promise<Sequelize> => {
         models: [
           ...requireModules(path.join(__dirname, '../database/models')),
           ...requireModules(path.join(__dirname, '../database/models/titan')),
+          ...requireModules(path.join(__dirname, '../database/models/federation')),
+          ...requireModules(path.join(__dirname, '../database/models/federation/handball')),
         ],
         logging: false,
         logQueryParameters: false,

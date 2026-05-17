@@ -10,9 +10,9 @@ export const TitanTrainingRouter = (app: Router): Router => {
   app.use('/titan', route);
 
   // Trainings (scoped to club)
-  route.get('/clubs/:clubId/trainings', auth, trainingController.list);
+  route.get('/clubs/:clubAccountId/trainings', auth, trainingController.list);
   route.post(
-    '/clubs/:clubId/trainings',
+    '/clubs/:clubAccountId/trainings',
     auth,
     requireClubRole(TitanRole.ADMIN, TitanRole.MANAGER, TitanRole.COACH),
     trainingController.create,

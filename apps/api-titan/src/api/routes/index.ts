@@ -3,13 +3,9 @@ export * from './user.route';
 export * from './conversation.route';
 export * from './message.route';
 
-// Titan
-export * from './titan/club.route';
+// Titan app routes
 export * from './titan/member.route';
-export * from './titan/team.route';
-export * from './titan/match.route';
 export * from './titan/training.route';
 export * from './titan/finance.route';
-export * from './titan/player.route';
-export * from './titan/stats.route';
 export * from './titan/dashboard.route';
+export * from './titan/onboarding.route';

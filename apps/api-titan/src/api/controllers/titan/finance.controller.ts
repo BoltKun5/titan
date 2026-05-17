@@ -8,27 +8,30 @@ class FinanceController implements Controller {
   private static readonly logger = new LoggerModel(FinanceController.name);
 
   async createFeePlan(
-    req: Request<{ clubId: string }>,
+    req: Request<{ clubAccountId: string }>,
     res: Response<IResponse<any>, ILocals>,
   ): Promise<void> {
     const body = FinanceValidation.createFeePlanBody(req.body);
-    const plan = await financeService.createFeePlan(req.params.clubId, body);
+    const plan = await financeService.createFeePlan(
+      req.params.clubAccountId,
+      body,
+    );
     res.json({ data: plan });
   }
 
   async getFeePlans(
-    req: Request<{ clubId: string }, any, any, { seasonId?: string }>,
+    req: Request<{ clubAccountId: string }, any, any, { seasonId?: string }>,
     res: Response<IResponse<any>, ILocals>,
   ): Promise<void> {
     const plans = await financeService.getFeePlans(
-      req.params.clubId,
+      req.params.clubAccountId,
       req.query.seasonId,
     );
     res.json({ data: plans });
   }
 
   async deleteFeePlan(
-    req: Request<{ clubId: string; planId: string }>,
+    req: Request<{ clubAccountId: string; planId: string }>,
     res: Response<IResponse<any>, ILocals>,
   ): Promise<void> {
     await financeService.deleteFeePlan(req.params.planId);
@@ -36,7 +39,7 @@ class FinanceController implements Controller {
   }
 
   async recordPayment(
-    req: Request<{ clubId: string }>,
+    req: Request<{ clubAccountId: string }>,
     res: Response<IResponse<any>, ILocals>,
   ): Promise<void> {
     const body = FinanceValidation.recordPaymentBody(req.body);
@@ -46,7 +49,7 @@ class FinanceController implements Controller {
 
   async getPayments(
     req: Request<
-      { clubId: string },
+      { clubAccountId: string },
       any,
       any,
       { memberId?: string; seasonId?: string }
@@ -54,7 +57,7 @@ class FinanceController implements Controller {
     res: Response<IResponse<any>, ILocals>,
   ): Promise<void> {
     const payments = await financeService.getPayments(
-      req.params.clubId,
+      req.params.clubAccountId,
       req.query.memberId,
       req.query.seasonId,
     );
@@ -62,30 +65,30 @@ class FinanceController implements Controller {
   }
 
   async createBudgetEntry(
-    req: Request<{ clubId: string }>,
+    req: Request<{ clubAccountId: string }>,
     res: Response<IResponse<any>, ILocals>,
   ): Promise<void> {
     const body = FinanceValidation.createBudgetEntryBody(req.body);
     const entry = await financeService.createBudgetEntry(
-      req.params.clubId,
+      req.params.clubAccountId,
       body,
     );
     res.json({ data: entry });
   }
 
   async getBudgetSummary(
-    req: Request<{ clubId: string }, any, any, { seasonId: string }>,
+    req: Request<{ clubAccountId: string }, any, any, { seasonId: string }>,
     res: Response<IResponse<any>, ILocals>,
   ): Promise<void> {
     const summary = await financeService.getBudgetSummary(
-      req.params.clubId,
+      req.params.clubAccountId,
       req.query.seasonId,
     );
     res.json({ data: summary });
   }
 
   async deleteBudgetEntry(
-    req: Request<{ clubId: string; entryId: string }>,
+    req: Request<{ clubAccountId: string; entryId: string }>,
     res: Response<IResponse<any>, ILocals>,
   ): Promise<void> {
     await financeService.deleteBudgetEntry(req.params.entryId);

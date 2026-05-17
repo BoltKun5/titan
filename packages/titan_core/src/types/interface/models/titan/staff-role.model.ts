@@ -1,6 +1,6 @@
 export type IStaffRole = {
   id: string;
-  clubId: string;
+  clubAccountId: string;
   userId: string;
   role: string;
   seasonId: string | null;

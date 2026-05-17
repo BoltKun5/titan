@@ -2,7 +2,7 @@ import { TrainingRecurrence } from '../../../../enums';
 
 export type ITraining = {
   id: string;
-  teamId: string;
+  federationTeamId: string;
   venueId: string | null;
   date: string;
   startTime: string;

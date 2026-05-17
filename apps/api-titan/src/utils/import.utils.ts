@@ -3,7 +3,13 @@ import { extname, resolve } from 'path';
 
 export const requireModules = (name: string): any[] =>
   readdirSync(resolve(`${name}`))
-    .filter((f) => ['.js', '.ts'].includes(extname(f)) && !/\.d\.ts/.exec(f))
+    .filter(
+      (f) =>
+        ['.js', '.ts'].includes(extname(f)) &&
+        !/\.d\.ts/.exec(f) &&
+        f !== 'index.ts' &&
+        f !== 'index.js',
+    )
     .map((f) => {
       // eslint-disable-next-line @typescript-eslint/no-var-requires
       const a = require(resolve(`${name}/${f}`));

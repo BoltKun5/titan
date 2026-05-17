@@ -10,39 +10,39 @@ export const TitanFinanceRouter = (app: Router): Router => {
   app.use('/titan/clubs', route);
 
   // Fee Plans
-  route.get('/:clubId/fee-plans', auth, financeController.getFeePlans);
+  route.get('/:clubAccountId/fee-plans', auth, financeController.getFeePlans);
   route.post(
-    '/:clubId/fee-plans',
+    '/:clubAccountId/fee-plans',
     auth,
     requireClubRole(TitanRole.ADMIN, TitanRole.MANAGER),
     financeController.createFeePlan,
   );
   route.delete(
-    '/:clubId/fee-plans/:planId',
+    '/:clubAccountId/fee-plans/:planId',
     auth,
     requireClubRole(TitanRole.ADMIN, TitanRole.MANAGER),
     financeController.deleteFeePlan,
   );
 
   // Payments
-  route.get('/:clubId/payments', auth, financeController.getPayments);
+  route.get('/:clubAccountId/payments', auth, financeController.getPayments);
   route.post(
-    '/:clubId/payments',
+    '/:clubAccountId/payments',
     auth,
     requireClubRole(TitanRole.ADMIN, TitanRole.MANAGER),
     financeController.recordPayment,
   );
 
   // Budget
-  route.get('/:clubId/budget', auth, financeController.getBudgetSummary);
+  route.get('/:clubAccountId/budget', auth, financeController.getBudgetSummary);
   route.post(
-    '/:clubId/budget',
+    '/:clubAccountId/budget',
     auth,
     requireClubRole(TitanRole.ADMIN, TitanRole.MANAGER),
     financeController.createBudgetEntry,
   );
   route.delete(
-    '/:clubId/budget/:entryId',
+    '/:clubAccountId/budget/:entryId',
     auth,
     requireClubRole(TitanRole.ADMIN, TitanRole.MANAGER),
     financeController.deleteBudgetEntry,

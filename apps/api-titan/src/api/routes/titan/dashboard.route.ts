@@ -9,7 +9,7 @@ export const TitanDashboardRouter = (app: Router): Router => {
   app.use('/titan/clubs', route);
 
   route.get(
-    '/:clubId/dashboard',
+    '/:clubAccountId/dashboard',
     auth,
     requireClubRole(),
     dashboardController.get,

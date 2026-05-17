@@ -1,7 +1,7 @@
 import { TrainingRecurrence } from '../../../../../enums';
 
 export interface ICreateTrainingBody {
-  teamId: string;
+  federationTeamId: string;
   venueId?: string;
   date: string;
   startTime: string;

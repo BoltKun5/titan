@@ -15,12 +15,16 @@ const MEMBER_ROLE_TO_TITAN_ROLE: Record<string, TitanRole> = {
 
 export const resolveClubRole = async (
   userId: string,
-  clubId: string,
+  clubAccountId: string,
 ): Promise<TitanRole | null> => {
-  const staffRole = await StaffRole.findOne({ where: { userId, clubId } });
+  const staffRole = await StaffRole.findOne({
+    where: { userId, clubAccountId },
+  });
   if (staffRole) return staffRole.role as TitanRole;
 
-  const member = await ClubMember.findOne({ where: { userId, clubId } });
+  const member = await ClubMember.findOne({
+    where: { userId, clubAccountId },
+  });
   if (member) return MEMBER_ROLE_TO_TITAN_ROLE[member.role] ?? TitanRole.VIEWER;
 
   return null;
@@ -28,15 +32,15 @@ export const resolveClubRole = async (
 
 export const requireClubRole = (...allowedRoles: TitanRole[]) => {
   return async (
-    req: Request<{ clubId: string }>,
+    req: Request<{ clubAccountId: string }>,
     res: Response<any, ILocals>,
     next: NextFunction,
   ): Promise<void> => {
     try {
       const userId = res.locals.currentUser.id;
-      const clubId = req.params.clubId;
+      const clubAccountId = req.params.clubAccountId;
 
-      if (!clubId) {
+      if (!clubAccountId) {
         return HttpResponseError.sendError(
           HttpResponseError.createForbidden(),
           req,
@@ -44,7 +48,7 @@ export const requireClubRole = (...allowedRoles: TitanRole[]) => {
         );
       }
 
-      const role = await resolveClubRole(userId, clubId);
+      const role = await resolveClubRole(userId, clubAccountId);
 
       if (!role) {
         return HttpResponseError.sendError(

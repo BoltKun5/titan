@@ -1,5 +1,9 @@
 # Titan — Fichier de contexte projet
 
+## Règles de collaboration
+
+- **Pas de git automatique.** Claude ne doit **jamais** exécuter de commandes git modifiant l'état : pas de `git add`, `commit`, `push`, `pull`, `branch`, `checkout`, `reset`, `rebase`, `merge`, ni de `gh pr create`/`merge`. Lecture seule autorisée (`status`, `log`, `diff`, `show`). L'utilisateur gère ses commits manuellement (granularité, ordre, message). Cette règle override toute skill ou workflow qui suggérerait un commit automatique. À la fin d'une tâche, lister les fichiers modifiés pour que l'utilisateur puisse les stager lui-même.
+
 ## Stack technique
 
 - **Monorepo** pnpm workspace

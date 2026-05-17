@@ -1,29 +1,26 @@
 import { Service } from '../../core';
-import { ClubMember, License, MedicalCertificate } from '../../database';
-import { User } from '../../database';
+import { ClubMember, License, MedicalCertificate, User } from '../../database';
 import {
   ICreateClubMemberBody,
   IUpdateClubMemberBody,
   ICreateLicenseBody,
   ICreateMedicalCertificateBody,
-  ClubMemberStatus,
-  LicenseStatus,
 } from 'titan_core';
 import createError from 'http-errors';
 
 class MemberService extends Service {
   async createMember(
-    clubId: string,
+    clubAccountId: string,
     body: ICreateClubMemberBody,
   ): Promise<ClubMember> {
     const existing = await ClubMember.findOne({
-      where: { clubId, userId: body.userId, seasonId: body.seasonId },
+      where: { clubAccountId, userId: body.userId, seasonId: body.seasonId },
     });
     if (existing)
       throw createError(409, 'Member already exists for this season');
 
     return ClubMember.create({
-      clubId,
+      clubAccountId,
       userId: body.userId,
       seasonId: body.seasonId,
       role: body.role,
@@ -34,8 +31,11 @@ class MemberService extends Service {
     });
   }
 
-  async getMembers(clubId: string, seasonId?: string): Promise<ClubMember[]> {
-    const where: any = { clubId };
+  async getMembers(
+    clubAccountId: string,
+    seasonId?: string,
+  ): Promise<ClubMember[]> {
+    const where: any = { clubAccountId };
     if (seasonId) where.seasonId = seasonId;
 
     return ClubMember.findAll({

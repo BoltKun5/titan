@@ -1,5 +1,8 @@
 import { Service } from '../../core';
-import { Training, TrainingAttendance, Team, Venue } from '../../database';
+import {
+  Training, TrainingAttendance,
+  FederationTeam, FederationVenue, TitanClubAccount,
+} from '../../database';
 import {
   ICreateTrainingBody,
   IUpdateTrainingBody,
@@ -10,7 +13,7 @@ import createError from 'http-errors';
 class TrainingService extends Service {
   async create(body: ICreateTrainingBody): Promise<Training> {
     return Training.create({
-      teamId: body.teamId,
+      federationTeamId: body.federationTeamId,
       venueId: body.venueId ?? null,
       date: body.date,
       startTime: body.startTime,
@@ -20,20 +23,29 @@ class TrainingService extends Service {
     });
   }
 
-  async getByTeam(teamId: string): Promise<Training[]> {
-    return Training.findAll({ where: { teamId }, order: [['date', 'ASC']] });
+  async getByTeam(federationTeamId: string): Promise<Training[]> {
+    return Training.findAll({
+      where: { federationTeamId },
+      order: [['date', 'ASC']],
+    });
   }
 
-  async getByClub(clubId: string): Promise<Training[]> {
-    const teams = await Team.findAll({ where: { clubId }, attributes: ['id'] });
+  async getByClub(clubAccountId: string): Promise<Training[]> {
+    const clubAccount = await TitanClubAccount.findByPk(clubAccountId);
+    if (!clubAccount) return [];
+
+    const teams = await FederationTeam.findAll({
+      where: { clubId: clubAccount.federationClubId },
+      attributes: ['id'],
+    });
     const teamIds = teams.map((t) => t.id);
     if (teamIds.length === 0) return [];
 
     return Training.findAll({
-      where: { teamId: teamIds },
+      where: { federationTeamId: teamIds },
       include: [
-        { model: Team, attributes: ['id', 'name'] },
-        { model: Venue, attributes: ['id', 'name'] },
+        { model: FederationTeam, attributes: ['id', 'name'] },
+        { model: FederationVenue, attributes: ['id', 'name'] },
       ],
       order: [['date', 'ASC']],
     });
